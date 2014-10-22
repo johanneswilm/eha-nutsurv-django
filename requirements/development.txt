@@ -1,0 +1,6 @@
+-r production.txt
+coverage
+django-coverage
+mock
+model_mommy
+behave

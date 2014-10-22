@@ -1,0 +1,14 @@
+*.log
+*.pot
+*.py[co]
+*.DS_Store
+*.mo
+*~
+*.db
+db.*
+*.orig
+.env
+.idea
+*.backup
+.coverage
+htmlcov
