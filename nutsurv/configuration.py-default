@@ -1,0 +1,11 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql'$
+        'NAME': 'nutsurv',                      # Or path to database file if using $
+        'USER': 'nutsurv',                      # Not used with sqlite3.
+        'PASSWORD': '123456',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost.$
+        'PORT': '',                      # Set to empty string for default. N$
+        'CONN_MAX_AGE': 15               # The max time in seconds a database$
+    }
+}
