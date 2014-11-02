@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NutSurv dashboard</title>
+  <link href='http://fonts.googleapis.com/css?family=Nunito:300|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+  <script src="/static/js/index.js"></script>
+  <script>
+  $(function() {
+    $( "#tabs" ).tabs();
+  });
+  </script>
+</head>
+<body>
+
+<div id="tabs">
+  <ul>
+    <li><a href="/dashboard/home">Dashboard home</a></li>
+    <li><a href="/dashboard/survey_completed">Survey work completed</a></li>
+    <li><a href="/dashboard/mapping_checks">Mapping checks</a></li>
+    <li><a href="/dashboard/age_distribution">Distribution of Age</a></li>
+    <li><a href="/dashboard/missing_data">Missing data</a></li>
+    <li><a href="/dashboard/data_quality">Data quality</a></li>
+    <li><a href="/dashboard/time_of_data_collection">Time of data collection</a></li>
+    <li><a href="/dashboard/personell">Personell</a></li>
+    <li><a href="/dashboard/personell_current_location">Personell (current location)</a></li>
+  </ul>
+</div>
+
+
+</body>
+</html>

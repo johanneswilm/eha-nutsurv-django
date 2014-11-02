@@ -1,0 +1,8 @@
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .ui-tabs-nav {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 1.2em;
+}

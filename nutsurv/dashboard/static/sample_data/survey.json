@@ -1,0 +1,32 @@
+{
+    "survey_data": {
+        "1": {
+            "location": [6.9249100685, 8.6650104523],
+            "incorrect_area": false
+        },
+        "2": {
+            "location": [6.8249100685, 8.1650104523],
+            "incorrect_area": false
+        },
+        "3": {
+            "location": [6.9049100685, 8.7650104523],
+            "incorrect_area": false
+        },
+        "4": {
+            "location": [6.8749100685, 8.8650104523],
+            "incorrect_area": false
+        },
+        "5": {
+            "location": [6.9920101166, 8.7965202332],
+            "incorrect_area": true
+        },
+        "6": {
+            "location": [6.9920101166, 8.8165202332],
+            "incorrect_area": false
+        },
+        "7": {
+            "location": [6.9920101166, 8.5965202332],
+            "incorrect_area": true
+        }
+    }
+}
