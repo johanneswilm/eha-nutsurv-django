@@ -66,3 +66,8 @@ div.two_small_content_blocks {
     width: 100%;
   }
 }
+
+#last_update_li {
+  float: right;
+  font-size: 0.7em;
+}
