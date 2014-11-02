@@ -1,8 +1,68 @@
-body {
+body, div.ui-widget {
   font-family: 'Nunito', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, .ui-tabs-nav {
   font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0.2em;
+}
+
+.ui-tabs-nav {
   font-size: 1.2em;
+}
+
+div.content_block {
+  border: 1px solid #bfbfbf;
+  padding: 10px;
+  margin: 1em 0.4em;
+  display: inline-block;
+  flush: left;
+  background-color: white;
+  vertical-align: top;
+  border-radius: 6px;
+/*  z-index: 1;*/
+}
+.leaflet-container:-webkit-full-screen{
+  display: block;
+}
+.ui-tabs .ui-tabs-panel {
+  padding: 0 !important;
+}
+
+div.big_content_block, div.extra_big_content_block {
+  width: 700px;
+  min-height: 600px;
+}
+
+@media screen and (min-width: 1100px){
+  div.extra_big_content_block {
+    width: 1100px;
+  }
+}
+
+div.small_content_block {
+  width: 350px;
+  min-height: 300px;
+}
+
+div.two_small_content_blocks {
+  display: inline-block;
+}
+
+
+@media screen and (max-width: 1560px){
+  div.two_small_content_blocks {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 1130px){
+  div.two_small_content_blocks {
+    display: block;
+    width: 100%;
+  }
 }

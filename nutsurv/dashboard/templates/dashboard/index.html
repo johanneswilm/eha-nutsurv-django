@@ -3,16 +3,32 @@
 <head>
   <meta charset="utf-8">
   <title>NutSurv dashboard</title>
-  <link href='http://fonts.googleapis.com/css?family=Nunito:300|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css">
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link href='http://fonts.googleapis.com/css?family=Nunito:300|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/leaflet.fullscreen.css' rel='stylesheet' />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
   <script src="/static/js/index.js"></script>
+  <script src="/static/js/map.js"></script>
   <script>
   $(function() {
-    $( "#tabs" ).tabs();
+    $( "#tabs" ).tabs({
+       beforeLoad: function( event, ui ) {
+          if ( ui.tab.data( "loaded" ) ) {
+            event.preventDefault();
+            return;
+          }
+
+          ui.jqXHR.success(function() {
+            ui.tab.data( "loaded", true );
+          });
+        }
+    });
   });
   </script>
 </head>
