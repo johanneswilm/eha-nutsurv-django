@@ -27,6 +27,7 @@ var dataGetter = {
             dataGetter.updatedSources++;
             if (dataGetter.updatedSources===Object.keys(dataGetter.urls).length) {
                 dataGetter.lastUpdate = new Date();
+                dataGetter.setTimer();
             }
         })
     },
@@ -47,11 +48,15 @@ var dataGetter = {
           jQuery('#last_update span.ui-button-text').html(minutes+':'+seconds);
        }
     },
+    getterInterval: false,
+    timerInterval: false,
     setTimer: function () {// Set the timer to get data from URLs every X minutes;
-        setInterval(dataGetter.getAll,5*60000); // Timer set to X*60000 milliseconds (X is minutes)
-        setInterval(dataGetter.drawTimer,1000); // Redraw timer every second
+        clearInterval(dataGetter.getterInterval);
+        dataGetter.getterInterval = setInterval(dataGetter.getAll,5*60000); // Timer set to X*60000 milliseconds (X is minutes)
+        clearInterval(dataGetter.timerInterval);
+        dataGetter.timerInterval = setInterval(dataGetter.drawTimer,1000); // Redraw timer every second
     }
 
 };
 
-dataGetter.setTimer();
+dataGetter.getAll();
