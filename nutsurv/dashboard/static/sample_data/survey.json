@@ -2,13 +2,13 @@
     "survey_data": {
         "1": {
             "location": [6.9249100685, 8.6650104523],
-            "correct_area": false,
+            "correct_area": true,
             "end_time": "2014-10-18T20:43:23",
             "team": 1
         },
         "2": {
             "location": [6.8249100685, 8.1650104523],
-            "correct_area": false,
+            "correct_area": true,
             "end_time": "2014-10-18T20:57:23",
             "team": 1
         },
