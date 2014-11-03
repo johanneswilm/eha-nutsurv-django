@@ -4,12 +4,17 @@ var mappingChecks = {
         dataGetter.addNew('/static/sample_data/survey.json', mappingChecks.updateMap);
     },
     drawMap: function () {
+      var osm = L.tileLayer(map.osmUrl, {
+          minZoom: 1,
+          maxZoom: 18,
+          attribution: false
+      });
         mappingChecks.map = L.map('mapping_checks_map', {
             center: [10.9049100685, 7.7650104523],
             zoom: 6,
             minZoom: 1,
             maxZoom: 18,
-            layers: [map.osm],
+            layers: [osm],
             fullscreenControl: true,
             fullscreenControlOptions: {
                 position: 'topleft'
