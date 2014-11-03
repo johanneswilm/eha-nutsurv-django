@@ -1,9 +1,5 @@
 var map = {
-    osm: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        minZoom: 1,
-        maxZoom: 18,
-        attribution: false
-    }),
+    osmUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     markers: {
         green: L.icon({
             iconUrl: '/static/images/marker-green.png',
