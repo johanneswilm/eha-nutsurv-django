@@ -49,4 +49,28 @@ Enter the application:
 
 Add structure to the database:
 
-    ./manage-test.py migrate
+    ./manage.py migrate
+
+Run it:
+
+    ./manage.py
+
+===================
+
+# Deployment
+
+Install more system packages:
+
+     sudo apt-get install uwsgi-plugin-python nginx uwsgi
+
+And inside the virtual environment:
+
+     pip install uwsgi
+
+...instructions to be continued... Follow these in the meantime: http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html
+
+===================
+
+# Override settings
+
+You can override settings by adding a file named "configuration.py" to the root of the project. See configuration.py-default for an example.
