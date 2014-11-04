@@ -1,12 +1,17 @@
 var home = {
+    urls : {
+        survey: '/static/sample_data/survey.json',
+        alerts: '/static/sample_data/alerts.json',
+        teams: '/static/sample_data/teams.json'
+    },
     initiate: function () {
         home.drawMap();
-        dataGetter.addNew('/static/sample_data/survey.json', home.drawSurvey);
-        dataGetter.addNew('/static/sample_data/alerts.json', home.drawAlerts);
-    },
-    drawSurvey: function (data) {
-        home.updateMap(data);
-        home.drawLatestContacts(data);
+        dataGetter.addNew(home.urls.survey, home.updateMap, true);
+
+        dataGetter.addNew(home.urls.alerts, home.drawAlerts, true);
+
+        dataGetter.addNew(home.urls.survey, home.drawLatestContacts, true);
+        dataGetter.addNew(home.urls.teams, home.drawLatestContacts, false);
     },
     drawMap: function () {
         var osm = L.tileLayer(map.osmUrl, {
@@ -44,26 +49,35 @@ var home = {
         home.map.fitBounds(group.getBounds());
     },
     drawLatestContacts: function (data) {
-        // We assume teams don't constantly change, so teams will only be redrawn if survey data changes.
-        jQuery.get('/static/sample_data/teams.json', function (teamData) {
-            var latestTeamContacts = [];
-            jQuery('#home_last_contact_list').empty();
-            _.each(data.survey_data, function (survey) {
-                latestContact = _.find(latestTeamContacts, {team: survey.team});
-                if (!latestContact) {
-                    latestTeamContacts.push({
-                        team: survey.team,
-                        time: survey.end_time
-                    });
-                } else if (latestContact.time < survey.end_time) {
-                    latestContact.time = survey.end_time;
-                }
-            });
-            latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
-            _.each(latestTeamContacts, function(contact){
-                jQuery('#home_last_contact_list').append(home.contactTmp({teamNo: contact.team, teamName: teamData.teams[contact.team], time: contact.time}));
-            });
+        var latestTeamContacts = [];
+        if (!dataGetter.checkAll([home.urls.survey,home.urls.teams])) {
+            /* Check that all the relative data has been downloaded, else cancel.
+            This function will be called for each piece of arriving data, so it
+            will be executed once the last piece of data arrives.
+            This is the way to make a specific dashboardview function depend on
+            the arrival of several pieces of data. */
+            return false;
+        }
+        surveyData = dataGetter.downloads[home.urls.survey].data;
+        teamData = dataGetter.downloads[home.urls.teams].data;
+
+        jQuery('#home_last_contact_list').empty();
+        _.each(surveyData.survey_data, function (survey) {
+            latestContact = _.find(latestTeamContacts, {team: survey.team});
+            if (!latestContact) {
+                latestTeamContacts.push({
+                    team: survey.team,
+                    time: survey.end_time
+                });
+            } else if (latestContact.time < survey.end_time) {
+                latestContact.time = survey.end_time;
+            }
         });
+        latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
+        _.each(latestTeamContacts, function(contact){
+            jQuery('#home_last_contact_list').append(home.contactTmp({teamNo: contact.team, teamName: teamData.teams[contact.team], time: contact.time}));
+        });
+
     },
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%= new Date(time) %></li>'),
     drawAlerts: function (data) {
