@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 from jsonfield import JSONField
 from jsonschema import validate, ValidationError
@@ -28,7 +29,12 @@ class JSONDocument(models.Model):
 class JSONDocumentType(models.Model):
     name = models.CharField(max_length=255)
     schema = JSONField(null=True, blank=True, help_text=' ')
-    priority = models.IntegerField(unique=True, blank=True, null=True)
+    priority = models.IntegerField(unique=True, blank=True, null=True,
+                                   default=10,
+                                   validators=[MinValueValidator(0)],
+                                   help_text='Leave empty for the lowest '
+                                             'priority'
+                                   )
 
     def matches(self, json_document):
         try:
