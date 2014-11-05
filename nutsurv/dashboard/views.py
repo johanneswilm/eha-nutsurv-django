@@ -11,3 +11,7 @@ def home(request):
 def mapping_checks(request):
     response = {}
     return render(request,'dashboard/mapping_checks.html',response)
+
+def age_distribution(request):
+    response = {}
+    return render(request,'dashboard/age_distribution.html',response)

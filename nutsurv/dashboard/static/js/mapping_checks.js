@@ -1,7 +1,7 @@
 var mappingChecks = {
     initiate: function () {
         mappingChecks.drawMap();
-        dataGetter.addNew('/static/sample_data/survey.json', mappingChecks.updateMap);
+        dataGetter.addNew('/static/sample_data/survey.json', mappingChecks.updateMap, true);
     },
     drawMap: function () {
       var osm = L.tileLayer(map.osmUrl, {
