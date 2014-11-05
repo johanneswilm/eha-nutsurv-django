@@ -1,3 +1,17 @@
 from django.shortcuts import render
 
-# Create your views here.
+def dashboard(request):
+    response = {}
+    return render(request,'dashboard/index.html',response)
+
+def home(request):
+    response = {}
+    return render(request,'dashboard/home.html',response)
+
+def mapping_checks(request):
+    response = {}
+    return render(request,'dashboard/mapping_checks.html',response)
+
+def age_distribution(request):
+    response = {}
+    return render(request,'dashboard/age_distribution.html',response)

@@ -1,0 +1,17 @@
+{
+    "states": ["Kano", "Lagos", "Kaduna",
+        "Katsina", "Oyo", "Rivers",
+        "Bauchi", "Jigawa", "Benue",
+        "Anambra", "Borno", "Delta",
+        "Imo", "Niger", "Akwa Ibom",
+        "Ogun", "Sokoto", "Ondo",
+        "Osun", "Kogi", "Zamfara",
+        "Enugu", "Kebbi", "Edo",
+        "Plateau", "Adamawa",
+        "Cross River", "Abia",
+        "Ekiti", "Kwara", "Gombe",
+        "Yobe", "Taraba", "Ebonyi",
+        "Nasarawa", "Bayelsa",
+        "Abuja Federal Capital Territory"
+    ]
+}

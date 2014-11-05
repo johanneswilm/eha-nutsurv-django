@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NutSurv dashboard</title>
+  <link rel="icon" href="/static/favicon.ico">
+  <link href='http://fonts.googleapis.com/css?family=Nunito:300|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/leaflet.fullscreen.css' rel='stylesheet' />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+  <script src="/static/js/data-getter.js"></script>
+  <script src="/static/js/map.js"></script>
+  <script>
+  jQuery(function() {
+    jQuery( "#tabs" ).tabs({
+       beforeLoad: function( event, ui ) {
+          if ( ui.tab.data( "loaded" ) ) {
+            event.preventDefault();
+            return;
+          }
+
+          ui.jqXHR.success(function() {
+            ui.tab.data( "loaded", true );
+          });
+        }
+    });
+    jQuery('#last_update').button({icons: {
+        primary: "ui-icon-arrowrefresh-1-w"
+      }}).click(
+      function( event ) {
+        event.preventDefault();
+        dataGetter.getAll();
+      }
+    );
+  });
+  </script>
+</head>
+<body>
+
+<div id="tabs">
+  <ul>
+    <li><a href="/dashboard/home">NutSurv home</a></li>
+    <li><a href="/dashboard/survey_completed">Survey work completed</a></li>
+    <li><a href="/dashboard/mapping_checks">Mapping checks</a></li>
+    <li><a href="/dashboard/age_distribution">Age distribution</a></li>
+    <li><a href="/dashboard/missing_data">Missing data</a></li>
+    <li><a href="/dashboard/data_quality">Data quality</a></li>
+    <li><a href="/dashboard/time_of_data_collection">Time of data collection</a></li>
+    <li><a href="/dashboard/personell">Personell</a></li>
+    <li><a href="/dashboard/personell_current_location">Personell (current location)</a></li>
+    <li id="last_update_li"><button id="last_update"></button></li>
+  </ul>
+</div>
+
+
+</body>
+</html>
