@@ -5,6 +5,7 @@
                 8.6650104523
             ],
             "correct_area": true,
+            "cluster": 657,
             "end_time": "2014-10-18T20:43:23",
             "team": 1,
             "members": [{
@@ -63,6 +64,7 @@
                 8.1650104523
             ],
             "correct_area": true,
+            "cluster": 657,
             "end_time": "2014-10-18T20:57:23",
             "team": 1,
             "members": [{
@@ -115,6 +117,7 @@
                 8.7650104523
             ],
             "correct_area": false,
+            "cluster": 658,
             "end_time": "2014-10-18T20:56:23",
             "team": 1,
             "members": [{
@@ -161,6 +164,7 @@
                 8.8650104523
             ],
             "correct_area": false,
+            "cluster": 659,
             "end_time": "2014-10-18T21:33:23",
             "team": 2,
             "members": [{
@@ -210,6 +214,7 @@
                 8.7965202332
             ],
             "correct_area": true,
+            "cluster": 659,
             "end_time": "2014-10-18T18:23:23",
             "team": 3,
             "members": [{
@@ -270,6 +275,7 @@
                 8.8165202332
             ],
             "correct_area": false,
+            "cluster": 659,
             "end_time": "2014-10-18T18:28:14",
             "team": 3,
             "members": [{
@@ -319,6 +325,7 @@
                 8.5965202332
             ],
             "correct_area": true,
+            "cluster": 659,
             "end_time": "2014-10-18T19:02:56",
             "team": 3,
             "members": [{
