@@ -5,7 +5,9 @@ var ageDistribution = {
         states: '/static/sample_data/states.json'
     },
     initiate: function() {
-        jQuery('#age_distribution_teams,#age_distribution_states').selectmenu();
+        jQuery('#age_distribution_teams,#age_distribution_states').selectmenu({
+            change: ageDistribution.changeStateOrTeam
+        });
         ageDistribution.drawHouseholdAgeDistribution();
         dataGetter.addNew(ageDistribution.urls.teams, ageDistribution.fillTeamsList, false);
         dataGetter.addNew(ageDistribution.urls.states, ageDistribution.fillStatesList, false);
@@ -19,7 +21,14 @@ var ageDistribution = {
             }));
         });
     },
-    teamOptionTmp: _.template('<option data-id="<%- id %>"><%- names %></option>'),
+    teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
+    changeStateOrTeam: function () {
+        console.log('tes');
+        var data = dataGetter.downloads[ageDistribution.urls.survey].data,
+            team = jQuery('#age_distribution_teams').val(),
+            state = jQuery('#age_distribution_states').val();
+        ageDistribution.updateHouseholdAgeDistribution(data,team,state);
+    },
     fillStatesList: function(data) {
         _.each(data.states, function(state) {
             jQuery('#age_distribution_states').append(ageDistribution.stateOptionTmp({
@@ -27,17 +36,16 @@ var ageDistribution = {
             }));
         });
     },
-    stateOptionTmp: _.template('<option><%- state %></option>'),
+    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     householdAgeDistributionPlot: false,
     drawHouseholdAgeDistribution: function() {
-        jQuery('#age_distribution_household_members_chart').empty();
+    //    jQuery('#age_distribution_household_members_chart').empty();
         ageDistribution.householdAgeDistributionPlot = jQuery.plot('#age_distribution_household_members_chart', [], {
             series: {
                 color: "#2779AA",
                 bars: {
                     show: true,
                     fillColor: "#D7EBF9",
-
                 },
             },
             yaxis: {
@@ -45,18 +53,16 @@ var ageDistribution = {
             }
         });
     },
-
     updateHouseholdAgeDistribution: function(data, team, state) {
         var ages = {},
             ageList;
         _.each(data.survey_data, function(survey) {
             if (team && team > 0 && team != survey.team) {
-                return;
+                return true;
             }
-            if (state && state != 'ALl states' && team != survey.team) {
-                return;
+            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+                return true;
             }
-            if (state && )
             _.each(survey.members, function(member) {
                 if (ages.hasOwnProperty(member.age)) {
                     ages[member.age] ++;
