@@ -45,12 +45,18 @@ var dataGetter = {
 
     getAll: function() {// Function to iniate getting data from all registered urls.
         // Set all updatable sources to be outdated
-        _.each(_.keys(_.where(dataGetter.urls, {updatable: true})), function (url) {
-            dataGetter.downloads[url].current = false;
+        _.each(dataGetter.urls, function (source, url) {
+            if (source.updatable) {
+                dataGetter.downloads[url].current = false;
+            }
         });
         // Get data for all out of date urls
         // For data that isn't updatable, this will only be executed the first time.
-        _.each(_.keys(_.where(dataGetter.downloads, {current: false})), dataGetter.getData);
+        _.each(dataGetter.downloads, function(download, url) {
+            if (!download.current) {
+                dataGetter.getData(url);
+            }
+          });
     },
     checkAll: function (urls) { // Checks whether all items in a list of urls has current data attached.
         var i;

@@ -1,5 +1,5 @@
 {
-    states: ["Kano", "Lagos", "Kaduna",
+    "states": ["Kano", "Lagos", "Kaduna",
         "Katsina", "Oyo", "Rivers",
         "Bauchi", "Jigawa", "Benue",
         "Anambra", "Borno", "Delta",

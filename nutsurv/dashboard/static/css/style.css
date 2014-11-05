@@ -71,3 +71,15 @@ div.two_small_content_blocks {
   float: right;
   font-size: 0.7em;
 }
+
+select {
+  min-width: 200px;
+}
+
+div.selection_choices {
+  padding-top: 0.6em;
+}
+
+div.chart {
+    height: 400px;
+}
