@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
+    'tastypie',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -88,6 +89,6 @@ STATIC_URL = '/static/'
 
 try:
     exec open(os.path.join(PROJECT_PATH, 'configuration.py')) in globals()
-except:
+except:  # todo: change this exception to something more specific
     pass
 
