@@ -23,14 +23,13 @@ var ageDistribution = {
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
     changeStateOrTeam: function () {
-        console.log('tes');
         var data = dataGetter.downloads[ageDistribution.urls.survey].data,
             team = jQuery('#age_distribution_teams').val(),
             state = jQuery('#age_distribution_states').val();
         ageDistribution.updateHouseholdAgeDistribution(data,team,state);
     },
     fillStatesList: function(data) {
-        _.each(data.states, function(state) {
+        _.each(data.states.sort(), function(state) {
             jQuery('#age_distribution_states').append(ageDistribution.stateOptionTmp({
                 state: state
             }));
@@ -39,7 +38,6 @@ var ageDistribution = {
     stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     householdAgeDistributionPlot: false,
     drawHouseholdAgeDistribution: function() {
-    //    jQuery('#age_distribution_household_members_chart').empty();
         ageDistribution.householdAgeDistributionPlot = jQuery.plot('#age_distribution_household_members_chart', [], {
             series: {
                 color: "#2779AA",
@@ -49,6 +47,9 @@ var ageDistribution = {
                 },
             },
             yaxis: {
+                tickDecimals: 0
+            },
+            xaxis: {
                 tickDecimals: 0
             }
         });
