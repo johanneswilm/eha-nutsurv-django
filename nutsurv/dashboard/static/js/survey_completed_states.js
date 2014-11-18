@@ -38,7 +38,10 @@ var surveyCompletedStates = {
                     minChildren: -1,
                     maxChildren: 0,
                     minMembers: -1,
-                    maxMembers: 0
+                    maxMembers: 0,
+                    maxHouseholdsPerCluster: 0,
+                    minHouseholdsPerCluster: -1,
+                    meanHouseholdsPerCluster: 0,
                 };
             if (statesWithReserveClustersData.states.indexOf(state) === -1) {
                 // Reserve clusters not enabled
@@ -58,7 +61,7 @@ var surveyCompletedStates = {
             // Increase the number of households surveyed for this state by one.
             stateObject.households++;
 
-            if (!survey.cluster in stateObject.clusterCodes) {
+            if (!(survey.cluster in stateObject.clusterCodes)) {
                 stateObject.clusterCodes[survey.cluster] = 1;
                 stateObject.clusters++;
             } else {
@@ -118,6 +121,19 @@ var surveyCompletedStates = {
             if (stateObject.minWomen === -1) {
                 stateObject.minWomen = 0;
             }
+            _.each(stateObject.clusterCodes, function(households, clusterCode) {
+                if (households < stateObject.minHouseholdsPerCluster || stateObject.minHouseholdsPerCluster === -1) {
+                    stateObject.minHouseholdsPerCluster = households;
+                }
+                if (households > stateObject.maxHouseholdsPerCluster) {
+                    stateObject.maxHouseholdsPerCluster = households;
+                }
+            });
+            if (stateObject.minHouseholdsPerCluster === -1) {
+                stateObject.minHouseholdsPerCluster = 0;
+            } else {
+                stateObject.meanHouseholdsPerCluster = Math.round(stateObject.households / stateObject.clusters * 10) /10;
+            }
         });
 
 
@@ -153,6 +169,9 @@ var surveyCompletedStates = {
                 { name: 'clusters_total', data: 'clusters' },
                 { name: 'clusters_complete', data: 'clustersComplete' },
                 { name: 'clusters_reserve', data: 'reserve' },
+                { name: 'households_per_cluster_min', data: 'minHouseholdsPerCluster' },
+                { name: 'households_per_cluster_max', data: 'maxHouseholdsPerCluster' },
+                { name: 'households_per_cluster_mean', data: 'meanHouseholdsPerCluster' },
                 { name: 'members_min', data: 'minMembers' },
                 { name: 'members_max', data: 'maxMembers' },
                 { name: 'members_mean', data: 'meanMembers' },

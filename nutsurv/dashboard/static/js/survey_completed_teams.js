@@ -21,7 +21,7 @@ var surveyCompletedTeams = {
             teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data,
             perTeamData = [];
 
-        _.each(clustersPerTeamData.teams, function(clusters, team) {
+        _.each(clustersPerTeamData.teams, function(clustersAssigned, team) {
             var teamObject = {
                     team: parseInt(team),
                     teamNames: teamData.teams[team],
@@ -30,27 +30,28 @@ var surveyCompletedTeams = {
                     children: 0,
                     members: 0,
                     clusterCodes: {},
-                    clusters: clusters,
+                    clustersAssigned: clustersAssigned,
+                    clusters: 0,
                     clustersComplete: 0,
                     minWomen: -1,
                     maxWomen: 0,
                     minChildren: -1,
                     maxChildren: 0,
                     minMembers: -1,
-                    maxMembers: 0
+                    maxMembers: 0,
+                    maxHouseholdsPerCluster: 0,
+                    minHouseholdsPerCluster: -1,
+                    meanHouseholdsPerCluster: 0,
                 };
 
             perTeamData.push(teamObject);
         });
-        console.log('ping')
         _.each(surveyData.survey_data, function(survey) {
-            //var state = clusterInfo.findState(survey.cluster),
-            console.log([survey.team,perTeamData]);
             var teamObject = _.findWhere(perTeamData, {team: survey.team});
             // Increase the number of households surveyed for this state by one.
             teamObject.households++;
 
-            if (!survey.cluster in teamObject.clusterCodes) {
+            if (!(survey.cluster in teamObject.clusterCodes)) {
                 teamObject.clusterCodes[survey.cluster] = 1;
                 teamObject.clusters++;
             } else {
@@ -110,6 +111,19 @@ var surveyCompletedTeams = {
             if (teamObject.minWomen === -1) {
                 teamObject.minWomen = 0;
             }
+            _.each(teamObject.clusterCodes, function(households, clusterCode) {
+                if (households < teamObject.minHouseholdsPerCluster || teamObject.minHouseholdsPerCluster === -1) {
+                    teamObject.minHouseholdsPerCluster = households;
+                }
+                if (households > teamObject.maxHouseholdsPerCluster) {
+                    teamObject.maxHouseholdsPerCluster = households;
+                }
+            });
+            if (teamObject.minHouseholdsPerCluster === -1) {
+                teamObject.minHouseholdsPerCluster = 0;
+            } else {
+                teamObject.meanHouseholdsPerCluster = Math.round(teamObject.households / teamObject.clusters * 10) /10;
+            }
         });
 
 
@@ -142,8 +156,12 @@ var surveyCompletedTeams = {
                 { "searchable": false, data: function(){return '';}, orderable: false },
                 { name: 'team', data: 'teamNames' },
                 { name: 'households', data: 'households' },
-                { name: 'clusters_total', data: 'clusters' },
+                { name: 'clusters_assigned', data: 'clustersAssigned' },
+                { name: 'clusters_workedon', data: 'clusters' },
                 { name: 'clusters_complete', data: 'clustersComplete' },
+                { name: 'households_per_cluster_min', data: 'minHouseholdsPerCluster' },
+                { name: 'households_per_cluster_max', data: 'maxHouseholdsPerCluster' },
+                { name: 'households_per_cluster_mean', data: 'meanHouseholdsPerCluster' },
                 { name: 'members_min', data: 'minMembers' },
                 { name: 'members_max', data: 'maxMembers' },
                 { name: 'members_mean', data: 'meanMembers' },
