@@ -8,24 +8,23 @@ def user_login(request):
     response['state'] = ""
     username = password = ''
     response.update(csrf(request))
+    if request.GET:
+        response['next'] = request.GET.get('next')
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
-        next_page = request.POST.get('next_page')
-        print (next_page)
+        response['next'] = request.POST.get('next')
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                if next_page:
-                    return HttpResponseRedirect(next_page)
+                if response['next']:
+                    return HttpResponseRedirect(response['next'])
                 response['state'] = "You're successfully logged in!"
             else:
                 response['state'] = "Your account is not active, please contact the site admin."
         else:
             response['state'] = "Your username and/or password were incorrect."
-    if request.GET:
-        response['next'] = request.GET.get('next')
     response['username'] = username
     return render_to_response('accounts/login.html',response)
 

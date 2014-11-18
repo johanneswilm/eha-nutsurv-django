@@ -28,7 +28,7 @@
     	<form action="/accounts/login/" id="login_form" method="post">
             {% csrf_token %}
     		{% if next %}
-    		      <input type="hidden" name="next_page" value="{{ next }}" />
+    		      <input type="hidden" name="next" value="{{ next }}" />
     		{% endif %}
     		<label for="username">Username</label>
     		<input type="text" name="username" id="username" value="{{ username}}" /><br />
