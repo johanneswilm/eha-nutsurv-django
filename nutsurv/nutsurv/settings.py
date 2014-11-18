@@ -26,6 +26,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#LOGIN_URL = '/admin'
 
 # Application definition
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'dashboard',
     'tastypie',
+    'accounts'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -91,4 +93,3 @@ try:
     exec open(os.path.join(PROJECT_PATH, 'configuration.py')) in globals()
 except:  # todo: change this exception to something more specific
     pass
-

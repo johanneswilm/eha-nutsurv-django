@@ -49,7 +49,6 @@ var home = {
         home.map.fitBounds(group.getBounds());
     },
     drawLatestContacts: function (data) {
-        var latestTeamContacts = [];
         if (!dataGetter.checkAll([home.urls.survey,home.urls.teams])) {
             /* Check that all the relative data has been downloaded, else cancel.
             This function will be called for each piece of arriving data, so it
@@ -58,12 +57,13 @@ var home = {
             the arrival of several pieces of data. */
             return false;
         }
-        surveyData = dataGetter.downloads[home.urls.survey].data;
-        teamData = dataGetter.downloads[home.urls.teams].data;
+        var latestTeamContacts = [],
+            surveyData = dataGetter.downloads[home.urls.survey].data,
+            teamData = dataGetter.downloads[home.urls.teams].data;
 
         jQuery('#home_last_contact_list').empty();
         _.each(surveyData.survey_data, function (survey) {
-            latestContact = _.find(latestTeamContacts, {team: survey.team});
+            var latestContact = _.find(latestTeamContacts, {team: survey.team});
             if (!latestContact) {
                 latestTeamContacts.push({
                     team: survey.team,

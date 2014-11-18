@@ -33,9 +33,16 @@ div.content_block {
   padding: 0 !important;
 }
 
+div.full_content_block {
+    width: calc(100% - 34px);
+}
+
+div.full_content_block, div.big_content_block, div.extra_big_content_block {
+  min-height: 600px;
+}
+
 div.big_content_block, div.extra_big_content_block {
   width: 700px;
-  min-height: 600px;
 }
 
 @media screen and (min-width: 1100px){
@@ -81,5 +88,31 @@ div.selection_choices {
 }
 
 div.chart {
-    height: 400px;
+    height: 500px;
+}
+
+table.dataTable thead th {
+    padding-left: 2px !important;
+}
+
+table.dataTable tr td {
+    padding-left: 20px !important;
+}
+
+table.dataTable[style] {
+   width: 100% !important; /* Overrides weirdness of datatables responsive plugin. */
+}
+
+.border_left {
+    border-left: 1px solid black;
+}
+
+.border_right {
+    border-right: 1px solid black;
+}
+
+.bottom_link {
+    float: right;
+    font-size: 9px;
+    color: lightblue;
 }

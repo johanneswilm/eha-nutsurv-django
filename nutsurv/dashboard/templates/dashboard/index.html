@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css" />
   <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href=//cdn.datatables.net/responsive/1.0.2/css/dataTables.responsive.css />
   <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/leaflet.fullscreen.css' rel='stylesheet' />
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
   <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
@@ -15,32 +17,11 @@
   <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
-  <script src="/static/js/data-getter.js"></script>
+  <script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+  <script src="//cdn.datatables.net/responsive/1.0.2/js/dataTables.responsive.js"></script>
+  <script src="/static/js/data_getter.js"></script>
   <script src="/static/js/map.js"></script>
-  <script>
-  jQuery(function() {
-    jQuery( "#tabs" ).tabs({
-       beforeLoad: function( event, ui ) {
-          if ( ui.tab.data( "loaded" ) ) {
-            event.preventDefault();
-            return;
-          }
-
-          ui.jqXHR.success(function() {
-            ui.tab.data( "loaded", true );
-          });
-        }
-    });
-    jQuery('#last_update').button({icons: {
-        primary: "ui-icon-arrowrefresh-1-w"
-      }}).click(
-      function( event ) {
-        event.preventDefault();
-        dataGetter.getAll();
-      }
-    );
-  });
-  </script>
+  <script src="/static/js/index.js"></script>
 </head>
 <body>
 
@@ -59,6 +40,6 @@
   </ul>
 </div>
 
-
+<a href="/accounts/logout" class="bottom_link">Logout</a>
 </body>
 </html>
