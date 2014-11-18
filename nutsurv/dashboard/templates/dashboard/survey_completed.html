@@ -1,14 +1,8 @@
 <link rel="stylesheet" href="/static/css/survey_completed.css">
-<div class="selection_choices">
-  <select id="survey_completed_teams" name="survey_completed_teams">
-    <option value="-1" selected="selected">All teams</option>
-  </select>
-  <select id="survey_completed_states" name="survey_completed_states">
-    <option value="All states" selected="selected">All states</option>
-  </select>
-</div>
-<div id="survey_completed_main" class="content_block extra_big_content_block">
-    <h1>Survey work completed</h1>
-    <div id="survey_work_completed_table" class="table"></div>
+<div id="survey_completed_tabs">
+  <ul>
+    <li><a href="/dashboard/survey_completed_states">States</a></li>
+    <li><a href="/dashboard/survey_completed_teams">Teams</a></li>
+  </ul>
 </div>
 <script src="/static/js/survey_completed.js"></script>
