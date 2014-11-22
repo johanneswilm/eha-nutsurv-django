@@ -116,3 +116,14 @@ table.dataTable[style] {
     font-size: 9px;
     color: lightblue;
 }
+
+.description_list .description {
+    float: right;
+}
+
+ul.description_list {
+    list-style-type: none;
+    -webkit-columns: 2;
+    mozilla-columns: 2;
+    columns: 2;
+}

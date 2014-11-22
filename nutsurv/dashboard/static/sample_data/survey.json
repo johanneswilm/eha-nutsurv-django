@@ -22,7 +22,7 @@
                 "age": 10
             }, {
                 "gender": "M",
-                "age": 5
+                "age": 4
             }, {
                 "gender": "F",
                 "age": 30
@@ -84,7 +84,7 @@
                 "age": 17
             }, {
                 "gender": "M",
-                "age": 5
+                "age": 4
             }, {
                 "gender": "F",
                 "age": 32
@@ -271,14 +271,6 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "Yes",
-                "muac": 35.2,
-                "height": 157.9,
-                "weight": 61.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
-            }, {
                 "breastfeeding": "No",
                 "muac": 29.8,
                 "height": 170.9,
@@ -344,7 +336,6 @@
                 "ante-natal_care": "No",
                 "ever_pregnant": "No"
             }, {
-                "breastfeeding": "Yes",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
@@ -352,7 +343,6 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "Yes",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
@@ -383,27 +373,16 @@
                 "breastfeeding": "No",
                 "muac": 29.8,
                 "height": 170.9,
-                "weight": 75.0,
                 "pregnant": "Yes",
                 "ante-natal_care": "No",
                 "ever_pregnant": "Yes"
             }],
             "child_surveys" : [{
                 "muac": 35.2,
-                "weight": 45.0,
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
                 "birthdate": "2012-06-08",
                 "height": 35.2,
-                "diarrhoea": "No"
-            },
-            {
-                "muac": 37.2,
-                "weight": 46,
-                "height_type": "Child Standing (Height)",
-                "edema":  "No",
-                "birthdate": "2012-06-08",
-                "height": 37.2,
                 "diarrhoea": "No"
             }]
         }

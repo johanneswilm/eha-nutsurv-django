@@ -16,15 +16,15 @@ var surveyCompletedTeams = {
             return false;
         }
 
-        var surveyData = dataGetter.downloads[home.urls.survey].data,
-            clustersPerTeamData = dataGetter.downloads[surveyCompletedTeams.urls.clustersPerTeam].data,
-            teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data,
+        var surveyData = dataGetter.downloads[home.urls.survey].data.survey_data,
+            clustersPerTeamData = dataGetter.downloads[surveyCompletedTeams.urls.clustersPerTeam].data.teams,
+            teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data.teams,
             perTeamData = [];
 
-        _.each(clustersPerTeamData.teams, function(clustersAssigned, team) {
+        _.each(clustersPerTeamData, function(clustersAssigned, team) {
             var teamObject = {
                     team: parseInt(team),
-                    teamNames: teamData.teams[team],
+                    teamNames: teamData[team],
                     households: 0,
                     women: 0,
                     children: 0,
@@ -46,9 +46,9 @@ var surveyCompletedTeams = {
 
             perTeamData.push(teamObject);
         });
-        _.each(surveyData.survey_data, function(survey) {
+        _.each(surveyData, function(survey) {
             var teamObject = _.findWhere(perTeamData, {team: survey.team});
-            // Increase the number of households surveyed for this state by one.
+            // Increase the number of households surveyed for this team by one.
             teamObject.households++;
 
             if (!(survey.cluster in teamObject.clusterCodes)) {

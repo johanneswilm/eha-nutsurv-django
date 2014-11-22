@@ -58,11 +58,11 @@ var home = {
             return false;
         }
         var latestTeamContacts = [],
-            surveyData = dataGetter.downloads[home.urls.survey].data,
-            teamData = dataGetter.downloads[home.urls.teams].data;
+            surveyData = dataGetter.downloads[home.urls.survey].data.survey_data,
+            teamData = dataGetter.downloads[home.urls.teams].data.teams;
 
         jQuery('#home_last_contact_list').empty();
-        _.each(surveyData.survey_data, function (survey) {
+        _.each(surveyData, function (survey) {
             var latestContact = _.find(latestTeamContacts, {team: survey.team});
             if (!latestContact) {
                 latestTeamContacts.push({
@@ -75,7 +75,7 @@ var home = {
         });
         latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
         _.each(latestTeamContacts, function(contact){
-            jQuery('#home_last_contact_list').append(home.contactTmp({teamNo: contact.team, teamName: teamData.teams[contact.team], time: contact.time}));
+            jQuery('#home_last_contact_list').append(home.contactTmp({teamNo: contact.team, teamName: teamData[contact.team], time: contact.time}));
         });
 
     },

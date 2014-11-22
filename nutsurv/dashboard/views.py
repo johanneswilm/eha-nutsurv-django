@@ -36,3 +36,8 @@ def survey_completed_teams(request):
 def survey_completed_states(request):
     response = {}
     return render(request,'dashboard/survey_completed_states.html',response)
+
+@login_required
+def missing_data(request):
+    response = {}
+    return render(request,'dashboard/missing_data.html',response)    
