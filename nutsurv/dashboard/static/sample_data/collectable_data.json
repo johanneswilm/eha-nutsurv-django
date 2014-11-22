@@ -1,0 +1,22 @@
+{
+    "collectable_data": {
+        "women": [
+            "breastfeeding",
+            "muac",
+            "height",
+            "weight",
+            "pregnant",
+            "ante-natal_care",
+            "ever_pregnant"
+        ],
+        "children": [
+            "muac",
+            "weight",
+            "height_type",
+            "edema",
+            "birthdate",
+            "height",
+            "diarrhoea"
+        ]
+    }
+}
