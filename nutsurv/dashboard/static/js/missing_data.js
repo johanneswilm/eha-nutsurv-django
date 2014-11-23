@@ -67,7 +67,7 @@ var missingData = {
             }
 
             _.each(survey.members, function(member) {
-                if (member.gender == 'F' && member.age > 15 && member.age < 45) {
+                if (member.gender == 'F' && member.age > 14 && member.age < 50) {
                     womenTotal++;
                 }
             });
