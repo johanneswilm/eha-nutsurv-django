@@ -17,13 +17,13 @@ var surveyCompletedStates = {
             See home.js. */
             return false;
         }
-        var surveyData = dataGetter.downloads[surveyCompletedStates.urls.survey].data,
-            clustersPerStateData = dataGetter.downloads[surveyCompletedStates.urls.clustersPerState].data,
+        var surveyData = dataGetter.downloads[surveyCompletedStates.urls.survey].data.survey_data,
+            clustersPerStateData = dataGetter.downloads[surveyCompletedStates.urls.clustersPerState].data.states,
             clusterData = dataGetter.downloads[surveyCompletedStates.urls.clusterData].data,
             statesWithReserveClustersData = dataGetter.downloads[surveyCompletedStates.urls.statesWithReserveClusters].data,
             perStateData = [];
 
-        _.each(clustersPerStateData.states, function(clusters, state) {
+        _.each(clustersPerStateData, function(clusters, state) {
             var stateObject = {
                     state: state,
                     households: 0,
@@ -55,7 +55,7 @@ var surveyCompletedStates = {
             perStateData.push(stateObject);
         });
 
-        _.each(surveyData.survey_data, function(survey) {
+        _.each(surveyData, function(survey) {
             var state = clusterInfo.findState(survey.cluster),
             stateObject = _.findWhere(perStateData, {state: state});
             // Increase the number of households surveyed for this state by one.
