@@ -19,8 +19,8 @@ var surveyCompletedStates = {
         }
         var surveyData = dataGetter.downloads[surveyCompletedStates.urls.survey].data.survey_data,
             clustersPerStateData = dataGetter.downloads[surveyCompletedStates.urls.clustersPerState].data.states,
-            clusterData = dataGetter.downloads[surveyCompletedStates.urls.clusterData].data,
-            statesWithReserveClustersData = dataGetter.downloads[surveyCompletedStates.urls.statesWithReserveClusters].data,
+            clusterData = dataGetter.downloads[surveyCompletedStates.urls.clusterData].data.clusters, // Cluster data not actually used directly in this function, but we need t make sure it is there for clusterInfo
+            statesWithReserveClustersData = dataGetter.downloads[surveyCompletedStates.urls.statesWithReserveClusters].data.states,
             perStateData = [];
 
         _.each(clustersPerStateData, function(clusters, state) {
@@ -43,7 +43,7 @@ var surveyCompletedStates = {
                     minHouseholdsPerCluster: -1,
                     meanHouseholdsPerCluster: 0,
                 };
-            if (statesWithReserveClustersData.states.indexOf(state) === -1) {
+            if (statesWithReserveClustersData.indexOf(state) === -1) {
                 // Reserve clusters not enabled
                 stateObject.reserve = false;
                 stateObject.totalClusters = clusters.standard;

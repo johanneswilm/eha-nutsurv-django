@@ -40,4 +40,9 @@ def survey_completed_states(request):
 @login_required
 def missing_data(request):
     response = {}
-    return render(request,'dashboard/missing_data.html',response)    
+    return render(request,'dashboard/missing_data.html',response)
+
+@login_required
+def data_quality(request):
+    response = {}
+    return render(request,'dashboard/data_quality.html',response)    
