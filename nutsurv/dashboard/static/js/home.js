@@ -1,8 +1,8 @@
 var home = {
     urls : {
-        survey: '/static/sample_data/survey.json',
-        alerts: '/static/sample_data/alerts.json',
-        teams: '/static/sample_data/teams.json'
+        survey: '/dashboard/aggregatesurveydatajsonview/',
+        alerts: '/dashboard/alertsjsonview/',
+        teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
         home.drawMap();

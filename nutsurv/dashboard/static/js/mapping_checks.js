@@ -1,6 +1,6 @@
 var mappingChecks = {
     urls : {
-        survey: '/static/sample_data/survey.json',
+        survey: '/dashboard/aggregatesurveydatajsonview/'
     },
     initiate: function () {
         mappingChecks.drawMap();
