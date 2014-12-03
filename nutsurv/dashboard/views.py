@@ -336,7 +336,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 15.2,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -500,7 +500,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 39.2,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -513,7 +513,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                           'WHZ': 0.4
                                       }
                                   }, {
-                                      'muac': 35.2,
+                                      'muac': 15.2,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -608,7 +608,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 28.4,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
                                       'birthdate': '2012-06-08',
