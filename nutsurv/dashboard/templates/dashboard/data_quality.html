@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="/static/css/data_quality.css">
+<div class="selection_choices">
+  <select id="data_quality_teams" name="data_quality_teams">
+    <option value="-1" selected="selected">All teams</option>
+  </select>
+  <select id="data_quality_states" name="data_quality_states">
+    <option value="All states" selected="selected">All states</option>
+  </select>
+</div>
+<div id="data_quality_chart" class="content_block big_content_block">
+    <div id="data_quality_chart_tabs">
+        <ul>
+            <li><a href="#data_quality_chart_tabs_WHZ">Weight-for-Height</a></li>
+            <li><a href="#data_quality_chart_tabs_HAZ">Height-for-Age</a></li>
+            <li><a href="#data_quality_chart_tabs_WAZ">Weight-for-Age</a></li>
+            <li><a href="#data_quality_chart_tabs_MUAC">Mid-Upper Arm Cir.</a></li>
+        </ul>
+        <div id="data_quality_chart_tabs_WHZ">
+            <div id="data_quality_whz_chart" class="chart"></div>
+        </div>
+        <div id="data_quality_chart_tabs_HAZ">
+            <div id="data_quality_haz_chart" class="chart"></div>
+        </div>
+        <div id="data_quality_chart_tabs_WAZ">
+            <div id="data_quality_waz_chart" class="chart"></div>
+        </div>
+        <div id="data_quality_chart_tabs_MUAC">
+            <div id="data_quality_muac_chart" class="chart"></div>
+        </div>
+    </div>
+</div>
+<div id="data_quality_info" class="content_block big_content_block">
+    <table id="data_quality_info_table"></div>
+</div>
+<script src="/static/js/cluster_info.js"></script>
+<script src="/static/js/lib/probability.js"></script>
+<script src="/static/js/lib/kde.js"></script>
+<script src="/static/js/data_quality.js"></script>
