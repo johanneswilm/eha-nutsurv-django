@@ -28,4 +28,7 @@ urlpatterns = patterns('',
                         url(r'^missing_data$',
                             'dashboard.views.missing_data',
                             name='missing_data'),
+                        url(r'^data_quality$',
+                            'dashboard.views.data_quality',
+                            name='data_quality'),
                        )

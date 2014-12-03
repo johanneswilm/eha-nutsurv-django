@@ -38,6 +38,7 @@
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
+                "age": 30,
                 "pregnant": "No",
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
@@ -46,6 +47,7 @@
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
+                "age": 18,
                 "pregnant": "Yes",
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
@@ -54,6 +56,7 @@
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
+                "age": 23,
                 "pregnant": "Yes",
                 "ante-natal_care": "No",
                 "ever_pregnant": "Yes"
@@ -65,7 +68,12 @@
                 "edema":  "No",
                 "birthdate": "2009-10-18",
                 "height": 35.2,
-                "diarrhoea": "No"
+                "diarrhoea": "No",
+                "zscores": {
+                    "WAZ": 3.4,
+                    "HAZ": -1.6,
+                    "WHZ": 0.4
+                }
             }]
         },
         "2": {
@@ -100,6 +108,7 @@
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
+                "age": 32,
                 "pregnant": "No",
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "No"
@@ -108,6 +117,7 @@
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
+                "age": 19,
                 "pregnant": "Yes",
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
@@ -116,6 +126,7 @@
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
+                "age": 17,
                 "pregnant": "Yes",
                 "ante-natal_care": "No",
                 "ever_pregnant": "Yes"
@@ -127,7 +138,12 @@
                 "edema":  "No",
                 "birthdate": "2009-04-18",
                 "height": 35.2,
-                "diarrhoea": "No"
+                "diarrhoea": "No",
+                "zscores": {
+                    "WAZ": 3.4,
+                    "HAZ": -1.6,
+                    "WHZ": 0.4
+                }
             }]
         },
         "3": {
@@ -286,7 +302,12 @@
                 "edema":  "No",
                 "birthdate": "2012-09-19",
                 "height": 35.2,
-                "diarrhoea": "No"
+                "diarrhoea": "No",
+                "zscores": {
+                    "WAZ": 3.4,
+                    "HAZ": -1.6,
+                    "WHZ": 0.4
+                }
             }, {
                 "muac": 35.2,
                 "weight": 45.0,
@@ -294,7 +315,12 @@
                 "edema":  "No",
                 "birthdate": "2014-11-02",
                 "height": 35.2,
-                "diarrhoea": "No"
+                "diarrhoea": "No",
+                "zscores": {
+                    "WAZ": 3.4,
+                    "HAZ": -1.6,
+                    "WHZ": 0.4
+                }
             }]
         },
         "6": {
@@ -383,7 +409,12 @@
                 "edema":  "No",
                 "birthdate": "2012-06-08",
                 "height": 35.2,
-                "diarrhoea": "No"
+                "diarrhoea": "No",
+                "zscores": {
+                    "WAZ": 3.4,
+                    "HAZ": -1.6,
+                    "WHZ": 0.4
+                }
             }]
         }
     }
