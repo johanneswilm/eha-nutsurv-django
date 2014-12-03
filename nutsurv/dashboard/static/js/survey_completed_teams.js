@@ -1,8 +1,8 @@
 var surveyCompletedTeams = {
     urls : {
-        survey: '/static/sample_data/survey.json',
-        clustersPerTeam: '/static/sample_data/clusters_per_team.json',
-        teams: '/static/sample_data/teams.json',
+        survey: '/dashboard/aggregatesurveydatajsonview/',
+        clustersPerTeam: '/dashboard/clustersperteamjsonview/',
+        teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
         dataGetter.addNew(surveyCompletedTeams.urls.teams, surveyCompletedTeams.setupTablePerTeam, false);

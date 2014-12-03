@@ -1,7 +1,7 @@
 var ageDistribution = {
     urls: {
-        survey: '/static/sample_data/survey.json',
-        teams: '/static/sample_data/teams.json',
+        survey: '/dashboard/aggregatesurveydatajsonview/',
+        teams: '/dashboard/teamsjsonview/',
         states: '/static/sample_data/states.json'
     },
     initiate: function() {

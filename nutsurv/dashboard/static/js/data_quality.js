@@ -1,7 +1,7 @@
 var dataQuality = {
     urls: {
-        survey: '/static/sample_data/survey.json',
-        teams: '/static/sample_data/teams.json',
+        survey: '/dashboard/aggregatesurveydatajsonview/',
+        teams: '/dashboard/teamsjsonview/',
         states: '/static/sample_data/states.json'
     },
     initiate: function() {
@@ -123,7 +123,7 @@ var dataQuality = {
         dataQuality.MUACDataQualityPlot.setData([MUACkde]);
         dataQuality.MUACDataQualityPlot.setupGrid();
         dataQuality.MUACDataQualityPlot.draw();*/
-    },
+    }
 };
 
 dataQuality.initiate();
