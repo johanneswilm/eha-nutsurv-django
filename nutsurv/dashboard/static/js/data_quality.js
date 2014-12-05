@@ -8,8 +8,13 @@ var dataQuality = {
         jQuery('#data_quality_teams,#data_quality_states').selectmenu({
             change: dataQuality.changeStateOrTeam
         });
-        jQuery('#data_quality_chart_tabs').tabs();
         dataQuality.drawCharts();
+        // Set timeout so that charts can be drawn before tabs are created as else labels of Y-axis are overwritten.
+        setTimeout(
+            function() {
+            jQuery('#data_quality_chart_tabs').tabs();},
+            0
+        );
         dataGetter.addNew(dataQuality.urls.teams, dataQuality.fillTeamsList, false);
         dataGetter.addNew(dataQuality.urls.states, dataQuality.fillStatesList, false);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateCharts, true);
@@ -52,7 +57,6 @@ var dataQuality = {
         }, muacOptions = {
             yaxis: {
                 tickDecimals: 0,
-                min: 0
             },
             xaxis: {
                 tickDecimals: 0,
@@ -75,7 +79,7 @@ var dataQuality = {
             HAZkde = {color:'#D94545'},
             WAZkde = {color:'#D94545'},
             MUACkde = {color:'#D94545'},
-            muacGraphRange, muacMin, muacMax,
+            muacGraphRange, muacMin, muacMax, muacAxes,
             i;
 
         for (i = -6; i < 6.1; i += 0.1) {
@@ -112,29 +116,22 @@ var dataQuality = {
 
         if (WHZs.length > 0) {
             WHZs.sort();
-            WHZkde.data = kde(WHZs).scale(1).points(graphRange);
+            WHZkde.data = kde(WHZs).points(graphRange);
         } else {
             WHZkde.data = [];
         }
         if (WHZs.length > 0) {
             WAZs.sort();
-            WAZkde.data = kde(WAZs).scale(1).points(graphRange);
+            WAZkde.data = kde(WAZs).points(graphRange);
         } else {
             WAZkde.data = [];
         }
         if (HAZs.length > 0) {
             HAZs.sort();
-            HAZkde.data = kde(HAZs).scale(1).points(graphRange);
+            HAZkde.data = kde(HAZs).points(graphRange);
         } else {
             HAZkde.data = [];
         }
-
-        MUACs.sort();
-        muacMin = MUACs[0];
-        muacMax = MUACs[MUACs.length-1];
-        /* Muacs should be shown between the lowest and the highest available value*/
-        muacGraphRange = Array.apply(null, {length: (muacMax-muacMin)*10}).map(Function.call, function(Number){return (Number+muacMin)/10;}), /* muacMin to muacMax n .1 increments */
-        MUACkde.data = kde(MUACs).scale(1).points(muacGraphRange);
 
         dataQuality.WHZDataQualityPlot.setData([normalizedCurve,WHZkde]);
         dataQuality.WHZDataQualityPlot.setupGrid();
@@ -148,6 +145,17 @@ var dataQuality = {
         dataQuality.WAZDataQualityPlot.setupGrid();
         dataQuality.WAZDataQualityPlot.draw();
 
+        MUACs.sort();
+        muacMin = MUACs[0];
+        muacMax = MUACs[MUACs.length-1];
+
+        /* Muacs should be shown between the lowest and the highest available value*/
+        muacGraphRange = Array.apply(null, {length: (muacMax-muacMin)*10}).map(Function.call, function(Number){return (Number/10+muacMin);}), /* muacMin to muacMax n .1 increments */
+        MUACkde.data = kde(MUACs).points(muacGraphRange);
+    
+        muacAxes = dataQuality.MUACDataQualityPlot.getAxes();
+        muacAxes.xaxis.options.min = muacMin;
+        muacAxes.xaxis.options.max = muacMax;
         dataQuality.MUACDataQualityPlot.setData([MUACkde]);
         dataQuality.MUACDataQualityPlot.setupGrid();
         dataQuality.MUACDataQualityPlot.draw();
