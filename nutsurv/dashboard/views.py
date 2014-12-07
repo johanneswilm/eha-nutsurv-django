@@ -190,9 +190,9 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                         'height': 35.2,
                         'diarrhoea': 'No',
                         'zscores': {
-                            'WAZ': 3.4,
-                            'HAZ': -1.6,
-                            'WHZ': 0.4
+                            'WAZ': 3.1,
+                            'HAZ': -1.7,
+                            'WHZ': -1.3
                         }
                     },
                     ...
@@ -266,7 +266,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 25.1,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -274,9 +274,9 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'height': 35.2,
                                       'diarrhoea': 'No',
                                       'zscores': {
-                                          'WAZ': 3.4,
-                                          'HAZ': -1.6,
-                                          'WHZ': 0.4
+                                          'WAZ': 4.4,
+                                          'HAZ': 0.9,
+                                          'WHZ': 0.8
                                       }
                                   }]
             },
@@ -336,7 +336,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 18.9,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -344,8 +344,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'height': 35.2,
                                       'diarrhoea': 'No',
                                       'zscores': {
-                                          'WAZ': 3.4,
-                                          'HAZ': -1.6,
+                                          'WAZ': 0.4,
+                                          'HAZ': 1.1,
                                           'WHZ': 0.4
                                       }
                                   }]
@@ -373,7 +373,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                             }],
                 'women_surveys': [{
                                       'breastfeeding': 'No',
-                                      'muac': 15.2,
+                                      'muac': 47.7,
                                       'height': 155.9,
                                       'weight': 55.0,
                                       'pregnant': 'No',
@@ -500,7 +500,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 39.2,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -508,12 +508,12 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'height': 35.2,
                                       'diarrhoea': 'No',
                                       'zscores': {
-                                          'WAZ': 3.4,
-                                          'HAZ': -1.6,
-                                          'WHZ': 0.4
+                                          'WAZ': 0.1,
+                                          'HAZ': 0.2,
+                                          'WHZ': 0.1
                                       }
                                   }, {
-                                      'muac': 35.2,
+                                      'muac': 28.9,
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -521,9 +521,9 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'height': 35.2,
                                       'diarrhoea': 'No',
                                       'zscores': {
-                                          'WAZ': 3.4,
-                                          'HAZ': -1.6,
-                                          'WHZ': 0.4
+                                          'WAZ': -0.4,
+                                          'HAZ': -2.3,
+                                          'WHZ': 1.5
                                       }
                                   }]
             },
@@ -608,16 +608,16 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 35.2,
+                                      'muac': 28.4,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
                                       'birthdate': '2012-06-08',
                                       'height': 35.2,
                                       'diarrhoea': 'No',
                                       'zscores': {
-                                          'WAZ': 3.4,
-                                          'HAZ': -1.6,
-                                          'WHZ': 0.4
+                                          'WAZ': 1.1,
+                                          'HAZ': -1.7,
+                                          'WHZ': 1.3
                                       }
                                   }]
             }
