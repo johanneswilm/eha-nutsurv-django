@@ -62,8 +62,8 @@
                 "ever_pregnant": "Yes"
             }],
             "child_surveys" : [{
-                "muac": 35.2,
                 "weight": 45.0,
+                "gender": "M",
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
                 "birthdate": "2009-10-18",
@@ -133,6 +133,7 @@
             }] ,
             "child_surveys" : [{
                 "muac": 35.2,
+                "gender": "M",
                 "weight": 45.0,
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
@@ -297,6 +298,7 @@
             }],
             "child_surveys" : [{
                 "muac": 35.2,
+                "gender": "F",
                 "weight": 45.0,
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
@@ -405,6 +407,7 @@
             }],
             "child_surveys" : [{
                 "muac": 35.2,
+                "gender": "M",
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
                 "birthdate": "2012-06-08",

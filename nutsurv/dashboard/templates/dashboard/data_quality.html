@@ -8,6 +8,7 @@
   </select>
 </div>
 <div id="data_quality_chart" class="content_block big_content_block">
+    <h1>Data quality: Child anthropometry</h1>
     <div id="data_quality_chart_tabs">
         <ul>
             <li><a href="#data_quality_chart_tabs_WHZ">Weight-for-Height</a></li>
@@ -30,7 +31,54 @@
     </div>
 </div>
 <div id="data_quality_info" class="content_block big_content_block">
-    <table id="data_quality_info_table"></div>
+    <h1>Data quality: Child anthropometry</h1>
+    <table id="data_quality_table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Missing</th>
+                <th>Flagged</th>
+                <th>Total</th>
+                <th>N</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Weight-for-Height</td>
+                <td><span id="whz_missing"></span>%</td>
+                <td><span id="whz_flagged"></span>%</td>
+                <td><span id="whz_total"></span>%</td>
+                <td><span id="whz_n"></span></td>
+            </tr>
+            <tr>
+                <td>Height-for-Age</td>
+                <td><span id="haz_missing"></span>%</td>
+                <td><span id="haz_flagged"></span>%</td>
+                <td><span id="haz_total"></span>%</td>
+                <td><span id="haz_n"></span></td>
+            </tr>
+            <tr>
+                <td>Weight-for-Age</td>
+                <td><span id="waz_missing"></span>%</td>
+                <td><span id="waz_flagged"></span>%</td>
+                <td><span id="waz_total"></span>%</td>
+                <td><span id="waz_n"></span></td>
+            </tr>
+            <tr>
+                <td>Mid-Upper Arm Circumference</td>
+                <td><span id="muac_missing"></span>%</td>
+                <td><span id="muac_flagged"></span>%</td>
+                <td><span id="muac_total"></span>%</td>
+                <td><span id="muac_n"></span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul id="data_quality_value_list" class="description_list">
+        <li><span class="item">Gender ratio (m/f):</span><span class="description" id="data_quality_gender_ratio"></span></li>
+        <li><span class="item">Age ratio (0-29/30-59 months):</span><span class="description" id="data_quality_age_ratio"></span></li>
+    </ul>
+
 </div>
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/lib/probability.js"></script>

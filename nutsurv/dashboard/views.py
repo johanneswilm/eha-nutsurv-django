@@ -182,7 +182,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'child_surveys': [
                     {
-                        'muac': 35.2,
                         'weight': 45.0,
                         'height_type': 'Child Standing (Height)',
                         'edema': 'No',
@@ -267,6 +266,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                   }],
                 'child_surveys': [{
                                       'muac': 25.1,
+                                      'gender': 'M',
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -337,6 +337,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                   }],
                 'child_surveys': [{
                                       'muac': 18.9,
+                                      'gender': 'M',
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -500,8 +501,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'ever_pregnant': 'Yes'
                                   }],
                 'child_surveys': [{
-                                      'muac': 39.2,
                                       'weight': 45.0,
+                                      'gender': 'M',
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
                                       'birthdate': '2012-09-19',
@@ -514,6 +515,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       }
                                   }, {
                                       'muac': 28.9,
+                                      'gender': 'F',
                                       'weight': 45.0,
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
@@ -521,7 +523,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                       'height': 35.2,
                                       'diarrhoea': 'No',
                                       'zscores': {
-                                          'WAZ': -0.4,
+                                          'WAZ': -8.4,
                                           'HAZ': -2.3,
                                           'WHZ': 1.5
                                       }
@@ -609,6 +611,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                                   }],
                 'child_surveys': [{
                                       'muac': 28.4,
+                                      'gender': 'M',
                                       'height_type': 'Child Standing (Height)',
                                       'edema': 'No',
                                       'birthdate': '2012-06-08',
