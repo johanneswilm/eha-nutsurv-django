@@ -4,6 +4,8 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 
+from models import Alert
+
 
 @login_required
 def dashboard(request):
@@ -648,15 +650,9 @@ class AlertsJSONView(LoginRequiredView):
     @staticmethod
     def _find_all_alerts():
         """Computes and returns a list of strings each string representing one
-        alert.
+        alert.  Archived alerts are not included.  Alerts are sorted by their
+        creation date in the reverse chronological order (i.e. the list starts
+        from the most recent).
         """
-        # todo: Get rid of alerts below when we know enough about the data
-        # todo: format used in a new mobile app and what alerts should be
-        # todo: supported and how.  Replace this mock-up with code querying the
-        # todo: database and computing the data.
-        alerts = [
-            'GPS position issue with Ahmad in Nasarawa state',
-            'Digit preference issue with Peter in Kogi state',
-            'Age distribution issue with Mahamadou in Kano',
-        ]
-        return alerts
+        alerts = Alert.objects.filter(archived=False).order_by('-created')
+        return [alert.text for alert in alerts]
