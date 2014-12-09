@@ -144,7 +144,7 @@ var surveyCompletedStates = {
                             renderer: function ( api, rowIdx ) {
                                 // Select hidden columns for the given row
                                 var data = api.cells( rowIdx, ':hidden' ).eq(0).map( function ( cell ) {
-                                    var header = $( api.column( cell.column ).header() );
+                                    var header = jQuery( api.column( cell.column ).header() );
                                     return '<tr>'+
                                             '<td>'+
                                                 header.attr('data-column-name')+':'+

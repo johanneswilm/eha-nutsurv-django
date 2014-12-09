@@ -9,6 +9,7 @@ var dataQuality = {
             change: dataQuality.changeStateOrTeam
         });
         dataQuality.drawCharts();
+        dataQuality.drawTable();
         // Set timeout so that charts can be drawn before tabs are created as else labels of Y-axis are overwritten.
         setTimeout(
             function() {
@@ -18,6 +19,8 @@ var dataQuality = {
         dataGetter.addNew(dataQuality.urls.teams, dataQuality.fillTeamsList, false);
         dataGetter.addNew(dataQuality.urls.states, dataQuality.fillStatesList, false);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateCharts, true);
+        dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateTable, true);
+        dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateList, true);
     },
     fillTeamsList: function(data) {
         _.each(data.teams, function(names, id) {
@@ -33,7 +36,8 @@ var dataQuality = {
             team = jQuery('#data_quality_teams').val(),
             state = jQuery('#data_quality_states').val();
         dataQuality.updateCharts(data,team,state);
-    //    dataQuality.updateTable(data,team,state);
+        dataQuality.updateTable(data,team,state);
+        dataQuality.updateList(data,team,state);
     },
     fillStatesList: function(data) {
         _.each(data.states.sort(), function(state) {
@@ -152,13 +156,150 @@ var dataQuality = {
         /* Muacs should be shown between the lowest and the highest available value*/
         muacGraphRange = Array.apply(null, {length: (muacMax-muacMin)*10}).map(Function.call, function(Number){return (Number/10+muacMin);}), /* muacMin to muacMax n .1 increments */
         MUACkde.data = kde(MUACs).points(muacGraphRange);
-    
+
         muacAxes = dataQuality.MUACDataQualityPlot.getAxes();
         muacAxes.xaxis.options.min = muacMin;
         muacAxes.xaxis.options.max = muacMax;
         dataQuality.MUACDataQualityPlot.setData([MUACkde]);
         dataQuality.MUACDataQualityPlot.setupGrid();
         dataQuality.MUACDataQualityPlot.draw();
+    },
+    table: false,
+    drawTable: function () {
+        dataQuality.table = jQuery('#data_quality_table').dataTable({
+            paging: false,
+            searching: false,
+            info: false
+        });
+    },
+    updateTable: function (data, team, state) {
+        var muacMissing = 0, muacFlagged = 0, muacPresent = 0, muacN,
+            whzMissing = 0, whzFlagged = 0, whzPresent = 0, whzN,
+            wazMissing = 0, wazFlagged = 0, wazPresent = 0, wazN,
+            hazMissing = 0, hazFlagged = 0, hazPresent = 0, hazN;
+
+        _.each(data.survey_data, function(survey) {
+            if (team && team > 0 && team != survey.team) {
+                return true;
+            }
+            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+                return true;
+            }
+            /* This assumes that one child survey is sent in for each child < 60 months,
+            even if all fields of a particular child survey may be left blank. */
+            if (survey.hasOwnProperty('child_surveys')) {
+
+                _.each(survey.child_surveys, function(child) {
+                    if (child.hasOwnProperty('muac')) {
+                        muacPresent++;
+                    } else {
+                        muacMissing++;
+                    }
+                    if (child.hasOwnProperty('zscores')) {
+                        if (child.zscores.hasOwnProperty('WHZ')) {
+                            whzPresent++;
+                            if (child.zscores.WHZ < -5 || child.zscores.WHZ > 5) {
+                                whzFlagged++;
+                            }
+                        } else {
+                            whzMissing++;
+                        }
+                        if (child.zscores.hasOwnProperty('HAZ')) {
+                            hazPresent++;
+                            if (child.zscores.HAZ < -6 || child.zscores.HAZ > 6) {
+                                hazFlagged++;
+                            }
+                        } else {
+                            hazMissing++;
+                        }
+                        if (child.zscores.hasOwnProperty('WAZ')) {
+                            wazPresent++;
+                            if (child.zscores.WAZ < -6 || child.zscores.WAZ > 6) {
+                                wazFlagged++;
+                            }
+                        } else {
+                            wazMissing++;
+                        }
+                    } else {
+                        whzMissing++;
+                        hazMissing++;
+                        wazMissing++;
+                    }
+                });
+            }
+
+        });
+
+        muacN = muacMissing + muacPresent;
+        whzN = whzMissing + whzPresent;
+        hazN = hazMissing + hazPresent;
+        wazN = wazMissing + wazPresent;
+
+        jQuery('#muac_n').html(muacN);
+        jQuery('#whz_n').html(whzN);
+        jQuery('#haz_n').html(hazN);
+        jQuery('#waz_n').html(wazN);
+
+        jQuery('#muac_total').html(parseInt(muacPresent/muacN*100));
+        jQuery('#whz_total').html(parseInt(whzPresent/whzN*100));
+        jQuery('#waz_total').html(parseInt(wazPresent/wazN*100));
+        jQuery('#haz_total').html(parseInt(hazPresent/hazN*100));
+
+        jQuery('#muac_missing').html(parseInt(muacMissing/muacN*100));
+        jQuery('#whz_missing').html(parseInt(whzMissing/whzN*100));
+        jQuery('#haz_missing').html(parseInt(hazMissing/hazN*100));
+        jQuery('#waz_missing').html(parseInt(wazMissing/wazN*100));
+
+        jQuery('#muac_flagged').html(parseInt(muacFlagged/muacN*100)); /* There are currently no circumstances under which MUAC values ae flagged */
+        jQuery('#whz_flagged').html(parseInt(whzFlagged/whzN*100));
+        jQuery('#haz_flagged').html(parseInt(hazFlagged/hazN*100));
+        jQuery('#waz_flagged').html(parseInt(wazFlagged/wazN*100));
+        if (dataQuality.table) {
+            dataQuality.table.fnDestroy();
+            dataQuality.drawTable();
+        }
+    },
+    updateList: function (data, team, state) {
+        var femaleChildren = 0, maleChildren = 0, oldChildren = 0, youngChildren = 0, currentDate = new Date(), birthDate, monthAge;
+
+        _.each(data.survey_data, function(survey) {
+
+
+            if (team && team > 0 && team != survey.team) {
+                return true;
+            }
+            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+                return true;
+            }
+
+            if (survey.hasOwnProperty('child_surveys')) {
+
+                _.each(survey.child_surveys, function(child) {
+                    if (child.hasOwnProperty('gender')) {
+                        if (child.gender==='M') {
+                            maleChildren++;
+                        } else {
+                            femaleChildren++;
+                        }
+                    }
+                    if (child.hasOwnProperty('birthdate')) {
+                        birthDate = new Date(child.birthdate);
+                        monthAge =  currentDate.getMonth() -
+                            birthDate.getMonth() +
+                            (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
+                        if (monthAge <30) {
+                            oldChildren++;
+                        } else {
+                            youngChildren++;
+                        }
+                    }
+                });
+            }
+
+        });
+
+        jQuery('#data_quality_gender_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
+        jQuery('#data_quality_age_ratio').html(parseInt(youngChildren/oldChildren*100)/100);
     }
 };
 
