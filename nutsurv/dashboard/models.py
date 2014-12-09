@@ -51,3 +51,17 @@ class JSONDocumentType(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Alert(models.Model):
+    text = models.TextField()
+    archived = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        if self.archived:
+            archived = u', archived'
+        else:
+            archived = u''
+        return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
