@@ -20,6 +20,16 @@ if (!window.clusterInfo) { // This file may be included by various tabs, so only
             }
             return clusterData.clusters[cluster].state_name;
         },
+        findLGA: function (cluster) {
+            if (!clusterInfo.dataAvailable) {
+                return false;
+            }
+            var clusterData = dataGetter.downloads[clusterInfo.urls.clusters].data;
+            if (!clusterData.clusters.hasOwnProperty(cluster)) {
+                return false;
+            }
+            return clusterData.clusters[cluster].lga_name;
+        }
     };
     clusterInfo.initiate();
 }

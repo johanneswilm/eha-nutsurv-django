@@ -11,6 +11,7 @@ var surveyCompletedStates = {
         dataGetter.addNew(surveyCompletedStates.urls.clusterData, surveyCompletedStates.setupTablePerState, false);
         dataGetter.addNew(surveyCompletedStates.urls.statesWithReserveClusters, surveyCompletedStates.setupTablePerState, true);
     },
+    table: false,
     setupTablePerState: function (data) {
         if (!dataGetter.checkAll([surveyCompletedStates.urls.survey,surveyCompletedStates.urls.clustersPerState,surveyCompletedStates.urls.statesWithReserveClusters, surveyCompletedStates.urls.clusterData])) {
             /* Check that all the relative data has been downloaded, else cancel.
@@ -136,8 +137,12 @@ var surveyCompletedStates = {
             }
         });
 
+        if (surveyCompletedStates.table) {
+            // If the table exists already, we destroy it, as it cannot easily be reinitialized.
+            surveyCompletedStates.table.fnDestroy();
+        }
 
-        $('#survey_completed_states_table').dataTable({
+        surveyCompletedStates.table = jQuery('#survey_completed_states_table').dataTable({
             data: perStateData,
             responsive: {
                         details: {
