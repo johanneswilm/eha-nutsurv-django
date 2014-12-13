@@ -58,6 +58,11 @@ def data_quality(request):
     response = {}
     return render(request, 'dashboard/data_quality.html', response)
 
+@login_required
+def personell(request):
+    response = {}
+    return render(request, 'dashboard/personell.html', response)
+
 
 class LoginRequiredView(View):
     @classmethod
