@@ -6,13 +6,13 @@ var personell = {
         teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
-        dataGetter.addNew(personell.urls.survey, personell.setupTable, true);
-        dataGetter.addNew(personell.urls.personell, personell.setupTable, false);
-        dataGetter.addNew(personell.urls.teams, personell.setupTable, false);
-        dataGetter.addNew(personell.urls.clusterData, personell.setupTable, false);
+        dataGetter.addNew(personell.urls.survey, personell.drawTable, true);
+        dataGetter.addNew(personell.urls.personell, personell.drawTable, false);
+        dataGetter.addNew(personell.urls.clusterData, personell.drawTable, false);
     },
-    setupTable: function (data) {
-        if (!dataGetter.checkAll([personell.urls.survey, personell.urls.personell, personell.urls.clusterData, personell.urls.teams])) {
+    table: false,
+    drawTable: function (data) {
+        if (!dataGetter.checkAll([personell.urls.survey, personell.urls.personell, personell.urls.clusterData])) {
             /* Check that all relevant data has been downloaded, else cancel.
             See home.js. */
             return false;
@@ -20,7 +20,6 @@ var personell = {
 
         var surveyData = dataGetter.downloads[personell.urls.survey].data.survey_data,
             personellData = dataGetter.downloads[personell.urls.personell].data.personell,
-            teamData = dataGetter.downloads[personell.urls.teams].data.teams,
             clusterData = dataGetter.downloads[personell.urls.clusterData].data.clusters, // Cluster data not actually used directly in this function, but we need t make sure it is there for clusterInfo
             perPersonellData = [];
 
@@ -62,7 +61,12 @@ var personell = {
             }
         });
 
-        $('#personell_table').dataTable({
+        if (personell.table) {
+            // If the table exists already, we destroy it, as it cannot easily be reinitialized.
+            personell.table.fnDestroy();
+        }
+
+        personell.table = jQuery('#personell_table').dataTable({
             data: perPersonellData,
             responsive: {
                         details: {

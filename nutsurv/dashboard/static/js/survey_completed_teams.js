@@ -9,6 +9,7 @@ var surveyCompletedTeams = {
         dataGetter.addNew(surveyCompletedTeams.urls.survey, surveyCompletedTeams.setupTablePerTeam, true);
         dataGetter.addNew(surveyCompletedTeams.urls.clustersPerTeam, surveyCompletedTeams.setupTablePerTeam, false);
     },
+    table: false,
     setupTablePerTeam: function (data) {
         if (!dataGetter.checkAll([surveyCompletedTeams.urls.survey,surveyCompletedTeams.urls.clustersPerTeam,surveyCompletedTeams.urls.teams])) {
             /* Check that all the relative data has been downloaded, else cancel.
@@ -126,8 +127,12 @@ var surveyCompletedTeams = {
             }
         });
 
+        if (surveyCompletedTeams.table) {
+            // If the table exists already, we destroy it, as it cannot easily be reinitialized.
+            surveyCompletedTeams.table.fnDestroy();
+        }
 
-        $('#survey_completed_teams_table').dataTable({
+        surveyCompletedTeams.table = jQuery('#survey_completed_teams_table').dataTable({
             data: perTeamData,
             responsive: {
                         details: {
