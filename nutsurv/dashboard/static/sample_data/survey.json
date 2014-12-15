@@ -6,6 +6,7 @@
             ],
             "correct_area": true,
             "cluster": 657,
+            "start_time": "2014-10-18T20:33:23",
             "end_time": "2014-10-18T20:43:23",
             "team": 1,
             "members": [{
@@ -82,6 +83,7 @@
             ],
             "correct_area": true,
             "cluster": 657,
+            "start_time": "2014-10-18T20:52:23",
             "end_time": "2014-10-18T20:57:23",
             "team": 1,
             "members": [{
@@ -153,6 +155,7 @@
             ],
             "correct_area": false,
             "cluster": 658,
+            "end_time": "2014-10-18T20:51:23",
             "end_time": "2014-10-18T20:56:23",
             "team": 1,
             "members": [{
@@ -200,6 +203,7 @@
             ],
             "correct_area": false,
             "cluster": 659,
+            "start_time": "2014-10-18T21:18:23",
             "end_time": "2014-10-18T21:33:23",
             "team": 2,
             "members": [{
@@ -250,6 +254,7 @@
             ],
             "correct_area": true,
             "cluster": 659,
+            "start_time": "2014-10-18T18:13:23",
             "end_time": "2014-10-18T18:23:23",
             "team": 3,
             "members": [{
@@ -331,6 +336,7 @@
             ],
             "correct_area": false,
             "cluster": 659,
+            "start_time": "2014-10-18T18:14:14",
             "end_time": "2014-10-18T18:28:14",
             "team": 3,
             "members": [{
@@ -385,6 +391,7 @@
             ],
             "correct_area": true,
             "cluster": 659,
+            "start_time": "2014-10-18T19:01:52",
             "end_time": "2014-10-18T19:02:56",
             "team": 3,
             "members": [{

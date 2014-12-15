@@ -34,12 +34,13 @@ var mappingChecks = {
         });
         _.each(data.survey_data, function(survey){
             var icon = survey.correct_area ? map.markers.green : map.markers.red,
-            marker = L.marker(survey.location, {icon: icon});
+            marker = L.marker(survey.location, {icon: icon}),
+            popupHTML = "Team: "+survey.team+"<br>"+"Cluster #: "+survey.cluster;
             mappingChecks.mapMarkers.push(marker);
             if (survey.correct_area) {
-                marker.addTo(mappingChecks.map).bindPopup("Team: "+survey.team);
+                marker.addTo(mappingChecks.map).bindPopup(popupHTML);
             } else {
-                marker.addTo(mappingChecks.map).bindPopup("ERROR!<br>Team: "+survey.team);
+                marker.addTo(mappingChecks.map).bindPopup("ERROR!<br>"+popupHTML);
                 incorrectSurveys.push(survey);
             }
         });

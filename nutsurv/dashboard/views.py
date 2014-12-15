@@ -65,6 +65,10 @@ def personnel(request):
     response = {}
     return render(request, 'dashboard/personnel.html', response)
 
+@login_required
+def time_of_data_collection(request):
+    response = {}
+    return render(request, 'dashboard/time_of_data_collection.html', response)
 
 class LoginRequiredView(View):
     @classmethod
