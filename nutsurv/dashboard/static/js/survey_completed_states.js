@@ -189,7 +189,7 @@ var surveyCompletedStates = {
                 { name: 'children_max', data: 'maxChildren' },
                 { name: 'children_mean', data: 'meanChildren' },
             ],
-            "order": [[ 1, "asc" ]]
+            order: [[ 1, "asc" ]]
         });
 
     },
