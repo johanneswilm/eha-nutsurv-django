@@ -41,9 +41,10 @@ var home = {
             home.map.removeLayer(marker);
         });
         _.each(data.survey_data, function(survey){
-            var marker = L.marker(survey.location, {icon: map.markers.green});
+            var marker = L.marker(survey.location, {icon: map.markers.green}),
+                popupHTML = "Team: "+survey.team+"<br>"+"Cluster #: "+survey.cluster;
             home.mapMarkers.push(marker);
-            marker.addTo(home.map).bindPopup("Team: "+survey.team);
+            marker.addTo(home.map).bindPopup(popupHTML);
         });
         group = new L.featureGroup(home.mapMarkers);
         home.map.fitBounds(group.getBounds());

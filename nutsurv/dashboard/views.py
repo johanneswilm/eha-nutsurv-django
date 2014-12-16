@@ -65,6 +65,10 @@ def personnel(request):
     response = {}
     return render(request, 'dashboard/personnel.html', response)
 
+@login_required
+def time_of_data_collection(request):
+    response = {}
+    return render(request, 'dashboard/time_of_data_collection.html', response)
 
 class LoginRequiredView(View):
     @classmethod
@@ -165,6 +169,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 657,
+                'start_time': '2014-10-18T19:56:23',
                 'end_time': '2014-10-18T20:43:23',
                 'team': 1,
                 'members': [
@@ -216,6 +221,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 657,
+                'start_time': '2014-10-18T20:01:21',
                 'end_time': '2014-10-18T20:43:23',
                 'team': 1,
                 'members': [{
@@ -293,6 +299,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 657,
+                'start_time': '2014-10-18T20:12:56',
                 'end_time': '2014-10-18T20:57:23',
                 'team': 1,
                 'members': [{
@@ -364,6 +371,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': False,
                 'cluster': 658,
+                'start_time': '2014-10-18T20:16:24',
                 'end_time': '2014-10-18T20:56:23',
                 'team': 1,
                 'members': [{
@@ -411,6 +419,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': False,
                 'cluster': 659,
+                'start_time': '2014-10-18T20:14:48',
                 'end_time': '2014-10-18T21:33:23',
                 'team': 2,
                 'members': [{
@@ -461,6 +470,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 659,
+                'start_time': '2014-10-18T18:21:20',
                 'end_time': '2014-10-18T18:23:23',
                 'team': 3,
                 'members': [{
@@ -542,6 +552,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': False,
                 'cluster': 659,
+                'start_time': '2014-10-18T18:17:18',
                 'end_time': '2014-10-18T18:28:14',
                 'team': 3,
                 'members': [{
@@ -596,6 +607,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 659,
+                'start_time': '2014-10-18T18:34:07',
                 'end_time': '2014-10-18T19:02:56',
                 'team': 3,
                 'members': [{

@@ -34,6 +34,7 @@ var personnel = {
                     state: '',
                     lga: '',
                     cluster: '',
+                    cluster_number: '',
                     date: '',
                     team: personnel.team
                 },
@@ -54,7 +55,8 @@ var personnel = {
             if (teamMembers.length > 0 && teamMembers[0].date < surveyDate) {
                 _.each(teamMembers, function(teamMember) {
                     teamMember.date = surveyDate;
-                    teamMember.cluster = survey.cluster;
+                    teamMember.cluster_number = survey.cluster;
+                    teamMember.cluster = clusterInfo.findName(survey.cluster);
                     teamMember.state = clusterInfo.findState(survey.cluster);
                     teamMember.lga = clusterInfo.findLGA(survey.cluster);
                 });
@@ -102,6 +104,7 @@ var personnel = {
                 { name: 'state', data: 'state' },
                 { name: 'lga', data: 'lga' },
                 { name: 'cluster', data: 'cluster' },
+                { name: 'cluster_number', data: 'cluster_number' },
                 { name: 'date', data: 'date' },
             ],
             "order": [[ 1, "asc" ]]
