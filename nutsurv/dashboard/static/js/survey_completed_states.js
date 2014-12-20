@@ -192,6 +192,8 @@ var surveyCompletedStates = {
             order: [[ 1, "asc" ]]
         });
 
+        jQuery('#survey_completed_states_main select').selectpicker();
+
     },
 };
 

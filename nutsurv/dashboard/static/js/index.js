@@ -1,6 +1,6 @@
-jQuery(function() {
+jQuery(document).ready(function() {
 
-    jQuery('#tabs a').click(function(e) {
+    jQuery('#tabs a').on('click',function(event) {
         var tab = jQuery(this),
             loadurl = tab.attr('href'),
             target = tab.attr('data-target');
@@ -15,11 +15,7 @@ jQuery(function() {
         return false;
     });
     jQuery('#tabs a:first').click();
-    jQuery('#last_update').button({
-        icons: {
-            primary: "ui-icon-arrowrefresh-1-w"
-        }
-    }).click(
+    jQuery('#last_update').on('click',
         function(event) {
             event.preventDefault();
             dataGetter.getAll();
