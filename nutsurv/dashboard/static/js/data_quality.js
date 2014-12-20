@@ -11,12 +11,7 @@ var dataQuality = {
 
         dataQuality.drawCharts();
         dataQuality.drawTable();
-        // Set timeout so that charts can be drawn before tabs are created as else labels of Y-axis are overwritten.
-        /*setTimeout(
-            function() {
-            jQuery('#data_quality_chart_tabs').tabs();},
-            0
-        );*/
+
         dataGetter.addNew(dataQuality.urls.teams, dataQuality.fillTeamsList, false);
         dataGetter.addNew(dataQuality.urls.states, dataQuality.fillStatesList, false);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateCharts, true);
@@ -71,16 +66,30 @@ var dataQuality = {
                 tickDecimals: 0,
             }
         };
-        // Always show the tab corresponding to the current canvas, as else there is no space for the legend.
-        jQuery('a#data_quality_chart_tabs_WHZ_tab').tab('show');
+
         dataQuality.WHZDataQualityPlot = jQuery.plot('#data_quality_whz_chart', [], options);
-        jQuery('a#data_quality_chart_tabs_HAZ_tab').tab('show');
         dataQuality.HAZDataQualityPlot = jQuery.plot('#data_quality_haz_chart', [], options);
-        jQuery('a#data_quality_chart_tabs_WAZ_tab').tab('show');
+        // Only hide tabs after canvases have been drawn on them.
+        setTimeout(
+            function() {
+                jQuery('#data_quality_chart_tabs_HAZ').addClass('tab-pane');
+            },
+            0
+        );
         dataQuality.WAZDataQualityPlot = jQuery.plot('#data_quality_waz_chart', [], options);
-        jQuery('a#data_quality_chart_tabs_MUAC_tab').tab('show');
+        setTimeout(
+            function() {
+                jQuery('#data_quality_chart_tabs_WAZ').addClass('tab-pane');
+            },
+            0
+        );
         dataQuality.MUACDataQualityPlot = jQuery.plot('#data_quality_muac_chart', [], muacOptions);
-        jQuery('a#data_quality_chart_tabs_WHZ_tab').tab('show');
+        setTimeout(
+            function() {
+                jQuery('#data_quality_chart_tabs_MUAC').addClass('tab-pane');
+            },
+            0
+        );
     },
     updateCharts: function(data, team, state) {
 
