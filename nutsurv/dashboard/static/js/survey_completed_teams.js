@@ -182,6 +182,8 @@ var surveyCompletedTeams = {
             order: [[ 1, "asc" ]]
         });
 
+        jQuery('#survey_completed_teams_main select').selectpicker();
+
     },
 
 };

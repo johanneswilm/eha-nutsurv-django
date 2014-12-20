@@ -6,9 +6,10 @@ var missingData = {
         collectableData: '/static/sample_data/collectable_data.json'
     },
     initiate: function() {
-        jQuery('#missing_data_teams,#missing_data_states').selectmenu({
-            change: missingData.changeStateOrTeam
-        });
+        var selectors = jQuery('#missing_data_teams,#missing_data_states');
+        selectors.selectpicker();
+        selectors.on('change', missingData.changeStateOrTeam);
+
         dataGetter.addNew(missingData.urls.teams, missingData.fillTeamsList, false);
         dataGetter.addNew(missingData.urls.states, missingData.fillStatesList, false);
         dataGetter.addNew(missingData.urls.survey, missingData.listChildren, true);
@@ -17,20 +18,24 @@ var missingData = {
         dataGetter.addNew(missingData.urls.collectableData, missingData.listWomen, false);
     },
     fillTeamsList: function(data) {
+        var selector = jQuery('#missing_data_teams');
         _.each(data.teams, function(names, id) {
-            jQuery('#missing_data_teams').append(missingData.teamOptionTmp({
+            selector.append(missingData.teamOptionTmp({
                 id: id,
                 names: names
             }));
         });
+        selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
     fillStatesList: function(data) {
+        var selector = jQuery('#missing_data_states');
         _.each(data.states.sort(), function(state) {
-            jQuery('#missing_data_states').append(missingData.stateOptionTmp({
+            selector.append(missingData.stateOptionTmp({
                 state: state
             }));
         });
+        selector.selectpicker('refresh');
     },
     stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     changeStateOrTeam: function() {

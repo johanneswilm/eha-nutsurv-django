@@ -5,37 +5,41 @@ var timeOfDataCollection = {
         states: '/static/sample_data/states.json'
     },
     initiate: function() {
-        jQuery('#time_of_data_collection_teams,#time_of_data_collection_states').selectmenu({
-            change: timeOfDataCollection.changeStateOrTeam
-        });
+        var selectors = jQuery('#time_of_data_collection_teams,#time_of_data_collection_states');
+        selectors.selectpicker();
+        selectors.on('change', timeOfDataCollection.changeStateOrTeam);
 
         dataGetter.addNew(timeOfDataCollection.urls.teams, timeOfDataCollection.fillTeamsList, false);
         dataGetter.addNew(timeOfDataCollection.urls.states, timeOfDataCollection.fillStatesList, false);
         dataGetter.addNew(timeOfDataCollection.urls.survey, timeOfDataCollection.drawTable, true);
     },
     fillTeamsList: function(data) {
+        var selector = jQuery('#time_of_data_collection_teams');
         _.each(data.teams, function(names, id) {
-            jQuery('#time_of_data_collection_teams').append(timeOfDataCollection.teamOptionTmp({
+            selector.append(timeOfDataCollection.teamOptionTmp({
                 id: id,
                 names: names
             }));
         });
+        selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
+    fillStatesList: function(data) {
+        var selector = jQuery('#time_of_data_collection_states');
+        _.each(data.states.sort(), function(state) {
+            selector.append(timeOfDataCollection.stateOptionTmp({
+                state: state
+            }));
+        });
+        selector.selectpicker('refresh');
+    },
+    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     changeStateOrTeam: function () {
         var data = dataGetter.downloads[timeOfDataCollection.urls.survey].data,
             team = jQuery('#time_of_data_collection_teams').val(),
             state = jQuery('#time_of_data_collection_states').val();
         timeOfDataCollection.drawTable(data,team,state);
     },
-    fillStatesList: function(data) {
-        _.each(data.states.sort(), function(state) {
-            jQuery('#time_of_data_collection_states').append(timeOfDataCollection.stateOptionTmp({
-                state: state
-            }));
-        });
-    },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     table: false,
     drawTable: function (data, team, state) {
         var datesTimes = {},
@@ -45,22 +49,20 @@ var timeOfDataCollection = {
             totalStartTime = 0,
             totalEndTime = 0,
             tableData = {
+                "per interview, N" : 0,
                 "per interview, max" : "",
                 "per interview, min" : "",
                 "per interview, average" : "",
-                "per interview, N" : 0,
+                "daily collection, N" : 0,
                 "daily collection, max" : "",
                 "daily collection, min" : "",
                 "daily collection, average" : "",
-                "daily collection, N" : 0,
                 "daily collection start, max" : "",
                 "daily collection start, min" : "",
                 "daily collection start, average" : "",
-                "daily collection start, N" : 0, // This seems to be the same value as "daily collection, N"
                 "daily collection end, max" : "",
                 "daily collection end, min" : "",
                 "daily collection end, average" : "",
-                "daily collection end, N" : 0, // This seems to be the same value as "daily collection, N"
             };
 
 
@@ -164,6 +166,7 @@ var timeOfDataCollection = {
         timeOfDataCollection.table = jQuery('#time_of_data_collection_table').dataTable({
             paging: false,
             searching: false,
+            bSort: false,
             info: false,
             responsive: {
                         details: {
@@ -190,22 +193,20 @@ var timeOfDataCollection = {
             data : [tableData],
             columns: [
                 { "searchable": false, data: function(){return '';}, orderable: false},
+                { name: 'per interview, N', data: 'per interview, N', orderable: false},
                 { name: 'per interview, max', data: 'per interview, max', orderable: false},
                 { name: 'per interview, average', data: 'per interview, average', orderable: false},
                 { name: 'per interview, min', data: 'per interview, min', orderable: false},
-                { name: 'per interview, N', data: 'per interview, N', orderable: false},
+                { name: 'daily collection, N', data: 'daily collection, N', orderable: false},
                 { name: 'daily collection, max', data: 'daily collection, max', orderable: false},
                 { name: 'daily collection, average', data: 'daily collection, average', orderable: false},
                 { name: 'daily collection, min', data: 'daily collection, min', orderable: false},
-                { name: 'daily collection, N', data: 'daily collection, N', orderable: false},
                 { name: 'daily collection start, max', data: 'daily collection start, max', orderable: false},
                 { name: 'daily collection start, average', data: 'daily collection start, average', orderable: false},
                 { name: 'daily collection start, min', data: 'daily collection start, min', orderable: false},
-                { name: 'daily collection start, N', data: 'daily collection start, N', orderable: false},
                 { name: 'daily collection end, max', data: 'daily collection end, max', orderable: false},
                 { name: 'daily collection end, average', data: 'daily collection end, average', orderable: false},
-                { name: 'daily collection end, min', data: 'daily collection end, min', orderable: false},
-                { name: 'daily collection end, N', data: 'daily collection end, N', orderable: false}
+                { name: 'daily collection end, min', data: 'daily collection end, min', orderable: false}
             ],
             "order": [[ 1, "asc" ]]
         });

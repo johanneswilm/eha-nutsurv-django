@@ -9,24 +9,26 @@
 </div>
 <div id="data_quality_chart" class="content_block big_content_block">
     <h1>Data quality: Child anthropometry</h1>
-    <div id="data_quality_chart_tabs">
-        <ul>
-            <li><a href="#data_quality_chart_tabs_WHZ">Weight-for-Height</a></li>
-            <li><a href="#data_quality_chart_tabs_HAZ">Height-for-Age</a></li>
-            <li><a href="#data_quality_chart_tabs_WAZ">Weight-for-Age</a></li>
-            <li><a href="#data_quality_chart_tabs_MUAC">Mid-Upper Arm Cir.</a></li>
+    <div id="data_quality_chart_tabs" role="tabpanel">
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" id="data_quality_chart_tabs_WHZ_tab" href="#data_quality_chart_tabs_WHZ">Weight-for-Height</a></li>
+            <li><a data-toggle="tab" id="data_quality_chart_tabs_HAZ_tab" href="#data_quality_chart_tabs_HAZ">Height-for-Age</a></li>
+            <li><a data-toggle="tab" id="data_quality_chart_tabs_WAZ_tab" href="#data_quality_chart_tabs_WAZ">Weight-for-Age</a></li>
+            <li><a data-toggle="tab" id="data_quality_chart_tabs_MUAC_tab" href="#data_quality_chart_tabs_MUAC">Mid-Upper Arm Cir.</a></li>
         </ul>
-        <div id="data_quality_chart_tabs_WHZ">
-            <div id="data_quality_whz_chart" class="chart"></div>
-        </div>
-        <div id="data_quality_chart_tabs_HAZ">
-            <div id="data_quality_haz_chart" class="chart"></div>
-        </div>
-        <div id="data_quality_chart_tabs_WAZ">
-            <div id="data_quality_waz_chart" class="chart"></div>
-        </div>
-        <div id="data_quality_chart_tabs_MUAC">
-            <div id="data_quality_muac_chart" class="chart"></div>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="data_quality_chart_tabs_WHZ">
+                <div id="data_quality_whz_chart" class="chart"></div>
+            </div>
+            <div role="tabpanel" id="data_quality_chart_tabs_HAZ">
+                <div id="data_quality_haz_chart" class="chart"></div>
+            </div>
+            <div role="tabpanel" id="data_quality_chart_tabs_WAZ">
+                <div id="data_quality_waz_chart" class="chart"></div>
+            </div>
+            <div role="tabpanel" id="data_quality_chart_tabs_MUAC">
+                <div id="data_quality_muac_chart" class="chart"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -83,4 +85,5 @@
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/lib/probability.js"></script>
 <script src="/static/js/lib/kde.js"></script>
+<!--script src="/static/js/lib/digit_preference_score.js"></script-->
 <script src="/static/js/data_quality.js"></script>

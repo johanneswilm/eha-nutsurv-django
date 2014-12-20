@@ -1,19 +1,4 @@
-body, div.ui-widget {
-  font-family: 'Nunito', sans-serif;
-}
 
-h1, h2, h3, h4, h5, h6, .ui-tabs-nav {
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 0.2em;
-}
-
-.ui-tabs-nav {
-  font-size: 1.2em;
-}
 
 div.content_block {
   border: 1px solid #bfbfbf;
@@ -23,7 +8,6 @@ div.content_block {
   flush: left;
   background-color: white;
   vertical-align: top;
-  border-radius: 6px;
 /*  z-index: 1;*/
 }
 .leaflet-container:-webkit-full-screen{

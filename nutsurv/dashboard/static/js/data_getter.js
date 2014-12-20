@@ -77,7 +77,7 @@ var dataGetter = {
           if (seconds<10) {
             seconds = '0'+seconds;
           }
-          jQuery('#last_update span.ui-button-text').html(minutes+':'+seconds);
+          jQuery('#last_update .button_label').html(minutes+':'+seconds);
        }
     },
     getterInterval: false,

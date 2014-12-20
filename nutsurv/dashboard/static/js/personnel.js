@@ -110,6 +110,8 @@ var personnel = {
             "order": [[ 1, "asc" ]]
         });
 
+        jQuery('#personnel select').selectpicker();
+
     },
 };
 

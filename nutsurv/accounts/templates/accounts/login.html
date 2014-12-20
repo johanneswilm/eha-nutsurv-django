@@ -4,38 +4,44 @@
   <meta charset="utf-8">
   <title>NutSurv dashboard login</title>
   <link rel="icon" href="/static/favicon.ico">
-  <link href='http://fonts.googleapis.com/css?family=Nunito:300|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css' />
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/css/style.css" />
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="/static/js/lib/tab.js"></script>
   <script>
-  $(function() {
-    $( "#dialog" ).dialog({
-        buttons: {
-            "Submit": function() {
-                $('#login_form').submit();
-            },
-        }
+    jQuery(document).ready(function() {
+        jQuery('.modal').modal();
     });
-    $( "#submit" ).button();
-  });
   </script>
 </head>
 <body>
-    <div id="dialog" title="Login">
-        <p>{{ state }}</p>
-    	<form action="/accounts/login/" id="login_form" method="post">
-            {% csrf_token %}
-    		{% if next %}
-    		      <input type="hidden" name="next" value="{{ next }}" />
-    		{% endif %}
-    		<label for="username">Username</label>
-    		<input type="text" name="username" id="username" value="{{ username}}" /><br />
-    		<label for="password">Password</label>
-    		<input type="password" name="password" id="password" value="" /><br />
+    <div class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Login</h4>
+          </div>
+          <form action="/accounts/login/" id="login_form" method="post">
+              {% csrf_token %}
+          <div class="modal-body">
+            <p>{{ state }}</p>
+                {% if next %}
+                      <input type="hidden" name="next" value="{{ next }}" />
+                {% endif %}
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" value="{{ username}}" /><br />
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" value="" /><br />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="submit">Login</button>
+          </div>
+        </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-    	</form>
-    </div>
 </body>
 </html>
