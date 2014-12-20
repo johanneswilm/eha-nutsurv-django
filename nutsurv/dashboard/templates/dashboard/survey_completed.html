@@ -1,8 +1,14 @@
 <link rel="stylesheet" href="/static/css/survey_completed.css">
-<div id="survey_completed_tabs">
-  <ul>
-    <li><a href="/dashboard/survey_completed_states">States</a></li>
-    <li><a href="/dashboard/survey_completed_teams">Teams</a></li>
+<div id="tabs" role="tabpanel">
+  <ul id="survey_completed_tabs" class="nav nav-tabs">
+    <li class="active"><a data-target="#tab_survey_completed_states" data-toggle="tab" href="/dashboard/survey_completed_states">States</a></li>
+    <li><a data-target="#tab_survey_completed_teams" data-toggle="tab" href="/dashboard/survey_completed_teams">Teams</a></li>
   </ul>
+  <!-- Tab panes -->
+ <div class="tab-content">
+   <div role="tabpanel" class="tab-pane active" id="tab_survey_completed_states">...</div>
+   <div role="tabpanel" class="tab-pane" id="tab_survey_completed_teams">...</div>
+ </div>
+
 </div>
 <script src="/static/js/survey_completed.js"></script>

@@ -5,37 +5,41 @@ var timeOfDataCollection = {
         states: '/static/sample_data/states.json'
     },
     initiate: function() {
-        jQuery('#time_of_data_collection_teams,#time_of_data_collection_states').selectmenu({
-            change: timeOfDataCollection.changeStateOrTeam
-        });
+        var selectors = jQuery('#time_of_data_collection_teams,#time_of_data_collection_states');
+        selectors.selectpicker();
+        selectors.on('change', timeOfDataCollection.changeStateOrTeam);
 
         dataGetter.addNew(timeOfDataCollection.urls.teams, timeOfDataCollection.fillTeamsList, false);
         dataGetter.addNew(timeOfDataCollection.urls.states, timeOfDataCollection.fillStatesList, false);
         dataGetter.addNew(timeOfDataCollection.urls.survey, timeOfDataCollection.drawTable, true);
     },
     fillTeamsList: function(data) {
+        var selector = jQuery('#time_of_data_collection_teams');
         _.each(data.teams, function(names, id) {
-            jQuery('#time_of_data_collection_teams').append(timeOfDataCollection.teamOptionTmp({
+            selector.append(timeOfDataCollection.teamOptionTmp({
                 id: id,
                 names: names
             }));
         });
+        selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
+    fillStatesList: function(data) {
+        var selector = jQuery('#time_of_data_collection_states');
+        _.each(data.states.sort(), function(state) {
+            selector.append(timeOfDataCollection.stateOptionTmp({
+                state: state
+            }));
+        });
+        selector.selectpicker('refresh');
+    },
+    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     changeStateOrTeam: function () {
         var data = dataGetter.downloads[timeOfDataCollection.urls.survey].data,
             team = jQuery('#time_of_data_collection_teams').val(),
             state = jQuery('#time_of_data_collection_states').val();
         timeOfDataCollection.drawTable(data,team,state);
     },
-    fillStatesList: function(data) {
-        _.each(data.states.sort(), function(state) {
-            jQuery('#time_of_data_collection_states').append(timeOfDataCollection.stateOptionTmp({
-                state: state
-            }));
-        });
-    },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     table: false,
     drawTable: function (data, team, state) {
         var datesTimes = {},

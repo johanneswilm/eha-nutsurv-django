@@ -5,9 +5,10 @@ var ageDistribution = {
         states: '/static/sample_data/states.json'
     },
     initiate: function() {
-        jQuery('#age_distribution_teams,#age_distribution_states').selectmenu({
-            change: ageDistribution.changeStateOrTeam
-        });
+        var selectors = jQuery('#age_distribution_teams,#age_distribution_states');
+        selectors.selectpicker();
+        selectors.on('change', ageDistribution.changeStateOrTeam);
+
         ageDistribution.drawHouseholdAgeDistribution();
         ageDistribution.drawChildrenAgeDistribution();
         dataGetter.addNew(ageDistribution.urls.teams, ageDistribution.fillTeamsList, false);
@@ -16,14 +17,26 @@ var ageDistribution = {
         dataGetter.addNew(ageDistribution.urls.survey, ageDistribution.updateChildrenAgeDistribution, true);
     },
     fillTeamsList: function(data) {
+        var selector = jQuery('#age_distribution_teams');
         _.each(data.teams, function(names, id) {
-            jQuery('#age_distribution_teams').append(ageDistribution.teamOptionTmp({
+            selector.append(ageDistribution.teamOptionTmp({
                 id: id,
                 names: names
             }));
         });
+        selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
+    fillStatesList: function(data) {
+        var selector = jQuery('#age_distribution_states');
+        _.each(data.states.sort(), function(state) {
+            selector.append(ageDistribution.stateOptionTmp({
+                state: state
+            }));
+        });
+        selector.selectpicker('refresh');
+    },
+    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     changeStateOrTeam: function () {
         var data = dataGetter.downloads[ageDistribution.urls.survey].data,
             team = jQuery('#age_distribution_teams').val(),
@@ -31,14 +44,6 @@ var ageDistribution = {
         ageDistribution.updateHouseholdAgeDistribution(data,team,state);
         ageDistribution.updateChildrenAgeDistribution(data,team,state);
     },
-    fillStatesList: function(data) {
-        _.each(data.states.sort(), function(state) {
-            jQuery('#age_distribution_states').append(ageDistribution.stateOptionTmp({
-                state: state
-            }));
-        });
-    },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     householdAgeDistributionPlot: false,
     drawHouseholdAgeDistribution: function() {
         ageDistribution.householdAgeDistributionPlot = jQuery.plot('#age_distribution_household_members_chart', [], {

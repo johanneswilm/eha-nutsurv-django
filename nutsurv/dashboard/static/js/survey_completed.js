@@ -1,12 +1,15 @@
-jQuery( "#survey_completed_tabs" ).tabs({
-   beforeLoad: function( event, ui ) {
-      if ( ui.tab.data( "loaded" ) ) {
-        event.preventDefault();
-        return;
-      }
-
-      ui.jqXHR.success(function() {
-        ui.tab.data( "loaded", true );
-      });
+jQuery('#survey_completed_tabs a').click(function(e) {
+    var tab = jQuery(this),
+        loadurl = tab.attr('href'),
+        target = tab.attr('data-target');
+    if (!tab.hasClass('loaded')) {
+        tab.addClass('loaded');
+        jQuery.get(loadurl, function(data) {
+            jQuery(target).html(data);
+        });
     }
+    console.log(this);
+    tab.tab('show');
+    return false;
 });
+jQuery('#survey_completed_tabs a:first').click();

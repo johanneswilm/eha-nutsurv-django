@@ -5,17 +5,18 @@ var dataQuality = {
         states: '/static/sample_data/states.json'
     },
     initiate: function() {
-        jQuery('#data_quality_teams,#data_quality_states').selectmenu({
-            change: dataQuality.changeStateOrTeam
-        });
+        var selectors = jQuery('#data_quality_teams,#data_quality_states');
+        selectors.selectpicker();
+        selectors.on('change', dataQuality.changeStateOrTeam);
+
         dataQuality.drawCharts();
         dataQuality.drawTable();
         // Set timeout so that charts can be drawn before tabs are created as else labels of Y-axis are overwritten.
-        setTimeout(
+        /*setTimeout(
             function() {
             jQuery('#data_quality_chart_tabs').tabs();},
             0
-        );
+        );*/
         dataGetter.addNew(dataQuality.urls.teams, dataQuality.fillTeamsList, false);
         dataGetter.addNew(dataQuality.urls.states, dataQuality.fillStatesList, false);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateCharts, true);
@@ -23,14 +24,26 @@ var dataQuality = {
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateList, true);
     },
     fillTeamsList: function(data) {
+        var selector = jQuery('#data_quality_teams');
         _.each(data.teams, function(names, id) {
-            jQuery('#data_quality_teams').append(dataQuality.teamOptionTmp({
+            selector.append(dataQuality.teamOptionTmp({
                 id: id,
                 names: names
             }));
         });
+        selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
+    fillStatesList: function(data) {
+        var selector = jQuery('#data_quality_states');
+        _.each(data.states.sort(), function(state) {
+            selector.append(dataQuality.stateOptionTmp({
+                state: state
+            }));
+        });
+        selector.selectpicker('refresh');
+    },
+    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     changeStateOrTeam: function () {
         var data = dataGetter.downloads[dataQuality.urls.survey].data,
             team = jQuery('#data_quality_teams').val(),
@@ -39,14 +52,6 @@ var dataQuality = {
         dataQuality.updateTable(data,team,state);
         dataQuality.updateList(data,team,state);
     },
-    fillStatesList: function(data) {
-        _.each(data.states.sort(), function(state) {
-            jQuery('#data_quality_states').append(dataQuality.stateOptionTmp({
-                state: state
-            }));
-        });
-    },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
     drawCharts: function() {
         var options = {
             yaxis: {
@@ -66,10 +71,16 @@ var dataQuality = {
                 tickDecimals: 0,
             }
         };
+        // Always show the tab corresponding to the current canvas, as else there is no space for the legend.
+        jQuery('a#data_quality_chart_tabs_WHZ_tab').tab('show');
         dataQuality.WHZDataQualityPlot = jQuery.plot('#data_quality_whz_chart', [], options);
+        jQuery('a#data_quality_chart_tabs_HAZ_tab').tab('show');
         dataQuality.HAZDataQualityPlot = jQuery.plot('#data_quality_haz_chart', [], options);
+        jQuery('a#data_quality_chart_tabs_WAZ_tab').tab('show');
         dataQuality.WAZDataQualityPlot = jQuery.plot('#data_quality_waz_chart', [], options);
+        jQuery('a#data_quality_chart_tabs_MUAC_tab').tab('show');
         dataQuality.MUACDataQualityPlot = jQuery.plot('#data_quality_muac_chart', [], muacOptions);
+        jQuery('a#data_quality_chart_tabs_WHZ_tab').tab('show');
     },
     updateCharts: function(data, team, state) {
 

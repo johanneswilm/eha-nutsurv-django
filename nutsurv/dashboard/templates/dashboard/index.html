@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <title>NutSurv dashboard</title>
   <link rel="icon" href="/static/favicon.ico">
-  <link href='http://fonts.googleapis.com/css?family=Nunito:300|Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css' />
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/cupertino/jquery-ui.css" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.css" />
   <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" />
@@ -14,7 +14,9 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
   <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="/static/js/lib/tab.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
   <script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
@@ -25,18 +27,30 @@
 </head>
 <body>
 
-<div id="tabs">
-  <ul>
-    <li><a href="/dashboard/home">NutSurv home</a></li>
-    <li><a href="/dashboard/survey_completed">Survey work completed</a></li>
-    <li><a href="/dashboard/mapping_checks">Mapping checks</a></li>
-    <li><a href="/dashboard/age_distribution">Age distribution</a></li>
-    <li><a href="/dashboard/missing_data">Missing data</a></li>
-    <li><a href="/dashboard/data_quality">Data quality</a></li>
-    <li><a href="/dashboard/time_of_data_collection">Time of data collection</a></li>
-    <li><a href="/dashboard/personnel">Personnel</a></li>
+<div id="tabs" role="tabpanel">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">NutSurv home</a></li>
+    <li><a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">Survey work completed</a></li>
+    <li><a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">Mapping checks</a></li>
+    <li><a data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age distribution</a></li>
+    <li><a data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing data</a></li>
+    <li><a data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data quality</a></li>
+    <li><a data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of data collection</a></li>
+    <li><a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">Personnel</a></li>
     <li id="last_update_li"><button id="last_update"></button></li>
   </ul>
+
+   <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tab_home">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_survey_completed">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_mapping_checks">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_age_distribution">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_missing_data">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_data_quality">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_time_of_data_collection">...</div>
+    <div role="tabpanel" class="tab-pane" id="tab_personnel">...</div>
+  </div>
 </div>
 
 <a href="/accounts/logout" class="bottom_link">Logout</a>
