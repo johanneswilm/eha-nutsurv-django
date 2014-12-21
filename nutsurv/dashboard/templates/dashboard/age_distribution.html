@@ -1,19 +1,24 @@
 <link rel="stylesheet" href="/static/css/age_distribution.css">
-<div class="selection_choices">
-  <select id="age_distribution_teams" name="age_distribution_teams">
-    <option value="-1" selected="selected">All teams</option>
-  </select>
-  <select id="age_distribution_states" name="age_distribution_states">
-    <option value="All states" selected="selected">All states</option>
-  </select>
+<div class="page-header">
+    <div class="selection_choices">
+      <select id="age_distribution_teams" name="age_distribution_teams">
+        <option value="-1" selected="selected">All teams</option>
+      </select>
+      <select id="age_distribution_states" name="age_distribution_states">
+        <option value="All states" selected="selected">All states</option>
+      </select>
+    </div>
+    <h1>Age distribution</h1>
 </div>
-<div id="age_distribution_children" class="content_block big_content_block">
-    <h1>Age distribution of children in months</h1>
-    <div id="age_distribution_children_chart" class="chart"></div>
+<div class="panel panel-default content_block big_content_block" id="age_distribution_children">
+    <div class="panel-heading">Age distribution of children in months</div>
+    <div class="panel-body chart" id="age_distribution_children_chart">
+    </div>
 </div>
-<div id="age_distribution_household_members" class="content_block big_content_block">
-    <h1>Age distribution of household members in years</h1>
-    <div id="age_distribution_household_members_chart" class="chart"></div>
+<div class="panel panel-default content_block big_content_block" id="age_distribution_household_members">
+    <div class="panel-heading">Age distribution of household members in years</div>
+    <div class="panel-body chart" id="age_distribution_household_members_chart">
+    </div>
 </div>
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/age_distribution.js"></script>

@@ -1,19 +1,26 @@
 <link rel="stylesheet" href="/static/css/missing_data.css">
-<div class="selection_choices">
-  <select id="missing_data_teams" name="missing_data_teams">
-    <option value="-1" selected="selected">All teams</option>
-  </select>
-  <select id="missing_data_states" name="missing_data_states">
-    <option value="All states" selected="selected">All states</option>
-  </select>
+<div class="page-header">
+    <div class="selection_choices">
+      <select id="missing_data_teams" name="missing_data_teams">
+        <option value="-1" selected="selected">All teams</option>
+      </select>
+      <select id="missing_data_states" name="missing_data_states">
+        <option value="All states" selected="selected">All states</option>
+      </select>
+    </div>
+    <h1>Missing data</h1>
 </div>
-<div id="missing_data_children" class="content_block big_content_block">
-    <h1>Data missing for child surveys</h1>
-    <ul id="missing_data_children_list" class="description_list"></ul>
+<div id="missing_data_children" class="panel panel-default content_block big_content_block">
+    <div class="panel-heading">Data missing for child surveys</div>
+    <div class="panel-body">
+        <ul id="missing_data_children_list" class="description_list"></ul>
+    </div>
 </div>
-<div id="missing_data_women" class="content_block big_content_block">
-    <h1>Data missing for women surveys</h1>
-    <ul id="missing_data_women_list" class="description_list"></ul>
+<div id="missing_data_women" class="panel panel-default content_block big_content_block">
+    <div class="panel-heading">Data missing for women surveys</div>
+    <div class="panel-body">
+        <ul id="missing_data_women_list" class="description_list"></ul>
+    </div>
 </div>
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/missing_data.js"></script>
