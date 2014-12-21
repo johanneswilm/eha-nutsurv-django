@@ -1,12 +1,8 @@
 
 
 div.content_block {
-  border: 1px solid #bfbfbf;
-  padding: 10px;
-  margin: 1em 0.4em;
   display: inline-block;
   flush: left;
-  background-color: white;
   vertical-align: top;
 /*  z-index: 1;*/
 }
@@ -23,6 +19,14 @@ div.full_content_block {
 
 div.full_content_block, div.big_content_block, div.extra_big_content_block {
   min-height: 600px;
+}
+div.full_content_block .panel-body, div.big_content_block .panel-body, div.extra_big_content_block .panel-body {
+ min-height: 557px;
+}
+
+div.selection_choices {
+    display: inline-block;
+    float:right;
 }
 
 div.big_content_block, div.extra_big_content_block {
@@ -42,6 +46,10 @@ div.small_content_block {
 
 div.two_small_content_blocks {
   display: inline-block;
+}
+
+div.alone_block {
+    margin-top: 20px;
 }
 
 
