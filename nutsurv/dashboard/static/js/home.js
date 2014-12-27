@@ -5,7 +5,7 @@ var home = {
         teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
-        home.drawMap();
+        home.createMap();
         dataGetter.addNew(home.urls.survey, home.updateMap, true);
 
         dataGetter.addNew(home.urls.alerts, home.drawAlerts, true);
@@ -13,15 +13,13 @@ var home = {
         dataGetter.addNew(home.urls.survey, home.drawLatestContacts, true);
         dataGetter.addNew(home.urls.teams, home.drawLatestContacts, false);
     },
-    drawMap: function () {
+    createMap: function () {
         var osm = L.tileLayer(map.osmUrl, {
             minZoom: 1,
             maxZoom: 18,
             attribution: false
         });
         home.map = L.map('home_map', {
-            center: [10.9049100685, 7.7650104523],
-            zoom: 6,
             minZoom: 1,
             maxZoom: 18,
             layers: [osm],
@@ -91,5 +89,4 @@ var home = {
 
 
 };
-
 home.initiate();

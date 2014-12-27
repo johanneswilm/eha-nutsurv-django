@@ -3,18 +3,16 @@ var mappingChecks = {
         survey: '/dashboard/aggregatesurveydatajsonview/'
     },
     initiate: function () {
-        mappingChecks.drawMap();
+        mappingChecks.createMap();
         dataGetter.addNew(mappingChecks.urls.survey, mappingChecks.updateMap, true);
     },
-    drawMap: function () {
+    createMap: function () {
       var osm = L.tileLayer(map.osmUrl, {
           minZoom: 1,
           maxZoom: 18,
           attribution: false
       });
         mappingChecks.map = L.map('mapping_checks_map', {
-            center: [10.9049100685, 7.7650104523],
-            zoom: 6,
             minZoom: 1,
             maxZoom: 18,
             layers: [osm],
