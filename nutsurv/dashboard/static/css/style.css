@@ -1,76 +1,24 @@
-
-
-div.content_block {
-  display: inline-block;
-  flush: left;
-  vertical-align: top;
-/*  z-index: 1;*/
-}
 .leaflet-container:-webkit-full-screen{
   display: block;
 }
-.ui-tabs .ui-tabs-panel {
-  padding: 0 !important;
-}
 
-div.full_content_block {
-    width: calc(100% - 34px);
-}
-
-div.full_content_block, div.big_content_block, div.extra_big_content_block {
-  min-height: 600px;
-}
-div.full_content_block .panel-body, div.big_content_block .panel-body, div.extra_big_content_block .panel-body {
- min-height: 557px;
+.map, .chart {
+    height: 500px;
 }
 
 div.selection_choices {
     display: inline-block;
     float:right;
 }
-
-div.big_content_block, div.extra_big_content_block {
-  width: 700px;
-}
-
-@media screen and (min-width: 1100px){
-  div.extra_big_content_block {
-    width: 1100px;
-  }
-}
-
-div.small_content_block {
-  width: 350px;
-  min-height: 300px;
-}
-
-div.two_small_content_blocks {
-  display: inline-block;
-}
-
 div.alone_block {
     margin-top: 20px;
-}
-
-
-@media screen and (max-width: 1560px){
-  div.two_small_content_blocks {
-    width: 350px;
-  }
-}
-
-@media screen and (max-width: 1130px){
-  div.two_small_content_blocks {
-    display: block;
-    width: 100%;
-  }
 }
 
 #last_update_li {
   float: right;
   font-size: 0.7em;
 }
-
+/*
 select {
   min-width: 200px;
 }
@@ -81,9 +29,8 @@ div.selection_choices {
 
 div.chart {
     height: 500px;
-    width: 691px;
 }
-
+*/
 table.dataTable thead th {
     padding-left: 2px !important;
 }
