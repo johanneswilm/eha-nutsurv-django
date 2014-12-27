@@ -245,11 +245,13 @@ function centile(zScoreValue) {
     // try to approximate with a 5-degree polynomial function
     var P1 = (
         1 - 1 / Math.sqrt(2 * Math.PI) * Math.exp(-Math.pow(absVal, 2) / 2)
-        * 0.31938 * (1 / (1 + 0.2316419 * absVal))
-        - 0.356563782 * Math.pow(1 / (1 + 0.2316419 * absVal), 2)
-        + 1.781477937 * Math.pow(1 / (1 + 0.2316419 * absVal), 3)
-        - 1.82125 * Math.pow(1 / (1 + 0.2316419 * absVal), 4)
-        + 1.330274429 * Math.pow(1 / (1 + 0.2316419 * absVal), 5)
+        * (
+            0.31938 * (1 / (1 + 0.2316419 * absVal))
+            - 0.356563782 * Math.pow(1 / (1 + 0.2316419 * absVal), 2)
+            + 1.781477937 * Math.pow(1 / (1 + 0.2316419 * absVal), 3)
+            - 1.82125 * Math.pow(1 / (1 + 0.2316419 * absVal), 4)
+            + 1.330274429 * Math.pow(1 / (1 + 0.2316419 * absVal), 5)
+        )
     );
     P1 *= 100;
     if(zScoreValue < 0)
