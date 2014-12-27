@@ -280,7 +280,16 @@ var dataQuality = {
         }
     },
     updateList: function (data, team, state) {
-        var femaleChildren = 0, maleChildren = 0, oldChildren = 0, youngChildren = 0, currentDate = new Date(), birthDate, monthAge;
+        var femaleChildren = 0,
+            maleChildren = 0,
+            oldChildren = 0,
+            youngChildren = 0,
+            currentDate = new Date(),
+            weights = [],
+            heights = [],
+            MUACs = [],
+            birthDate,
+            monthAge;
 
         _.each(data.survey_data, function(survey) {
 
@@ -313,6 +322,15 @@ var dataQuality = {
                             youngChildren++;
                         }
                     }
+                    if (child.hasOwnProperty('weight')) {
+                        weights.push(child.weight);
+                    }
+                    if (child.hasOwnProperty('height')) {
+                        heights.push(child.height);
+                    }
+                    if (child.hasOwnProperty('muac')) {
+                        MUACs.push(child.muac);
+                    }
                 });
             }
 
@@ -320,6 +338,9 @@ var dataQuality = {
 
         jQuery('#data_quality_gender_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
         jQuery('#data_quality_age_ratio').html(parseInt(youngChildren/oldChildren*100)/100);
+        jQuery('#data_quality_ldps_weight').html(lastDigitPreferenceScore(weights));
+        jQuery('#data_quality_ldps_height').html(lastDigitPreferenceScore(heights));
+        jQuery('#data_quality_ldps_muac').html(lastDigitPreferenceScore(MUACs));
     }
 };
 
