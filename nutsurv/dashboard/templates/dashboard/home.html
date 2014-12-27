@@ -2,13 +2,16 @@
 <div class="page-header">
     <h1>NutSurv Home</h1>
 </div>
-<div class="panel panel-default content_block big_content_block">
-    <div class="panel-heading">Survey map</div>
-    <div class="panel-body" id="home_map">
+<div class="col-md-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">Survey map</div>
+        <div class="panel-body">
+            <div id="home_map" class="map"></div>
+        </div>
     </div>
 </div>
-<div class="two_small_content_blocks">
-    <div class="panel panel-default content_block small_content_block">
+<div class="col-md-4">
+    <div class="panel panel-default">
         <div class="panel-heading">Alerts</div>
         <div class="panel-body">
             <div id="home_alerts">
@@ -16,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div  id="home_last_contact" class="panel panel-default content_block small_content_block">
+    <div  id="home_last_contact" class="panel panel-default">
         <div class="panel-heading">Last contact with teams</div>
         <div class="panel-body">
             <ul id="home_last_contact_list"></ul>
