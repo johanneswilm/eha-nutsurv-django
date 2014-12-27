@@ -1,35 +1,24 @@
-
-
-
 .leaflet-container:-webkit-full-screen{
   display: block;
 }
-.ui-tabs .ui-tabs-panel {
-  padding: 0 !important;
-}
 
-.map {
+.map, .chart {
     height: 500px;
 }
-
 
 div.selection_choices {
     display: inline-block;
     float:right;
 }
-
-
 div.alone_block {
     margin-top: 20px;
 }
-
-
 
 #last_update_li {
   float: right;
   font-size: 0.7em;
 }
-
+/*
 select {
   min-width: 200px;
 }
@@ -41,7 +30,7 @@ div.selection_choices {
 div.chart {
     height: 500px;
 }
-
+*/
 table.dataTable thead th {
     padding-left: 2px !important;
 }
