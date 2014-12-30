@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 
 from models import Alert
+from models import JSONDocument
 
 
 @login_required
@@ -60,15 +61,18 @@ def data_quality(request):
     response = {}
     return render(request, 'dashboard/data_quality.html', response)
 
+
 @login_required
 def personnel(request):
     response = {}
     return render(request, 'dashboard/personnel.html', response)
 
+
 @login_required
 def time_of_data_collection(request):
     response = {}
     return render(request, 'dashboard/time_of_data_collection.html', response)
+
 
 class LoginRequiredView(View):
     @classmethod
@@ -103,14 +107,18 @@ class TeamsJSONView(LoginRequiredView):
             '3': 'Rose, Hannah & Chris'
         }
         """
-        # todo: Get rid of teams_dict below when we know the data format used
-        # todo: in a new mobile app.  Replace this mock-up with code querying
-        # todo: the database and computing the data.
-        teams_dict = {
-            '1': 'John, Daisy & Flint',
-            '2': 'Patrick, Abigail & Stephanie',
-            '3': 'Rose, Hannah & Chris',
-        }
+        docs = JSONDocument.objects.all()
+        teams_dict = {}
+        for doc in docs:
+            team = doc.json['team']
+            team_id = team['teamID']
+            if team_id in teams_dict:
+                continue
+            members = team['members']
+            member_names = [
+                u'%s %s' % (m['firstName'], m['lastName']) for m in members
+            ]
+            teams_dict[team_id] = u'%s, %s & %s' % tuple(member_names)
         return teams_dict
 
 
