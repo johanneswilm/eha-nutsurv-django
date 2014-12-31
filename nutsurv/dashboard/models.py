@@ -65,3 +65,55 @@ class Alert(models.Model):
         else:
             archived = u''
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
+
+
+class ClustersJSON(models.Model):
+    # Set help_text to something else than empty but still invisible so that
+    # the JSONField does not set it to its custom default (we want nothing
+    # displayed).
+    json = JSONField(null=True, blank=True, help_text=' ')
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u'pk: {}; created: {}; last modified: {})'.format(
+            self.pk, self.created, self.last_modified)
+
+    @classmethod
+    def get_most_recently_created(cls):
+        clusters = cls.objects.order_by('-created')
+        if clusters:
+            return clusters[0]
+        else:
+            return None
+
+    @classmethod
+    def get_most_recently_modified(cls):
+        clusters = cls.objects.order_by('-last_modified')
+        if clusters:
+            return clusters[0]
+        else:
+            return None
+
+    @classmethod
+    def get_cluster_from_most_recently_modified(cls, cluster_id):
+        clusters = cls.get_most_recently_modified()
+        if clusters:
+            return clusters.get_cluster(cluster_id)
+        else:
+            return None
+
+    @classmethod
+    def get_cluster_from_most_recently_created(cls, cluster_id):
+        clusters = cls.get_most_recently_created()
+        if clusters:
+            return clusters.get_cluster(cluster_id)
+        else:
+            return None
+
+    def get_cluster(self, cluster_id):
+        cluster = None
+        if 'clusters' in self.json:
+            if str(cluster_id) in self.json['clusters']:
+                cluster = self.json['clusters'][cluster_id]
+        return cluster
