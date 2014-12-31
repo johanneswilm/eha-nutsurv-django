@@ -205,8 +205,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         import random
         return random.choice((True, False))
 
-    @staticmethod
-    def _musa_to_johannes(musa_json):
+    @classmethod
+    def _musa_to_johannes(cls, musa_json):
         """Converts JSON document given as musa_json and containing data from a
         single survey from Musa's format into Johannes's format.  Returns a
         dictionary in the format specified by Johannes.
@@ -243,11 +243,11 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 child['height_type'] = survey['heightType']
                 if child['height_type'] == 'Child Standing (height)':
                     child['height_type'] = 'Child Standing (Height)'
-                child['edema'] = AggregateSurveyDataJSONView._yn_to_yes_no(
+                child['edema'] = cls._yn_to_yes_no(
                     survey['edema'], 'edema')
                 child['birthdate'] = survey['birthDate']
                 child['height'] = float(survey['height'])
-                child['diarrhoea'] = AggregateSurveyDataJSONView._yn_to_yes_no(
+                child['diarrhoea'] = cls._yn_to_yes_no(
                     survey['diarrhoea'], 'diarrhoea')
                 child['zscores'] = {
                     'WAZ': float(survey['zscores']['WAZ']),
@@ -258,28 +258,23 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             elif member['surveyType'] == 'women':
                 survey = member['survey']
                 woman = {}
-                woman['breastfeeding'] = \
-                    AggregateSurveyDataJSONView._yn_to_yes_no(
-                        survey['breastfeeding'], 'breastfeeding')
+                woman['breastfeeding'] = cls._yn_to_yes_no(
+                    survey['breastfeeding'], 'breastfeeding')
                 woman['muac'] = float(survey['muac'])
                 woman['height'] = float(survey['height'])
                 woman['weight'] = float(survey['weight'])
                 woman['age'] = age
-                woman['pregnant'] = AggregateSurveyDataJSONView._yn_to_yes_no(
-                    survey['pregnant'], 'pregnant')
-                woman['ante-natal_care'] = \
-                    AggregateSurveyDataJSONView._yn_to_yes_no(
-                        survey['anteNatalCare'], 'ante-natal_care')
-                woman['ever_pregnant'] = \
-                    AggregateSurveyDataJSONView._yn_to_yes_no(
-                        survey['everPregnant'], 'ever_pregnant')
+                woman['pregnant'] = cls._yn_to_yes_no(survey['pregnant'],
+                                                      'pregnant')
+                woman['ante-natal_care'] = cls._yn_to_yes_no(
+                    survey['anteNatalCare'], 'ante-natal_care')
+                woman['ever_pregnant'] = cls._yn_to_yes_no(
+                    survey['everPregnant'], 'ever_pregnant')
                 output['women_surveys'].append(woman)
 
         # calculate correct_area
-        output['correct_area'] = AggregateSurveyDataJSONView._correct_area(
-            output['cluster'],
-            output['location']
-        )
+        output['correct_area'] = cls._correct_area(output['cluster'],
+                                                   output['location'])
 
         # get rid of empty child_/women_surveys
         if not len(output['child_surveys']):
@@ -288,8 +283,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             del output['women_surveys']
         return output
 
-    @staticmethod
-    def _find_all_surveys():
+    @classmethod
+    def _find_all_surveys(cls):
         """Computes and returns a dictionary containing all available survey
         data in the format requested by Johannes and shown in the following
         example:
@@ -349,7 +344,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         i = 0
         for doc in docs:
             i += 1
-            converted = AggregateSurveyDataJSONView._musa_to_johannes(doc.json)
+            converted = cls._musa_to_johannes(doc.json)
             survey_data[str(i)] = converted
 
         return survey_data
@@ -372,12 +367,12 @@ class AlertsJSONView(LoginRequiredView):
         return HttpResponse(json.dumps(alerts),
                             content_type='application/json')
 
-    @staticmethod
-    def _find_all_alerts():
+    @classmethod
+    def _find_all_alerts(cls):
         """Computes and returns a list of strings each string representing one
         alert.  Archived alerts are not included.  Alerts are sorted by their
         creation date in the reverse chronological order (i.e. the list starts
         from the most recent).
         """
-        alerts = Alert.objects.filter(archived=False).order_by('-created')
+        alerts = cls.objects.filter(archived=False).order_by('-created')
         return [alert.text for alert in alerts]
