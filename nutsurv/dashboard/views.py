@@ -167,9 +167,115 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                             content_type='application/json')
 
     @staticmethod
+    def _yn_to_yes_no(value, attribute_name=''):
+        """Converts 'Y' to 'Yes' and 'N' and an empty string to 'No'.  Raises an
+        exception if any other value received.
+        """
+        if not attribute_name:
+            attribute_name = 'unknown'
+        if value == 'Y':
+            return 'Yes'
+        elif value == 'N' or value == '':
+            return 'No'
+        else:
+            raise ValueError('Invalid value: "%s".  Attribute "%s" must be '
+                             'either Y or N (or an empty string for No).' %
+                             (value, attribute_name))
+
+    @staticmethod
+    def _correct_area(cluster, location):
+        # todo: to be implemented, returning random values for now for testing
+        import random
+        return random.choice((True, False))
+
+    @staticmethod
+    def _musa_to_johannes(musa_json):
+        """Converts JSON document given as musa_json and containing data from a
+        single survey from Musa's format into Johannes's format.  Returns a
+        dictionary in the format specified by Johannes.
+        The conversion may change either or both the name and type of an
+        attribute.
+        Only the information required by Johannes's code is converted.  Unused
+        information is not included to decrease the amount of data sent to the
+        client.
+        """
+        output = {}
+
+        # map the top-level attributes
+        output['location'] = []
+        for c in musa_json['location']:
+            output['location'].append(float(c))
+        output['cluster'] = int(musa_json['cluster'])
+        output['start_time'] = musa_json['startTime']
+        output['end_time'] = musa_json['endTime']
+        output['team'] = int(musa_json['team']['teamID'])
+
+        # map household members
+        output['members'] = []
+        output['child_surveys'] = []
+        output['women_surveys'] = []
+        for member in musa_json['members']:
+            gender = member['gender']
+            age = int(member['age'])
+            output['members'].append({'gender': gender,
+                                      'age': age})
+            if member['surveyType'] == 'child':
+                survey = member['survey']
+                child = {}
+                child['weight'] = float(survey['weight'])
+                child['height_type'] = survey['heightType']
+                if child['height_type'] == 'Child Standing (height)':
+                    child['height_type'] = 'Child Standing (Height)'
+                child['edema'] = AggregateSurveyDataJSONView._yn_to_yes_no(
+                    survey['edema'], 'edema')
+                child['birthdate'] = survey['birthDate']
+                child['height'] = float(survey['height'])
+                child['diarrhoea'] = AggregateSurveyDataJSONView._yn_to_yes_no(
+                    survey['diarrhoea'], 'diarrhoea')
+                child['zscores'] = {
+                    'WAZ': float(survey['zscores']['WAZ']),
+                    'HAZ': float(survey['zscores']['HAZ']),
+                    'WHZ': float(survey['zscores']['WHZ'])
+                }
+                output['child_surveys'].append(child)
+            elif member['surveyType'] == 'women':
+                survey = member['survey']
+                woman = {}
+                woman['breastfeeding'] = \
+                    AggregateSurveyDataJSONView._yn_to_yes_no(
+                        survey['breastfeeding'], 'breastfeeding')
+                woman['muac'] = float(survey['muac'])
+                woman['height'] = float(survey['height'])
+                woman['weight'] = float(survey['weight'])
+                woman['age'] = age
+                woman['pregnant'] = AggregateSurveyDataJSONView._yn_to_yes_no(
+                    survey['pregnant'], 'pregnant')
+                woman['ante-natal_care'] = \
+                    AggregateSurveyDataJSONView._yn_to_yes_no(
+                        survey['anteNatalCare'], 'ante-natal_care')
+                woman['ever_pregnant'] = \
+                    AggregateSurveyDataJSONView._yn_to_yes_no(
+                        survey['everPregnant'], 'ever_pregnant')
+                output['women_surveys'].append(woman)
+
+        # calculate correct_area
+        output['correct_area'] = AggregateSurveyDataJSONView._correct_area(
+            output['cluster'],
+            output['location']
+        )
+
+        # get rid of empty child_/women_surveys
+        if not len(output['child_surveys']):
+            del output['child_surveys']
+        if not len(output['women_surveys']):
+            del output['women_surveys']
+        return output
+
+    @staticmethod
     def _find_all_surveys():
-        """Computes and returns a dictionary containing team data in the format
-        requested by Johannes and shown in the following example:
+        """Computes and returns a dictionary containing all available survey
+        data in the format requested by Johannes and shown in the following
+        example:
         {
             '1': {
                 'location': [6.9249100685,
@@ -219,439 +325,16 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             },
         }
         """
-        # todo: Get rid of survey_data below when we know the data format used
-        # todo: in a new mobile app.  Replace this mock-up with code querying
-        # todo: the database and computing the data.
-        survey_data = {
-            '1': {
-                'location': [6.9249100685,
-                             8.6650104523
-                ],
-                'correct_area': True,
-                'cluster': 657,
-                'start_time': '2014-10-18T20:01:21',
-                'end_time': '2014-10-18T20:43:23',
-                'team': 1,
-                'members': [{
-                                'gender': 'M',
-                                'age': 40
-                            }, {
-                                'gender': 'M',
-                                'age': 17
-                            }, {
-                                'gender': 'M',
-                                'age': 15
-                            }, {
-                                'gender': 'M',
-                                'age': 10
-                            }, {
-                                'gender': 'M',
-                                'age': 4
-                            }, {
-                                'gender': 'F',
-                                'age': 30
-                            }, {
-                                'gender': 'F',
-                                'age': 18
-                            }, {
-                                'gender': 'F',
-                                'age': 23
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'Yes',
-                                      'muac': 25.3,
-                                      'height': 165.9,
-                                      'weight': 56.0,
-                                      'age': 30,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }, {
-                                      'breastfeeding': 'Yes',
-                                      'muac': 35.2,
-                                      'height': 157.9,
-                                      'weight': 61.0,
-                                      'age': 18,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }, {
-                                      'breastfeeding': 'No',
-                                      'muac': 29.8,
-                                      'height': 170.9,
-                                      'weight': 75.0,
-                                      'age': 23,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'Yes'
-                                  }],
-                'child_surveys': [{
-                                      'muac': 25.1,
-                                      'gender': 'M',
-                                      'weight': 45.0,
-                                      'height_type': 'Child Standing (Height)',
-                                      'edema': 'No',
-                                      'birthdate': '2009-10-18',
-                                      'height': 35.2,
-                                      'diarrhoea': 'No',
-                                      'zscores': {
-                                          'WAZ': 4.4,
-                                          'HAZ': 0.9,
-                                          'WHZ': 0.8
-                                      }
-                                  }]
-            },
-            '2': {
-                'location': [6.8249100685,
-                             8.1650104523
-                ],
-                'correct_area': True,
-                'cluster': 657,
-                'start_time': '2014-10-18T20:12:56',
-                'end_time': '2014-10-18T20:57:23',
-                'team': 1,
-                'members': [{
-                                'gender': 'M',
-                                'age': 40
-                            }, {
-                                'gender': 'M',
-                                'age': 17
-                            }, {
-                                'gender': 'M',
-                                'age': 4
-                            }, {
-                                'gender': 'F',
-                                'age': 32
-                            }, {
-                                'gender': 'F',
-                                'age': 19
-                            }, {
-                                'gender': 'F',
-                                'age': 17
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'No',
-                                      'muac': 15.2,
-                                      'height': 155.9,
-                                      'weight': 55.0,
-                                      'age': 32,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'No'
-                                  }, {
-                                      'breastfeeding': 'Yes',
-                                      'muac': 35.2,
-                                      'height': 157.9,
-                                      'weight': 61.0,
-                                      'age': 19,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }, {
-                                      'breastfeeding': 'No',
-                                      'muac': 29.8,
-                                      'height': 170.9,
-                                      'weight': 75.0,
-                                      'age': 17,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'Yes'
-                                  }],
-                'child_surveys': [{
-                                      'muac': 18.9,
-                                      'gender': 'M',
-                                      'weight': 45.0,
-                                      'height_type': 'Child Standing (Height)',
-                                      'edema': 'No',
-                                      'birthdate': '2009-04-18',
-                                      'height': 35.2,
-                                      'diarrhoea': 'No',
-                                      'zscores': {
-                                          'WAZ': 0.4,
-                                          'HAZ': 1.1,
-                                          'WHZ': 0.4
-                                      }
-                                  }]
-            },
-            '3': {
-                'location': [6.9049100685,
-                             8.7650104523
-                ],
-                'correct_area': False,
-                'cluster': 658,
-                'start_time': '2014-10-18T20:16:24',
-                'end_time': '2014-10-18T20:56:23',
-                'team': 1,
-                'members': [{
-                                'gender': 'M',
-                                'age': 34
-                            }, {
-                                'gender': 'F',
-                                'age': 18
-                            }, {
-                                'gender': 'F',
-                                'age': 19
-                            }, {
-                                'gender': 'F',
-                                'age': 17
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'No',
-                                      'muac': 47.7,
-                                      'height': 155.9,
-                                      'weight': 55.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'No'
-                                  }, {
-                                      'breastfeeding': 'No',
-                                      'muac': 25.3,
-                                      'height': 165.9,
-                                      'weight': 56.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'No'
-                                  }, {
-                                      'breastfeeding': 'No',
-                                      'muac': 29.8,
-                                      'height': 170.9,
-                                      'weight': 75.0,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'No'
-                                  }]
-            },
-            '4': {
-                'location': [6.8749100685,
-                             8.8650104523
-                ],
-                'correct_area': False,
-                'cluster': 659,
-                'start_time': '2014-10-18T20:14:48',
-                'end_time': '2014-10-18T21:33:23',
-                'team': 2,
-                'members': [{
-                                'gender': 'M',
-                                'age': 18
-                            }, {
-                                'gender': 'M',
-                                'age': 15
-                            }, {
-                                'gender': 'F',
-                                'age': 16
-                            }, {
-                                'gender': 'F',
-                                'age': 16
-                            }, {
-                                'gender': 'F',
-                                'age': 16
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'No',
-                                      'muac': 15.2,
-                                      'height': 155.9,
-                                      'weight': 55.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'No'
-                                  }, {
-                                      'breastfeeding': 'Yes',
-                                      'muac': 25.3,
-                                      'height': 165.9,
-                                      'weight': 56.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }, {
-                                      'breastfeeding': 'Yes',
-                                      'muac': 35.2,
-                                      'height': 157.9,
-                                      'weight': 61.0,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }]
-            },
-            '5': {
-                'location': [6.9920101166,
-                             8.7965202332
-                ],
-                'correct_area': True,
-                'cluster': 659,
-                'start_time': '2014-10-18T18:21:20',
-                'end_time': '2014-10-18T18:23:23',
-                'team': 3,
-                'members': [{
-                                'gender': 'M',
-                                'age': 15
-                            }, {
-                                'gender': 'M',
-                                'age': 0
-                            }, {
-                                'gender': 'F',
-                                'age': 2
-                            }, {
-                                'gender': 'F',
-                                'age': 18
-                            }, {
-                                'gender': 'F',
-                                'age': 23
-                            }, {
-                                'gender': 'F',
-                                'age': 21
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'No',
-                                      'muac': 15.2,
-                                      'height': 155.9,
-                                      'weight': 55.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'No'
-                                  }, {
-                                      'breastfeeding': 'Yes',
-                                      'muac': 25.3,
-                                      'height': 165.9,
-                                      'weight': 56.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }, {
-                                      'breastfeeding': 'No',
-                                      'muac': 29.8,
-                                      'height': 170.9,
-                                      'weight': 75.0,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'Yes'
-                                  }],
-                'child_surveys': [{
-                                      'weight': 45.0,
-                                      'gender': 'M',
-                                      'height_type': 'Child Standing (Height)',
-                                      'edema': 'No',
-                                      'birthdate': '2012-09-19',
-                                      'height': 35.2,
-                                      'diarrhoea': 'No',
-                                      'zscores': {
-                                          'WAZ': 0.1,
-                                          'HAZ': 0.2,
-                                          'WHZ': 0.1
-                                      }
-                                  }, {
-                                      'muac': 28.9,
-                                      'gender': 'F',
-                                      'weight': 45.0,
-                                      'height_type': 'Child Standing (Height)',
-                                      'edema': 'No',
-                                      'birthdate': '2014-11-02',
-                                      'height': 35.2,
-                                      'diarrhoea': 'No',
-                                      'zscores': {
-                                          'WAZ': -8.4,
-                                          'HAZ': -2.3,
-                                          'WHZ': 1.5
-                                      }
-                                  }]
-            },
-            '6': {
-                'location': [6.9920101166,
-                             8.8165202332
-                ],
-                'correct_area': False,
-                'cluster': 659,
-                'start_time': '2014-10-18T18:17:18',
-                'end_time': '2014-10-18T18:28:14',
-                'team': 3,
-                'members': [{
-                                'gender': 'M',
-                                'age': 25
-                            }, {
-                                'gender': 'M',
-                                'age': 20
-                            }, {
-                                'gender': 'F',
-                                'age': 28
-                            }, {
-                                'gender': 'F',
-                                'age': 33
-                            }, {
-                                'gender': 'F',
-                                'age': 31
-                            }, {
-                                'gender': 'F',
-                                'age': 2
-                            }, {
-                                'gender': 'M',
-                                'age': 2
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'No',
-                                      'muac': 17.2,
-                                      'height': 157.8,
-                                      'weight': 54.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'No'
-                                  }, {
-                                      'muac': 25.3,
-                                      'height': 165.9,
-                                      'weight': 56.0,
-                                      'pregnant': 'No',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }, {
-                                      'muac': 35.2,
-                                      'height': 157.9,
-                                      'weight': 61.0,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'Yes',
-                                      'ever_pregnant': 'Yes'
-                                  }]
-            },
-            '7': {
-                'location': [6.9920101166,
-                             8.5965202332
-                ],
-                'correct_area': True,
-                'cluster': 659,
-                'start_time': '2014-10-18T18:34:07',
-                'end_time': '2014-10-18T19:02:56',
-                'team': 3,
-                'members': [{
-                                'gender': 'M',
-                                'age': 15
-                            }, {
-                                'gender': 'M',
-                                'age': 2
-                            }, {
-                                'gender': 'F',
-                                'age': 30
-                            }],
-                'women_surveys': [{
-                                      'breastfeeding': 'No',
-                                      'muac': 29.8,
-                                      'height': 170.9,
-                                      'pregnant': 'Yes',
-                                      'ante-natal_care': 'No',
-                                      'ever_pregnant': 'Yes'
-                                  }],
-                'child_surveys': [{
-                                      'muac': 28.4,
-                                      'gender': 'M',
-                                      'height_type': 'Child Standing (Height)',
-                                      'edema': 'No',
-                                      'birthdate': '2012-06-08',
-                                      'height': 35.2,
-                                      'diarrhoea': 'No',
-                                      'zscores': {
-                                          'WAZ': 1.1,
-                                          'HAZ': -1.7,
-                                          'WHZ': 1.3
-                                      }
-                                  }]
-            }
-        }
+        # get all JSON documents
+        docs = JSONDocument.objects.all()
+        survey_data = {}
+        # convert all documents
+        i = 0
+        for doc in docs:
+            i += 1
+            converted = AggregateSurveyDataJSONView._musa_to_johannes(doc.json)
+            survey_data[str(i)] = converted
+
         return survey_data
 
 
