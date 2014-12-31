@@ -367,12 +367,12 @@ class AlertsJSONView(LoginRequiredView):
         return HttpResponse(json.dumps(alerts),
                             content_type='application/json')
 
-    @classmethod
+    @staticmethod
     def _find_all_alerts(cls):
         """Computes and returns a list of strings each string representing one
         alert.  Archived alerts are not included.  Alerts are sorted by their
         creation date in the reverse chronological order (i.e. the list starts
         from the most recent).
         """
-        alerts = cls.objects.filter(archived=False).order_by('-created')
+        alerts = Alert.objects.filter(archived=False).order_by('-created')
         return [alert.text for alert in alerts]
