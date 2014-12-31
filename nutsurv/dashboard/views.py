@@ -141,14 +141,31 @@ class ClustersPerTeamJSONView(LoginRequiredView):
 
     @staticmethod
     def _compute_clusters_per_team():
-        # todo: Get rid of clusters_per_team_dict below when we know the data
-        # todo: format used in a new mobile app.  Replace this mock-up with
-        # todo: code querying the database and computing the data.
-        clusters_per_team_dict = {
-            '1': 5,
-            '2': 15,
-            '3': 17
+        """Computes and returns a dictionary containing information about
+        distinct clusters per team in the format requested by Johannes and
+        shown in the example below:
+        {
+            "teams": {
+                "1": 5,
+                "2": 15,
+                "3": 17
+            }
         }
+        """
+        # get all JSON documents
+        docs = JSONDocument.objects.all()
+        clusters_per_team_dict = {}
+        # parse all documents and gather the data
+        for doc in docs:
+            team_id = doc.json['team']['teamID']
+            cluster = doc.json['cluster']
+            if team_id not in clusters_per_team_dict:
+                clusters_per_team_dict[team_id] = set()
+            clusters_per_team_dict[team_id].add(cluster)
+        # count distinct clusters for each team
+        for team_id in clusters_per_team_dict:
+            clusters = len(clusters_per_team_dict[team_id])
+            clusters_per_team_dict[team_id] = clusters
         return clusters_per_team_dict
 
 
