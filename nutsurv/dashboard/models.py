@@ -113,7 +113,10 @@ class ClustersJSON(models.Model):
 
     def get_cluster(self, cluster_id):
         cluster = None
+        # The cluster JSON data provided stores cluster_ids as strings and some
+        # other parts of the system use integers for that.
+        cluster_id = str(cluster_id)
         if 'clusters' in self.json:
-            if str(cluster_id) in self.json['clusters']:
+            if cluster_id in self.json['clusters']:
                 cluster = self.json['clusters'][cluster_id]
         return cluster
