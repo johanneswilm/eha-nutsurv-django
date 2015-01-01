@@ -53,7 +53,7 @@ Add structure to the database:
 
 Load some test data:
 
-./manage.py loaddata testdata
+    ./manage.py loaddata testdata
 
 
 Run the server:
