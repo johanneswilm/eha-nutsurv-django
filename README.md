@@ -51,9 +51,16 @@ Add structure to the database:
 
     ./manage.py migrate
 
-Run it:
+Load some test data:
 
-    ./manage.py
+./manage.py loaddata testdata
+
+
+Run the server:
+
+    ./manage.py runserver
+
+Access it in your web browser at http://localhost:8000/
 
 ===================
 
