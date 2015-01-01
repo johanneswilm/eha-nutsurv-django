@@ -6,6 +6,8 @@ from django.views.generic import View
 
 from models import Alert
 from models import JSONDocument
+from models import ClustersJSON
+from models import LGA
 
 
 @login_required
@@ -200,10 +202,26 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                              (value, attribute_name))
 
     @staticmethod
-    def _correct_area(cluster, location):
-        # todo: to be implemented, returning random values for now for testing
-        import random
-        return random.choice((True, False))
+    def _correct_area(cluster_id, location):
+        # get cluster data
+        cluster = ClustersJSON.get_cluster_from_most_recently_modified(
+            cluster_id)
+        # if cluster data not found, assume location incorrect
+        if cluster is None:
+            return False
+        # if cluster data found, get state and LGA
+        lga_name = cluster.get('lga_name', None)
+        state_name = cluster.get('state_name', None)
+        # if LGA and state names not found, assume location incorrect
+        if not (lga_name and state_name):
+            return False
+        # if state and LGA found, check the location
+        lga = LGA.find_lga(name=lga_name, state_name=state_name)
+        if lga is None:
+            # if no LGA found, assume location incorrect
+            return False
+        else:
+            return lga.contains_location(location)
 
     @classmethod
     def _musa_to_johannes(cls, musa_json):

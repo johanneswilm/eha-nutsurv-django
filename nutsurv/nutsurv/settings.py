@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'dashboard',
     'tastypie',
     'accounts'
@@ -61,7 +62,7 @@ WSGI_APPLICATION = 'nutsurv.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'nutsurv_dev',
         'USER': 'nutsurv_dev',
         'PASSWORD': 'nutsurv_dev_password',
