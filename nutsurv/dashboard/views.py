@@ -386,7 +386,7 @@ class AlertsJSONView(LoginRequiredView):
                             content_type='application/json')
 
     @staticmethod
-    def _find_all_alerts(cls):
+    def _find_all_alerts():
         """Computes and returns a list of strings each string representing one
         alert.  Archived alerts are not included.  Alerts are sorted by their
         creation date in the reverse chronological order (i.e. the list starts
