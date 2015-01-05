@@ -289,8 +289,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 657,
-                'start_time': '2014-10-18T19:56:23',
-                'end_time': '2014-10-18T20:43:23',
+                'startTime': '2014-10-18T19:56:23',
+                'endTime': '2014-10-18T20:43:23',
                 'team': 1,
                 'members': [
                     {
@@ -301,25 +301,25 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'women_surveys': [
                     {
-                        'breastfeeding': 'Yes',
+                        'breastfeeding': 'Y',
                         'muac': 25.3,
                         'height': 165.9,
                         'weight': 56.0,
                         'age': 30,
-                        'pregnant': 'No',
-                        'ante-natal_care': 'Yes',
-                        'ever_pregnant': 'Yes'
+                        'pregnant': 'N',
+                        'ante-natal_care': 'Y',
+                        'ever_pregnant': 'Y'
                     },
                     ...
                 ],
                 'child_surveys': [
                     {
                         'weight': 45.0,
-                        'height_type': 'Child Standing (Height)',
-                        'edema': 'No',
-                        'birthdate': '2009-10-18',
+                        'heightType': 'Child Standing (height)',
+                        'edema': 'N',
+                        'birthDate': '2009-10-18',
                         'height': 35.2,
-                        'diarrhoea': 'No',
+                        'diarrhoea': 'N',
                         'zscores': {
                             'WAZ': 3.1,
                             'HAZ': -1.7,
