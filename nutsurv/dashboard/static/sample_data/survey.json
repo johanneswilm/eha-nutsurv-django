@@ -35,7 +35,7 @@
                 "age": 23
             }],
             "women_surveys": [{
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
@@ -44,7 +44,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
@@ -53,7 +53,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
@@ -106,7 +106,7 @@
                 "age": 17
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
@@ -115,7 +115,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "No"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
@@ -124,7 +124,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
@@ -172,7 +172,7 @@
                 "age": 17
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
@@ -180,7 +180,7 @@
                 "ante-natal_care": "No",
                 "ever_pregnant": "No"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
@@ -188,7 +188,7 @@
                 "ante-natal_care": "No",
                 "ever_pregnant": "No"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
@@ -223,7 +223,7 @@
                 "age": 16
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
@@ -231,7 +231,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "No"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
@@ -239,7 +239,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
@@ -277,7 +277,7 @@
                 "age": 21
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
@@ -285,7 +285,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "No"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
@@ -293,7 +293,7 @@
                 "ante-natal_care": "Yes",
                 "ever_pregnant": "Yes"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
@@ -362,7 +362,7 @@
                 "age": 2
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 17.2,
                 "height": 157.8,
                 "weight": 54.0,
@@ -405,7 +405,7 @@
                 "age": 30
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "pregnant": "Yes",

@@ -272,8 +272,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             elif member['surveyType'] == 'women':
                 survey = member['survey']
                 woman = {}
-                woman['breastfeeding'] = cls._yn_to_yes_no(
-                    survey['breastfeeding'], 'breastfeeding')
+                woman['breastfeeding'] = survey['breastfeeding']
                 woman['muac'] = float(survey['muac'])
                 woman['height'] = float(survey['height'])
                 woman['weight'] = float(survey['weight'])
