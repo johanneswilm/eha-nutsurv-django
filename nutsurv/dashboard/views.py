@@ -259,8 +259,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 child = {}
                 child['weight'] = float(survey['weight'])
                 child['heightType'] = survey['heightType']
-                child['edema'] = cls._yn_to_yes_no(
-                    survey['edema'], 'edema')
+                child['edema'] = survey['edema']
                 child['birthDate'] = survey['birthDate']
                 child['height'] = float(survey['height'])
                 child['diarrhoea'] = cls._yn_to_yes_no(
