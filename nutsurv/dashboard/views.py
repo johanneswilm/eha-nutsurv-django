@@ -186,22 +186,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                             content_type='application/json')
 
     @staticmethod
-    def _yn_to_yes_no(value, attribute_name=''):
-        """Converts 'Y' to 'Yes' and 'N' and an empty string to 'No'.  Raises an
-        exception if any other value received.
-        """
-        if not attribute_name:
-            attribute_name = 'unknown'
-        if value == 'Y':
-            return 'Yes'
-        elif value == 'N' or value == '':
-            return 'No'
-        else:
-            raise ValueError('Invalid value: "%s".  Attribute "%s" must be '
-                             'either Y or N (or an empty string for No).' %
-                             (value, attribute_name))
-
-    @staticmethod
     def _correct_area(cluster_id, location):
         # get cluster data
         cluster = ClustersJSON.get_cluster_from_most_recently_modified(
@@ -277,12 +261,9 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 woman['height'] = float(survey['height'])
                 woman['weight'] = float(survey['weight'])
                 woman['age'] = age
-                woman['pregnant'] = cls._yn_to_yes_no(survey['pregnant'],
-                                                      'pregnant')
-                woman['ante-natal_care'] = cls._yn_to_yes_no(
-                    survey['anteNatalCare'], 'ante-natal_care')
-                woman['ever_pregnant'] = cls._yn_to_yes_no(
-                    survey['everPregnant'], 'ever_pregnant')
+                woman['pregnant'] = survey['pregnant']
+                woman['ante-natal_care'] = survey['ante-natal_care']
+                woman['ever_pregnant'] = survey['ever_pregnant']
                 output['women_surveys'].append(woman)
 
         # calculate correct_area

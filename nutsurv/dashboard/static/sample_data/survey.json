@@ -40,27 +40,27 @@
                 "height": 165.9,
                 "weight": 56.0,
                 "age": 30,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
                 "age": 18,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
                 "age": 23,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }],
             "child_surveys" : [{
                 "weight": 45.0,
@@ -111,27 +111,27 @@
                 "height": 155.9,
                 "weight": 55.0,
                 "age": 32,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "N"
             }, {
                 "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
                 "age": 19,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
                 "age": 17,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }] ,
             "child_surveys" : [{
                 "muac": 35.2,
@@ -176,25 +176,25 @@
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
-                "pregnant": "No",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }, {
                 "breastfeeding": "N",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }, {
                 "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }]
         },
         "4": {
@@ -227,25 +227,25 @@
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "N"
             }, {
                 "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }]
         },
         "5": {
@@ -281,25 +281,25 @@
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "N"
             }, {
                 "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }],
             "child_surveys" : [{
                 "muac": 35.2,
@@ -366,23 +366,23 @@
                 "muac": 17.2,
                 "height": 157.8,
                 "weight": 54.0,
-                "pregnant": "No",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }, {
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }]
         },
         "7": {
@@ -408,9 +408,9 @@
                 "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }],
             "child_surveys" : [{
                 "muac": 35.2,
