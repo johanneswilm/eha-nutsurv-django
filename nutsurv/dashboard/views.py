@@ -241,8 +241,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         for c in musa_json['location']:
             output['location'].append(float(c))
         output['cluster'] = int(musa_json['cluster'])
-        output['start_time'] = musa_json['startTime']
-        output['end_time'] = musa_json['endTime']
+        output['startTime'] = musa_json['startTime']
+        output['endTime'] = musa_json['endTime']
         output['team'] = int(musa_json['team']['teamID'])
 
         # map household members

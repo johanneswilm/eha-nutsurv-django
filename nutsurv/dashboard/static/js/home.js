@@ -66,10 +66,10 @@ var home = {
             if (!latestContact) {
                 latestTeamContacts.push({
                     team: survey.team,
-                    time: survey.end_time
+                    time: survey.endTime
                 });
-            } else if (latestContact.time < survey.end_time) {
-                latestContact.time = survey.end_time;
+            } else if (latestContact.time < survey.endTime) {
+                latestContact.time = survey.endTime;
             }
         });
         latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();

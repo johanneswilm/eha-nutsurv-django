@@ -50,7 +50,7 @@ var personnel = {
 
         _.each(surveyData, function(survey, id) {
             var teamMembers = _.where(perPersonnelData, {team: survey.team}),
-            surveyDate = survey.end_time.split('T')[0];
+            surveyDate = survey.endTime.split('T')[0];
 
             if (teamMembers.length > 0 && teamMembers[0].date < surveyDate) {
                 _.each(teamMembers, function(teamMember) {
