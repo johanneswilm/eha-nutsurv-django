@@ -67,7 +67,7 @@
                 "gender": "M",
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
-                "birthdate": "2009-10-18",
+                "birthDate": "2009-10-18",
                 "height": 35.2,
                 "diarrhoea": "No",
                 "zscores": {
@@ -139,7 +139,7 @@
                 "weight": 45.0,
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
-                "birthdate": "2009-04-18",
+                "birthDate": "2009-04-18",
                 "height": 35.2,
                 "diarrhoea": "No",
                 "zscores": {
@@ -307,7 +307,7 @@
                 "weight": 45.0,
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
-                "birthdate": "2012-09-19",
+                "birthDate": "2012-09-19",
                 "height": 35.2,
                 "diarrhoea": "No",
                 "zscores": {
@@ -320,7 +320,7 @@
                 "weight": 45.0,
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
-                "birthdate": "2014-11-02",
+                "birthDate": "2014-11-02",
                 "height": 35.2,
                 "diarrhoea": "No",
                 "zscores": {
@@ -417,7 +417,7 @@
                 "gender": "M",
                 "height_type": "Child Standing (Height)",
                 "edema":  "No",
-                "birthdate": "2012-06-08",
+                "birthDate": "2012-06-08",
                 "height": 35.2,
                 "diarrhoea": "No",
                 "zscores": {

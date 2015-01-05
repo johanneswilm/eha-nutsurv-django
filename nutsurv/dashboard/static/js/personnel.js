@@ -38,8 +38,8 @@ var personnel = {
                     date: '',
                     team: personnel.team
                 },
-                birthdate = new Date(personnel.birthdate),
-                ageDiff = Date.now() - birthdate.getTime(),
+                birthDate = new Date(personnel.birthDate),
+                ageDiff = Date.now() - birthDate.getTime(),
                 ageDate = new Date(ageDiff),
                 age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
