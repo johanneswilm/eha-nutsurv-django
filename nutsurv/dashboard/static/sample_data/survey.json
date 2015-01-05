@@ -69,7 +69,7 @@
                 "edema":  "N",
                 "birthDate": "2009-10-18",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -141,7 +141,7 @@
                 "edema":  "N",
                 "birthDate": "2009-04-18",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -309,7 +309,7 @@
                 "edema":  "N",
                 "birthDate": "2012-09-19",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -322,7 +322,7 @@
                 "edema":  "N",
                 "birthDate": "2014-11-02",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -419,7 +419,7 @@
                 "edema":  "N",
                 "birthDate": "2012-06-08",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
