@@ -1,5 +1,23 @@
 function NotImplementedException() {}
 
+
+function isUnknownOrNaN(value) {
+    return isNaN(parseFloat(value)) || !isFinite(value)
+}
+
+
+function roundFloat(number, decimalPlaces) {
+    if(isUnknownOrNaN(decimalPlaces))
+        decimalPlaces = 2;
+    else if(decimalPlaces < 0)
+        decimalPlaces = 0;
+    else
+        decimalPlaces = parseInt(decimalPlaces);
+    var p = Math.pow(10, decimalPlaces);
+    return Math.round(number * p) / p;
+}
+
+
 // Lists all the 'logical' indicators, i.e. considering W4L and W4H to
 // be one indicator.
 var Indicator = {
@@ -224,7 +242,6 @@ function ReferenceData(x, y, l, m, s) {
     }
 }
 
-// #region Public methods - anthro results
 
 // Structure that contains the pair-value {Z-score, Percentile}
 // Creates a new indicator value, setting Z and P to 'undefined' unless given.
@@ -316,9 +333,67 @@ function get4AgeIndicatorReference(ind, sex, ageInDays) {
 }
 
 
+// Crops a value to a defined precision.
+// If the value is too large for truncation to the specified number of decimal
+// places, the method simply truncates the value to an integer.
+// Precision set to 2 by default in case invalid value or no value passed.
+// Warning: this function does its job for small values of 'value' and precision
+// as intended but leads to the loss of precision in case of large numbers so
+// please do not use it as a general-purpose symetric crop function for
+// different data sets.
+function symetricCrop(value, precision) {
+    if(isUnknownOrNaN(value))
+        return value;
+    if(isUnknownOrNaN(precision))
+        precision = 2;
+    else if(precision < 0)
+        precision = 0;
+    else
+        precision = parseInt(precision);
+
+    var output = parseInt(value);
+    var ten_to_precision = Math.pow(10, precision);
+    if(!isFinite(ten_to_precision))
+        return output;
+    var step = value * ten_to_precision;
+    if(!isFinite(step) || isNaN(step))
+        return output;
+    step = parseInt(step) / ten_to_precision;
+    if(!isFinite(step) || isNaN(step))
+        return output;
+    else
+        return step;
+}
+
+
+/* This function assumes access to function get4LengthOrHeightRefData(ind, sex,
+   lengthOrHeight, interpolate) which provides L, M, S for a given sex,
+   'lengthOrHeight' and 'interpolate' from whatever database they are stored in.
+   This function and the function it assumes access to are analogous to
+   functions used to provide similar functionality for age-related indicators so
+   please see comment preceding function get4AgeIndicatorReference() above to
+   understand how to write get4LengthOrHeightRefData()).
+*/
+function get4LengthOrHeightIndicatorReference(ind, sex, lengthOrHeight) {
+    var croppedLH = symetricCrop(lengthOrHeight, 1);
+    var interpolate = (croppedLH != lengthOrHeight);
+    if(!_useReferenceTablesCache) {
+        var data = get4LengthOrHeightRefData(ind, sex, lengthOrHeight,
+            interpolate);
+        if(data.length > 0)
+            return new ReferenceData(lengthOrHeight, undefined,
+                data[0]['L'], data[0]['M'], data[0]['S']);
+        else
+            // if no data have been found from the DB, we return extreme values
+            return new ReferenceData();
+    }
+    else
+        throw new NotImplementedException();
+}
+
+
 /* Given a ReferenceData structure, this method returns a result with the
-correct P and Z (N.B. following the Python implementation it does not calculate
-P).
+correct P and Z.
  Arguments: ReferenceData refDat,
             boolean computeFinalZScore - specifies if final z-score must be
                                          computed. False for HC4A and H4A
@@ -379,7 +454,9 @@ function calculateZandP(refDat, computeFinalZScore) {
     return output
 }
 
-// Computes the weight-for-age indicator result based on the Python code.
+
+// Computes the weight-for-age indicator (aka WAZ) result based on the Python
+// code.
 // Compared to the Python code, the C# implementation had one more argument -
 // AnthroMode currentStandards - used to choose between the WHO and NCHS
 // reference data.
@@ -397,7 +474,7 @@ function computeWeight4Age(ageInDays, weight, sex, hasOedema) {
 }
 
 
-// Computes the length/height-for-age indicator result.
+// Computes the length/height-for-age indicator result (aka HAZ).
 // Compared to the Python code, the C# implementation had one more argument -
 // AnthroMode currentStandards - used to choose between the WHO and NCHS
 // reference data.
@@ -413,6 +490,43 @@ function computeLengthOrHeight4Age(ageInDays, lengthOrHeight, sex) {
 
     return calculateZandP(rd, false);
 }
+
+
+// Computes the weight-for-length/height indicator result (aka WHZ).
+// Compared to the Python code, the C# implementation had one more argument -
+// AnthroMode currentStandards - used to choose between the WHO and NCHS
+// reference data.
+// <param name="weight">In kg.</param>
+// <param name="lengthOrHeight">In cm.</param>
+// <param name="sex"></param>
+// <param name="useLength">true if the value passed for lengthOrHeight is a
+//      length, not a height.</param>
+// <param name="hasOedema">true or false</param>
+function computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength,
+                                      hasOedema) {
+    if(hasOedema || !(weight >= INPUT_MINWEIGHT))
+        return new IndicatorValue();
+
+    var rd;
+    if(useLength) {
+        if(lengthOrHeight >= MINLENGTH && lengthOrHeight <= MAXLENGTH)
+            rd = get4LengthOrHeightIndicatorReference(
+                GraphIndicator.Weight4Length, sex, lengthOrHeight);
+        else
+            return new IndicatorValue();
+    }
+    else {
+        if(lengthOrHeight >= MINHEIGHT && lengthOrHeight <= MAXHEIGHT)
+            rd = get4LengthOrHeightIndicatorReference(
+                GraphIndicator.Weight4Height, sex, lengthOrHeight);
+        else
+            return new IndicatorValue();
+    }
+
+    rd.Y = weight;
+    return calculateZandP(rd, true);
+}
+
 
 // Computes the anthro result for the given raw data values.
 //C#        /// Unknown argument values must be passed with null (e.g. do NOT use
@@ -430,47 +544,72 @@ function getAnthroResult(ageInDays, sex, weight, height, isRecumbent,
     var ar = new AnthropometricResult();
     ar.sex = sex;
     //check if we have enough data to compute at least one indicator
-    function isUnknown(value) {
-        return isNaN(parseFloat(value)) || !isFinite(value)
-    }
-    ar.ageUnknown = isUnknown(ageInDays);
-    ar.heightUnknown = isUnknown(height);
+    ar.ageUnknown = isUnknownOrNaN(ageInDays);
+    ar.heightUnknown = isUnknownOrNaN(height);
 
     if(sex === undefined || sex === null ||
-        (isUnknown(ageInDays) && isUnknown(height)))
+        (isUnknownOrNaN(ageInDays) && isUnknownOrNaN(height)))
         return ar; // not enough data to compute any indicator
 
     // check weight
-    if(isUnknown(weight))
+    if(isUnknownOrNaN(weight))
         ar.weight = NaN;
     else
         ar.weight = weight;
 
     // prepare for length/height adjustment
-    ar.LengthOrHeightAdjusted = NaN;
-    ar.IsLength = isRecumbent;
-    if(!isUnknown(ageInDays)) {
+    ar.lengthOrHeightAdjusted = NaN;
+    ar.isLength = isRecumbent;
+    if(!isUnknownOrNaN(ageInDays)) {
         ar.ageInDays = ageInDays;
+
         // first: check & adjust length/height
-        if(!isUnknown(height)) {
-            var adjusted = getAdjustedLengthOrHeight(Math.round(ar.AgeInDays),
+        if(!isUnknownOrNaN(height)) {
+            var adjusted = getAdjustedLengthOrHeight(Math.round(ar.ageInDays),
                 height, isRecumbent);
             ar.lengthOrHeightAdjusted = adjusted.lengthOrHeight;
             ar.isLength = adjusted.isLength;
-
-            var ivw = computeWeight4Age(ar.ageInDays, ar.weight, ar.sex,
-                hasOedema);
-            ar.PW4A = ivw.P;
-            ar.ZW4A = ivw.Z;
-
-            // length/height-for-age
-            var ivh = computeLengthOrHeight4Age(
-                ar.ageInDays, ar.lengthOrHeightAdjusted, ar.sex);
-            ar.ZLH4A = ivh.Z;
-            ar.PLH4A = ivh.P;
         }
+
+        // WAZ
+        var ivw = computeWeight4Age(ar.ageInDays, ar.weight, ar.sex, hasOedema);
+        ar.PW4A = ivw.P;
+        ar.ZW4A = ivw.Z;
+
+        // length/height-for-age aka HAZ
+        var ivh = computeLengthOrHeight4Age(ar.ageInDays,
+            ar.lengthOrHeightAdjusted, ar.sex);
+        ar.ZLH4A = ivh.Z;
+        ar.PLH4A = ivh.P;
     }
-    // The Python implementation did not return any value
+
+    // check if height known and age not above 60 completed months
+    var ageAbove60CompletedMonths = false;
+    if(!isUnknownOrNaN(ageInDays))
+        ageAbove60CompletedMonths = ageInDays > MAXDAYS;
+    // check if WHZ can be calculated, if not set as undefined
+    if(!isUnknownOrNaN(height) && !ageAbove60CompletedMonths) {
+        ar.lengthOrHeight = height;
+        if(isUnknownOrNaN(ar.lengthOrHeightAdjusted)) {
+            var adjusted_height_mindays = ar.isLength ? HEIGHT_MINDAYS - 1 : HEIGHT_MINDAYS;
+            ar.lengthOrHeight = getAdjustedLengthOrHeight(
+                adjusted_height_mindays, height, isRecumbent);
+            ar.lengthOrHeightAdjusted = ar.lengthOrHeight;
+        }
+
+        // weight-for-length/height aka WHZ
+        var ivwhz = computeWeight4LengthOrHeight(
+            ar.weight, ar.lengthOrHeightAdjusted, ar.sex, ar.isLength,
+            hasOedema
+        );
+        ar.ZW4LH = roundFloat(ivwhz.Z, DEFAULTPRECISION_ZSCORE);
+        ar.PW4LH = roundFloat(ivwhz.P, DEFAULTPRECISION_PERCENTILE);
+    } else {
+        ar.lengthOrHeight = undefined;
+        ar.lengthOrHeightAdjusted = undefined;
+        ar.ZW4LH = undefined;
+        ar.PW4LH = undefined;
+    }
     return ar;
 }
 
