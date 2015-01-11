@@ -257,6 +257,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             if member['surveyType'] == 'child':
                 survey = member['survey']
                 child = {}
+                child['muac'] = float(survey['muac'])
                 child['weight'] = float(survey['weight'])
                 child['height_type'] = survey['heightType']
                 if child['height_type'] == 'Child Standing (height)':
