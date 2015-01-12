@@ -7,6 +7,7 @@ from dashboard.views import TeamsJSONView
 from dashboard.views import AggregateSurveyDataJSONView
 from dashboard.views import ClustersPerTeamJSONView
 from dashboard.views import AlertsJSONView
+from dashboard.views import PersonnelJSONView
 
 v1_api = Api(api_name='v1')
 v1_api.register(JSONDocumentResource())
@@ -44,6 +45,8 @@ urlpatterns = patterns('',
                         name='time_of_data_collection'),
                        url(r'^teamsjsonview/$', TeamsJSONView.as_view(),
                            name='teams-json-view'),
+                       url(r'^personneljsonview/$', PersonnelJSONView.as_view(),
+                           name='personnel-json-view'),
                        url(r'^aggregatesurveydatajsonview/$',
                            AggregateSurveyDataJSONView.as_view(),
                            name='aggregate-survey-data-json-view'),
