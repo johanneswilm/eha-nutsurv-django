@@ -239,31 +239,11 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             output['members'].append({'gender': gender,
                                       'age': age})
             if member['surveyType'] == 'child':
-                survey = member['survey']
-                child = {}
-                child['weight'] = float(survey['weight'])
-                child['heightType'] = survey['heightType']
-                child['edema'] = survey['edema']
-                child['birthDate'] = survey['birthDate']
-                child['height'] = float(survey['height'])
-                child['diarrhoea'] = survey['diarrhoea']
-                child['zscores'] = {
-                    'WAZ': float(survey['zscores']['WAZ']),
-                    'HAZ': float(survey['zscores']['HAZ']),
-                    'WHZ': float(survey['zscores']['WHZ'])
-                }
+                child = member['survey']
                 output['child_surveys'].append(child)
             elif member['surveyType'] == 'women':
-                survey = member['survey']
-                woman = {}
-                woman['breastfeeding'] = survey['breastfeeding']
-                woman['muac'] = float(survey['muac'])
-                woman['height'] = float(survey['height'])
-                woman['weight'] = float(survey['weight'])
+                woman = member['survey']
                 woman['age'] = age
-                woman['pregnant'] = survey['pregnant']
-                woman['ante-natal_care'] = survey['ante-natal_care']
-                woman['ever_pregnant'] = survey['ever_pregnant']
                 output['women_surveys'].append(woman)
 
         # calculate correct_area

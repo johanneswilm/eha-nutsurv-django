@@ -143,6 +143,34 @@ var surveyCompletedStates = {
         }
 
         surveyCompletedStates.table = jQuery('#survey_completed_states_table').dataTable({
+            /*"oTableTools": {
+            "aButtons": [
+                "copy",
+                "print",
+                {
+                    "sExtends":    "collection",
+                    "sButtonText": "Download",
+                    "aButtons":    [ "csv", "xls", "pdf" ]
+                }
+            ]
+            },
+            dom: 'T<"clear">lfrtip',*/
+            extraButton: {
+
+                $(button).on( 'click', function (e) {
+    var data = table
+        .data()
+        .map( function (row) {
+            return row.join(',');
+        } )
+        .join( '\n' );
+
+    saveAs(
+        new Blob( [data], {type : 'text/csv'},
+        'My file.csv'
+    );
+} );
+            },
             data: perStateData,
             responsive: {
                         details: {
