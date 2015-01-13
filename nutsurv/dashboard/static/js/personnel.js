@@ -1,7 +1,7 @@
 var personnel = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        personnel: '/static/sample_data/personnel.json',
+        personnel: '/dashboard/personneljsonview/',
         clusterData: '/static/sample_data/cluster_data.json',
         teams: '/dashboard/teamsjsonview/'
     },

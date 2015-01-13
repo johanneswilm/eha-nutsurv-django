@@ -124,6 +124,121 @@ class TeamsJSONView(LoginRequiredView):
         return teams_dict
 
 
+class PersonnelJSONView(LoginRequiredView):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about personnel in the format requested by Johannes and
+        exemplified below:
+        {
+            "personnel": {
+                "1": {
+                    "name": "John Blacksmith",
+                    "team": 1,
+                    "birthdate": "1978-04-03",
+                    "gender": "M",
+                    "phone": "072993848",
+                    "email": "john.blacksmith@unicef.org",
+                    "position": "Team leader"
+                },
+                "2": {
+                    "name": "Daisy Pato",
+                    "team": 1,
+                    "birthdate": "1982-06-23",
+                    "gender": "F",
+                    "phone": "079364573",
+                    "email": "daisy.pato@unicef.org",
+                    "position": "Anthropometrist"
+                },
+            },
+        }
+        """
+        output = {'personnel': self._find_all_personnel_data()}
+        return HttpResponse(json.dumps(output), content_type='application/json')
+
+    @staticmethod
+    def _find_all_personnel_data():
+        """Computes and returns a dictionary containing personnel data in the
+        format requested by Johannes and shown in the following example:
+        {
+                "1": {
+                    "name": "John Blacksmith",
+                    "team": 1,
+                    "birthdate": "1978-04-03",
+                    "gender": "M",
+                    "phone": "072993848",
+                    "email": "john.blacksmith@unicef.org",
+                    "position": "Team Leader"
+                },
+                "2": {
+                    "name": "Daisy Pato",
+                    "team": 1,
+                    "birthdate": "1982-06-23",
+                    "gender": "F",
+                    "phone": "079364573",
+                    "email": "daisy.pato@unicef.org",
+                    "position": "Anthropometrist"
+                },
+        }
+        """
+        docs = JSONDocument.objects.all()
+        output = {}
+        # Prepare the keys consumed by the dashboard JS code.
+        dashboard_keys = (
+            'name',
+            'team',
+            'birthdate',
+            'gender',
+            'phone',
+            'email',
+            'position'
+        )
+        # Prepare the equivalent keys used by the mobile app in the structure
+        # which stores the member data (keep the order).
+        full_name_index = 0
+        team_id_index = 1
+        mobile_keys = (
+            'full_name',  # not present in the mobile app, computed
+            'team_id',  # not present in the structure, stored one level higher
+            'birthdate',
+            'gender',
+            'mobile',
+            'email',
+            'designation'
+        )
+        distinct_individuals = set()  # used to check for duplicates
+        for doc in docs:
+            team = doc.json['team']
+            team_id = team['teamID']
+            if team_id in output:
+                continue
+            members = team['members']
+            i = 1
+            for m in members:
+                # Compute the full name and add it to the temporary member
+                # structure using the correct (temporary) key defined earlier.
+                m[mobile_keys[full_name_index]] = ' '.join(
+                    (m['firstName'] or '[unknown forename]',
+                     m['lastName']) or '[unknown surname]'
+                )
+                m[mobile_keys[team_id_index]] = int(team_id)
+                person = tuple(map(m.get, mobile_keys))
+                if person in distinct_individuals:
+                    # Ignore if this combination of member attributes has
+                    # already been added.
+                    continue
+                else:
+                    # A new distinct combination of member attributes has been
+                    # detected.  Store it for further comparisons.
+                    distinct_individuals.add(person)
+                    # Generate a dictionary for this (apparently new) member and
+                    # add it to the output dictionary using the current value
+                    # of i as the key.
+                    output[str(i)] = dict(zip(dashboard_keys, person))
+                    # Increment the number of the distinct members found so far.
+                    i += 1
+        return output
+
+
 class ClustersPerTeamJSONView(LoginRequiredView):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
