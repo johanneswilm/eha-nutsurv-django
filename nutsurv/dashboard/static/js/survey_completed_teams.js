@@ -140,6 +140,7 @@ var surveyCompletedTeams = {
                     teamObject.maxHouseholdsPerCluster = households;
                 }
             });
+            delete teamObject.clusterCodes;
             if (teamObject.minHouseholdsPerCluster === -1) {
                 teamObject.minHouseholdsPerCluster = 0;
             } else {
