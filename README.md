@@ -51,6 +51,9 @@ Load some test data:
 
     ./manage.py loaddata testdata
 
+Create superuser in Django:
+
+    ./manage.py createsuperuser
 
 Run the server:
 
