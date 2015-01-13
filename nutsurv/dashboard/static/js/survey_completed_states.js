@@ -150,6 +150,7 @@ var surveyCompletedStates = {
                     stateObject.maxHouseholdsPerCluster = households;
                 }
             });
+            delete stateObject.clusterCodes;
             if (stateObject.minHouseholdsPerCluster === -1) {
                 stateObject.minHouseholdsPerCluster = 0;
             } else {
