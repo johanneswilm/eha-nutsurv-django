@@ -10,6 +10,26 @@ var personnel = {
         dataGetter.addNew(personnel.urls.personnel, personnel.drawTable, false);
         dataGetter.addNew(personnel.urls.clusterData, personnel.drawTable, false);
     },
+    downloadData: function () {
+        if (!personnel.table) {
+            return false;
+        }
+        var data = personnel.table.fnGetData(), i, j, output='';
+
+        output += _.keys(data[0]).join(',');
+        output += '\n';
+
+        for (i=0;i<data.length;i++) {
+            output += _.values(data[i]).join(',');
+            output += '\n';
+        }
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'},
+            'personnel.csv'
+            )
+        );
+    },
     table: false,
     drawTable: function (data) {
         if (!dataGetter.checkAll([personnel.urls.survey, personnel.urls.personnel, personnel.urls.clusterData])) {
@@ -69,6 +89,7 @@ var personnel = {
         }
 
         personnel.table = jQuery('#personnel_table').dataTable({
+            dom: '<"#personnel_download">lfrtip',
             data: perPersonnelData,
             responsive: {
                         details: {
@@ -110,7 +131,13 @@ var personnel = {
             "order": [[ 1, "asc" ]]
         });
 
-        jQuery('#personnel select').selectpicker();
+        jQuery('#personnel_download').html('<button></button');
+        jQuery('#personnel_download button').addClass('btn btn-default dataTables_extra_button');
+        jQuery('#personnel_download button').text('Download');
+
+        jQuery('#personnel_download button').on('click', function (){
+            personnel.downloadData();
+        });
 
     },
 };

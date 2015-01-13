@@ -8,7 +8,6 @@ jQuery('#survey_completed_tabs a').click(function(e) {
             jQuery(target).html(data);
         });
     }
-    console.log(this);
     tab.tab('show');
     return false;
 });

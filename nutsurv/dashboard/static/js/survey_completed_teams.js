@@ -9,6 +9,26 @@ var surveyCompletedTeams = {
         dataGetter.addNew(surveyCompletedTeams.urls.survey, surveyCompletedTeams.setupTablePerTeam, true);
         dataGetter.addNew(surveyCompletedTeams.urls.clustersPerTeam, surveyCompletedTeams.setupTablePerTeam, false);
     },
+    downloadData: function () {
+        if (!surveyCompletedTeams.table) {
+            return false;
+        }
+        var data = surveyCompletedTeams.table.fnGetData(), i, j, output='';
+
+        output += _.keys(data[0]).join(',');
+        output += '\n';
+
+        for (i=0;i<data.length;i++) {
+            output += _.values(data[i]).join(',');
+            output += '\n';
+        }
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'},
+            'survey_completed_teams.csv'
+            )
+        );
+    },
     table: false,
     setupTablePerTeam: function (data) {
         if (!dataGetter.checkAll([surveyCompletedTeams.urls.survey,surveyCompletedTeams.urls.clustersPerTeam,surveyCompletedTeams.urls.teams])) {
@@ -133,6 +153,7 @@ var surveyCompletedTeams = {
         }
 
         surveyCompletedTeams.table = jQuery('#survey_completed_teams_table').dataTable({
+            dom: '<"#survey_completed_teams_download">lfrtip',
             data: perTeamData,
             responsive: {
                         details: {
@@ -182,7 +203,13 @@ var surveyCompletedTeams = {
             order: [[ 1, "asc" ]]
         });
 
-        jQuery('#survey_completed_teams_main select').selectpicker();
+        jQuery('#survey_completed_teams_download').html('<button></button');
+        jQuery('#survey_completed_teams_download button').addClass('btn btn-default dataTables_extra_button');
+        jQuery('#survey_completed_teams_download button').text('Download');
+
+        jQuery('#survey_completed_teams_download button').on('click', function (){
+            surveyCompletedTeams.downloadData();
+        });
 
     },
 

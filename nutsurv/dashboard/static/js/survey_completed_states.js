@@ -11,6 +11,26 @@ var surveyCompletedStates = {
         dataGetter.addNew(surveyCompletedStates.urls.clusterData, surveyCompletedStates.setupTablePerState, false);
         dataGetter.addNew(surveyCompletedStates.urls.statesWithReserveClusters, surveyCompletedStates.setupTablePerState, true);
     },
+    downloadData: function () {
+        if (!surveyCompletedStates.table) {
+            return false;
+        }
+        var data = surveyCompletedStates.table.fnGetData(), i, j, output='';
+
+        output += _.keys(data[0]).join(',');
+        output += '\n';
+
+        for (i=0;i<data.length;i++) {
+            output += _.values(data[i]).join(',');
+            output += '\n';
+        }
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'},
+            'survey_completed_states.csv'
+            )
+        );
+    },
     table: false,
     setupTablePerState: function (data) {
         if (!dataGetter.checkAll([surveyCompletedStates.urls.survey,surveyCompletedStates.urls.clustersPerState,surveyCompletedStates.urls.statesWithReserveClusters, surveyCompletedStates.urls.clusterData])) {
@@ -143,34 +163,7 @@ var surveyCompletedStates = {
         }
 
         surveyCompletedStates.table = jQuery('#survey_completed_states_table').dataTable({
-            /*"oTableTools": {
-            "aButtons": [
-                "copy",
-                "print",
-                {
-                    "sExtends":    "collection",
-                    "sButtonText": "Download",
-                    "aButtons":    [ "csv", "xls", "pdf" ]
-                }
-            ]
-            },
-            dom: 'T<"clear">lfrtip',*/
-            extraButton: {
-
-                $(button).on( 'click', function (e) {
-    var data = table
-        .data()
-        .map( function (row) {
-            return row.join(',');
-        } )
-        .join( '\n' );
-
-    saveAs(
-        new Blob( [data], {type : 'text/csv'},
-        'My file.csv'
-    );
-} );
-            },
+            dom: '<"#survey_completed_states_download">lfrtip',
             data: perStateData,
             responsive: {
                         details: {
@@ -220,7 +213,13 @@ var surveyCompletedStates = {
             order: [[ 1, "asc" ]]
         });
 
-        jQuery('#survey_completed_states_main select').selectpicker();
+        jQuery('#survey_completed_states_download').html('<button></button');
+        jQuery('#survey_completed_states_download button').addClass('btn btn-default dataTables_extra_button');
+        jQuery('#survey_completed_states_download button').text('Download');
+
+        jQuery('#survey_completed_states_download button').on('click', function (){
+            surveyCompletedStates.downloadData();
+        });
 
     },
 };
