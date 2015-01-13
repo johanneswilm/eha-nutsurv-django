@@ -12,9 +12,9 @@
         "children": [
             "muac",
             "weight",
-            "height_type",
+            "heightType",
             "edema",
-            "birthdate",
+            "birthDate",
             "height",
             "diarrhoea"
         ]

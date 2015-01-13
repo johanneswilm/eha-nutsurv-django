@@ -75,8 +75,8 @@ var timeOfDataCollection = {
                 return true;
             }
 
-            if(survey.hasOwnProperty('start_time') && survey.hasOwnProperty('end_time')) {
-                surveyTime = new Date(survey.end_time) - new Date(survey.start_time);
+            if(survey.hasOwnProperty('startTime') && survey.hasOwnProperty('endTime')) {
+                surveyTime = new Date(survey.endTime) - new Date(survey.startTime);
                 surveyTimeString = parseInt(surveyTime/60000) + ':' + String('0'+parseInt(surveyTime%60000/1000)).substr(-2);
                 if (tableData["per interview, min"] > surveyTimeString || tableData["per interview, min"]==='') {
                     tableData["per interview, min"] = surveyTimeString;
@@ -87,8 +87,8 @@ var timeOfDataCollection = {
 
                 tableData["per interview, N"]++;
                 totalSurveyTime += surveyTime;
-                startTimeArray = survey.start_time.split('T');
-                endTimeArray = survey.end_time.split('T');
+                startTimeArray = survey.startTime.split('T');
+                endTimeArray = survey.endTime.split('T');
 
                 if (startTimeArray[0]===endTimeArray[0]) {
                     // start and end time are on the same date

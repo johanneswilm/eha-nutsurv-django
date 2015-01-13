@@ -6,8 +6,8 @@
             ],
             "correct_area": true,
             "cluster": 657,
-            "start_time": "2014-10-18T20:33:23",
-            "end_time": "2014-10-18T20:43:23",
+            "startTime": "2014-10-18T20:33:23",
+            "endTime": "2014-10-18T20:43:23",
             "team": 1,
             "members": [{
                 "gender": "M",
@@ -35,41 +35,41 @@
                 "age": 23
             }],
             "women_surveys": [{
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
                 "age": 30,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
                 "age": 18,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
                 "age": 23,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }],
             "child_surveys" : [{
                 "weight": 45.0,
                 "gender": "M",
-                "height_type": "Child Standing (Height)",
-                "edema":  "No",
-                "birthdate": "2009-10-18",
+                "heightType": "Child Standing (height)",
+                "edema":  "N",
+                "birthDate": "2009-10-18",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -83,8 +83,8 @@
             ],
             "correct_area": true,
             "cluster": 657,
-            "start_time": "2014-10-18T20:52:23",
-            "end_time": "2014-10-18T20:57:23",
+            "startTime": "2014-10-18T20:52:23",
+            "endTime": "2014-10-18T20:57:23",
             "team": 1,
             "members": [{
                 "gender": "M",
@@ -106,42 +106,42 @@
                 "age": 17
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
                 "age": 32,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "N"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
                 "age": 19,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
                 "age": 17,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }] ,
             "child_surveys" : [{
                 "muac": 35.2,
                 "gender": "M",
                 "weight": 45.0,
-                "height_type": "Child Standing (Height)",
-                "edema":  "No",
-                "birthdate": "2009-04-18",
+                "heightType": "Child Standing (height)",
+                "edema":  "N",
+                "birthDate": "2009-04-18",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -155,8 +155,8 @@
             ],
             "correct_area": false,
             "cluster": 658,
-            "end_time": "2014-10-18T20:51:23",
-            "end_time": "2014-10-18T20:56:23",
+            "endTime": "2014-10-18T20:51:23",
+            "endTime": "2014-10-18T20:56:23",
             "team": 1,
             "members": [{
                 "gender": "M",
@@ -172,29 +172,29 @@
                 "age": 17
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
-                "pregnant": "No",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }]
         },
         "4": {
@@ -203,8 +203,8 @@
             ],
             "correct_area": false,
             "cluster": 659,
-            "start_time": "2014-10-18T21:18:23",
-            "end_time": "2014-10-18T21:33:23",
+            "startTime": "2014-10-18T21:18:23",
+            "endTime": "2014-10-18T21:33:23",
             "team": 2,
             "members": [{
                 "gender": "M",
@@ -223,29 +223,29 @@
                 "age": 16
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "N"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }]
         },
         "5": {
@@ -254,8 +254,8 @@
             ],
             "correct_area": true,
             "cluster": 659,
-            "start_time": "2014-10-18T18:13:23",
-            "end_time": "2014-10-18T18:23:23",
+            "startTime": "2014-10-18T18:13:23",
+            "endTime": "2014-10-18T18:23:23",
             "team": 3,
             "members": [{
                 "gender": "M",
@@ -277,39 +277,39 @@
                 "age": 21
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 15.2,
                 "height": 155.9,
                 "weight": 55.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "N"
             }, {
-                "breastfeeding": "Yes",
+                "breastfeeding": "Y",
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
                 "weight": 75.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }],
             "child_surveys" : [{
                 "muac": 35.2,
                 "gender": "F",
                 "weight": 45.0,
-                "height_type": "Child Standing (Height)",
-                "edema":  "No",
-                "birthdate": "2012-09-19",
+                "heightType": "Child Standing (height)",
+                "edema":  "N",
+                "birthDate": "2012-09-19",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -318,11 +318,11 @@
             }, {
                 "muac": 35.2,
                 "weight": 45.0,
-                "height_type": "Child Standing (Height)",
-                "edema":  "No",
-                "birthdate": "2014-11-02",
+                "heightType": "Child Standing (height)",
+                "edema":  "N",
+                "birthDate": "2014-11-02",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,
@@ -336,8 +336,8 @@
             ],
             "correct_area": false,
             "cluster": 659,
-            "start_time": "2014-10-18T18:14:14",
-            "end_time": "2014-10-18T18:28:14",
+            "startTime": "2014-10-18T18:14:14",
+            "endTime": "2014-10-18T18:28:14",
             "team": 3,
             "members": [{
                 "gender": "M",
@@ -362,27 +362,27 @@
                 "age": 2
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 17.2,
                 "height": 157.8,
                 "weight": 54.0,
-                "pregnant": "No",
-                "ante-natal_care": "No",
-                "ever_pregnant": "No"
+                "pregnant": "N",
+                "ante-natal_care": "N",
+                "ever_pregnant": "N"
             }, {
                 "muac": 25.3,
                 "height": 165.9,
                 "weight": 56.0,
-                "pregnant": "No",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "N",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }, {
                 "muac": 35.2,
                 "height": 157.9,
                 "weight": 61.0,
-                "pregnant": "Yes",
-                "ante-natal_care": "Yes",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "Y",
+                "ever_pregnant": "Y"
             }]
         },
         "7": {
@@ -391,8 +391,8 @@
             ],
             "correct_area": true,
             "cluster": 659,
-            "start_time": "2014-10-18T19:01:52",
-            "end_time": "2014-10-18T19:02:56",
+            "startTime": "2014-10-18T19:01:52",
+            "endTime": "2014-10-18T19:02:56",
             "team": 3,
             "members": [{
                 "gender": "M",
@@ -405,21 +405,21 @@
                 "age": 30
             }],
             "women_surveys": [{
-                "breastfeeding": "No",
+                "breastfeeding": "N",
                 "muac": 29.8,
                 "height": 170.9,
-                "pregnant": "Yes",
-                "ante-natal_care": "No",
-                "ever_pregnant": "Yes"
+                "pregnant": "Y",
+                "ante-natal_care": "N",
+                "ever_pregnant": "Y"
             }],
             "child_surveys" : [{
                 "muac": 35.2,
                 "gender": "M",
-                "height_type": "Child Standing (Height)",
-                "edema":  "No",
-                "birthdate": "2012-06-08",
+                "heightType": "Child Standing (height)",
+                "edema":  "N",
+                "birthDate": "2012-06-08",
                 "height": 35.2,
-                "diarrhoea": "No",
+                "diarrhoea": "N",
                 "zscores": {
                     "WAZ": 3.4,
                     "HAZ": -1.6,

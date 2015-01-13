@@ -3,7 +3,7 @@
         "1": {
             "name": "John Blacksmith",
             "team": 1,
-            "birthdate": "1978-04-03",
+            "birthDate": "1978-04-03",
             "gender": "M",
             "phone": "072993848",
             "email": "john.blacksmith@unicef.org",
@@ -12,7 +12,7 @@
         "2": {
             "name": "Daisy Pato",
             "team": 1,
-            "birthdate": "1982-06-23",
+            "birthDate": "1982-06-23",
             "gender": "F",
             "phone": "079364573",
             "email": "daisy.pato@unicef.org",
@@ -21,7 +21,7 @@
         "3": {
             "name": "Flint Flurry",
             "team": 1,
-            "birthdate": "1981-09-12",
+            "birthDate": "1981-09-12",
             "gender": "M",
             "phone": "0735267849",
             "email": "flint.flurry@unicef.org",
@@ -30,7 +30,7 @@
         "4": {
             "name": "Patrick Parker",
             "team": 2,
-            "birthdate": "1975-06-12",
+            "birthDate": "1975-06-12",
             "gender": "M",
             "phone": "078356489",
             "email": "patrick.parker@unicef.org",
@@ -39,7 +39,7 @@
         "5": {
             "name": "Abigail Anderson",
             "team": 2,
-            "birthdate": "1984-01-03",
+            "birthDate": "1984-01-03",
             "gender": "F",
             "phone": "074399324",
             "email": "abigail.anderson@unicef.org",
@@ -48,7 +48,7 @@
         "6": {
             "name": "Stephanie Smith",
             "team": 2,
-            "birthdate": "1990-10-11",
+            "birthDate": "1990-10-11",
             "gender": "F",
             "phone": "073579020",
             "email": "stephanie.smith@unicef.org",
@@ -57,7 +57,7 @@
         "7": {
             "name": "Rose Rademaker",
             "team": 3,
-            "birthdate": "1986-07-09",
+            "birthDate": "1986-07-09",
             "gender": "F",
             "phone": "073764785",
             "email": "rose.rademaker@unicef.org",
@@ -66,7 +66,7 @@
         "8": {
             "name": "Hannah Haber",
             "team": 3,
-            "birthdate": "1985-02-01",
+            "birthDate": "1985-02-01",
             "gender": "F",
             "phone": "04895938",
             "email": "hannah.haber@unicef.org",
@@ -75,7 +75,7 @@
         "9": {
             "name": "Chris Cabral",
             "team": 3,
-            "birthdate": "1987-04-18",
+            "birthDate": "1987-04-18",
             "gender": "M",
             "phone": "0382304043",
             "email": "chris.cabral@unicef.org",

@@ -301,22 +301,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                             content_type='application/json')
 
     @staticmethod
-    def _yn_to_yes_no(value, attribute_name=''):
-        """Converts 'Y' to 'Yes' and 'N' and an empty string to 'No'.  Raises an
-        exception if any other value received.
-        """
-        if not attribute_name:
-            attribute_name = 'unknown'
-        if value == 'Y':
-            return 'Yes'
-        elif value == 'N' or value == '':
-            return 'No'
-        else:
-            raise ValueError('Invalid value: "%s".  Attribute "%s" must be '
-                             'either Y or N (or an empty string for No).' %
-                             (value, attribute_name))
-
-    @staticmethod
     def _correct_area(cluster_id, location):
         # get cluster data
         cluster = ClustersJSON.get_cluster_from_most_recently_modified(
@@ -352,13 +336,11 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         output = {}
 
         # map the top-level attributes
-        output['location'] = []
-        for c in musa_json['location']:
-            output['location'].append(float(c))
-        output['cluster'] = int(musa_json['cluster'])
-        output['start_time'] = musa_json['startTime']
-        output['end_time'] = musa_json['endTime']
-        output['team'] = int(musa_json['team']['teamID'])
+        output['location'] = musa_json['location']
+        output['cluster'] = musa_json['cluster']
+        output['startTime'] = musa_json['startTime']
+        output['endTime'] = musa_json['endTime']
+        output['team'] = musa_json['team']['teamID']
 
         # map household members
         output['members'] = []
@@ -366,44 +348,15 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         output['women_surveys'] = []
         for member in musa_json['members']:
             gender = member['gender']
-            age = int(member['age'])
+            age = member['age']
             output['members'].append({'gender': gender,
                                       'age': age})
             if member['surveyType'] == 'child':
-                survey = member['survey']
-                child = {}
-                child['muac'] = float(survey['muac'])
-                child['weight'] = float(survey['weight'])
-                child['height_type'] = survey['heightType']
-                if child['height_type'] == 'Child Standing (height)':
-                    child['height_type'] = 'Child Standing (Height)'
-                child['edema'] = cls._yn_to_yes_no(
-                    survey['edema'], 'edema')
-                child['birthdate'] = survey['birthDate']
-                child['height'] = float(survey['height'])
-                child['diarrhoea'] = cls._yn_to_yes_no(
-                    survey['diarrhoea'], 'diarrhoea')
-                child['zscores'] = {
-                    'WAZ': float(survey['zscores']['WAZ']),
-                    'HAZ': float(survey['zscores']['HAZ']),
-                    'WHZ': float(survey['zscores']['WHZ'])
-                }
+                child = member['survey']
                 output['child_surveys'].append(child)
             elif member['surveyType'] == 'women':
-                survey = member['survey']
-                woman = {}
-                woman['breastfeeding'] = cls._yn_to_yes_no(
-                    survey['breastfeeding'], 'breastfeeding')
-                woman['muac'] = float(survey['muac'])
-                woman['height'] = float(survey['height'])
-                woman['weight'] = float(survey['weight'])
+                woman = member['survey']
                 woman['age'] = age
-                woman['pregnant'] = cls._yn_to_yes_no(survey['pregnant'],
-                                                      'pregnant')
-                woman['ante-natal_care'] = cls._yn_to_yes_no(
-                    survey['anteNatalCare'], 'ante-natal_care')
-                woman['ever_pregnant'] = cls._yn_to_yes_no(
-                    survey['everPregnant'], 'ever_pregnant')
                 output['women_surveys'].append(woman)
 
         # calculate correct_area
@@ -429,8 +382,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'correct_area': True,
                 'cluster': 657,
-                'start_time': '2014-10-18T19:56:23',
-                'end_time': '2014-10-18T20:43:23',
+                'startTime': '2014-10-18T19:56:23',
+                'endTime': '2014-10-18T20:43:23',
                 'team': 1,
                 'members': [
                     {
@@ -441,25 +394,25 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 ],
                 'women_surveys': [
                     {
-                        'breastfeeding': 'Yes',
+                        'breastfeeding': 'Y',
                         'muac': 25.3,
                         'height': 165.9,
                         'weight': 56.0,
                         'age': 30,
-                        'pregnant': 'No',
-                        'ante-natal_care': 'Yes',
-                        'ever_pregnant': 'Yes'
+                        'pregnant': 'N',
+                        'ante-natal_care': 'Y',
+                        'ever_pregnant': 'Y'
                     },
                     ...
                 ],
                 'child_surveys': [
                     {
                         'weight': 45.0,
-                        'height_type': 'Child Standing (Height)',
-                        'edema': 'No',
-                        'birthdate': '2009-10-18',
+                        'heightType': 'Child Standing (height)',
+                        'edema': 'N',
+                        'birthDate': '2009-10-18',
                         'height': 35.2,
-                        'diarrhoea': 'No',
+                        'diarrhoea': 'N',
                         'zscores': {
                             'WAZ': 3.1,
                             'HAZ': -1.7,

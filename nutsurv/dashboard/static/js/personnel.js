@@ -10,6 +10,26 @@ var personnel = {
         dataGetter.addNew(personnel.urls.personnel, personnel.drawTable, false);
         dataGetter.addNew(personnel.urls.clusterData, personnel.drawTable, false);
     },
+    downloadData: function () {
+        if (!personnel.table) {
+            return false;
+        }
+        var data = personnel.table.fnGetData(), i, j, output='';
+
+        output += _.keys(data[0]).join(',');
+        output += '\n';
+
+        for (i=0;i<data.length;i++) {
+            output += _.values(data[i]).join(',');
+            output += '\n';
+        }
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'},
+            'personnel.csv'
+            )
+        );
+    },
     table: false,
     drawTable: function (data) {
         if (!dataGetter.checkAll([personnel.urls.survey, personnel.urls.personnel, personnel.urls.clusterData])) {
@@ -38,8 +58,8 @@ var personnel = {
                     date: '',
                     team: personnel.team
                 },
-                birthdate = new Date(personnel.birthdate),
-                ageDiff = Date.now() - birthdate.getTime(),
+                birthDate = new Date(personnel.birthDate),
+                ageDiff = Date.now() - birthDate.getTime(),
                 ageDate = new Date(ageDiff),
                 age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
@@ -50,7 +70,7 @@ var personnel = {
 
         _.each(surveyData, function(survey, id) {
             var teamMembers = _.where(perPersonnelData, {team: survey.team}),
-            surveyDate = survey.end_time.split('T')[0];
+            surveyDate = survey.endTime.split('T')[0];
 
             if (teamMembers.length > 0 && teamMembers[0].date < surveyDate) {
                 _.each(teamMembers, function(teamMember) {
@@ -69,6 +89,7 @@ var personnel = {
         }
 
         personnel.table = jQuery('#personnel_table').dataTable({
+            dom: '<"#personnel_download">lfrtip',
             data: perPersonnelData,
             responsive: {
                         details: {
@@ -110,7 +131,13 @@ var personnel = {
             "order": [[ 1, "asc" ]]
         });
 
-        jQuery('#personnel select').selectpicker();
+        jQuery('#personnel_download').html('<button></button');
+        jQuery('#personnel_download button').addClass('btn btn-default dataTables_extra_button');
+        jQuery('#personnel_download button').text('Download');
+
+        jQuery('#personnel_download button').on('click', function (){
+            personnel.downloadData();
+        });
 
     },
 };

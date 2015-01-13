@@ -67,3 +67,8 @@ ul.description_list {
     mozilla-columns: 2;
     columns: 2;
 }
+
+.dataTables_extra_button {
+    text-align: right;
+    float: right;
+}

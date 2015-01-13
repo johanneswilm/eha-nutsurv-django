@@ -311,8 +311,8 @@ var dataQuality = {
                             femaleChildren++;
                         }
                     }
-                    if (child.hasOwnProperty('birthdate')) {
-                        birthDate = new Date(child.birthdate);
+                    if (child.hasOwnProperty('birthDate')) {
+                        birthDate = new Date(child.birthDate);
                         monthAge =  currentDate.getMonth() -
                             birthDate.getMonth() +
                             (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
