@@ -336,13 +336,11 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         output = {}
 
         # map the top-level attributes
-        output['location'] = []
-        for c in musa_json['location']:
-            output['location'].append(float(c))
-        output['cluster'] = int(musa_json['cluster'])
+        output['location'] = musa_json['location']
+        output['cluster'] = musa_json['cluster']
         output['startTime'] = musa_json['startTime']
         output['endTime'] = musa_json['endTime']
-        output['team'] = int(musa_json['team']['teamID'])
+        output['team'] = musa_json['team']['teamID']
 
         # map household members
         output['members'] = []
@@ -350,7 +348,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         output['women_surveys'] = []
         for member in musa_json['members']:
             gender = member['gender']
-            age = int(member['age'])
+            age = member['age']
             output['members'].append({'gender': gender,
                                       'age': age})
             if member['surveyType'] == 'child':
