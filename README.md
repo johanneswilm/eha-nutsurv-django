@@ -26,10 +26,6 @@ Activate the virtual env (has to be done every time you want to run the applicat
 
     source nutsurv-venv/bin/activate
 
-Enter the source code:
-
-    cd nutsurv
-
 Either install python requirements for a production environment:
 
     pip install -r requirements/production.txt
@@ -55,6 +51,9 @@ Load some test data:
 
     ./manage.py loaddata testdata
 
+Create superuser in Django:
+
+    ./manage.py createsuperuser
 
 Run the server:
 
