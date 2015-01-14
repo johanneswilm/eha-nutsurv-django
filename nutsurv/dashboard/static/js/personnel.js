@@ -49,7 +49,6 @@ var personnel = {
             personnelData = dataGetter.downloads[personnel.urls.personnel].data.personnel,
             clusterData = dataGetter.downloads[personnel.urls.clusterData].data.clusters, // Cluster data not actually used directly in this function, but we need t make sure it is there for clusterInfo
             perPersonnelData = [];
-        console.log(personnelData);
         _.each(personnelData, function(person, id) {
             var personnelObject = {
                     personnel_id: id,

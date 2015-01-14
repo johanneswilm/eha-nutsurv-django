@@ -163,7 +163,7 @@ class PersonnelJSONView(LoginRequiredView):
                 "1": {
                     "name": "John Blacksmith",
                     "team": 1,
-                    "birthdate": "1978-04-03",
+                    "birthDate": "1978-04-03",
                     "gender": "M",
                     "phone": "072993848",
                     "email": "john.blacksmith@unicef.org",
@@ -172,7 +172,7 @@ class PersonnelJSONView(LoginRequiredView):
                 "2": {
                     "name": "Daisy Pato",
                     "team": 1,
-                    "birthdate": "1982-06-23",
+                    "birthDate": "1982-06-23",
                     "gender": "F",
                     "phone": "079364573",
                     "email": "daisy.pato@unicef.org",
