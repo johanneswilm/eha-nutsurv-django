@@ -25,9 +25,8 @@ var personnel = {
         }
 
         saveAs(
-            new Blob( [output], {type : 'text/csv'},
+            new Blob( [output], {type : 'text/csv'}),
             'personnel.csv'
-            )
         );
     },
     table: false,
