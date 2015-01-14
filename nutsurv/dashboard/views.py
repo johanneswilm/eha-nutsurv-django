@@ -1,5 +1,9 @@
 import json
 
+import datetime
+import dateutil.parser
+import dateutil.relativedelta
+
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
@@ -156,7 +160,45 @@ class PersonnelJSONView(LoginRequiredView):
         return HttpResponse(json.dumps(output), content_type='application/json')
 
     @staticmethod
-    def _find_all_personnel_data():
+    def _compute_age(team_creation_date_string, person, dob_index):
+        """This method computes the age of a person at the time when the team
+        data was entered into the mobile application or returns None if there is
+        not enough data to do that.
+        """
+        # Try to get the creation date of the team data object to use it later
+        # for the member age computations.
+        try:
+            creation_date = dateutil.parser.parse(team_creation_date_string)
+        except TypeError:
+            # It is impossible to compute the age at the time without knowing
+            # when it was.
+            return None
+        else:
+            # if it worked, get rid of the TZ information and time
+            creation_date = creation_date.date()
+
+        try:
+            dob = dateutil.parser.parse(person[dob_index])
+        except TypeError:
+            # It is impossible to compute the age at the time without knowing
+            # the person's date of birth.
+            return None
+        else:
+            # if it worked, get rid of the TZ info and time
+            dob = dob.date()
+
+        if isinstance(dob, datetime.date) and \
+                isinstance(creation_date, datetime.date):
+            delta = dateutil.relativedelta.relativedelta(
+                creation_date, dob
+            )
+            # return the computed age in years
+            return delta.years
+        else:
+            return None  # something must have gone wrong
+
+    @classmethod
+    def _find_all_personnel_data(cls):
         """Computes and returns a dictionary containing personnel data in the
         format requested by Johannes and shown in the following example:
         {
@@ -179,6 +221,11 @@ class PersonnelJSONView(LoginRequiredView):
                     "position": "Anthropometrist"
                 },
         }
+
+        If "age" not present in the original data but a valid "birthdate" and
+        "created" (the former for a member, the latter for a team record) found,
+        this function tries to compute "age" for such members and include it in
+        the output.
         """
         docs = JSONDocument.objects.all()
         output = {}
@@ -186,6 +233,7 @@ class PersonnelJSONView(LoginRequiredView):
         dashboard_keys = (
             'name',
             'team',
+            'age',
             'birthdate',
             'gender',
             'phone',
@@ -196,9 +244,12 @@ class PersonnelJSONView(LoginRequiredView):
         # which stores the member data (keep the order).
         full_name_index = 0
         team_id_index = 1
+        age_index = 2
+        dob_index = 3
         mobile_keys = (
             'full_name',  # not present in the mobile app, computed
             'team_id',  # not present in the structure, stored one level higher
+            'age',
             'birthdate',
             'gender',
             'mobile',
@@ -206,13 +257,14 @@ class PersonnelJSONView(LoginRequiredView):
             'designation'
         )
         distinct_individuals = set()  # used to check for duplicates
+        teams_processed = set()
+        i = 1  # used to number all personnel entries starting from one
         for doc in docs:
             team = doc.json['team']
             team_id = team['teamID']
-            if team_id in output:
+            if team_id in teams_processed:
                 continue
             members = team['members']
-            i = 1
             for m in members:
                 # Compute the full name and add it to the temporary member
                 # structure using the correct (temporary) key defined earlier.
@@ -221,21 +273,35 @@ class PersonnelJSONView(LoginRequiredView):
                      m['lastName']) or '[unknown surname]'
                 )
                 m[mobile_keys[team_id_index]] = int(team_id)
-                person = tuple(map(m.get, mobile_keys))
-                if person in distinct_individuals:
+                person = map(m.get, mobile_keys)
+                if tuple(person) in distinct_individuals:
                     # Ignore if this combination of member attributes has
                     # already been added.
                     continue
                 else:
                     # A new distinct combination of member attributes has been
                     # detected.  Store it for further comparisons.
-                    distinct_individuals.add(person)
+                    distinct_individuals.add(tuple(person))
+
+                    # Try to compute the person's age (in years) if missing.
+                    age = person[age_index]
+                    dob = person[dob_index]
+                    if not age and dob:
+                        age = cls._compute_age(
+                            team['created'],
+                            person,
+                            dob_index
+                        )
+                        if age is not None:
+                            person[age_index] = age
+
                     # Generate a dictionary for this (apparently new) member and
                     # add it to the output dictionary using the current value
                     # of i as the key.
                     output[str(i)] = dict(zip(dashboard_keys, person))
                     # Increment the number of the distinct members found so far.
                     i += 1
+            teams_processed.add(team_id)
         return output
 
 
