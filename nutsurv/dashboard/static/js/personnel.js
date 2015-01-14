@@ -25,10 +25,17 @@ var personnel = {
         }
 
         saveAs(
-            new Blob( [output], {type : 'text/csv'},
+            new Blob( [output], {type : 'text/csv'}),
             'personnel.csv'
-            )
         );
+    },
+    birthDateToAge: function (date) {
+        var birthDate = new Date(date),
+        ageDiff = Date.now() - birthDate.getTime(),
+        ageDate = new Date(ageDiff),
+        age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+        return age;
     },
     table: false,
     drawTable: function (data) {
@@ -42,26 +49,28 @@ var personnel = {
             personnelData = dataGetter.downloads[personnel.urls.personnel].data.personnel,
             clusterData = dataGetter.downloads[personnel.urls.clusterData].data.clusters, // Cluster data not actually used directly in this function, but we need t make sure it is there for clusterInfo
             perPersonnelData = [];
-
-        _.each(personnelData, function(personnel, id) {
+        _.each(personnelData, function(person, id) {
             var personnelObject = {
                     personnel_id: id,
-                    name: personnel.name,
-                    gender: personnel.gender,
-                    phone: personnel.phone,
-                    email: personnel.email,
-                    position: personnel.position,
+                    name: person.name,
+                    gender: person.gender,
+                    phone: person.phone,
+                    email: person.email,
+                    position: person.position,
                     state: '',
                     lga: '',
                     cluster: '',
                     cluster_number: '',
                     date: '',
-                    team: personnel.team
+                    team: person.team
                 },
-                birthDate = new Date(personnel.birthDate),
-                ageDiff = Date.now() - birthDate.getTime(),
-                ageDate = new Date(ageDiff),
-                age = Math.abs(ageDate.getUTCFullYear() - 1970);
+                age = 0;
+
+            if (person.birthDate) {
+                age = personnel.birthDateToAge(person.birthDate);
+            } else if (person.age) {
+                age = person.age;
+            }
 
             personnelObject.age = age.toString();
 

@@ -26,9 +26,8 @@ var surveyCompletedStates = {
         }
 
         saveAs(
-            new Blob( [output], {type : 'text/csv'},
+            new Blob( [output], {type : 'text/csv'}),
             'survey_completed_states.csv'
-            )
         );
     },
     table: false,
