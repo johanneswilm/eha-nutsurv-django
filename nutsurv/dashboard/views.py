@@ -134,7 +134,7 @@ class PersonnelJSONView(LoginRequiredView):
                 "1": {
                     "name": "John Blacksmith",
                     "team": 1,
-                    "birthdate": "1978-04-03",
+                    "birthDate": "1978-04-03",
                     "gender": "M",
                     "phone": "072993848",
                     "email": "john.blacksmith@unicef.org",
@@ -143,7 +143,7 @@ class PersonnelJSONView(LoginRequiredView):
                 "2": {
                     "name": "Daisy Pato",
                     "team": 1,
-                    "birthdate": "1982-06-23",
+                    "age": "32",
                     "gender": "F",
                     "phone": "079364573",
                     "email": "daisy.pato@unicef.org",
@@ -186,7 +186,7 @@ class PersonnelJSONView(LoginRequiredView):
         dashboard_keys = (
             'name',
             'team',
-            'birthdate',
+            'birthDate',
             'gender',
             'phone',
             'email',
@@ -199,7 +199,7 @@ class PersonnelJSONView(LoginRequiredView):
         mobile_keys = (
             'full_name',  # not present in the mobile app, computed
             'team_id',  # not present in the structure, stored one level higher
-            'birthdate',
+            'birthDate',
             'gender',
             'mobile',
             'email',
