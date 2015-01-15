@@ -69,44 +69,46 @@ var surveyCompletedTeams = {
         _.each(surveyData, function(survey) {
             var teamObject = _.findWhere(perTeamData, {team: survey.team});
             // Increase the number of households surveyed for this team by one.
-            teamObject.households++;
+            if (teamObject) {
+                teamObject.households++;
 
-            if (!(survey.cluster in teamObject.clusterCodes)) {
-                teamObject.clusterCodes[survey.cluster] = 1;
-                teamObject.clusters++;
-            } else {
-                teamObject.clusterCodes[survey.cluster]++;
-                if (teamObject.clusterCodes[survey.cluster]===20) {
-                    // When there are exactly 20 surveyed households in a given cluster, it is counted as complete.
-                    teamObject.clustersComplete++;
+                if (!(survey.cluster in teamObject.clusterCodes)) {
+                    teamObject.clusterCodes[survey.cluster] = 1;
+                    teamObject.clusters++;
+                } else {
+                    teamObject.clusterCodes[survey.cluster]++;
+                    if (teamObject.clusterCodes[survey.cluster]===20) {
+                        // When there are exactly 20 surveyed households in a given cluster, it is counted as complete.
+                        teamObject.clustersComplete++;
+                    }
                 }
-            }
 
 
-            teamObject.members += survey.members.length;
-            if (survey.members.length < teamObject.minMembers || teamObject.minMembers === -1) {
-                teamObject.minMembers = survey.members.length;
-            }
-            if (survey.members.length > teamObject.maxMembers) {
-                teamObject.maxMembers = survey.members.length;
-            }
+                teamObject.members += survey.members.length;
+                if (survey.members.length < teamObject.minMembers || teamObject.minMembers === -1) {
+                    teamObject.minMembers = survey.members.length;
+                }
+                if (survey.members.length > teamObject.maxMembers) {
+                    teamObject.maxMembers = survey.members.length;
+                }
 
-            if ('women_surveys' in survey) {
-                teamObject.women += survey.women_surveys.length;
-                if (survey.women_surveys.length < teamObject.minWomen || teamObject.minWomen === -1) {
-                    teamObject.minWomen = survey.women_surveys.length;
+                if ('women_surveys' in survey) {
+                    teamObject.women += survey.women_surveys.length;
+                    if (survey.women_surveys.length < teamObject.minWomen || teamObject.minWomen === -1) {
+                        teamObject.minWomen = survey.women_surveys.length;
+                    }
+                    if (survey.women_surveys.length > teamObject.maxWomen) {
+                        teamObject.maxWomen = survey.women_surveys.length;
+                    }
                 }
-                if (survey.women_surveys.length > teamObject.maxWomen) {
-                    teamObject.maxWomen = survey.women_surveys.length;
-                }
-            }
-            if ('child_surveys' in survey) {
-                teamObject.children += survey.child_surveys.length;
-                if (survey.child_surveys.length < teamObject.minChildren || teamObject.minChildren === -1) {
-                    teamObject.minChildren = survey.child_surveys.length;
-                }
-                if (survey.child_surveys.length > teamObject.maxChildren) {
-                    teamObject.maxChildren = survey.child_surveys.length;
+                if ('child_surveys' in survey) {
+                    teamObject.children += survey.child_surveys.length;
+                    if (survey.child_surveys.length < teamObject.minChildren || teamObject.minChildren === -1) {
+                        teamObject.minChildren = survey.child_surveys.length;
+                    }
+                    if (survey.child_surveys.length > teamObject.maxChildren) {
+                        teamObject.maxChildren = survey.child_surveys.length;
+                    }
                 }
             }
 
@@ -203,7 +205,7 @@ var surveyCompletedTeams = {
             order: [[ 1, "asc" ]]
         });
 
-        jQuery('#survey_completed_teams_download').html('<button></button');
+        jQuery('#survey_completed_teams_download').html('<button></button>');
         jQuery('#survey_completed_teams_download button').addClass('btn btn-default dataTables_extra_button');
         jQuery('#survey_completed_teams_download button').text('Download');
 

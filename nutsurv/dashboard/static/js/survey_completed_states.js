@@ -213,7 +213,7 @@ var surveyCompletedStates = {
             order: [[ 1, "asc" ]]
         });
 
-        jQuery('#survey_completed_states_download').html('<button></button');
+        jQuery('#survey_completed_states_download').html('<button></button>');
         jQuery('#survey_completed_states_download button').addClass('btn btn-default dataTables_extra_button');
         jQuery('#survey_completed_states_download button').text('Download');
 
