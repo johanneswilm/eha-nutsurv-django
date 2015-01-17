@@ -7,11 +7,13 @@ import dateutil.relativedelta
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from django.conf import settings
 
 from models import Alert
 from models import JSONDocument
 from models import ClustersJSON
 from models import LGA
+from models import QuestionnaireSpecification
 
 
 @login_required
@@ -529,3 +531,31 @@ class AlertsJSONView(LoginRequiredView):
         """
         alerts = Alert.objects.filter(archived=False).order_by('-created')
         return [alert.text for alert in alerts]
+
+
+class ActiveQuestionnaireSpecificationView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a text document containing the
+        current active questionnaire specification (or an empty text file if
+        no active questionnaire specification has been found).
+        """
+        if request.encoding is not None:
+            encoding = request.encoding
+        else:
+            encoding = settings.DEFAULT_CHARSET
+        active_qs = self._get_active_questionnaire_specification()
+        if isinstance(active_qs, QuestionnaireSpecification):
+            text = active_qs.specification
+            name = active_qs.name_or_id + '.txt'
+            response = HttpResponse(
+                text, content_type='text/plain; charset={}'.format(encoding)
+            )
+            response['Content-Disposition'] = \
+                'attachment; filename="{}"'.format(name)
+            return response
+        else:
+            return HttpResponse(content_type='text/plain')
+
+    @staticmethod
+    def _get_active_questionnaire_specification():
+        return QuestionnaireSpecification.get_active()

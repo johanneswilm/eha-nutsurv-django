@@ -7,6 +7,8 @@ from django.contrib.gis.geos import Point
 from jsonfield import JSONField
 from jsonschema import validate, ValidationError
 
+from fields import MaxOneActiveQuestionnaireField
+
 
 class JSONDocument(models.Model):
     # Set help_text to something else than empty but still invisible so that
@@ -79,8 +81,8 @@ class ClustersJSON(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return u'pk: {}; created: {}; last modified: {})'.format(
-            self.pk, self.created, self.last_modified)
+        return u'JSON Data for Clusters (pk: {}; created: {}; last modified: ' \
+               u'{})'.format(self.pk, self.created, self.last_modified)
 
     @classmethod
     def get_most_recently_created(cls):
@@ -221,3 +223,61 @@ class LGA(Area):
                 country_part = u''
             raise RuntimeError(u'More than one LGA named "{}" in state "{}"{} '
                                u'found!'.format(name, state_name, country_part))
+
+
+class QuestionnaireSpecification(models.Model):
+    name_or_id = models.CharField(
+        max_length=255, unique=True, blank=False,
+        help_text=u'Please enter a unique name or id of your new questionnaire '
+                  u'specification.')
+    specification = models.TextField(
+        blank=False,
+        help_text=u'Please enter or copy & paste your new questionnaire '
+                  u'specification written in the QSL (Questionnaire '
+                  u'Specification Language). <br />'
+                  u'Please pay particular attention to indentation as '
+                  u'indentation levels are part of the QSL and incorrect '
+                  u'indentation will most likely produce nonsensical '
+                  u'specification.<br />'
+                  u'To familiarise yourself with the version of QSL used here '
+                  u'please read <a href="/static/qsl.html" target="_blank">'
+                  u'this document</a>.')
+    active = MaxOneActiveQuestionnaireField(
+        default=False,
+        help_text=u'Activate this questionnaire specification.  Only one '
+                  u'questionnaire specification may be active at any given '
+                  u'time.')
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name_or_id
+
+    @classmethod
+    def get_active(cls):
+        active_qss = cls.objects.filter(active__exact=True)
+        c = active_qss.count()
+        if c == 1:
+            return active_qss[0]
+        elif c == 0:
+            return None
+        else:
+            raise RuntimeError(u'More than one active questionnaire '
+                               u'specification found.  This should not happen. '
+                               u'Please check the database.')
+
+    @classmethod
+    def get_most_recently_created(cls):
+        questionnaire_specifications = cls.objects.order_by('-created')
+        if questionnaire_specifications:
+            return questionnaire_specifications[0]
+        else:
+            return None
+
+    @classmethod
+    def get_most_recently_modified(cls):
+        questionnaire_specifications = cls.objects.order_by('-last_modified')
+        if questionnaire_specifications:
+            return questionnaire_specifications[0]
+        else:
+            return None
