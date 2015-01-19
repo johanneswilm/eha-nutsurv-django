@@ -8,6 +8,7 @@ from dashboard.views import AggregateSurveyDataJSONView
 from dashboard.views import ClustersPerTeamJSONView
 from dashboard.views import AlertsJSONView
 from dashboard.views import PersonnelJSONView
+from dashboard.views import ActiveQuestionnaireSpecificationView
 
 v1_api = Api(api_name='v1')
 v1_api.register(JSONDocumentResource())
@@ -56,4 +57,7 @@ urlpatterns = patterns('',
                        url(r'^alertsjsonview/$',
                            AlertsJSONView.as_view(),
                            name='alerts-json-view'),
+                       url(r'^activequestionnairespecificationview/$',
+                           ActiveQuestionnaireSpecificationView.as_view(),
+                           name='active-questionnaire-specification-view'),
                        )

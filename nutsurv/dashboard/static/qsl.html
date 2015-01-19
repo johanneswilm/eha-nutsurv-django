@@ -1,0 +1,992 @@
+<html>
+<head><title>Questionnaire Specification Language Help File</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <style type="text/css">.lst-kix_eg8qe441zns4-4 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_79y2ewj0le6j-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_yxwbla22te6k-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_863gv73rdjxy-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_863gv73rdjxy-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_r1iqcle57qg6-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_863gv73rdjxy-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_eg8qe441zns4-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_r1iqcle57qg6-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_z18j84xdsumd-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    ul.lst-kix_79y2ewj0le6j-8 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-1 {
+        list-style-type: none
+    }
+
+    .lst-kix_r1iqcle57qg6-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_863gv73rdjxy-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_eg8qe441zns4-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_eg8qe441zns4-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_yxwbla22te6k-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_z18j84xdsumd-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_863gv73rdjxy-4 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_z18j84xdsumd-3 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_z18j84xdsumd-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_79y2ewj0le6j-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_79y2ewj0le6j-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    ul.lst-kix_r1iqcle57qg6-8 {
+        list-style-type: none
+    }
+
+    .lst-kix_eg8qe441zns4-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_eg8qe441zns4-3 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_z18j84xdsumd-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_863gv73rdjxy-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_yxwbla22te6k-4 > li:before {
+        content: "\0025cb  "
+    }
+
+    ul.lst-kix_r1iqcle57qg6-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_r1iqcle57qg6-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_r1iqcle57qg6-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_r1iqcle57qg6-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_r1iqcle57qg6-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_r1iqcle57qg6-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_r1iqcle57qg6-6 {
+        list-style-type: none
+    }
+
+    .lst-kix_uyk07mrw1aiw-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    ul.lst-kix_r1iqcle57qg6-7 {
+        list-style-type: none
+    }
+
+    .lst-kix_yxwbla22te6k-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    ul.lst-kix_eg8qe441zns4-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_eg8qe441zns4-4 {
+        list-style-type: none
+    }
+
+    .lst-kix_79y2ewj0le6j-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    ul.lst-kix_eg8qe441zns4-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_eg8qe441zns4-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_eg8qe441zns4-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_863gv73rdjxy-8 {
+        list-style-type: none
+    }
+
+    .lst-kix_uyk07mrw1aiw-5 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_eg8qe441zns4-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_79y2ewj0le6j-4 > li:before {
+        content: "\0025a0  "
+    }
+
+    ul.lst-kix_yxwbla22te6k-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_yxwbla22te6k-6 {
+        list-style-type: none
+    }
+
+    .lst-kix_eg8qe441zns4-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-4 > li:before {
+        content: "\0025a0  "
+    }
+
+    ul.lst-kix_yxwbla22te6k-8 {
+        list-style-type: none
+    }
+
+    .lst-kix_863gv73rdjxy-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_79y2ewj0le6j-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_r1iqcle57qg6-3 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_yxwbla22te6k-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_r1iqcle57qg6-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_z18j84xdsumd-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_eg8qe441zns4-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_z18j84xdsumd-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_r1iqcle57qg6-4 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_z18j84xdsumd-4 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_yxwbla22te6k-6 > li:before {
+        content: "\0025cf  "
+    }
+
+    ul.lst-kix_863gv73rdjxy-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_863gv73rdjxy-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_863gv73rdjxy-4 {
+        list-style-type: none
+    }
+
+    .lst-kix_863gv73rdjxy-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    ul.lst-kix_863gv73rdjxy-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_863gv73rdjxy-2 {
+        list-style-type: none
+    }
+
+    .lst-kix_r1iqcle57qg6-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    ul.lst-kix_863gv73rdjxy-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_863gv73rdjxy-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_863gv73rdjxy-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-4 {
+        list-style-type: none
+    }
+
+    .lst-kix_863gv73rdjxy-3 > li:before {
+        content: "\0025cf  "
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-8 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_79y2ewj0le6j-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-0 {
+        list-style-type: none
+    }
+
+    .lst-kix_79y2ewj0le6j-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_uyk07mrw1aiw-2 {
+        list-style-type: none
+    }
+
+    .lst-kix_z18j84xdsumd-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_79y2ewj0le6j-2 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    ul.lst-kix_z18j84xdsumd-8 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_z18j84xdsumd-7 {
+        list-style-type: none
+    }
+
+    .lst-kix_r1iqcle57qg6-1 > li:before {
+        content: "\0025cb  "
+    }
+
+    .lst-kix_yxwbla22te6k-8 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_uyk07mrw1aiw-3 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_yxwbla22te6k-3 > li:before {
+        content: "\0025cf  "
+    }
+
+    .lst-kix_79y2ewj0le6j-3 > li:before {
+        content: "\0025a0  "
+    }
+
+    .lst-kix_r1iqcle57qg6-0 > li:before {
+        content: "\0025cf  "
+    }
+
+    ul.lst-kix_eg8qe441zns4-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_eg8qe441zns4-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_eg8qe441zns4-8 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_eg8qe441zns4-7 {
+        list-style-type: none
+    }
+
+    .lst-kix_yxwbla22te6k-7 > li:before {
+        content: "\0025cb  "
+    }
+
+    ol {
+        margin: 0;
+        padding: 0
+    }
+
+    .c6 {
+        padding-left: 0pt;
+        widows: 2;
+        orphans: 2;
+        direction: ltr;
+        margin-left: 72pt
+    }
+
+    .c0 {
+        padding-left: 0pt;
+        widows: 2;
+        orphans: 2;
+        direction: ltr;
+        margin-left: 36pt
+    }
+
+    .c1 {
+        padding-left: 0pt;
+        widows: 2;
+        orphans: 2;
+        direction: ltr;
+        margin-left: 180pt
+    }
+
+    .c3 {
+        padding-left: 0pt;
+        widows: 2;
+        orphans: 2;
+        direction: ltr;
+        margin-left: 108pt
+    }
+
+    .c4 {
+        padding-left: 0pt;
+        widows: 2;
+        orphans: 2;
+        direction: ltr;
+        margin-left: 144pt
+    }
+
+    .c7 {
+        widows: 2;
+        orphans: 2;
+        height: 11pt;
+        direction: ltr
+    }
+
+    .c5 {
+        widows: 2;
+        orphans: 2;
+        direction: ltr;
+        page-break-after: avoid
+    }
+
+    .c8 {
+        widows: 2;
+        orphans: 2;
+        direction: ltr
+    }
+
+    .c9 {
+        max-width: 468pt;
+        background-color: #ffffff;
+        padding: 72pt 72pt 72pt 72pt
+    }
+
+    .c11 {
+        padding-left: 0pt;
+        margin-left: 216pt
+    }
+
+    .c2 {
+        margin: 0;
+        padding: 0
+    }
+
+    .c10 {
+        color: #980000
+    }
+
+    .c12 {
+        font-weight: bold
+    }
+
+    .title {
+        widows: 2;
+        padding-top: 0pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #000000;
+        font-size: 21pt;
+        font-family: "Trebuchet MS";
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }
+
+    .subtitle {
+        widows: 2;
+        padding-top: 0pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #666666;
+        font-style: italic;
+        font-size: 13pt;
+        font-family: "Trebuchet MS";
+        padding-bottom: 10pt;
+        page-break-after: avoid
+    }
+
+    li {
+        color: #000000;
+        font-size: 11pt;
+        font-family: "Arial"
+    }
+
+    p {
+        color: #000000;
+        font-size: 11pt;
+        margin: 0;
+        font-family: "Arial"
+    }
+
+    h1 {
+        widows: 2;
+        padding-top: 10pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #000000;
+        font-size: 16pt;
+        font-family: "Trebuchet MS";
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }
+
+    h2 {
+        widows: 2;
+        padding-top: 10pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #000000;
+        font-size: 13pt;
+        font-family: "Trebuchet MS";
+        font-weight: bold;
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }
+
+    h3 {
+        widows: 2;
+        padding-top: 8pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #666666;
+        font-size: 12pt;
+        font-family: "Trebuchet MS";
+        font-weight: bold;
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }
+
+    h4 {
+        widows: 2;
+        padding-top: 8pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #666666;
+        font-size: 11pt;
+        text-decoration: underline;
+        font-family: "Trebuchet MS";
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }
+
+    h5 {
+        widows: 2;
+        padding-top: 8pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #666666;
+        font-size: 11pt;
+        font-family: "Trebuchet MS";
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }
+
+    h6 {
+        widows: 2;
+        padding-top: 8pt;
+        line-height: 1.15;
+        orphans: 2;
+        text-align: left;
+        color: #666666;
+        font-style: italic;
+        font-size: 11pt;
+        font-family: "Trebuchet MS";
+        padding-bottom: 0pt;
+        page-break-after: avoid
+    }</style>
+</head>
+<body class="c9"><h1 class="c5"><a name="h.50bt2bntl66"></a><span>Questionnaire Specification Language (QSL)</span>
+</h1>
+
+<p class="c7"><span></span></p>
+
+<h2 class="c5"><a name="h.jbu8lrcbni1z"></a><span>Specification</span></h2>
+
+<p class="c8"><span>A questionnaire can be defined using a simple format familiar to anyone who has ever used any outliner (or lists with bullet points). &nbsp;To see how it would look like in practise please see section Example.</span>
+</p>
+
+<p class="c7"><span></span></p>
+
+<h3 class="c5"><a name="h.uj9gk6k0kgwd"></a><span>Basic data types</span></h3>
+<ul class="c2 lst-kix_yxwbla22te6k-0 start">
+    <li class="c0"><span>string</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-1 start">
+    <li class="c6"><span>optional: multi-line (do we want it?)</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-0">
+    <li class="c0"><span>integer</span></li>
+    <li class="c0"><span>real - i.e. real numbers</span></li>
+    <li class="c0"><span>date</span></li>
+    <li class="c0"><span>time</span></li>
+    <li class="c0"><span>datetime</span></li>
+    <li class="c0"><span>gps</span></li>
+    <li class="c0"><span>enumeration</span></li>
+</ul>
+<p class="c7"><span></span></p>
+
+<h3 class="c5"><a name="h.ksibvyxqdthz"></a><span>Predefined enumerations</span>
+</h3>
+<ul class="c2 lst-kix_yxwbla22te6k-0">
+    <li class="c0"><span>yes/no</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-1 start">
+    <li class="c6"><span>enumeration</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-2 start">
+    <li class="c3"><span>Y</span></li>
+    <li class="c3"><span>N</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-0">
+    <li class="c0"><span>gender</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-1 start">
+    <li class="c6"><span>enumeration</span></li>
+</ul>
+<ul class="c2 lst-kix_yxwbla22te6k-2 start">
+    <li class="c3"><span>M</span></li>
+    <li class="c3"><span>F</span></li>
+</ul>
+<p class="c7"><span></span></p>
+
+<h3 class="c5"><a name="h.8wbcnml6njzn"></a><span>Other reserved words / keywords</span>
+</h3>
+<ul class="c2 lst-kix_z18j84xdsumd-0 start">
+    <li class="c0"><span>answer - denotes a structure describing the allowed values and data type of an answer; it can be replaced by the data type identifier in case of most pre-defined data types (but not when defining enumeration)</span>
+    </li>
+    <li class="c0"><span>dependencies - this question should only be asked if answers to all the questions contained within it fulfil the constraints listed (see Structure or Example)</span>
+    </li>
+    <li class="c0"><span>required - a shortcut for a constraint indicating that answering this question is not optional</span>
+    </li>
+    <li class="c0"><span>skip - works analogously to dependencies but has an opposite effect (i.e. specifies conditions for this question to be skipped)</span>
+    </li>
+</ul>
+<h3 class="c5"><a name="h.16abljgn1gd0"></a><span>Structure</span></h3>
+
+<p class="c8"><span>The structure would be defined by indentation (using tabs or an arbitrary number of spaces).</span>
+</p>
+
+<p class="c7"><span></span></p>
+
+<p class="c8"><span>Please replace the bullet symbol with a dash (-) or (*) (which one would be better received by the user if we decide to implement this?):</span>
+</p>
+
+<p class="c7"><span></span></p>
+<ul class="c2 lst-kix_79y2ewj0le6j-0 start">
+    <li class="c0"><span>questionnaire</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-1 start">
+    <li class="c6"><span>id</span></li>
+    <li class="c6"><span>title</span></li>
+    <li class="c6"><span>description</span></li>
+    <li class="c6"><span>questions</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-2 start">
+    <li class="c3"><span>question id</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-3 start">
+    <li class="c4"><span>label / text (i.e. what the person being interviewed is asked)</span>
+    </li>
+    <li class="c4"><span>description / comment - additional text describing this question (for internal use of the questionnaire designers, not shown)</span>
+    </li>
+    <li class="c4"><span>required - true or false (false means the question is optional - i.e. answer not required)</span>
+    </li>
+    <li class="c4"><span>answer</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-4 start">
+    <li class="c1"><span>type - it specifies acceptable values for an answer to this question (e.g. integer, real, string, multiline(string), date, time, datetime, gender, yes/no, true/false, enumeration)</span>
+    </li>
+    <li class="c1"><span>constraints the answer must fulfil (e.g. the value must not be empty)</span>
+    </li>
+    <li class="c1"><span>another constraint</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-3">
+    <li class="c4"><span>dependencies</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-4 start">
+    <li class="c1"><span>some question id</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-5 start">
+    <li class="c8 c11"><span>some value constraint (e.g. value &gt; 10; or the value is empty (i.e. question not answered))</span>
+    </li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-3">
+    <li class="c4"><span>skip - skip this question if the following constraints are fulfilled</span>
+    </li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-4 start">
+    <li class="c1"><span>some question id</span></li>
+</ul>
+<ul class="c2 lst-kix_79y2ewj0le6j-5 start">
+    <li class="c8 c11"><span>some value constraint</span></li>
+</ul>
+<h2 class="c5"><a name="h.vozodq4cwwwo"></a><span>Notes</span></h2>
+
+<p class="c7"><span></span></p>
+<ul class="c2 lst-kix_uyk07mrw1aiw-0 start">
+    <li class="c0"><span>The sequence would be the same as the order in which questions are defined. Alternatively we could use numerical question IDs to determine the position of a question in the sequence or (if we want to allow for alphanumerical IDs to increase readability) we could add a separate attribute storing sequence priorities (preferably unique) as numerical values.</span>
+    </li>
+    <li class="c0"><span>Constraints can be written in a selected programming language (e.g. Python or JS) in case the questionnaire is to be automatically processed (as in our scenario) or in a pseudocode or natural language for further processing by an engineer.</span>
+    </li>
+    <li class="c0"><span>Attribute &quot;required&quot; is redundant as it may be easily modelled with constraints (e.g. not empty) but may be worth including if it would make the questionnaire definition process more intuitive.</span>
+    </li>
+    <li class="c0"><span>To make it even easier, we could use the question text / label in place of the question id (if their uniqueness can be assumed).</span>
+    </li>
+    <li class="c0"><span>We could add </span><span
+            class="c12">any/all</span><span>&nbsp;to give the user the ability to build composite constraints if necessary but it would increase complexity for both the user and us (</span><span
+            class="c10">do we need such a feature at this stage?</span><span>).</span>
+    </li>
+    <li class="c0"><span>For all predefined data types (as of this writing all but the enumeration) we could allow for simplified notation</span>
+    </li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-1 start">
+    <li class="c6"><span>e.g.:</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-2 start">
+    <li class="c3"><span>Do you agree?</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-3 start">
+    <li class="c4"><span>yes/no</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-4 start">
+    <li class="c1"><span>required</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-1">
+    <li class="c6"><span>instead of:</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-2 start">
+    <li class="c3"><span>Do you agree?</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-3 start">
+    <li class="c4"><span>answer</span></li>
+</ul>
+<ul class="c2 lst-kix_uyk07mrw1aiw-4 start">
+    <li class="c1"><span>yes/no</span></li>
+    <li class="c1"><span>required</span></li>
+</ul>
+<p class="c7"><span></span></p>
+
+<h2 class="c5"><a name="h.cpx9bdwawoay"></a><span>Examples</span></h2>
+
+<p class="c8"><span>An example of how the questionnaire definition might look like (simplified: no questionnaire id, question ids replaced with question texts, no descriptions for questions; no required/optional; simplified notation for predefined data types):</span>
+</p>
+
+<p class="c7"><span></span></p>
+<ul class="c2 lst-kix_eg8qe441zns4-0 start">
+    <li class="c0"><span>Hamlet&#39;s Dilemma &nbsp;# this is a title</span>
+    </li>
+    <li class="c0"><span>This survey is an attempt to learn what &hellip; &nbsp;# this is a description of the questionnaire</span>
+    </li>
+    <li class="c0"><span>questions &nbsp;# a list of questions will be contained here</span>
+    </li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1 start">
+    <li class="c6"><span>How old are you (in years)?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>integer</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3 start">
+    <li class="c4"><span>answer &gt; 0</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1">
+    <li class="c6"><span>Are you a girl or a boy?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>gender</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3 start">
+    <li class="c4"><span>required</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1">
+    <li class="c6"><span>Are you pregnant?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>yes/no</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3 start">
+    <li class="c4"><span>required</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2">
+    <li class="c3"><span>dependencies</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3 start">
+    <li class="c4"><span>How old are you (in years)?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-4 start">
+    <li class="c1"><span>answer &gt; 18</span></li>
+    <li class="c1"><span>answer &lt; 60</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3">
+    <li class="c4"><span>Are you a girl or a boy?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-4 start">
+    <li class="c1"><span>answer = F</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1">
+    <li class="c6">
+        <span>Do you know if your child will be a girl or a boy?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>yes/no</span></li>
+    <li class="c3"><span>skip</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3 start">
+    <li class="c4"><span>Are you pregnant?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-4 start">
+    <li class="c1"><span>answer = no</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1">
+    <li class="c6"><span>Where do you live?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>gps</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1">
+    <li class="c6"><span>To be or not to be?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>answer</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3 start">
+    <li class="c4"><span>enumeration</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-4 start">
+    <li class="c1"><span>to be</span></li>
+    <li class="c1"><span>not to be</span></li>
+    <li class="c1"><span>refused to answer</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-3">
+    <li class="c4"><span>required</span></li>
+    <li class="c4"><span>answer = to be</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-1">
+    <li class="c6"><span>Did you like this questionnaire?</span></li>
+</ul>
+<ul class="c2 lst-kix_eg8qe441zns4-2 start">
+    <li class="c3"><span>yes/no</span></li>
+</ul>
+<p class="c7"><span></span></p></body>
+</html>
