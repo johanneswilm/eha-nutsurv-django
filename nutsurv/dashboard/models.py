@@ -12,6 +12,9 @@ from fields import UniqueActiveField
 
 
 class JSONDocument(models.Model):
+    class Meta:
+        verbose_name_plural = 'JSON documents'
+
     # Set help_text to something else than empty but still invisible so that
     # the JSONField does not set it to its custom default (we want nothing
     # displayed).
@@ -33,6 +36,9 @@ class JSONDocument(models.Model):
 
 
 class JSONDocumentType(models.Model):
+    class Meta:
+        verbose_name_plural = 'JSON document types'
+
     name = models.CharField(max_length=255)
     schema = JSONField(null=True, blank=True, help_text=' ')
     priority = models.IntegerField(unique=True, blank=True, null=True,
@@ -92,6 +98,9 @@ class ClustersJSON(models.Model):
         }
     }
     """
+    class Meta:
+        verbose_name_plural = 'The "Clusters" JSON documents'
+
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing all the '
@@ -219,6 +228,9 @@ class Area(gismodels.Model):
 
 
 class LGA(Area):
+    class Meta:
+        verbose_name = 'LGA'
+
     def get_lga_name(self):
         return self.name_2
 
@@ -264,6 +276,9 @@ class LGA(Area):
 
 
 class QuestionnaireSpecification(models.Model):
+    class Meta:
+        verbose_name_plural = 'The "Questionnaire Specification" documents'
+
     name_or_id = models.CharField(
         max_length=255, unique=True, blank=False,
         help_text=u'Please enter a unique name or id of your new questionnaire '
@@ -366,8 +381,14 @@ class UniqueActiveNamedDocument(UniqueActiveDocument):
         max_length=255, unique=True, blank=False,
         help_text=u'Please enter a unique name or id of your new document.')
 
+    def __unicode__(self):
+        return self.name_or_id
+
 
 class ClustersPerState(UniqueActiveNamedDocument):
+    class Meta:
+        verbose_name_plural = 'The "Clusters per State" documents'
+
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the number of '
@@ -532,6 +553,9 @@ class ClustersPerState(UniqueActiveNamedDocument):
 
 
 class CollectableData(UniqueActiveNamedDocument):
+    class Meta:
+        verbose_name_plural = 'The "Collectable Data" documents'
+
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the collectable '
@@ -563,6 +587,9 @@ class CollectableData(UniqueActiveNamedDocument):
 
 
 class States(UniqueActiveNamedDocument):
+    class Meta:
+        verbose_name_plural = 'The "States" documents'
+
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the states data.',
@@ -590,6 +617,9 @@ class States(UniqueActiveNamedDocument):
 
 
 class StatesWithReserveClusters(UniqueActiveNamedDocument):
+    class Meta:
+        verbose_name_plural = 'The "States with Reserve Clusters" documents'
+
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing the states with '
@@ -608,6 +638,9 @@ class StatesWithReserveClusters(UniqueActiveNamedDocument):
 
 
 class ClustersPerTeam(UniqueActiveNamedDocument):
+    class Meta:
+        verbose_name_plural = 'The "Clusters per Team" documents'
+
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the (planned) '
