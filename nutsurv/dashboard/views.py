@@ -14,6 +14,11 @@ from models import JSONDocument
 from models import ClustersJSON
 from models import LGA
 from models import QuestionnaireSpecification
+from models import ClustersPerState
+from models import CollectableData
+from models import States
+from models import StatesWithReserveClusters
+from models import ClustersPerTeam
 
 
 @login_required
@@ -307,7 +312,7 @@ class PersonnelJSONView(LoginRequiredView):
         return output
 
 
-class ClustersPerTeamJSONView(LoginRequiredView):
+class SurveyedClustersPerTeamJSONView(LoginRequiredView):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about clusters per team in the format requested by Johannes
@@ -319,6 +324,8 @@ class ClustersPerTeamJSONView(LoginRequiredView):
                 "3": 17
             }
         }
+        WARNING: This is currently not needed to fulfil the client's
+        requirements.
         """
         clusters_per_team = {'teams': self._compute_clusters_per_team()}
         return HttpResponse(json.dumps(clusters_per_team),
@@ -559,3 +566,177 @@ class ActiveQuestionnaireSpecificationView(View):
     @staticmethod
     def _get_active_questionnaire_specification():
         return QuestionnaireSpecification.get_active()
+
+
+class ClustersPerStateJSONView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about clusters per state in the format requested by
+        Johannes and shown below:
+            {
+                "states": {
+                    "Kano": {
+                        "standard": 5,
+                        "reserve": 3
+                        },
+                    "Lagos": {
+                        "standard": 7,
+                        "reserve": 3
+                        },
+                    ...
+            }
+        """
+        doc = ClustersPerState.get_active()
+        if doc:
+            data = doc.json
+        else:
+            data = {}
+        return HttpResponse(json.dumps({'states': data}),
+                            content_type='application/json')
+
+
+class CollectableDataJSONView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about collectable data in the format requested by Johannes
+        and shown below:
+        {
+                "collectable_data": {
+                    "women": [
+                        "breastfeeding",
+                        "muac",
+                        "height",
+                        "weight",
+                        "pregnant",
+                        "ante-natal_care",
+                        "ever_pregnant"
+                    ],
+                    "children": [
+                        "muac",
+                        "weight",
+                        "heightType",
+                        "edema",
+                        "birthDate",
+                        "height",
+                        "diarrhoea"
+                    ]
+                }
+        }
+        """
+        doc = CollectableData.get_active()
+        if doc:
+            data = doc.json
+        else:
+            data = {}
+        return HttpResponse(json.dumps({'collectable_data': data}),
+                            content_type='application/json')
+
+
+class StatesJSONView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about states in the format requested by Johannes
+        and shown below:
+            {
+                "states": ["Kano", "Lagos", "Kaduna",
+                    "Katsina", "Oyo", "Rivers",
+                    "Bauchi", "Jigawa", "Benue",
+                    "Anambra", "Borno", "Delta",
+                    "Imo", "Niger", "Akwa Ibom",
+                    "Ogun", "Sokoto", "Ondo",
+                    "Osun", "Kogi", "Zamfara",
+                    "Enugu", "Kebbi", "Edo",
+                    "Plateau", "Adamawa",
+                    "Cross River", "Abia",
+                    "Ekiti", "Kwara", "Gombe",
+                    "Yobe", "Taraba", "Ebonyi",
+                    "Nasarawa", "Bayelsa",
+                    "Abuja Federal Capital Territory"
+                ]
+            }
+
+        """
+        doc = States.get_active()
+        if doc:
+            data = doc.json
+        else:
+            data = []
+        return HttpResponse(json.dumps({'states': data}),
+                            content_type='application/json')
+
+
+class StatesWithReserveClustersJSONView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about states with reserved clusters in the format requested
+        by Johannes and shown below:
+        {
+            "states": [
+                    "Kano",
+                    "Gombe",
+                    "Yobe",
+                    "Abuja Federal Capital Territory"
+            ]
+        }
+        """
+        doc = StatesWithReserveClusters.get_active()
+        if doc:
+            data = doc.json
+        else:
+            data = []
+        return HttpResponse(json.dumps({'states': data}),
+                            content_type='application/json')
+
+
+class ClustersPerTeamJSONView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about the planned number of clusters per team in the format
+        requested by Johannes and shown below:
+        {
+            "teams": {
+                "1": 5,
+                "2": 15,
+                "3": 17
+            }
+        }
+        """
+        doc = ClustersPerTeam.get_active()
+        if doc:
+            data = doc.json
+        else:
+            data = {}
+        return HttpResponse(json.dumps({'teams': data}),
+                            content_type='application/json')
+
+
+class ClustersJSONView(View):
+    def get(self, request, *args, **kwargs):
+        """Generates an HTTP response with a JSON document containing
+        information about clusters in the format requested by Johannes and
+        shown below:
+        {
+            "clusters": {
+                "723": {
+                    "cluster_name": "Share",
+                    "lga_name": "Ifelodun",
+                    "state_name": "Kwara"
+                },
+                "318": {
+                    "cluster_name": "Emadadja",
+                    "lga_name": "Udu",
+                    "state_name": "Delta"
+                }
+                ...
+
+            }
+        }
+        """
+        doc = ClustersJSON.get_most_recently_modified()
+        if doc:
+            data = doc.json
+        else:
+            data = {'clusters': {}}
+        return HttpResponse(json.dumps(data), content_type='application/json')
+
+

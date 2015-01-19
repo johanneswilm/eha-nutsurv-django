@@ -1,7 +1,7 @@
 var surveyCompletedTeams = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        clustersPerTeam: '/static/sample_data/clusters_per_team.json',
+        clustersPerTeam: '/dashboard/clustersperteamjsonview/',
         teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
