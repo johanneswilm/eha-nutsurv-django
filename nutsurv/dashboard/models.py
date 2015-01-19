@@ -8,6 +8,7 @@ from jsonfield import JSONField
 from jsonschema import validate, ValidationError
 
 from fields import MaxOneActiveQuestionnaireField
+from fields import UniqueActiveField
 
 
 class JSONDocument(models.Model):
@@ -73,10 +74,47 @@ class Alert(models.Model):
 
 
 class ClustersJSON(models.Model):
-    # Set help_text to something else than empty but still invisible so that
-    # the JSONField does not set it to its custom default (we want nothing
-    # displayed).
-    json = JSONField(null=True, blank=True, help_text=' ')
+    """A JSON document containing information about clusters in the format
+    requested by Johannes and shown below:
+    {
+        "clusters": {
+            "723": {
+                "cluster_name": "Share",
+                "lga_name": "Ifelodun",
+                "state_name": "Kwara"
+            },
+            "318": {
+                "cluster_name": "Emadadja",
+                "lga_name": "Udu",
+                "state_name": "Delta"
+            }
+            ...
+        }
+    }
+    """
+    json = JSONField(
+        null=True, blank=True,
+        help_text=u'Please enter the JSON structure describing all the '
+                  u'clusters for the planned survey.',
+        default="""
+        For example:
+
+        {
+            "clusters": {
+                "723": {
+                    "cluster_name": "Share",
+                    "lga_name": "Ifelodun",
+                    "state_name": "Kwara"
+                },
+                "318": {
+                    "cluster_name": "Emadadja",
+                    "lga_name": "Udu",
+                    "state_name": "Delta"
+                }
+            }
+        }
+        """
+        )
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
@@ -281,3 +319,306 @@ class QuestionnaireSpecification(models.Model):
             return questionnaire_specifications[0]
         else:
             return None
+
+
+class UniqueActiveDocument(models.Model):
+    active = UniqueActiveField(
+        default=False,
+        help_text=u'Activate this document.  Only one document of this type '
+                  u'may be active at any given time.')
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def get_active(cls):
+        active_instances = cls.objects.filter(active__exact=True)
+        c = active_instances.count()
+        if c == 1:
+            return active_instances[0]
+        elif c == 0:
+            return None
+        else:
+            raise RuntimeError(
+                u'More than one active "{}" found.  This should not happen.  '
+                u'Please check the database.'.format(cls._meta.verbose_name))
+
+    @classmethod
+    def get_most_recently_created(cls, category_string):
+        instances = cls.objects.filter(
+            category=category_string).order_by('-created')
+        if instances:
+            return instances[0]
+        else:
+            return None
+
+    @classmethod
+    def get_most_recently_modified(cls, category_string):
+        instances = cls.objects.filter(
+            category=category_string).order_by('-last_modified')
+        if instances:
+            return instances[0]
+        else:
+            return None
+
+
+class UniqueActiveNamedDocument(UniqueActiveDocument):
+    name_or_id = models.CharField(
+        max_length=255, unique=True, blank=False,
+        help_text=u'Please enter a unique name or id of your new document.')
+
+
+class ClustersPerState(UniqueActiveNamedDocument):
+    json = JSONField(
+        null=True, blank=True,
+        help_text=u'Please enter the JSON structure defining the number of '
+                  u'standard and reserve clusters per state.  E.g.: { "states":'
+                  u' { "Kano": { "standard": 5, "reserve": 3 }, "Lagos": { '
+                  u'"standard": 7, "reserve": 3 } } }',
+        default="""
+            For example:
+
+            {
+                    "Kano": {
+                        "standard": 5,
+                        "reserve": 3
+                        },
+                    "Lagos": {
+                        "standard": 7,
+                        "reserve": 3
+                        },
+                    "Kaduna": {
+                        "standard": 15,
+                        "reserve": 3
+                        },
+                    "Katsina": {
+                        "standard": 15,
+                        "reserve": 3
+                        },
+                    "Oyo": {
+                        "standard": 8,
+                        "reserve": 3
+                        },
+                    "Rivers": {
+                        "standard": 6,
+                        "reserve": 3
+                        },
+                    "Bauchi": {
+                        "standard": 3,
+                        "reserve": 3
+                        },
+                    "Jigawa": {
+                        "standard": 8,
+                        "reserve": 3
+                        },
+                    "Benue": {
+                        "standard": 9,
+                        "reserve": 3
+                        },
+                    "Anambra": {
+                        "standard": 10,
+                        "reserve": 3
+                        },
+                    "Borno": {
+                        "standard": 11,
+                        "reserve": 3
+                        },
+                    "Delta": {
+                        "standard": 12,
+                        "reserve": 3
+                        },
+                    "Imo": {
+                        "standard": 13,
+                        "reserve": 3
+                        },
+                    "Niger": {
+                        "standard": 14,
+                        "reserve": 3
+                        },
+                    "Akwa Ibom": {
+                        "standard": 11,
+                        "reserve": 3
+                        },
+                    "Ogun": {
+                        "standard": 10,
+                        "reserve": 3
+                        },
+                    "Sokoto": {
+                        "standard": 3,
+                        "reserve": 3
+                        },
+                    "Ondo": {
+                        "standard": 20,
+                        "reserve": 3
+                        },
+                    "Osun": {
+                        "standard": 1,
+                        "reserve": 3
+                        },
+                    "Kogi": {
+                        "standard": 7,
+                        "reserve": 3
+                        },
+                    "Zamfara": {
+                        "standard": 6,
+                        "reserve": 3
+                        },
+                    "Enugu": {
+                        "standard": 8,
+                        "reserve": 3
+                        },
+                    "Kebbi": {
+                        "standard": 9,
+                        "reserve": 3
+                        },
+                    "Edo": {
+                        "standard": 7,
+                        "reserve": 2
+                        },
+                    "Plateau": {
+                        "standard": 10,
+                        "reserve": 4
+                        },
+                    "Adamawa": {
+                        "standard": 15,
+                        "reserve": 3
+                        },
+                    "Cross River": {
+                        "standard": 15,
+                        "reserve": 3
+                        },
+                    "Abia": {
+                        "standard": 15,
+                        "reserve": 3
+                        },
+                    "Ekiti": {
+                        "standard": 12,
+                        "reserve": 5
+                        },
+                    "Kwara": {
+                        "standard": 15,
+                        "reserve": 6
+                        },
+                    "Gombe": {
+                        "standard": 7,
+                        "reserve": 3
+                        },
+                    "Yobe": {
+                        "standard": 8,
+                        "reserve": 3
+                        },
+                    "Taraba": {
+                        "standard": 15,
+                        "reserve": 3
+                        },
+                    "Ebonyi": {
+                        "standard": 12,
+                        "reserve": 3
+                        },
+                    "Nasarawa": {
+                        "standard": 13,
+                        "reserve": 3
+                        },
+                    "Bayelsa": {
+                        "standard": 14,
+                        "reserve": 3
+                        },
+                    "Abuja Federal Capital Territory": {
+                        "standard": 30,
+                        "reserve": 3
+                        }
+            }
+        """
+    )
+
+
+class CollectableData(UniqueActiveNamedDocument):
+    json = JSONField(
+        null=True, blank=True,
+        help_text=u'Please enter the JSON structure defining the collectable '
+                  u'data.',
+        default="""
+        For example:
+        {
+                "women": [
+                    "breastfeeding",
+                    "muac",
+                    "height",
+                    "weight",
+                    "pregnant",
+                    "ante-natal_care",
+                    "ever_pregnant"
+                ],
+                "children": [
+                    "muac",
+                    "weight",
+                    "heightType",
+                    "edema",
+                    "birthDate",
+                    "height",
+                    "diarrhoea"
+                ]
+        }
+        """
+    )
+
+
+class States(UniqueActiveNamedDocument):
+    json = JSONField(
+        null=True, blank=True,
+        help_text=u'Please enter the JSON structure defining the states data.',
+        default="""
+            For example:
+
+            [
+                "Kano", "Lagos", "Kaduna",
+                "Katsina", "Oyo", "Rivers",
+                "Bauchi", "Jigawa", "Benue",
+                "Anambra", "Borno", "Delta",
+                "Imo", "Niger", "Akwa Ibom",
+                "Ogun", "Sokoto", "Ondo",
+                "Osun", "Kogi", "Zamfara",
+                "Enugu", "Kebbi", "Edo",
+                "Plateau", "Adamawa",
+                "Cross River", "Abia",
+                "Ekiti", "Kwara", "Gombe",
+                "Yobe", "Taraba", "Ebonyi",
+                "Nasarawa", "Bayelsa",
+                "Abuja Federal Capital Territory"
+            ]
+        """
+    )
+
+
+class StatesWithReserveClusters(UniqueActiveNamedDocument):
+    json = JSONField(
+        null=True, blank=True,
+        help_text=u'Please enter the JSON structure describing the states with '
+                  u'reserve clusters.',
+        default="""
+            For example:
+
+            [
+                "Kano",
+                "Gombe",
+                "Yobe",
+                "Abuja Federal Capital Territory"
+            ]
+        """
+    )
+
+
+class ClustersPerTeam(UniqueActiveNamedDocument):
+    json = JSONField(
+        null=True, blank=True,
+        help_text=u'Please enter the JSON structure defining the (planned) '
+                  u'number of clusters per each team.',
+        default="""
+            For example:
+
+            {
+                "1": 5,
+                "2": 15,
+                "3": 17
+            }
+        """
+    )

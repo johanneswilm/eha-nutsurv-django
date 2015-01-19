@@ -5,10 +5,16 @@ from api.resources import JSONDocumentResource
 
 from dashboard.views import TeamsJSONView
 from dashboard.views import AggregateSurveyDataJSONView
-from dashboard.views import ClustersPerTeamJSONView
+from dashboard.views import SurveyedClustersPerTeamJSONView
 from dashboard.views import AlertsJSONView
 from dashboard.views import PersonnelJSONView
 from dashboard.views import ActiveQuestionnaireSpecificationView
+from dashboard.views import ClustersPerStateJSONView
+from dashboard.views import CollectableDataJSONView
+from dashboard.views import StatesJSONView
+from dashboard.views import StatesWithReserveClustersJSONView
+from dashboard.views import ClustersPerTeamJSONView
+from dashboard.views import ClustersJSONView
 
 v1_api = Api(api_name='v1')
 v1_api.register(JSONDocumentResource())
@@ -51,13 +57,31 @@ urlpatterns = patterns('',
                        url(r'^aggregatesurveydatajsonview/$',
                            AggregateSurveyDataJSONView.as_view(),
                            name='aggregate-survey-data-json-view'),
-                       url(r'^clustersperteamjsonview/$',
-                           ClustersPerTeamJSONView.as_view(),
-                           name='clusters-per-team-json-view'),
+                       url(r'^surveyedclustersperteamjsonview/$',
+                           SurveyedClustersPerTeamJSONView.as_view(),
+                           name='surveyed-clusters-per-team-json-view'),
                        url(r'^alertsjsonview/$',
                            AlertsJSONView.as_view(),
                            name='alerts-json-view'),
                        url(r'^activequestionnairespecificationview/$',
                            ActiveQuestionnaireSpecificationView.as_view(),
                            name='active-questionnaire-specification-view'),
+                       url(r'^clustersperstatejsonview/$',
+                           ClustersPerStateJSONView.as_view(),
+                           name='clusters-per-state-json-view'),
+                       url(r'^collectabledatajsonview/$',
+                           CollectableDataJSONView.as_view(),
+                           name='collectable-data-json-view'),
+                       url(r'^statesjsonview/$',
+                           StatesJSONView.as_view(),
+                           name='states-json-view'),
+                       url(r'^stateswithreserveclustersjsonview/$',
+                           StatesWithReserveClustersJSONView.as_view(),
+                           name='states-with-reserve-clusters-json-view'),
+                       url(r'^clustersperteamjsonview/$',
+                           ClustersPerTeamJSONView.as_view(),
+                           name='clusters-per-team-json-view'),
+                       url(r'^clustersjsonview/$',
+                           ClustersJSONView.as_view(),
+                           name='clusters-json-view'),
                        )

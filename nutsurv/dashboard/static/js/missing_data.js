@@ -2,8 +2,8 @@ var missingData = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/static/sample_data/states.json',
-        collectableData: '/static/sample_data/collectable_data.json'
+        states: '/dashboard/statesjsonview/',
+        collectableData: '/dashboard/collectabledatajsonview/'
     },
     initiate: function() {
         var selectors = jQuery('#missing_data_teams,#missing_data_states');

@@ -2,7 +2,7 @@ var timeOfDataCollection = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/static/sample_data/states.json'
+        states: '/dashboard/statesjsonview/'
     },
     initiate: function() {
         var selectors = jQuery('#time_of_data_collection_teams,#time_of_data_collection_states');

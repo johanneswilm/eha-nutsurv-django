@@ -2,7 +2,7 @@ var dataQuality = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/static/sample_data/states.json'
+        states: '/dashboard/statesjsonview/'
     },
     initiate: function() {
         var selectors = jQuery('#data_quality_teams,#data_quality_states');

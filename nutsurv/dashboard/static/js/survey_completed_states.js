@@ -1,9 +1,9 @@
 var surveyCompletedStates = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        clustersPerState: '/static/sample_data/clusters_per_state.json',
-        clusterData: '/static/sample_data/cluster_data.json',
-        statesWithReserveClusters: '/static/sample_data/states_with_reserve_clusters.json'
+        clustersPerState: '/dashboard/clustersperstatejsonview/',
+        clusterData: '/dashboard/clustersjsonview/',
+        statesWithReserveClusters: '/dashboard/stateswithreserveclustersjsonview/'
     },
     initiate: function () {
         dataGetter.addNew(surveyCompletedStates.urls.survey, surveyCompletedStates.setupTablePerState, true);

@@ -2,7 +2,7 @@ var ageDistribution = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/static/sample_data/states.json'
+        states: '/dashboard/statesjsonview/'
     },
     initiate: function() {
         var selectors = jQuery('#age_distribution_teams,#age_distribution_states');
