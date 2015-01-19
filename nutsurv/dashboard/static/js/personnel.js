@@ -29,14 +29,6 @@ var personnel = {
             'personnel.csv'
         );
     },
-    birthDateToAge: function (date) {
-        var birthDate = new Date(date),
-        ageDiff = Date.now() - birthDate.getTime(),
-        ageDate = new Date(ageDiff),
-        age = Math.abs(ageDate.getUTCFullYear() - 1970);
-
-        return age;
-    },
     table: false,
     drawTable: function (data) {
         if (!dataGetter.checkAll([personnel.urls.survey, personnel.urls.personnel, personnel.urls.clusterData])) {
@@ -62,17 +54,9 @@ var personnel = {
                     cluster: '',
                     cluster_number: '',
                     date: '',
-                    team: person.team
-                },
-                age = 0;
-
-            if (person.birthDate) {
-                age = personnel.birthDateToAge(person.birthDate);
-            } else if (person.age) {
-                age = person.age;
-            }
-
-            personnelObject.age = age.toString();
+                    team: person.team,
+                    age: person.age.toString()
+                };
 
             perPersonnelData.push(personnelObject);
         });
@@ -140,7 +124,7 @@ var personnel = {
             "order": [[ 1, "asc" ]]
         });
 
-        jQuery('#personnel_download').html('<button></button');
+        jQuery('#personnel_download').html('<button></button>');
         jQuery('#personnel_download button').addClass('btn btn-default dataTables_extra_button');
         jQuery('#personnel_download button').text('Download');
 
