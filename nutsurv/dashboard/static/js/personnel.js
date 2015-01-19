@@ -2,7 +2,7 @@ var personnel = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         personnel: '/dashboard/personneljsonview/',
-        clusterData: '/static/sample_data/cluster_data.json',
+        clusterData: '/dashboard/clustersjsonview/',
         teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
