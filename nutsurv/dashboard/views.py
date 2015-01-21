@@ -15,7 +15,6 @@ from models import ClustersJSON
 from models import LGA
 from models import QuestionnaireSpecification
 from models import ClustersPerState
-from models import CollectableData
 from models import States
 from models import StatesWithReserveClusters
 from models import ClustersPerTeam

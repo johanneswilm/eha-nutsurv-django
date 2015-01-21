@@ -64,6 +64,10 @@ var surveyCompletedTeams = {
                     meanHouseholdsPerCluster: 0,
                 };
 
+                if (!teamObject.teamNames) {
+                    teamObject.teamNames = '';
+                }
+
             perTeamData.push(teamObject);
         });
         _.each(surveyData, function(survey) {
