@@ -552,39 +552,6 @@ class ClustersPerState(UniqueActiveNamedDocument):
     )
 
 
-class CollectableData(UniqueActiveNamedDocument):
-    class Meta:
-        verbose_name_plural = 'The "Collectable Data" documents'
-
-    json = JSONField(
-        null=True, blank=True,
-        help_text=u'Please enter the JSON structure defining the collectable '
-                  u'data.',
-        default="""
-        For example:
-        {
-                "women": [
-                    "breastfeeding",
-                    "muac",
-                    "height",
-                    "weight",
-                    "pregnant",
-                    "ante-natal_care",
-                    "ever_pregnant"
-                ],
-                "children": [
-                    "muac",
-                    "weight",
-                    "heightType",
-                    "edema",
-                    "birthDate",
-                    "height",
-                    "diarrhoea"
-                ]
-        }
-        """
-    )
-
 
 class States(UniqueActiveNamedDocument):
     class Meta:

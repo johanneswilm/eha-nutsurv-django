@@ -3,7 +3,7 @@ var missingData = {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
         states: '/dashboard/statesjsonview/',
-        collectableData: '/dashboard/collectabledatajsonview/'
+        qsl: '/dashboard/activequestionnairespecificationview/',
     },
     initiate: function() {
         var selectors = jQuery('#missing_data_teams,#missing_data_states');
@@ -14,8 +14,8 @@ var missingData = {
         dataGetter.addNew(missingData.urls.states, missingData.fillStatesList, false);
         dataGetter.addNew(missingData.urls.survey, missingData.listChildren, true);
         dataGetter.addNew(missingData.urls.survey, missingData.listWomen, true);
-        dataGetter.addNew(missingData.urls.collectableData, missingData.listChildren, false);
-        dataGetter.addNew(missingData.urls.collectableData, missingData.listWomen, false);
+        dataGetter.addNew(missingData.urls.qsl, missingData.listChildren, false);
+        dataGetter.addNew(missingData.urls.qsl, missingData.listWomen, false);
     },
     fillTeamsList: function(data) {
         var selector = jQuery('#missing_data_teams');
@@ -46,20 +46,55 @@ var missingData = {
         missingData.listWomen(data, team, state);
     },
     listTmp: _.template('<li><span class="item"><%- detail.charAt(0).toUpperCase() + detail.slice(1).replace("_"," ") %>:</span><span class="description"><%= percentage %>%</span></li>'),
+    cleanQSL: function (rawQSL) {
+        var rawLines= rawQSL.split('\n'),
+            cleanedLines = [], QSL = [], indentionLength = 0, i = 0;
+
+        _.each(rawLines, function(rawLine) {
+            var lineWoComment=rawLine.split('#')[0].trimRight();
+            if (lineWoComment.trim().length > 0) {
+                cleanedLines.push(lineWoComment);
+            }
+        });
+
+        while(indentionLength === 0 && i < cleanedLines.length) {
+            if (cleanedLines[i].length - cleanedLines[i].trimLeft().length > 0) {
+                indentionLength = cleanedLines[i].length - cleanedLines[i].trimLeft().length;
+            }
+            i++;
+        }
+
+        _.each(cleanedLines, function (cleanedLine) {
+            var indentions = (cleanedLine.length - cleanedLine.trimLeft().length)/indentionLength, j, currentArray = QSL;
+            for (j=0;j<indentions;j++) {
+                currentArray = currentArray[currentArray.length - 1]['children'];
+            }
+            currentArray.push({key:cleanedLine.trimLeft(),children:[]});
+        });
+        return QSL;
+    },
+    qsl: false,
     listWomen: function(data, team, state) {
-        if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.collectableData])) {
+        if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.qsl])) {
             /* Check that all the relative data has been downloaded, else cancel.
             See home.js. */
             return false;
         }
-        var collectableData = dataGetter.downloads[missingData.urls.collectableData].data.collectable_data,
+        var qsl = dataGetter.downloads[missingData.urls.qsl].data,
             surveyData = dataGetter.downloads[missingData.urls.survey].data.survey_data,
             womenTotal = 0,
             womenDetails = {},
-            percentages = [];
+            percentages = [],
+            collectableData;
 
-        _.each(collectableData.women, function(detail) {
-            womenDetails[detail] = 0;
+        if (!missingData.qsl) {
+            missingData.qsl = missingData.cleanQSL(qsl);
+        }
+
+        collectableData = _.findWhere(missingData.qsl,{key:'women:'}).children;
+
+        _.each(collectableData, function(detail) {
+            womenDetails[detail.key] = 0;
         });
 
         _.each(surveyData, function(survey) {
@@ -78,19 +113,19 @@ var missingData = {
             });
 
             _.each(survey.women_surveys, function(woman) {
-                _.each(collectableData.women, function(detail) {
-                    if (detail in woman) {
-                        womenDetails[detail] ++;
+                _.each(collectableData, function(detail) {
+                    if (detail.key in woman) {
+                        womenDetails[detail.key] ++;
                     }
                 });
             });
         });
 
         if (womenTotal > 0) {
-            _.each(collectableData.women, function(detail) {
+            _.each(collectableData, function(detail) {
                 percentages.push({
-                    detail: detail,
-                    percentage: Math.round((womenTotal - womenDetails[detail]) / womenTotal * 100 * 10) /10
+                    detail: detail.key,
+                    percentage: Math.round((womenTotal - womenDetails[detail.key]) / womenTotal * 100 * 10) /10
                 });
             });
         }
@@ -104,19 +139,26 @@ var missingData = {
         });
     },
     listChildren: function(data, team, state) {
-        if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.collectableData])) {
+        if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.qsl])) {
             /* Check that all the relative data has been downloaded, else cancel.
             See home.js. */
             return false;
         }
-        var collectableData = dataGetter.downloads[missingData.urls.collectableData].data.collectable_data,
+        var qsl = dataGetter.downloads[missingData.urls.qsl].data,
             surveyData = dataGetter.downloads[missingData.urls.survey].data.survey_data,
             childrenTotal = 0,
             childDetails = {},
-            percentages = [];
+            percentages = [],
+            collectableData;
 
-        _.each(collectableData.children, function(detail) {
-            childDetails[detail] = 0;
+        if (!missingData.qsl) {
+            missingData.qsl = missingData.cleanQSL(qsl);
+        }
+
+        collectableData = _.findWhere(missingData.qsl,{key:'children:'}).children;
+
+        _.each(collectableData, function(detail) {
+            childDetails[detail.key] = 0;
         });
 
         _.each(surveyData, function(survey) {
@@ -135,19 +177,19 @@ var missingData = {
             });
 
             _.each(survey.child_surveys, function(child) {
-                _.each(collectableData.children, function(detail) {
-                    if (detail in child) {
-                        childDetails[detail] ++;
+                _.each(collectableData, function(detail) {
+                    if (detail.key in child) {
+                        childDetails[detail.key] ++;
                     }
                 });
             });
         });
 
         if (childrenTotal > 0) {
-            _.each(collectableData.children, function(detail) {
+            _.each(collectableData, function(detail) {
                 percentages.push({
-                    detail: detail,
-                    percentage: Math.round((childrenTotal - childDetails[detail]) / childrenTotal * 100 * 10) /10
+                    detail: detail.key,
+                    percentage: Math.round((childrenTotal - childDetails[detail.key]) / childrenTotal * 100 * 10) /10
                 });
             });
         }
