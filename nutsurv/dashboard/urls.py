@@ -10,7 +10,6 @@ from dashboard.views import AlertsJSONView
 from dashboard.views import PersonnelJSONView
 from dashboard.views import ActiveQuestionnaireSpecificationView
 from dashboard.views import ClustersPerStateJSONView
-from dashboard.views import CollectableDataJSONView
 from dashboard.views import StatesJSONView
 from dashboard.views import StatesWithReserveClustersJSONView
 from dashboard.views import ClustersPerTeamJSONView
@@ -69,9 +68,6 @@ urlpatterns = patterns('',
                        url(r'^clustersperstatejsonview/$',
                            ClustersPerStateJSONView.as_view(),
                            name='clusters-per-state-json-view'),
-                       url(r'^collectabledatajsonview/$',
-                           CollectableDataJSONView.as_view(),
-                           name='collectable-data-json-view'),
                        url(r'^statesjsonview/$',
                            StatesJSONView.as_view(),
                            name='states-json-view'),

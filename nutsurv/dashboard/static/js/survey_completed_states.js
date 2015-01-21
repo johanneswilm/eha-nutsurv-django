@@ -76,6 +76,7 @@ var surveyCompletedStates = {
         });
 
         _.each(surveyData, function(survey) {
+            console.log(survey.cluster);
             var state = clusterInfo.findState(survey.cluster),
             stateObject = _.findWhere(perStateData, {state: state});
             // Increase the number of households surveyed for this state by one.
