@@ -595,43 +595,6 @@ class ClustersPerStateJSONView(View):
                             content_type='application/json')
 
 
-class CollectableDataJSONView(View):
-    def get(self, request, *args, **kwargs):
-        """Generates an HTTP response with a JSON document containing
-        information about collectable data in the format requested by Johannes
-        and shown below:
-        {
-                "collectable_data": {
-                    "women": [
-                        "breastfeeding",
-                        "muac",
-                        "height",
-                        "weight",
-                        "pregnant",
-                        "ante-natal_care",
-                        "ever_pregnant"
-                    ],
-                    "children": [
-                        "muac",
-                        "weight",
-                        "heightType",
-                        "edema",
-                        "birthDate",
-                        "height",
-                        "diarrhoea"
-                    ]
-                }
-        }
-        """
-        doc = CollectableData.get_active()
-        if doc:
-            data = doc.json
-        else:
-            data = {}
-        return HttpResponse(json.dumps({'collectable_data': data}),
-                            content_type='application/json')
-
-
 class StatesJSONView(View):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
@@ -738,5 +701,3 @@ class ClustersJSONView(View):
         else:
             data = {'clusters': {}}
         return HttpResponse(json.dumps(data), content_type='application/json')
-
-

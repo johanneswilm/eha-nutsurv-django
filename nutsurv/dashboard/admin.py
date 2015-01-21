@@ -6,7 +6,6 @@ from models import ClustersJSON
 from models import LGA
 from models import QuestionnaireSpecification
 from models import ClustersPerState
-from models import CollectableData
 from models import States
 from models import StatesWithReserveClusters
 from models import ClustersPerTeam
@@ -28,10 +27,6 @@ class ClustersPerStateAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
-class CollectableDataAdmin(admin.ModelAdmin):
-    readonly_fields = ('created', 'last_modified')
-
-
 class StatesAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
@@ -48,7 +43,6 @@ admin.site.register(Alert, AlertAdmin)
 admin.site.register(ClustersJSON, ClustersJSONAdmin)
 admin.site.register(QuestionnaireSpecification, QuestionnaireSpecificationAdmin)
 admin.site.register(ClustersPerState, ClustersPerStateAdmin)
-admin.site.register(CollectableData, CollectableDataAdmin)
 admin.site.register(States, StatesAdmin)
 admin.site.register(StatesWithReserveClusters, StatesWithReserveClustersAdmin)
 admin.site.register(ClustersPerTeam, ClustersPerTeamAdmin)
@@ -61,4 +55,3 @@ admin.site.register(
         LGA,
     )
 )
-
