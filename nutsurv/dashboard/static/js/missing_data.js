@@ -45,8 +45,8 @@ var missingData = {
         missingData.listChildren(data, team, state);
         missingData.listWomen(data, team, state);
     },
-    listTmp: _.template('<li><span class="item"><%- detail.charAt(0).toUpperCase() + detail.slice(1).replace("_"," ") %>:</span><span class="description"><%= percentage %>%</span></li>'),
-    cleanQSL: function (rawQSL) {
+    listTmp: _.template('<li><span class="item"><%- detail.replace(/([A-Z])/g, \' $1\').replace(/^./, function(str){ return str.toUpperCase(); }).replace("_"," ") %>:</span><span class="description"><%= percentage %>%</span></li>'),
+    parseQSL: function (rawQSL) {
         var rawLines= rawQSL.split('\n'),
             cleanedLines = [], QSL = [], indentionLength = 0, i = 0;
 
@@ -85,16 +85,27 @@ var missingData = {
             womenTotal = 0,
             womenDetails = {},
             percentages = [],
-            collectableData;
+            collectableData = [
+                "breastfeeding",
+                "muac",
+                "height",
+                "weight",
+                "age",
+                "pregnant",
+                "ante-natal_care",
+                "ever_pregnant"
+            ];
 
         if (!missingData.qsl) {
-            missingData.qsl = missingData.cleanQSL(qsl);
+            missingData.qsl = missingData.parseQSL(qsl);
         }
 
-        collectableData = _.findWhere(missingData.qsl,{key:'women:'}).children;
+        _.each(_.findWhere(missingData.qsl,{key:'women:'}).children, function (detail) {
+            collectableData.push(detail.key);
+        });
 
         _.each(collectableData, function(detail) {
-            womenDetails[detail.key] = 0;
+            womenDetails[detail] = 0;
         });
 
         _.each(surveyData, function(survey) {
@@ -114,8 +125,8 @@ var missingData = {
 
             _.each(survey.women_surveys, function(woman) {
                 _.each(collectableData, function(detail) {
-                    if (detail.key in woman) {
-                        womenDetails[detail.key] ++;
+                    if (detail in woman) {
+                        womenDetails[detail] ++;
                     }
                 });
             });
@@ -124,8 +135,8 @@ var missingData = {
         if (womenTotal > 0) {
             _.each(collectableData, function(detail) {
                 percentages.push({
-                    detail: detail.key,
-                    percentage: Math.round((womenTotal - womenDetails[detail.key]) / womenTotal * 100 * 10) /10
+                    detail: detail,
+                    percentage: Math.round((womenTotal - womenDetails[detail]) / womenTotal * 100 * 10) /10
                 });
             });
         }
@@ -149,16 +160,27 @@ var missingData = {
             childrenTotal = 0,
             childDetails = {},
             percentages = [],
-            collectableData;
+            collectableData = [
+                "muac",
+                "gender",
+                "weight",
+                "heightType",
+                "edema",
+                "birthDate",
+                "height",
+                "diarrhoea"
+            ];
 
         if (!missingData.qsl) {
-            missingData.qsl = missingData.cleanQSL(qsl);
+            missingData.qsl = missingData.parseQSL(qsl);
         }
 
-        collectableData = _.findWhere(missingData.qsl,{key:'children:'}).children;
+        _.each(_.findWhere(missingData.qsl,{key:'children:'}).children, function (detail) {
+            collectableData.push(detail.key);
+        });
 
         _.each(collectableData, function(detail) {
-            childDetails[detail.key] = 0;
+            childDetails[detail] = 0;
         });
 
         _.each(surveyData, function(survey) {
@@ -178,8 +200,8 @@ var missingData = {
 
             _.each(survey.child_surveys, function(child) {
                 _.each(collectableData, function(detail) {
-                    if (detail.key in child) {
-                        childDetails[detail.key] ++;
+                    if (detail in child) {
+                        childDetails[detail] ++;
                     }
                 });
             });
@@ -188,8 +210,8 @@ var missingData = {
         if (childrenTotal > 0) {
             _.each(collectableData, function(detail) {
                 percentages.push({
-                    detail: detail.key,
-                    percentage: Math.round((childrenTotal - childDetails[detail.key]) / childrenTotal * 100 * 10) /10
+                    detail: detail,
+                    percentage: Math.round((childrenTotal - childDetails[detail]) / childrenTotal * 100 * 10) /10
                 });
             });
         }
