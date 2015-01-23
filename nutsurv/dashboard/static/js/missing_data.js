@@ -46,33 +46,6 @@ var missingData = {
         missingData.listWomen(data, team, state);
     },
     listTmp: _.template('<li><span class="item"><%- detail.replace(/([A-Z])/g, \' $1\').replace(/^./, function(str){ return str.toUpperCase(); }).replace("_"," ") %>:</span><span class="description"><%= percentage %>%</span></li>'),
-    parseQSL: function (rawQSL) {
-        var rawLines= rawQSL.split('\n'),
-            cleanedLines = [], QSL = [], indentionLength = 0, i = 0;
-
-        _.each(rawLines, function(rawLine) {
-            var lineWoComment=rawLine.split('#')[0].trimRight();
-            if (lineWoComment.trim().length > 0) {
-                cleanedLines.push(lineWoComment);
-            }
-        });
-
-        while(indentionLength === 0 && i < cleanedLines.length) {
-            if (cleanedLines[i].length - cleanedLines[i].trimLeft().length > 0) {
-                indentionLength = cleanedLines[i].length - cleanedLines[i].trimLeft().length;
-            }
-            i++;
-        }
-
-        _.each(cleanedLines, function (cleanedLine) {
-            var indentions = (cleanedLine.length - cleanedLine.trimLeft().length)/indentionLength, j, currentArray = QSL;
-            for (j=0;j<indentions;j++) {
-                currentArray = currentArray[currentArray.length - 1]['children'];
-            }
-            currentArray.push({key:cleanedLine.trimLeft(),children:[]});
-        });
-        return QSL;
-    },
     qsl: false,
     listWomen: function(data, team, state) {
         if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.qsl])) {
@@ -97,7 +70,7 @@ var missingData = {
             ];
 
         if (!missingData.qsl) {
-            missingData.qsl = missingData.parseQSL(qsl);
+            missingData.qsl = parseQSL(qsl);
         }
 
         _.each(_.findWhere(missingData.qsl,{key:'women:'}).children, function (detail) {
@@ -172,7 +145,7 @@ var missingData = {
             ];
 
         if (!missingData.qsl) {
-            missingData.qsl = missingData.parseQSL(qsl);
+            missingData.qsl = parseQSL(qsl);
         }
 
         _.each(_.findWhere(missingData.qsl,{key:'children:'}).children, function (detail) {
