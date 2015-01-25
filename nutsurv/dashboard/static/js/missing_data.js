@@ -67,15 +67,19 @@ var missingData = {
                 "pregnant",
                 "ante-natal_care",
                 "ever_pregnant"
-            ];
+            ], womenQSL;
 
         if (!missingData.qsl) {
             missingData.qsl = parseQSL(qsl);
         }
 
-        _.each(_.findWhere(missingData.qsl,{key:'women:'}).children, function (detail) {
-            collectableData.push(detail.key);
-        });
+        womenQSL = _.findWhere(missingData.qsl,{key:'women:'});
+
+        if (womenQSL) {
+            _.each(womenQSL.children, function (detail) {
+                collectableData.push(detail.key);
+            });
+        }
 
         _.each(collectableData, function(detail) {
             womenDetails[detail] = 0;
@@ -142,15 +146,20 @@ var missingData = {
                 "birthDate",
                 "height",
                 "diarrhoea"
-            ];
+            ],
+            childrenQSL;
 
         if (!missingData.qsl) {
             missingData.qsl = parseQSL(qsl);
         }
 
-        _.each(_.findWhere(missingData.qsl,{key:'children:'}).children, function (detail) {
-            collectableData.push(detail.key);
-        });
+        childrenQSL = _.findWhere(missingData.qsl,{key:'children:'});
+
+        if (childrenQSL) {
+            _.each(childrenQSL.children, function (detail) {
+                collectableData.push(detail.key);
+            });
+        }
 
         _.each(collectableData, function(detail) {
             childDetails[detail] = 0;
