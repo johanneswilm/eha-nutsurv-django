@@ -9,6 +9,9 @@ var ageDistribution = {
         selectors.selectpicker();
         selectors.on('change', ageDistribution.changeStateOrTeam);
 
+        jQuery('#age_distribution_households_download').on('click', ageDistribution.downloadHouseholdAgeListCSV);
+        jQuery('#age_distribution_children_download').on('click', ageDistribution.downloadChildrenAgeListCSV);
+
         ageDistribution.drawHouseholdAgeDistribution();
         ageDistribution.drawChildrenAgeDistribution();
         dataGetter.addNew(ageDistribution.urls.teams, ageDistribution.fillTeamsList, false);
@@ -84,9 +87,10 @@ var ageDistribution = {
             }
         });
     },
+    householdAgeList: false,
     updateHouseholdAgeDistribution: function(data, team, state) {
-        var ages = {},
-            ageList;
+        var ages = {};
+
         _.each(data.survey_data, function(survey) {
             if (team && team > 0 && team != survey.team) {
                 return true;
@@ -102,16 +106,32 @@ var ageDistribution = {
                 }
             });
         });
-        ageList = _.map(ages, function(num, age) {
+        ageDistribution.householdAgeList = _.map(ages, function(num, age) {
             return [parseInt(age), num];
         });
-        ageDistribution.householdAgeDistributionPlot.setData([ageList]);
+        ageDistribution.householdAgeDistributionPlot.setData([ageDistribution.householdAgeList]);
         ageDistribution.householdAgeDistributionPlot.setupGrid();
         ageDistribution.householdAgeDistributionPlot.draw();
     },
+    downloadHouseholdAgeListCSV: function () {
+        if (!ageDistribution.householdAgeList) {
+            return false;
+        }
+        var output = 'age (years),count\n';
+
+        _.every(ageDistribution.householdAgeList, function(age) {
+            output += age[0] + ',' + age[1] + '\n';
+        });
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'}),
+            'households_age_list.csv'
+        );
+    },
+    childrenAgeList: false,
     updateChildrenAgeDistribution: function(data, team, state) {
-        var ages = {},
-            ageList;
+        var ages = {};
+
         _.each(data.survey_data, function(survey) {
             if (team && team > 0 && team != survey.team) {
                 return true;
@@ -131,13 +151,28 @@ var ageDistribution = {
                 });
             }
         });
-        ageList = _.map(ages, function(num, age) {
+        ageDistribution.childrenAgeList = _.map(ages, function(num, age) {
             return [parseInt(age), num];
         });
-        ageDistribution.childrenAgeDistributionPlot.setData([ageList]);
+        ageDistribution.childrenAgeDistributionPlot.setData([ageDistribution.childrenAgeList]);
         ageDistribution.childrenAgeDistributionPlot.setupGrid();
         ageDistribution.childrenAgeDistributionPlot.draw();
-    }
+    },
+    downloadChildrenAgeListCSV: function () {
+        if (!ageDistribution.childrenAgeList) {
+            return false;
+        }
+        var output = 'age (months),count\n';
+
+        _.every(ageDistribution.childrenAgeList, function(age) {
+            output += age[0] + ',' + age[1] + '\n';
+        });
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'}),
+            'children_age_list.csv'
+        );
+    },
 };
 
 ageDistribution.initiate();

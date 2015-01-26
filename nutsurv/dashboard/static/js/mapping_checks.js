@@ -3,6 +3,8 @@ var mappingChecks = {
         survey: '/dashboard/aggregatesurveydatajsonview/'
     },
     initiate: function () {
+        jQuery('#mapping_checks_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
+
         mappingChecks.createMap();
         dataGetter.addNew(mappingChecks.urls.survey, mappingChecks.updateMap, true);
     },
@@ -24,6 +26,7 @@ var mappingChecks = {
         mappingChecks.map.attributionControl.setPrefix('');
     },
     mapMarkers: [],
+    incorrectSurveys: false,
     updateMap: function (data) {
       var group, incorrectSurveys = [];
         _.each(mappingChecks.mapMarkers, function(marker) {
@@ -39,14 +42,30 @@ var mappingChecks = {
                 marker.addTo(mappingChecks.map).bindPopup(popupHTML);
             } else {
                 marker.addTo(mappingChecks.map).bindPopup("ERROR!<br>"+popupHTML);
-                incorrectSurveys.push(survey);
+                incorrectSurveys.push({team: survey.team, cluster: survey.cluster});
             }
         });
+        mappingChecks.incorrectSurveys = incorrectSurveys;
         group = new L.featureGroup(mappingChecks.mapMarkers);
         mappingChecks.map.fitBounds(group.getBounds());
-        mappingChecks.drawAlerts(incorrectSurveys);
+        mappingChecks.drawAlerts(mappingChecks.incorrectSurveys);
     },
+    downloadAlertsCSV: function () {
+        if (!mappingChecks.incorrectSurveys) {
+            return false;
+        }
 
+        var output = 'team,cluster\n';
+
+        _.each(mappingChecks.incorrectSurveys, function (survey) {
+            output += survey.team + ',' + survey.cluster + '\n';
+        });
+
+        saveAs(
+            new Blob( [output], {type : 'text/csv'}),
+            'mapping_alerts.csv'
+        );
+    },
     drawAlerts: function (incorrectSurveys) {
         jQuery('#mapping_checks_alerts_list').empty();
         _.each(incorrectSurveys,function(survey){

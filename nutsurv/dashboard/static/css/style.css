@@ -71,4 +71,13 @@ ul.description_list {
 .dataTables_extra_button {
     text-align: right;
     float: right;
+    font-size: 70%;
+    margin-left: 5px;
+}
+
+
+.panel-heading .btn {
+    float: right;
+    font-size: 70%;
+    margin-top: -5px;
 }
