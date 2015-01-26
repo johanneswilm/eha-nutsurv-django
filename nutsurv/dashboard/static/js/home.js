@@ -98,7 +98,7 @@ var home = {
             teamData = dataGetter.downloads[home.urls.teams].data.teams;
 
         _.each(home.latestTeamContacts, function(contact){
-            output += contact.team+',"'+teamData[contact.team]+'",'+contact.time;
+            output += contact.team+',"'+teamData[contact.team]+'",'+contact.time+'\n';
         });
 
         saveAs(
@@ -118,7 +118,7 @@ var home = {
     createAlertsCSV: function (data) {
         var output = 'timestamp,message\n';
         _.each(data.alerts,function(alert){
-            output += alert.timestamp + ',' + alert.message;
+            output += alert.timestamp + ',' + alert.message + '\n';
         });
         home.alertsCSV = output;
     },
