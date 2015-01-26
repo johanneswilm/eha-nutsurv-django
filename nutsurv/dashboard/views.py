@@ -536,7 +536,12 @@ class AlertsJSONView(LoginRequiredView):
         from the most recent).
         """
         alerts = Alert.objects.filter(archived=False).order_by('-created')
-        return [alert.text for alert in alerts]
+        return [
+            {
+                'timestamp': alert.created.isoformat(),
+                'message': alert.text
+            } for alert in alerts
+        ]
 
 
 class ActiveQuestionnaireSpecificationView(View):
