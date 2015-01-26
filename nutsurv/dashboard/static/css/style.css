@@ -72,3 +72,10 @@ ul.description_list {
     text-align: right;
     float: right;
 }
+
+
+.panel-heading .btn {
+    float: right;
+    font-size: 70%;
+    margin-top: -5px;
+}
