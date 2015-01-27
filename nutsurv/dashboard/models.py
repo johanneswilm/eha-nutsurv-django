@@ -26,6 +26,26 @@ class JSONDocument(models.Model):
     # displayed).
     json = JSONField(null=True, blank=True, help_text=' ')
 
+    def __unicode__(self):
+        # Try to build a name describing a survey.
+        if 'householdID' in self.json:
+            household = self.json['householdID']
+        else:
+            household = None
+        if 'cluster' in self.json:
+            cluster = self.json['cluster']
+        else:
+            cluster = None
+        if 'startTime' in self.json:
+            start_time = self.json['startTime']
+        else:
+            start_time = None
+        team_name = self.get_team_name()
+
+        return u'cluster: {}; household: {}; team: {}; start time: {}'.format(
+            cluster, household, team_name, start_time
+        )
+
     def guess_type(self, list_of_json_document_types):
         """Matches the stored JSON document with the document types provided
         using list_of_json_document_types.  The order of the JSONDocumentType
@@ -133,6 +153,21 @@ class JSONDocument(models.Model):
     def get_household_member_gender(household_member):
         if 'gender' in household_member:
             return household_member['gender']
+        else:
+            return None
+
+    @staticmethod
+    def get_household_members_age_in_years(household_member):
+        """This function returns a recorded age in years as integer or None if
+        no valid age was recorded.
+        """
+        if 'age' in household_member:
+            try:
+                age = int(household_member['age'])
+            except ValueError:
+                return None
+            else:
+                return age
         else:
             return None
 
@@ -255,6 +290,10 @@ class Alert(models.Model):
         in json_document.
         """
         cls.sex_ratio_alert(json_document)
+        cls.child_age_in_months_ratio_alert(json_document)
+        cls.child_age_displacement_alert(json_document)
+        cls.woman_age_14_15_displacement_alert(json_document)
+        cls.woman_age_4549_5054_displacement_alert(json_document)
 
     @classmethod
     def sex_ratio_alert(cls, json_document, test='binomial'):
@@ -288,6 +327,167 @@ class Alert(models.Model):
         if p < 0.001:
             team = json_document.get_team_name()
             alert_text = 'Sex-ratio issue in team {}'.format(team)
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False):
+                Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def child_age_in_months_ratio_alert(cls, json_document, test='binomial'):
+        """In the data of children from 6-59 months of age, we expect an age
+        ratio of 6-29 months to 30-59 months to be around 0.85. If a chi-square
+        test of the age ratio 6-29 months / 30-59 months is significantly
+        < 0.001 from expected 0.85 then report an alert on dashboard "Age ratio
+        issue in team NAME".
+        N.B. This method uses binomial two-tailed test by default.  Chi-square
+        test is used only if argument test is not set to 'binomial'.
+        """
+        surveys = json_document.find_all_surveys_by_this_team()
+        children = []
+        for survey in surveys:
+            children.extend(survey.get_child_records())
+        age6to29 = 0
+        age30to59 = 0
+        for child in children:
+            age = JSONDocument.get_childs_age_in_months(child)
+            if age is None:
+                continue
+            elif 5 < age < 30:
+                age6to29 += 1
+            elif 29 < age < 60:
+                age30to59 += 1
+
+        # The theoretical probability of the 'positive' outcome (i.e. the
+        # child being 6 to 29 months old).
+        p629 = 0.45945945945945954
+        # The theoretical probability of the 'negative' outcome (i.e. the
+        # child being 30 to 59 months old).
+        # p3059 = 1 - p629 = 0.5405405405405405
+
+        if test == 'binomial':
+            p = scipy.stats.binom_test([age6to29, age30to59], p=p629)
+        else:
+            expected6to29 = (age6to29 + age30to59) * p629
+            expected30to59 = (age6to29 + age30to59) - expected6to29
+            chi2, p = scipy.stats.chisquare(
+                [age6to29, age30to59],
+                [expected6to29, expected30to59]
+            )
+        if p < 0.001:
+            team = json_document.get_team_name()
+            alert_text = 'Age ratio issue in team {}'.format(team)
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False):
+                Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def child_age_displacement_alert(cls, json_document, test='binomial'):
+        """Ratio of children aged 5 years / children aged 4 years is expected
+        to equal 1. If the chi-square of this ratio is significantly < 0.001
+        from expected 1 then report an alert on dashboard "Child age
+        displacement issue in team NAME".
+        N.B. This method uses binomial two-tailed test by default.  Chi-square
+        test is used only if argument test is not set to 'binomial'.
+        """
+        surveys = json_document.find_all_surveys_by_this_team()
+        children = []
+        for survey in surveys:
+            children.extend(survey.get_child_records())
+        age4 = 0
+        age5 = 0
+        for child in children:
+            age = JSONDocument.get_household_members_age_in_years(child)
+            if age is None:
+                continue
+            elif age == 4:
+                age4 += 1
+            elif age == 5:
+                age5 += 1
+
+        if test == 'binomial':
+            p = scipy.stats.binom_test([age4, age5], p=0.5)
+        else:
+            expected = (age4 + age5) / 2.0
+            chi2, p = scipy.stats.chisquare([age4, age5], [expected, expected])
+        if p < 0.001:
+            team = json_document.get_team_name()
+            alert_text = 'Child age displacement issue in team {}'.format(team)
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False):
+                Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def woman_age_14_15_displacement_alert(cls, json_document, test='binomial'):
+        """Ratio of women aged 14 / women aged 15 is expected to equal 1. If
+        the chi-square of this ratio is significantly < 0.001 from expected 1
+        then report an alert on dashboard "Woman age displacement issue (14/15)
+        in team NAME".
+        N.B. This method uses binomial two-tailed test by default.  Chi-square
+        test is used only if argument test is not set to 'binomial'.
+        """
+        surveys = json_document.find_all_surveys_by_this_team()
+        women = []
+        for survey in surveys:
+            women.extend(survey.get_women_records())
+        age14 = 0
+        age15 = 0
+        for woman in women:
+            age = JSONDocument.get_household_members_age_in_years(woman)
+            if age is None:
+                continue
+            elif age == 14:
+                age14 += 1
+            elif age == 15:
+                age15 += 1
+
+        if test == 'binomial':
+            p = scipy.stats.binom_test([age14, age15], p=0.5)
+        else:
+            expected = (age14 + age15) / 2.0
+            chi2, p = scipy.stats.chisquare(
+                [age14, age15], [expected, expected])
+        if p < 0.001:
+            team = json_document.get_team_name()
+            alert_text = \
+                'Woman age displacement issue (14/15) in team {}'.format(team)
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False):
+                Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def woman_age_4549_5054_displacement_alert(cls, json_document,
+                                               test='binomial'):
+        """Ratio of women aged 45-49 / women aged 50-54 is expected to equal 1.
+        If the chi-square of this ratio is significantly < 0.001 from expected
+        1 then report an alert on dashboard "Woman age displacement issue
+        (45-49/50-54) in team NAME".
+        N.B. This method uses binomial two-tailed test by default.  Chi-square
+        test is used only if argument test is not set to 'binomial'.
+        """
+        surveys = json_document.find_all_surveys_by_this_team()
+        women = []
+        for survey in surveys:
+            women.extend(survey.get_women_records())
+        age4549 = 0
+        age5054 = 0
+        for woman in women:
+            age = JSONDocument.get_household_members_age_in_years(woman)
+            if age is None:
+                continue
+            elif 44 < age < 50:
+                age4549 += 1
+            elif 49 < age < 55:
+                age5054 += 1
+
+        if test == 'binomial':
+            p = scipy.stats.binom_test([age4549, age5054], p=0.5)
+        else:
+            expected = (age4549 + age5054) / 2.0
+            chi2, p = scipy.stats.chisquare(
+                [age4549, age5054], [expected, expected])
+        if p < 0.001:
+            team = json_document.get_team_name()
+            alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
+                         '{}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
