@@ -3,3 +3,5 @@ psycopg2
 jsonfield
 jsonschema
 django-tastypie
+numpy
+scipy
