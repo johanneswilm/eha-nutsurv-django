@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 
-    jQuery('#tabs a').on('click',function(event) {
+    jQuery('#navbar a').on('click',function(event) {
         var tab = jQuery(this),
             loadurl = tab.attr('href'),
             target = tab.attr('data-target');
@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
         tab.tab('show');
         return false;
     });
-    jQuery('#tabs a:first').click();
+    jQuery('#navbar a:first').click();
     jQuery('#last_update').on('click',
         function(event) {
             event.preventDefault();
