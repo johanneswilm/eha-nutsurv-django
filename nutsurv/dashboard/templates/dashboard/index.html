@@ -58,21 +58,34 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 
-            <li class="active"><a href="/#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Versions <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">Select theme</li>
-                <li class="divider"></li>
-                <li><a href="/0.1/">Version 0.1</a></li>
-                <li><a href="/0.2/">Version 0.2</a></li>
-              </ul>
+            <li class="active">
+              <a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">NutSurv home</a>
             </li>
-            <li class="pull-right">
-                <a href="/accounts/logout">Logout</a>
+            <li>
+             <a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">Survey work completed</a>
+            </li>
+            <li>
+              <a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">Mapping checks</a>
+            </li>
+            <li>
+              <a data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age distribution</a>
+            </li>
+            <li>
+              <a data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing data</a>
+            </li>
+            <li>
+              <a data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data quality</a>
+            </li>
+            <li>
+              <a data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of data collection</a>
+            </li>
+            <li>
+              <a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">Personnel</a>
+            </li>
+            <li id="last_update_li">
+              <button id="last_update" type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <span class="button_label"></span>
+              </button>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -83,35 +96,7 @@
 
       <div id="tabs" role="tabpanel ">
           <ul class="nav nav-tabs">
-              <li class="active">
-                <a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">NutSurv home</a>
-              </li>
-              <li>
-               <a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">Survey work completed</a>
-              </li>
-              <li>
-                <a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">Mapping checks</a>
-              </li>
-              <li>
-                <a data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age distribution</a>
-              </li>
-              <li>
-                <a data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing data</a>
-              </li>
-              <li>
-                <a data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data quality</a>
-              </li>
-              <li>
-                <a data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of data collection</a>
-              </li>
-              <li>
-                <a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">Personnel</a>
-              </li>
-              <li id="last_update_li">
-				<button id="last_update" type="button" class="btn btn-default">
-					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <span class="button_label"></span>
-				</button>
-              </li>
+
           </ul>
 
           <!-- Tab panes -->
