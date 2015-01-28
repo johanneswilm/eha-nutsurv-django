@@ -4,75 +4,132 @@
 <head>
     <meta charset="utf-8">
     <title>NutSurv dashboard</title>
+
     <link rel="icon" href="/static/favicon.ico">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.1/cerulean/bootstrap.min.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.css" />
+
+    <link rel="stylesheet" href="/static/bower_components/ehealth-bootstrap/0.1/bootstrap.css" />
+    <link rel="stylesheet" href="/static/bower_components/ehealth-bootstrap/0.1/bootstrap-ehealth.css" />
+
+    <link rel="stylesheet" href="/static/bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
     <link rel="stylesheet" href="/static/css/style.css" />
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/responsive/1.0.3/css/dataTables.responsive.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/tabletools/2.2.3/css/dataTables.tableTools.css" />
-    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/leaflet.fullscreen.css' rel='stylesheet' />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bower_components/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/bower_components/datatables/media/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="/static/bower_components/datatables-bootstrap3-plugin/media/css/datatables-bootstrap3.css" />
+    <link rel="stylesheet" href="/static/bower_components/datatables-responsive//css/dataTables.responsive.css" />
+    <link rel="stylesheet" href="/static/bower_components/datatables-tabletools/css/dataTables.tableTools.css" />
+    <link rel="stylesheet" href="/static/css/leaflet.fullscreen.css" />
+
+    <script src="/static/bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>
+    <script src="/static/bower_components/jquery/jquery.min.js"></script>
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/static/js/lib/FileSaver.min.js"></script>
+    <script src="/static/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/static/bower_components/lodash/lodash.js"></script>
+    <script src="/static/bower_components/jquery-flot/jquery.flot.js"></script>
+    <script src="/static/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="/static/bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script src="/static/bower_components/datatables-tabletools/js/dataTables.tableTools.js"></script>
+    <script src="/static/bower_components/datatables-bootstrap3-plugin/media/js/datatables-bootstrap3.js"></script>
+
     <script src="/static/js/lib/tab.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/1.0.3/js/dataTables.responsive.js"></script>
-    <script src="//cdn.datatables.net/tabletools/2.2.3/js/dataTables.tableTools.min.js"></script>
-    <script src="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js"></script>
     <script src="/static/js/data_getter.js"></script>
     <script src="/static/js/map.js"></script>
     <script src="/static/js/index.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div id="tabs" role="tabpanel ">
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">NutSurv home</a>
-                </li>
-                <li><a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">Survey work completed</a>
-                </li>
-                <li><a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">Mapping checks</a>
-                </li>
-                <li><a data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age distribution</a>
-                </li>
-                <li><a data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing data</a>
-                </li>
-                <li><a data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data quality</a>
-                </li>
-                <li><a data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of data collection</a>
-                </li>
-                <li><a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">Personnel</a>
-                </li>
-                <li id="last_update_li">
-                    <button id="last_update" type="button" class="btn btn-default"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <span class="button_label"></span>
-                    </button>
-                </li>
-            </ul>
 
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="tab_home"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_survey_completed"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_mapping_checks"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_age_distribution"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_missing_data"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_data_quality"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_time_of_data_collection"></div>
-                <div role="tabpanel" class="tab-pane" id="tab_personnel"></div>
-            </div>
+  <div class="wrapper">
+
+    <nav class="navbar navbar-dashboard navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+            <img class="pull-left" width="20%" src="/static/bower_components/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> Nutrition Dashboard
+          </a>
         </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
 
-        <a href="/accounts/logout" class="bottom_link">Logout</a>
+            <li class="active"><a href="/#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Versions <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Select theme</li>
+                <li class="divider"></li>
+                <li><a href="/0.1/">Version 0.1</a></li>
+                <li><a href="/0.2/">Version 0.2</a></li>
+              </ul>
+            </li>
+            <li class="pull-right">
+                <a href="/accounts/logout">Logout</a>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div id="tabs" role="tabpanel ">
+          <ul class="nav nav-tabs">
+              <li class="active">
+                <a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">NutSurv home</a>
+              </li>
+              <li>
+               <a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">Survey work completed</a>
+              </li>
+              <li>
+                <a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">Mapping checks</a>
+              </li>
+              <li>
+                <a data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age distribution</a>
+              </li>
+              <li>
+                <a data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing data</a>
+              </li>
+              <li>
+                <a data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data quality</a>
+              </li>
+              <li>
+                <a data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of data collection</a>
+              </li>
+              <li>
+                <a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">Personnel</a>
+              </li>
+              <li id="last_update_li">
+				<button id="last_update" type="button" class="btn btn-default">
+					<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <span class="button_label"></span>
+				</button>
+              </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="tab_home"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_survey_completed"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_mapping_checks"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_age_distribution"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_missing_data"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_data_quality"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_time_of_data_collection"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_personnel"></div>
+          </div>
+      </div>
+
     </div>
+
+  </div>
 </body>
 
 </html>
