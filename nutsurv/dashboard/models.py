@@ -129,7 +129,10 @@ class JSONDocument(models.Model):
         else:
             return 'UNNAMED'
 
-    def _get_records_for_survey_type(self, survey_type):
+    def _get_records_for_survey_types(self, survey_types):
+        if not isinstance(survey_types, (list, tuple, set)) and \
+                isinstance(survey_types, basestring):
+            survey_types = (survey_types,)
         output = []
         if 'members' in self.json:
             # Get the survey date to calculate age based on date of birth.
@@ -138,16 +141,21 @@ class JSONDocument(models.Model):
             else:
                 survey_start_time = None
             for member in self.json['members']:
-                if member['surveyType'] == survey_type:
+                if member['surveyType'] in survey_types:
                     member['survey_start_time'] = survey_start_time
                     output.append(member)
         return output
 
     def get_child_records(self):
-        return self._get_records_for_survey_type(survey_type='child')
+        return self._get_records_for_survey_types(survey_types='child')
 
     def get_women_records(self):
-        return self._get_records_for_survey_type(survey_type='women')
+        return self._get_records_for_survey_types(survey_types='women')
+
+    def get_women_and_child_records(self):
+        return self._get_records_for_survey_types(
+            survey_types=('child', 'women')
+        )
 
     @staticmethod
     def get_household_member_gender(household_member):
@@ -294,6 +302,7 @@ class Alert(models.Model):
         cls.child_age_displacement_alert(json_document)
         cls.woman_age_14_15_displacement_alert(json_document)
         cls.woman_age_4549_5054_displacement_alert(json_document)
+        cls.digit_preference_alert(json_document)
 
     @classmethod
     def sex_ratio_alert(cls, json_document, test='binomial'):
@@ -491,6 +500,81 @@ class Alert(models.Model):
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def digit_preference_alert(cls, json_document):
+        """If terminal digit preference score for weight, height or MUAC > 20,
+        then report alert on dashboard "Digit preference issue in Team NAME".
+        N.B. this function calculates and checks TDPS for each variable (i.e.
+        weight, height and MUAC) independently.  If only one of the calculated
+        terminal digit preferences scores satisfies the condition then the
+        alert is triggered.
+        """
+        surveys = json_document.find_all_surveys_by_this_team()
+        data_points = {'muac': [], 'weight': [], 'height': []}
+        for survey in surveys:
+            subjects = survey.get_women_and_child_records()
+            for subject in subjects:
+                # If there is no survey section then there is no data for this
+                # subject.
+                if 'survey' not in subject:
+                    continue
+                # Add the subject's muac, weight and height to data_points.
+                # Append None where the value is missing.
+                for k in data_points:
+                    data_points[k].append(subject['survey'].get(k, None))
+        # Extract and count terminal digits for each variable of interest.
+        terminal_digit_counts = {
+            'muac': [0] * 10,
+            'weight': [0] * 10,
+            'height': [0] * 10
+        }
+        terminal_digit_preference_score = {
+            'muac': 0,
+            'weight': 0,
+            'height': 0
+        }
+        for k in terminal_digit_counts:
+            for v in data_points[k]:
+                try:
+                    v = float(v)
+                except (TypeError, ValueError):
+                    # Get rid of all None objects and other invalid values.
+                    continue
+                else:
+                    terminal_digit = int(
+                        ('{:.1f}'.format(float(int(v * 10) / 10.0)))[-1]
+                    )
+                    terminal_digit_counts[k][terminal_digit] += 1
+        # Calculate terminal digit preference scores
+        for k in terminal_digit_preference_score:
+            total_number_of_digits = sum(terminal_digit_counts[k])
+            expected = total_number_of_digits / 10.0
+            chi2 = sum(
+                [
+                    (i - expected) ** 2 / expected
+                    for i in terminal_digit_counts[k]
+                ]
+            )
+            terminal_digit_preference_score[k] =\
+                100 * (chi2 / (9 * total_number_of_digits)) ** 0.5
+        # Check if any of the computed scores triggers the alert.
+        for k in terminal_digit_preference_score:
+            if terminal_digit_preference_score[k] > 20:
+                team = json_document.get_team_name()
+                alert_text = 'Digit preference issue in team {}'.format(team)
+                # Only add if there is no same alert among unarchived.
+                if not Alert.objects.filter(text=alert_text, archived=False):
+                    Alert.objects.create(text=alert_text)
+                # Only one alert should be emitted so no need to finish the
+                # loop.
+                break
+
+    @classmethod
+    def archive_all_alerts(cls):
+        """This method marks all existing alerts as archived.
+        """
+        cls.objects.filter(archived=False).update(archived=True)
 
     @classmethod
     def delete_alerts_by_text(cls, text, archived=False):
