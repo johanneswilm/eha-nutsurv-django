@@ -13,15 +13,14 @@
     "bootstrap": "~v3.3.2",
     "bootstrap-select": "~1.6.3",
     "datatables": "~1.10.4",
-    "datatables-bootstrap3": "*",
+    "datatables-bootstrap3-plugin": "~0.2.0",
     "datatables-responsive": "~1.0.3",
     "datatables-tabletools": "~2.2.3",
     "file-saver": "*",
     "jquery": "~v1.10.2",
     "jquery-flot": "~0.8.3",
     "leaflet": "~v0.7.3",
-    "leaflet.fullscreen": "*",
-    "lodash": "~3.0.0",
+    "lodash": "~3.0.0"
   },
   "devDependencies": {
     "ehealth-bootstrap": "git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.1"
