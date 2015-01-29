@@ -12,7 +12,7 @@ to make minor adjustments.
 First install all needed dependencies:
 
     sudo apt-get install git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev
-    libpq-dev postgresql-server-dev-all
+    libpq-dev postgresql-server-dev-all liblapack-dev gfortran
 
 Then get the sources (enter username/password):
 
@@ -82,7 +82,7 @@ After the system has been installed and configured you might want to load some g
 ### Example GIS data
 
 In case you do not have your own shapefile, the shapefile used for testing has been downloaded from http://www.diva-gis.org/gdata by selecting 'Nigeria' from the drop-down list of countries and 'Administrative areas' from the drop-down list of subjects.  The thus acquired NGA_adm.zip file was then unzipped and the Nigerian LGA level data was imported (see below for instructions) from the NGA_adm2.shp file (which was one of the files contained in the downloaded archive).
- 
+
 
 ### Simple scenario
 
@@ -111,7 +111,7 @@ The default mapping dictionary defined in the load module assumes that the shape
 Since the LGA model defines the following fields: name_0, name_1, name_2, varname_2, mpoly, the attribute fields of the shapefile have to be mapped to the fields of the LGA model by defining the following dictionary (do not worry about the mpoly mapping, just remember to always have it in your mapping dictionary):
 
     $ path/to/the/manage.py shell
-    
+
     >>> some_mapping_dictionary = {
     >>>     'name_0': 'NAME_0',
     >>>     'name_1': 'NAME_1',
@@ -125,8 +125,8 @@ Now, when you have defined your new dictionary, you can use it and load your GIS
     >>> import dashboard.load
     >>> dashboard.load.import_data_from_file(filepath='/path/to/your/shapefile.shp',
                                              mapping=some_mapping_dictionary)
-    
-    
+
+
 
 ===================
 

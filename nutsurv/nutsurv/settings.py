@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'dashboard',
     'tastypie',
-    'accounts'
+    'accounts',
+    'importer',
 )
 
 MIDDLEWARE_CLASSES = (
