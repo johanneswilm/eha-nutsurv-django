@@ -5,3 +5,5 @@ jsonschema
 django-tastypie
 numpy
 scipy
+dateutil
+mimeparse
