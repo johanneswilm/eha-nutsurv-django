@@ -23,6 +23,7 @@
     <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>
     <script src="/static/bower_components/jquery/jquery.min.js"></script>
     <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/static/bower_components/bootstrap/js/dropdown.js"></script>
     <script src="/static/js/lib/FileSaver.min.js"></script>
     <script src="/static/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="/static/bower_components/lodash/lodash.js"></script>
@@ -52,40 +53,61 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">
-            <img class="pull-left" width="20%" src="/static/bower_components/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> Nutrition Dashboard
+            <img class="pull-left" src="/static/bower_components/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> NutSurv
           </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-
             <li class="active">
-              <a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">NutSurv home</a>
+              <a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home
+              </a>
             </li>
             <li>
-             <a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">Survey work completed</a>
+              <a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Surveys Completed
+              </a>
             </li>
             <li>
-              <a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">Mapping checks</a>
+              <a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">
+                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Mapping Checks
+              </a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Inspect Data <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <a class="navbar-dropdown-link" data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age Distribution</a>
+                </li>
+                <li>
+                  <a class="navbar-dropdown-link" data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing Data</a>
+                </li>
+                <li>
+                  <a class="navbar-dropdown-link" data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data Quality</a>
+                </li>
+                <li>
+                  <a class="navbar-dropdown-link" data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of Collection</a>
+                </li>
+              </ul>
             </li>
             <li>
-              <a data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age distribution</a>
+              <a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Personnel
+              </a>
             </li>
-            <li>
-              <a data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing data</a>
-            </li>
-            <li>
-              <a data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data quality</a>
-            </li>
-            <li>
-              <a data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of data collection</a>
-            </li>
-            <li>
-              <a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">Personnel</a>
-            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
             <li id="last_update_li">
-              <button id="last_update" type="button" class="btn btn-default">
+              <a id="last_update" href="#">
                   <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <span class="button_label"></span>
-              </button>
+              </a>
+            </li>
+            <li>
+                <a href="/accounts/logout/">
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+                </a>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -95,9 +117,6 @@
     <div class="container">
 
       <div id="tabs" role="tabpanel ">
-          <ul class="nav nav-tabs">
-
-          </ul>
 
           <!-- Tab panes -->
           <div class="tab-content">
