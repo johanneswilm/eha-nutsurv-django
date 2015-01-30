@@ -7,6 +7,4 @@ python-dateutil
 python-mimeparse
 numpy
 scipy
-python-dateutil
-mimeparse
-
+django-bower
