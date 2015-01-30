@@ -12,7 +12,7 @@ to make minor adjustments.
 First install all needed dependencies:
 
     sudo apt-get install git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev
-    libpq-dev postgresql-server-dev-all
+    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev
 
 Then get the sources (enter username/password):
 
