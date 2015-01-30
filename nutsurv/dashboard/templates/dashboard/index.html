@@ -7,32 +7,36 @@
 
     <link rel="icon" href="/static/favicon.ico">
 
-    <link rel="stylesheet" href="/static/bower_components/ehealth-bootstrap/0.1/bootstrap.css" />
-    <link rel="stylesheet" href="/static/bower_components/ehealth-bootstrap/0.1/bootstrap-ehealth.css" />
+    {% load static %}
+    <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
 
-    <link rel="stylesheet" href="/static/bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
-    <link rel="stylesheet" href="/static/css/style.css" />
-    <link rel="stylesheet" href="/static/bower_components/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/bower_components/datatables/media/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="/static/bower_components/datatables-bootstrap3-plugin/media/css/datatables-bootstrap3.css" />
-    <link rel="stylesheet" href="/static/bower_components/datatables-responsive//css/dataTables.responsive.css" />
-    <link rel="stylesheet" href="/static/bower_components/datatables-tabletools/css/dataTables.tableTools.css" />
-    <link rel="stylesheet" href="/static/css/leaflet.fullscreen.css" />
+    <link rel="stylesheet" href='{% static 'ehealth-bootstrap/0.1/bootstrap.css' %}' />
+    <link rel="stylesheet" href='{% static 'ehealth-bootstrap/0.1/bootstrap-ehealth.css' %}' />
 
-    <script src="/static/bower_components/leaflet/dist/leaflet.js"></script>
-    <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>
-    <script src="/static/bower_components/jquery/jquery.min.js"></script>
-    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/static/bower_components/bootstrap/js/dropdown.js"></script>
+    <link rel="stylesheet" href='{% static 'bootstrap-select/dist/css/bootstrap-select.css' %}' />
+    <link rel="stylesheet" href='{% static 'leaflet/dist/leaflet.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables/media/css/jquery.dataTables.min.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables-bootstrap3-plugin/media/css/datatables-bootstrap3.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables-responsive//css/dataTables.responsive.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables-tabletools/css/dataTables.tableTools.css' %}' />
+
+    <link rel="stylesheet" href='/static/css/leaflet.fullscreen.css' />
+    <link rel="stylesheet" href='/static/css/style.css' />
+
+    <script src='{% static 'jquery/jquery.min.js' %}'></script>
+    <script src='{% static 'leaflet/dist/leaflet.js' %}'></script>
+    <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
+    <script src='{% static 'bootstrap/js/dropdown.js' %}'></script>
+    <script src='{% static 'bootstrap-select/dist/js/bootstrap-select.min.js' %}'></script>
+    <script src='{% static 'lodash/lodash.js' %}'></script>
+    <script src='{% static 'jquery-flot/jquery.flot.js' %}'></script>
+    <script src='{% static 'datatables/media/js/jquery.dataTables.min.js' %}'></script>
+    <script src='{% static 'datatables-responsive/js/dataTables.responsive.js' %}'></script>
+    <script src='{% static 'datatables-tabletools/js/dataTables.tableTools.js' %}'></script>
+    <script src='{% static 'datatables-bootstrap3-plugin/media/js/datatables-bootstrap3.js' %}'></script>
+
     <script src="/static/js/lib/FileSaver.min.js"></script>
-    <script src="/static/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="/static/bower_components/lodash/lodash.js"></script>
-    <script src="/static/bower_components/jquery-flot/jquery.flot.js"></script>
-    <script src="/static/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="/static/bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
-    <script src="/static/bower_components/datatables-tabletools/js/dataTables.tableTools.js"></script>
-    <script src="/static/bower_components/datatables-bootstrap3-plugin/media/js/datatables-bootstrap3.js"></script>
-
+    <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>
     <script src="/static/js/lib/tab.js"></script>
     <script src="/static/js/data_getter.js"></script>
     <script src="/static/js/map.js"></script>
@@ -53,7 +57,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">
-            <img class="pull-left" src="/static/bower_components/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> NutSurv
+            <img class="pull-left" src="/static/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> <span class="navbar-brand-name">NutSurv</span>
           </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
