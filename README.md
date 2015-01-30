@@ -18,6 +18,28 @@ Then get the sources (enter username/password):
 
     git clone https://github.com/eHealthAfrica/eha-nutsurv-django.git nutsurv
 
+Install [Node](http://nodejs.org)
+
+**Mac OS (via NVM)**
+
+    curl https://raw.githubusercontent.com/creationix/nvm/v0.23.2/install.sh | bash
+    nvm install stable
+
+**Ubuntu**
+
+    curl -sL https://deb.nodesource.com/setup | sudo bash -
+    sudo apt-get install -y nodejs
+
+**Debian (as root)**
+
+    apt-get install curl
+    curl -sL https://deb.nodesource.com/setup | bash -
+    apt-get install -y nodejs
+
+Install [Bower](http://bower.io) for front-end packages
+
+    npm install bower
+
 Now create a python virtual environment:
 
     virtualenv --no-site-packages nutsurv-venv
@@ -55,6 +77,10 @@ Create superuser in Django:
 
     ./manage.py createsuperuser
 
+Add the front-end dependencies via [django-bower](http://django-bower.readthedocs.org/en/latest/installation.html)
+
+    ./manage.py bower install
+
 Run the server:
 
     ./manage.py runserver
@@ -73,7 +99,19 @@ And inside the virtual environment:
 
      pip install uwsgi
 
-...instructions to be continued... Follow these in the meantime: http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html
+For more instructions about using Django & NginX [go here](http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html)
+
+### Update Deployment
+
+To do an deployment / update of the app do the following steps. *Paths and names may vary (so double check)*
+
+    source venv/bin/activate
+    cd eha-nutsurv-django
+    git pull
+    cd nutsurv
+    ./manage.py collectstatic 
+    sudo service uwsgi restart
+
 
 ## Preload GIS data
 
