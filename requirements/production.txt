@@ -7,5 +7,6 @@ python-dateutil
 python-mimeparse
 numpy
 scipy
-dateutil
+python-dateutil
 mimeparse
+
