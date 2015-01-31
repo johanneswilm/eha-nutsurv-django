@@ -76,19 +76,15 @@ function importCSV(lineData) {
                 },
                 "uuid": "4bba74eb-e30c-4fc9-ce4e-d2b744e945b3"
             }
+        /*
+        TODO:
+          * The data for the different women and children is not ordered the same every time, so this needs to be figured out.
+          * Add code for findign child, household members and women data and send the finished json package to server.
+          * Make sure that initiateRead() is first called when an entire aMB "package" of entries has been successfully sent to the server and saved to the database.
+          * Add team data. (form where?)
+          * Calculate z-scores (using z-scroe calculation code from mobile app)
+        */
 
-        var woman_0 = getWomanMemberData(fields, 837);
-        if (woman_0) {
-            exportObject.members.push(woman_0);
-        }
-        var woman_1 = getWomanMemberData(fields, 866);
-        if (woman_1) {
-            exportObject.members.push(woman_1);
-        }
-        var woman_2 = getWomanMemberData(fields, 866);
-        if (woman_1) {
-            exportObject.members.push(woman_1);
-        }
 
 
     });
