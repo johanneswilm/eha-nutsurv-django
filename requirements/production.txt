@@ -3,5 +3,8 @@ psycopg2
 jsonfield
 jsonschema
 django-tastypie
+python-dateutil
+python-mimeparse
 numpy
 scipy
+django-bower

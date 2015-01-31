@@ -1,3 +1,14 @@
+body {
+  padding-top: 50px;
+}
+
+.navbar-brand-name {
+    position: relative;
+    top: 6px;
+}
+
+
+
 .leaflet-container:-webkit-full-screen{
   display: block;
 }
@@ -14,23 +25,8 @@ div.alone_block {
     margin-top: 20px;
 }
 
-#last_update_li {
-  float: right;
-  font-size: 0.7em;
-}
-/*
-select {
-  min-width: 200px;
-}
 
-div.selection_choices {
-  padding-top: 0.6em;
-}
 
-div.chart {
-    height: 500px;
-}
-*/
 table.dataTable thead th {
     padding-left: 2px !important;
 }

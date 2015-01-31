@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+PROJECT_ROOT = PROJECT_PATH
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -42,6 +43,7 @@ INSTALLED_APPS = (
     'tastypie',
     'accounts',
     'importer',
+    'djangobower'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,6 +92,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, '../static')
+
+# Bower http://django-bower.readthedocs.org/en/latest/index.html
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'dashboard')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+)
+
+BOWER_INSTALLED_APPS = (
+    'bootstrap#3.3.2',
+    'bootstrap-select#1.6.3',
+    'datatables#1.10.4',
+    'datatables-bootstrap3-plugin#0.2.0',
+    'datatables-responsive#1.0.3',
+    'datatables-tabletools#2.2.3',
+    'file-saver',
+    'jquery#1.10.2',
+    'jquery-flot#0.8.3',
+    'leaflet#0.7.3',
+    'lodash#3.0.0',
+    'parse-python-indentation#0.1.0',
+    'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.2'
+)
 
 try:
     exec open(os.path.join(PROJECT_PATH, 'configuration.py')) in globals()

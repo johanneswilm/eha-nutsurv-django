@@ -12,3 +12,6 @@ db.*
 *.backup
 .coverage
 htmlcov
+venv/
+nutsurv-venv/
+nutsurv/dashboard/bower_components/
