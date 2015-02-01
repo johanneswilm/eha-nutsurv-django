@@ -39,6 +39,7 @@ def register_formhub_data(request):
 
     response={}
     status = 200
+    print json_object['_uuid']
     formhubdata, created = models.FormhubData.objects.get_or_create(uuid=json_object['_uuid'])
     formhubdata.contents = json_object
 
