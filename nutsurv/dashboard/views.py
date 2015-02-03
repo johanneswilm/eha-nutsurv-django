@@ -10,7 +10,7 @@ from django.views.generic import View
 from django.conf import settings
 
 from models import Alert
-from models import JSONDocument
+from models import HouseholdSurveyJSON
 from models import ClustersJSON
 from models import LGA
 from models import QuestionnaireSpecification
@@ -119,7 +119,7 @@ class TeamsJSONView(LoginRequiredView):
             '3': 'Rose, Hannah & Chris'
         }
         """
-        docs = JSONDocument.objects.all()
+        docs = HouseholdSurveyJSON.objects.all()
         teams_dict = {}
         for doc in docs:
             team = doc.json['team']
@@ -233,7 +233,7 @@ class PersonnelJSONView(LoginRequiredView):
         this function tries to compute "age" for such members and include it in
         the output.
         """
-        docs = JSONDocument.objects.all()
+        docs = HouseholdSurveyJSON.objects.all()
         output = {}
         # Prepare the keys consumed by the dashboard JS code.
         dashboard_keys = (
@@ -344,7 +344,7 @@ class SurveyedClustersPerTeamJSONView(LoginRequiredView):
         }
         """
         # get all JSON documents
-        docs = JSONDocument.objects.all()
+        docs = HouseholdSurveyJSON.objects.all()
         clusters_per_team_dict = {}
         # parse all documents and gather the data
         for doc in docs:
@@ -499,7 +499,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         }
         """
         # get all JSON documents
-        docs = JSONDocument.objects.all()
+        docs = HouseholdSurveyJSON.objects.all()
         survey_data = {}
         # convert all documents
         i = 0

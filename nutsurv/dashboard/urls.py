@@ -1,7 +1,7 @@
 from django.conf.urls import include, patterns, url
 from tastypie.api import Api
 
-from api.resources import JSONDocumentResource
+from api.resources import HouseholdSurveyJSONResource
 
 from dashboard.views import TeamsJSONView
 from dashboard.views import AggregateSurveyDataJSONView
@@ -16,7 +16,7 @@ from dashboard.views import ClustersPerTeamJSONView
 from dashboard.views import ClustersJSONView
 
 v1_api = Api(api_name='v1')
-v1_api.register(JSONDocumentResource())
+v1_api.register(HouseholdSurveyJSONResource())
 
 urlpatterns = patterns('',
                        (r'^api/', include(v1_api.urls)),

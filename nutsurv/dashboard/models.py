@@ -5,29 +5,39 @@ import dateutil.relativedelta
 import scipy.stats
 
 from django.db import models
-from django.core.validators import MinValueValidator
 
 import django.contrib.gis.db.models as gismodels
 from django.contrib.gis.geos import Point
 
 from jsonfield import JSONField
-from jsonschema import validate, ValidationError
 
 from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
 
 
-class JSONDocument(models.Model):
+class HouseholdSurveyJSON(models.Model):
     class Meta:
-        verbose_name_plural = 'JSON documents'
+        verbose_name = 'household survey'
 
-    # Set help_text to something else than empty but still invisible so that
-    # the JSONField does not set it to its custom default (we want nothing
-    # displayed).
-    json = JSONField(null=True, blank=True, help_text=' ')
+    json = JSONField(
+        null=True, blank=True,
+        help_text='A JSON document containing data acquired from one '
+                  'household.  Typically not edited here but uploaded from a '
+                  'mobile application used by a team of surveyors in the '
+                  'field.  If in doubt, do not edit.'
+    )
+    uuid = models.CharField(
+        max_length=255, unique=True,
+        help_text='A unique identifier of an individual household survey.  '
+                  'Typically assigned by a mobile application before the data '
+                  'is uploaded to the server.  If in doubt, do no edit.'
+    )
 
     def __unicode__(self):
         # Try to build a name describing a survey.
+        if not self.json:
+            # If field json is invalid then there is no way to compute the name.
+            return u'invalid {}'.format(self._meta.verbose_name)
         if 'householdID' in self.json:
             household = self.json['householdID']
         else:
@@ -46,23 +56,9 @@ class JSONDocument(models.Model):
             cluster, household, team_name, start_time
         )
 
-    def guess_type(self, list_of_json_document_types):
-        """Matches the stored JSON document with the document types provided
-        using list_of_json_document_types.  The order of the JSONDocumentType
-        objects determines their priority as the method stops as soon as the
-        first match is found.
-
-        :param list_of_json_document_types:
-        :return: the matched JSONDocumentType or None if no match found
-        """
-        for json_document_type in list_of_json_document_types:
-            if json_document_type.matches(self):
-                return json_document_type
-        return None
-
     @classmethod
     def find_all_surveys_by_team(cls, team_id):
-        """This method finds all instances of JSONDocument which can be
+        """This method finds all instances of HouseholdSurveyJSON which can be
         associated with team given by team_id.  If team_id is None, the method
         finds those where team_id is None (unlikely) or where the JSON document
         does not contain an object named 'team' containing another object named
@@ -78,7 +74,7 @@ class JSONDocument(models.Model):
         return output
 
     def find_all_surveys_by_this_team(self):
-        """This method finds all instances of JSONDocument which were created
+        """This method finds all instances of HouseholdSurveyJSON which were created
         by team who created this instance.  If this document is does not have
         a valid team/team_id or the team_id is None (in both cases the document
         is not a valid survey data structure), it returns an empty list.
@@ -243,35 +239,13 @@ class JSONDocument(models.Model):
             else:
                 return age_in_months
 
-
-class JSONDocumentType(models.Model):
-    class Meta:
-        verbose_name_plural = 'JSON document types'
-
-    name = models.CharField(max_length=255)
-    schema = JSONField(null=True, blank=True, help_text=' ')
-    priority = models.IntegerField(unique=True, blank=True, null=True,
-                                   default=10,
-                                   validators=[MinValueValidator(0)],
-                                   help_text='Leave empty for the lowest '
-                                             'priority'
-                                   )
-
-    def matches(self, json_document):
+    def get_uuid(self):
         try:
-            validate(json_document.json, self.schema)
-        except ValidationError:
-            matches = False
+            uuid = self.json['uuid']
+        except KeyError:
+            return None
         else:
-            matches = True
-        return matches
-
-    @staticmethod
-    def get_all_by_priority():
-        return JSONDocumentType.objects.all().order_by('priority')
-
-    def __unicode__(self):
-        return self.name
+            return uuid
 
 
 class Alert(models.Model):
@@ -319,11 +293,11 @@ class Alert(models.Model):
         boys = 0
         girls = 0
         for child in children:
-            age = JSONDocument.get_childs_age_in_months(child)
+            age = HouseholdSurveyJSON.get_childs_age_in_months(child)
             if age is None:
                 continue
             elif age < 60:
-                gender = JSONDocument.get_household_member_gender(child)
+                gender = HouseholdSurveyJSON.get_household_member_gender(child)
                 if gender == 'M':
                     boys += 1
                 elif gender == 'F':
@@ -357,7 +331,7 @@ class Alert(models.Model):
         age6to29 = 0
         age30to59 = 0
         for child in children:
-            age = JSONDocument.get_childs_age_in_months(child)
+            age = HouseholdSurveyJSON.get_childs_age_in_months(child)
             if age is None:
                 continue
             elif 5 < age < 30:
@@ -404,7 +378,7 @@ class Alert(models.Model):
         age4 = 0
         age5 = 0
         for child in children:
-            age = JSONDocument.get_household_members_age_in_years(child)
+            age = HouseholdSurveyJSON.get_household_members_age_in_years(child)
             if age is None:
                 continue
             elif age == 4:
@@ -440,7 +414,7 @@ class Alert(models.Model):
         age14 = 0
         age15 = 0
         for woman in women:
-            age = JSONDocument.get_household_members_age_in_years(woman)
+            age = HouseholdSurveyJSON.get_household_members_age_in_years(woman)
             if age is None:
                 continue
             elif age == 14:
@@ -479,7 +453,7 @@ class Alert(models.Model):
         age4549 = 0
         age5054 = 0
         for woman in women:
-            age = JSONDocument.get_household_members_age_in_years(woman)
+            age = HouseholdSurveyJSON.get_household_members_age_in_years(woman)
             if age is None:
                 continue
             elif 44 < age < 50:

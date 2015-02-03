@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import JSONDocument, JSONDocumentType
+from models import HouseholdSurveyJSON
 from models import Alert
 from models import ClustersJSON
 from models import LGA
@@ -50,8 +50,7 @@ admin.site.register(ClustersPerTeam, ClustersPerTeamAdmin)
 
 admin.site.register(
     (
-        JSONDocument,
-        JSONDocumentType,
+        HouseholdSurveyJSON,
         LGA,
     )
 )
