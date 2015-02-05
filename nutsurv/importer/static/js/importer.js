@@ -16,10 +16,11 @@ fileInput.addEventListener('change', function(e) {
 
     reader.onload = function(e) {
         var data = e.target.result,
-            lineData = data.split('\n');
+            lineData = undoSplitsInsideQuotes(data.split(/\r?\n/g), '\r\n');
+
 
         if (!fieldDefinitions) {
-            fieldDefinitions = lineData.shift().split(',');
+            fieldDefinitions = undoSplitsInsideQuotes(lineData.shift().split(','), ',');
         }
         if (offset < file.size) {
             offset -= lineData[lineData.length - 1].length;
@@ -39,11 +40,48 @@ fileInput.addEventListener('change', function(e) {
         }
     }
 
+    function undoSplitsInsideQuotes(splitData, separator) {
+        var splitsInsideQuotes = [],
+        splitsInsideQuotesNumber,
+        quotes,
+        insideSplit = false,
+        i;
+
+        // Reverse splits based inside quotes -- based on Jeffrey Yang's code: http://stackoverflow.com/a/10408021
+        for(i=splitData.length-1; i> 0; i--) {
+            // find all the unescaped quotes:
+            quotes = splitData[i].match(/[^\\]?\"/g);
+
+            if (insideSplit) {
+                // We are inside a split. If there are an even number of quotation marks, this instance, and the instance before it need to be merged:
+                if((quotes ? quotes.length : 0) % 2 == 0) {
+                    splitsInsideQuotes.push(i);
+                } else {
+                    insideSplit = false;
+                }
+            } else {
+                // We are outside a split. If there are an odd number of quotation marks, this instance, and the instance before it need to be merged:
+                if((quotes ? quotes.length : 0) % 2 == 1) {
+                    splitsInsideQuotes.push(i);
+                    insideSplit = true;
+                }
+            }
+        }
+
+        splitsInsideQuotesNumber = splitsInsideQuotes.length;
+        // starting at the bottom of the list, merge instances, using separator
+        for(i=0; i < splitsInsideQuotesNumber; i++) {
+            splitData.splice(splitsInsideQuotes[i]-1, 2, splitData[splitsInsideQuotes[i]-1]+separator+splitData[splitsInsideQuotes[i]]);
+        }
+
+        return splitData;
+    }
+
     function importCSV(lineData) {
         var saveCounter = 0;
 
         lineData.forEach(function(line) {
-            var fields = line.split(','), // Assumes simple CSV fields no tricks with escaped commas or alike.
+            var fields = undoSplitsInsideQuotes(line.split(','), ','),
                 exportObject = {},
                 xhr;
 
@@ -59,6 +97,15 @@ fileInput.addEventListener('change', function(e) {
                 var value = fields[counter],
                     fieldDefinition;
                 if (value!='n/a') {
+                    if(typeof value === 'undefined'){
+                        console.log([fields,fieldName,line]);
+                    }
+                    if (value===String(parseInt(value))) {
+                        value = parseInt(value);
+                    } else if (parseFloat(value.match(/^-?\d*(\.\d+)?$/))>0) {
+                        value = parseFloat(value);
+                    }
+
                     if (fieldName.indexOf('[')===-1) { // A simple field
                         exportObject[fieldName] = value;
                     } else { // An array of fields. These are not necessarily in order (7 can come before 6, etc.)

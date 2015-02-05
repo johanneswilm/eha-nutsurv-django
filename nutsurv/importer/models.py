@@ -23,45 +23,26 @@ class FormhubData(models.Model):
     def convert_to_json_document (self):
         if not self.converted_json_document:
             self.converted_json_document = JSONDocument.objects.create()
+        if not self.contents.viewkeys() & {'hh_number', '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', 'starttime', 'endtime', '_submission_time', '_uuid'}:
+            raise ValueError #TODO: log error
         converted_json = {
-            "uuid":"d7a6fab3-7c41-4257-afac-4583b391cfe2",
-            "syncDate":"2015-02-02T10:18:40.829Z",
-            "startTime":"2015-02-02T10:14:01.056Z",
-            "created":"2015-02-02T10:18:07.903Z",
-            "_rev":"5-ca06629e1b7879f9642ee4791cc623ae",
-            "modified":"2015-02-02T12:14:08.916Z",
-            "householdID":945,
-            "cluster":45,
-            "endTime":"2015-02-02T10:18:40.270Z",
-            "location":[
-                12.0201484,
-                8.5637308
+            "uuid": self.contents['_uuid'],
+            "syncDate": self.contents['_submission_time'],
+            "startTime": self.contents['starttime'],
+            "created": self.contents['_submission_time'],
+            "_rev": str(uuid.uuid4()), # TODO: Using a UUID here for now. not sure this is good enough.
+            "modified": self.contents['_submission_time'],
+            "householdID": self.contents['hh_number'],
+            "cluster": self.contents['cluster'],
+            "endTime": self.contents['endtime'],
+            "location": [
+                self.contents['_gps_latitude'],
+                self.contents['_gps_longitude']
             ],
-            "members":[],
-            "team":{},
-            "_id":"d7a6fab3-7c41-4257-afac-4583b391cfe2",
-            "tools":{
-                "scale":{
-                    "toolID":876,
-                    "measurement":45
-                },
-                "uuid":"131bfef0-a5b2-4f6a-f717-d9e2572b65d9",
-                "created":"2015-02-02T10:05:26.745Z",
-                "_rev":"1-39cf84d5c729b84d3fd8e1bbc6bff78b",
-                "childMUAC":{
-                    "toolID":557,
-                    "measurement":76
-                },
-                "modified":"2015-02-02T10:05:26.745Z",
-                "heightBoard":{
-                    "toolID":24,
-                    "measurement":23
-                },
-                "_id":"131bfef0-a5b2-4f6a-f717-d9e2572b65d9",
-                "adultMUAC":{
-                    "toolID":145,
-                    "measurement":43
-                }},
+            "members": [],
+            "team": FakeTeams.objects.get_or_create(team_id = self.contents['team_num']),
+            "_id": self.contents['_uuid'],
+            "tools":{},
             "history":[]
         }
         self.converted_json_document.json = converted_json
