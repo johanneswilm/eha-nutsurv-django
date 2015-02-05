@@ -14,6 +14,17 @@ def importer(request):
     response = {}
     return render(request, 'importer/index.html', response)
 
+@csrf_exempt
+@require_POST
+def reset_fake_teams(request):
+    response = {}
+    models.FakeTeams.objects.all().delete()
+    status = 200
+    return JsonResponse(
+        response,
+        status=status
+    )
+
 
 @csrf_exempt
 @require_POST
@@ -39,13 +50,14 @@ def register_formhub_data(request):
 
     response={}
     status = 200
-    print json_object['_uuid']
+    print json_object
     formhubdata, created = models.FormhubData.objects.get_or_create(uuid=json_object['_uuid'])
     formhubdata.contents = json_object
 
     formhubdata.save()
     formhubdata.convert_to_json_document()
-    
+    formhubdata.save()
+
     if created:
         status = 201
     return JsonResponse(

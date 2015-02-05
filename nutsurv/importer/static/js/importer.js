@@ -11,13 +11,17 @@ fileInput.addEventListener('change', function(e) {
     var file = document.getElementById('file_import').files[0],
         reader = new FileReader(),
         offset = 0,
-        fieldDefinitions = false;
+        fieldDefinitions = false,
+        fakeTeamsReset = false;
 
-
-    reader.onload = function(e) {
+    function onload (e) {
         var data = e.target.result,
             lineData = undoSplitsInsideQuotes(data.split(/\r?\n/g), '\r\n');
 
+        if (!fakeTeamsReset) {
+            fakeTeamsReset = true;
+            return resetFakeTeams(function(){onload(e)}); // Delete all old fake teams in the DB
+        }
 
         if (!fieldDefinitions) {
             fieldDefinitions = undoSplitsInsideQuotes(lineData.shift().split(','), ',');
@@ -28,7 +32,9 @@ fileInput.addEventListener('change', function(e) {
         }
         importCSV(lineData);
 
-    };
+    }
+
+    reader.onload = onload;
 
     function initiateRead() {
         if (offset < file.size) {
@@ -38,6 +44,20 @@ fileInput.addEventListener('change', function(e) {
         } else {
             importStatus.innerHTML = 'Done!';
         }
+    }
+
+    function resetFakeTeams(callback) {
+        exportObject = {};
+        xhr = new XMLHttpRequest();
+        xhr.open("POST", '/importer/reset_fake_teams', true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status == 200) {
+                return callback();
+            }
+        }
+
+        xhr.send(JSON.stringify(exportObject));
     }
 
     function undoSplitsInsideQuotes(splitData, separator) {

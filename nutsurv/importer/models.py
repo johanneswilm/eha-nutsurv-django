@@ -86,6 +86,7 @@ class FormhubData(models.Model):
             "tools":{},
             "history":[]
         }
+        print converted_json
         self.converted_json_document.json = converted_json
         self.converted_json_document.save()
 
