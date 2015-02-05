@@ -266,27 +266,27 @@ class Alert(models.Model):
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
 
     @classmethod
-    def run_alert_checks_on_document(cls, json_document):
+    def run_alert_checks_on_document(cls, household_survey):
         """This method runs all the defined alert checks which leads to
         relevant alerts being created in case they are triggered by data stored
-        in json_document.
+        in household_survey.
         """
-        cls.sex_ratio_alert(json_document)
-        cls.child_age_in_months_ratio_alert(json_document)
-        cls.child_age_displacement_alert(json_document)
-        cls.woman_age_14_15_displacement_alert(json_document)
-        cls.woman_age_4549_5054_displacement_alert(json_document)
-        cls.digit_preference_alert(json_document)
+        cls.sex_ratio_alert(household_survey)
+        cls.child_age_in_months_ratio_alert(household_survey)
+        cls.child_age_displacement_alert(household_survey)
+        cls.woman_age_14_15_displacement_alert(household_survey)
+        cls.woman_age_4549_5054_displacement_alert(household_survey)
+        cls.digit_preference_alert(household_survey)
 
     @classmethod
-    def sex_ratio_alert(cls, json_document, test='binomial'):
+    def sex_ratio_alert(cls, household_survey, test='chi-squared'):
         """In the data of children from 0-59 months of age, we expect to find
         an even number boys and girls. If chi-square of sex ratio < 0.001 then
         report an alert on dashboard "Sex-ratio issue in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         children = []
         for survey in surveys:
             children.extend(survey.get_child_records())
@@ -302,29 +302,35 @@ class Alert(models.Model):
                     boys += 1
                 elif gender == 'F':
                     girls += 1
+        if boys + girls == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([boys, girls], p=0.5)
         else:
             expected = (boys + girls) / 2.0
             chi2, p = scipy.stats.chisquare([boys, girls], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Sex-ratio issue in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def child_age_in_months_ratio_alert(cls, json_document, test='binomial'):
+    def child_age_in_months_ratio_alert(cls, household_survey,
+                                        test='chi-squared'):
         """In the data of children from 6-59 months of age, we expect an age
         ratio of 6-29 months to 30-59 months to be around 0.85. If a chi-square
         test of the age ratio 6-29 months / 30-59 months is significantly
         < 0.001 from expected 0.85 then report an alert on dashboard "Age ratio
         issue in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         children = []
         for survey in surveys:
             children.extend(survey.get_child_records())
@@ -346,6 +352,11 @@ class Alert(models.Model):
         # child being 30 to 59 months old).
         # p3059 = 1 - p629 = 0.5405405405405405
 
+        if age6to29 + age30to59 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age6to29, age30to59], p=p629)
         else:
@@ -356,22 +367,22 @@ class Alert(models.Model):
                 [expected6to29, expected30to59]
             )
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Age ratio issue in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def child_age_displacement_alert(cls, json_document, test='binomial'):
+    def child_age_displacement_alert(cls, household_survey, test='chi-squared'):
         """Ratio of children aged 5 years / children aged 4 years is expected
         to equal 1. If the chi-square of this ratio is significantly < 0.001
         from expected 1 then report an alert on dashboard "Child age
         displacement issue in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         children = []
         for survey in surveys:
             children.extend(survey.get_child_records())
@@ -386,28 +397,34 @@ class Alert(models.Model):
             elif age == 5:
                 age5 += 1
 
+        if age4 + age5 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age4, age5], p=0.5)
         else:
             expected = (age4 + age5) / 2.0
             chi2, p = scipy.stats.chisquare([age4, age5], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Child age displacement issue in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def woman_age_14_15_displacement_alert(cls, json_document, test='binomial'):
+    def woman_age_14_15_displacement_alert(
+            cls, household_survey, test='chi-squared'):
         """Ratio of women aged 14 / women aged 15 is expected to equal 1. If
         the chi-square of this ratio is significantly < 0.001 from expected 1
         then report an alert on dashboard "Woman age displacement issue (14/15)
         in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         women = []
         for survey in surveys:
             women.extend(survey.get_women_records())
@@ -422,6 +439,11 @@ class Alert(models.Model):
             elif age == 15:
                 age15 += 1
 
+        if age14 + age15 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age14, age15], p=0.5)
         else:
@@ -429,7 +451,7 @@ class Alert(models.Model):
             chi2, p = scipy.stats.chisquare(
                 [age14, age15], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = \
                 'Woman age displacement issue (14/15) in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
@@ -437,16 +459,16 @@ class Alert(models.Model):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def woman_age_4549_5054_displacement_alert(cls, json_document,
-                                               test='binomial'):
+    def woman_age_4549_5054_displacement_alert(cls, household_survey,
+                                               test='chi-squared'):
         """Ratio of women aged 45-49 / women aged 50-54 is expected to equal 1.
         If the chi-square of this ratio is significantly < 0.001 from expected
         1 then report an alert on dashboard "Woman age displacement issue
         (45-49/50-54) in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         women = []
         for survey in surveys:
             women.extend(survey.get_women_records())
@@ -461,6 +483,11 @@ class Alert(models.Model):
             elif 49 < age < 55:
                 age5054 += 1
 
+        if age4549 + age5054 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age4549, age5054], p=0.5)
         else:
@@ -468,7 +495,7 @@ class Alert(models.Model):
             chi2, p = scipy.stats.chisquare(
                 [age4549, age5054], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
                          '{}'.format(team)
             # Only add if there is no same alert among unarchived.
@@ -476,7 +503,7 @@ class Alert(models.Model):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def digit_preference_alert(cls, json_document):
+    def digit_preference_alert(cls, household_survey):
         """If terminal digit preference score for weight, height or MUAC > 20,
         then report alert on dashboard "Digit preference issue in Team NAME".
         N.B. this function calculates and checks TDPS for each variable (i.e.
@@ -484,7 +511,7 @@ class Alert(models.Model):
         terminal digit preferences scores satisfies the condition then the
         alert is triggered.
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         data_points = {'muac': [], 'weight': [], 'height': []}
         for survey in surveys:
             subjects = survey.get_women_and_child_records()
@@ -535,7 +562,7 @@ class Alert(models.Model):
         # Check if any of the computed scores triggers the alert.
         for k in terminal_digit_preference_score:
             if terminal_digit_preference_score[k] > 20:
-                team = json_document.get_team_name()
+                team = household_survey.get_team_name()
                 alert_text = 'Digit preference issue in team {}'.format(team)
                 # Only add if there is no same alert among unarchived.
                 if not Alert.objects.filter(text=alert_text, archived=False):
