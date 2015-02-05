@@ -23,8 +23,49 @@ class FormhubData(models.Model):
     def convert_to_json_document (self):
         if not self.converted_json_document:
             self.converted_json_document = JSONDocument.objects.create()
-        if not self.contents.viewkeys() & {'hh_number', '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', 'starttime', 'endtime', '_submission_time', '_uuid'}:
-            raise ValueError #TODO: log error
+        if not all (terms in self.contents for terms in ('hh_number', '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', 'starttime', 'endtime', '_submission_time', '_uuid', 'consent/hh_roster')):
+            return # Basic info not there, we give up. TODO: log error
+
+        members = []
+        for fh_member in self.contents['consent/hh_roster']:
+            member = {
+                "firstName": fh_member['consent/hh_roster/listing/name'],
+                "age": fh_member['consent/hh_roster/listing/age_years'],
+            }
+            if fh_member['consent/hh_roster/listing/sex'] == 1:
+                member["gender"] = "M"
+            else:
+                member["gender"] = "F"
+            members.append(member)
+
+        if 'content/note_7' in self.contents:
+            for fh_woman in self.contents['consent/note_7']:
+                name = fh_woman["consent/note_7/womanname1"]
+                member = next((item for item in members if item["firstName"] == name), None)
+                if member:
+                    member["surveyType"] = "women"
+                    member["survey"] = {}
+                    if 'consent/note_7/wom_muac' in fh_woman:
+                        member["survey"]["muac"] = fh_woman["consent/note_7/wom_muac"]
+
+        if 'content/child' in self.contents:
+            for fh_child in self.contents['consent/child']:
+                name = fh_child["consent/child/child_name"]
+                member = next((item for item in members if item["firstName"] == name), None)
+                if member:
+                    member["surveyType"] = "child"
+                    member["survey"] = {}
+                    if 'consent/child/child_60/muac' in fh_child:
+                        member["survey"]["muac"] = fh_child['consent/child/child_60/muac']
+                    if 'consent/child/child_60/muac' in fh_child:
+                        member["survey"]["height"] = fh_child['consent/child/child_60/height']
+                    if 'consent/child/child_60/muac' in fh_child:
+                        member["survey"]["weight"] = fh_child['consent/child/child_60/weight']
+                    if 'consent/child/child_60/muac' in fh_child:
+                        member["survey"]["ageInMonth"] = fh_child['consent/child/months']
+
+
+
         converted_json = {
             "uuid": self.contents['_uuid'],
             "syncDate": self.contents['_submission_time'],
@@ -39,8 +80,8 @@ class FormhubData(models.Model):
                 self.contents['_gps_latitude'],
                 self.contents['_gps_longitude']
             ],
-            "members": [],
-            "team": FakeTeams.objects.get_or_create(team_id = self.contents['team_num']),
+            "members": members,
+            "team": FakeTeams.objects.get_or_create(team_id = self.contents['team_num'])[0].contents,
             "_id": self.contents['_uuid'],
             "tools":{},
             "history":[]

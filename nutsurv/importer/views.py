@@ -44,7 +44,8 @@ def register_formhub_data(request):
     formhubdata.contents = json_object
 
     formhubdata.save()
-    #TODO: schedule conversion of data
+    formhubdata.convert_to_json_document()
+    
     if created:
         status = 201
     return JsonResponse(

@@ -47,25 +47,34 @@ fileInput.addEventListener('change', function(e) {
         insideSplit = false,
         i;
 
+        // Don't modify the original item.
+        splitData = splitData.slice(0);
+
         // Reverse splits based inside quotes -- based on Jeffrey Yang's code: http://stackoverflow.com/a/10408021
         for(i=splitData.length-1; i> 0; i--) {
             // find all the unescaped quotes:
             quotes = splitData[i].match(/[^\\]?\"/g);
 
             if (insideSplit) {
-                // We are inside a split. If there are an even number of quotation marks, this instance, and the instance before it need to be merged:
+                // We are inside a split. If there are an even number of quotation marks, this item, and the item before it need to be merged:
                 if((quotes ? quotes.length : 0) % 2 == 0) {
                     splitsInsideQuotes.push(i);
                 } else {
                     insideSplit = false;
                 }
             } else {
-                // We are outside a split. If there are an odd number of quotation marks, this instance, and the instance before it need to be merged:
+                // We are outside a split. If there are an odd number of quotation marks, this item, and the item before it need to be merged:
                 if((quotes ? quotes.length : 0) % 2 == 1) {
                     splitsInsideQuotes.push(i);
                     insideSplit = true;
                 }
             }
+        }
+
+        if (insideSplit) {
+            // We are still inside of a split when reaching the top of the splitData. This is not good. Probably the last item was part of a quoted item itself.
+            var lastItem = splitData.pop();
+            return undoSplitsInsideQuotes(splitData, separator).push(lastItem);
         }
 
         splitsInsideQuotesNumber = splitsInsideQuotes.length;
