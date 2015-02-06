@@ -21,16 +21,17 @@ class FormhubData(models.Model):
 
 
     def convert_to_json_document (self):
-        if not self.converted_json_document:
-            self.converted_json_document = JSONDocument.objects.create()
         if not all (terms in self.contents for terms in ('hh_number', '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', 'starttime', 'endtime', '_submission_time', '_uuid', 'consent/hh_roster')):
             return # Basic info not there, we give up. TODO: log error
-
+        if not self.converted_json_document:
+            self.converted_json_document = JSONDocument.objects.create()
         members = []
         for fh_member in self.contents['consent/hh_roster']:
             member = {
                 "firstName": fh_member['consent/hh_roster/listing/name'],
                 "age": fh_member['consent/hh_roster/listing/age_years'],
+                "surveyType": "",
+                "survey": {}
             }
             if fh_member['consent/hh_roster/listing/sex'] == 1:
                 member["gender"] = "M"
