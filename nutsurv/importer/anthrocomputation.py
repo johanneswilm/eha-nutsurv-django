@@ -14,11 +14,10 @@ def roundFloat(number, decimalPlaces):
         decimalPlaces = 2
     elif decimalPlaces < 0:
         decimalPlaces = 0
-    else
+    else:
         decimalPlaces = int(decimalPlaces)
     p = math.pow(10, decimalPlaces)
     return round(number * p) / p
-}
 
 
 # Lists all the 'logical' indicators, i.e. considering W4L and W4H to
@@ -286,12 +285,12 @@ def get4LengthOrHeightIndicatorReference(ind, sex, lengthOrHeight):
     if not _useReferenceTablesCache:
         data = get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate)
         if data.length > 0:
-            return new ReferenceData(lengthOrHeight, undefined, data[0]['L'], data[0]['M'], data[0]['S'])
+            return ReferenceData(lengthOrHeight, undefined, data[0]['L'], data[0]['M'], data[0]['S'])
         else:
             # if no data have been found from the DB, we return extreme values
-            return new ReferenceData()
+            return ReferenceData()
     else:
-        throw new NotImplementedException()
+        raise NotImplementedError()
 
 # Given a ReferenceData structure, this method returns a result with the correct P and Z.
 def calculateZandP(refDat, computeFinalZScore):
@@ -337,19 +336,19 @@ def computeLengthOrHeight4Age(ageInDays, lengthOrHeight, sex):
 
 def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOedema):
     if hasOedema or not weight >= INPUT_MINWEIGHT:
-        return new IndicatorValue();
+        return IndicatorValue();
 
 
     if useLength:
         if lengthOrHeight >= MINLENGTH and lengthOrHeight <= MAXLENGTH:
             rd = get4LengthOrHeightIndicatorReference(GraphIndicator['Weight4Length'], sex, lengthOrHeight)
         else:
-            return new IndicatorValue()
+            return IndicatorValue()
     else:
         if lengthOrHeight >= MINHEIGHT and lengthOrHeight <= MAXHEIGHT:
             rd = get4LengthOrHeightIndicatorReference(GraphIndicator['Weight4Height'], sex, lengthOrHeight)
-        else
-            return new IndicatorValue()
+        else:
+            return IndicatorValue()
 
     rd.Y = weight
     return calculateZandP(rd, true)
