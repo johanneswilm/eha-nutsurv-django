@@ -6,6 +6,7 @@ from jsonfield import JSONField
 from django.db import models
 
 from dashboard.models import JSONDocument
+from importer import anthrocomputation
 
 
 class FormhubData(models.Model):
@@ -58,13 +59,39 @@ class FormhubData(models.Model):
                     member["survey"] = {}
                     if 'consent/child/child_60/muac' in fh_child:
                         member["survey"]["muac"] = fh_child['consent/child/child_60/muac']
-                    if 'consent/child/child_60/muac' in fh_child:
+                    if 'consent/child/child_60/height' in fh_child:
                         member["survey"]["height"] = fh_child['consent/child/child_60/height']
-                    if 'consent/child/child_60/muac' in fh_child:
+                    if 'consent/child/child_60/weight' in fh_child:
                         member["survey"]["weight"] = fh_child['consent/child/child_60/weight']
-                    if 'consent/child/child_60/muac' in fh_child:
+                    if 'consent/child/child/months' in fh_child:
                         member["survey"]["ageInMonth"] = fh_child['consent/child/months']
-
+                    if 'consent/child/child_60/edema' in fh_child:
+                        if fh_child['consent/child/child_60/edema'] == 0:
+                            member["survey"]["edema"] = 'N'
+                        else:
+                            member["survey"]["edema"] = 'Y'
+                    if all (terms in fh_child for terms in ('consent/child/child_60/muac', 'consent/child/child_60/height', 'consent/child/child_60/weight', 'consent/child/child/months', 'consent/child/child_60/edema')):
+                        ageInDays = fh_child['consent/child/months'] * anthrocomputation.DAYSINMONTH
+                        sex = member["gender"]
+                        weight = fh_child['consent/child/child_60/weight']
+                        height = fh_child['consent/child/child_60/height']
+                        if fh_child['consent/child/child_60/measure'] == 2:
+                            isRecumbent = True
+                        else:
+                            isRecumbent = False
+                        if fh_child['consent/child/child_60/edema'] == 0:
+                            hasOedema = True
+                        else:
+                            hasOedema = False
+                        hc = None # Not used it seems.
+                        muac = fh_child['consent/child/child_60/muac']
+                        tsf = None # Not used it seems.
+                        ssf = None # Not used it seems.
+                        child_zscores = anthrocomputation.getAnthroResult( ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, muac, tsf, ssf)
+                        member["survey"]["zscores"] = {}
+                        member["survey"]["zscores"]["haz"] = child_zscores["ZLH4A"]
+                        member["survey"]["zscores"]["waz"] = child_zscores["ZW4A"]
+                        member["survey"]["zscores"]["whz"] = child_zscores["ZW4LH"]
 
 
         converted_json = {
