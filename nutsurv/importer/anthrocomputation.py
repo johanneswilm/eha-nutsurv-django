@@ -37,14 +37,14 @@ Indicator = {
 # Lists all the 'physical' indicators, i.e. separately considering W4L and W4H.
 GraphIndicator = {
     'Weight4Height': -1,
-    'Weight4Length': Indicator.Weight4LengthOrHeight,
-    'Weight4Age': Indicator.Weight4Age,
-    'LengthOrHeight4Age': Indicator.LengthOrHeight4Age,
-    'BMI4Age': Indicator.BMI4Age,
-    'HC4Age': Indicator.HC4Age,
-    'MUAC4Age': Indicator.MUAC4Age,
-    'TSF4Age': Indicator.TSF4Age,
-    'SSF4Age': Indicator.SSF4Age
+    'Weight4Length': Indicator['Weight4LengthOrHeight'],
+    'Weight4Age': Indicator['Weight4Age'],
+    'LengthOrHeight4Age': Indicator['LengthOrHeight4Age'],
+    'BMI4Age': Indicator['BMI4Age'],
+    'HC4Age': Indicator['HC4Age'],
+    'MUAC4Age': Indicator['MUAC4Age'],
+    'TSF4Age': Indicator['TSF4Age'],
+    'SSF4Age': Indicator['SSF4Age']
 }
 
 # The different anthro z-score flags.
@@ -323,7 +323,7 @@ def computeWeight4Age(ageInDays, weight, sex, hasOedema):
 
     if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight  < INPUT_MINWEIGHT:
         return IndicatorValue(True)
-    rd = get4AgeIndicatorReference(GraphIndicator.Weight4Age, sex, int(round(ageInDays, 0)))
+    rd = get4AgeIndicatorReference(GraphIndicator['Weight4Age'], sex, int(round(ageInDays, 0)))
     rd.Y = weight
     return calculateZandP(rd, True)
 
@@ -331,7 +331,7 @@ def computeWeight4Age(ageInDays, weight, sex, hasOedema):
 def computeLengthOrHeight4Age(ageInDays, lengthOrHeight, sex):
     if ageInDays < 0 or ageInDays > MAXDAYS or lengthOrHeight < 1:
         return IndicatorValue(True)
-    rd = get4AgeIndicatorReference(GraphIndicator.LengthOrHeight4Age, sex, ageInDays)
+    rd = get4AgeIndicatorReference(GraphIndicator['LengthOrHeight4Age'], sex, ageInDays)
     rd.Y = lengthOrHeight
     return calculateZandP(rd, False)
 
@@ -342,12 +342,12 @@ def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOede
 
     if useLength:
         if lengthOrHeight >= MINLENGTH and lengthOrHeight <= MAXLENGTH:
-            rd = get4LengthOrHeightIndicatorReference(GraphIndicator.Weight4Length, sex, lengthOrHeight)
+            rd = get4LengthOrHeightIndicatorReference(GraphIndicator['Weight4Length'], sex, lengthOrHeight)
         else:
             return new IndicatorValue()
     else:
         if lengthOrHeight >= MINHEIGHT and lengthOrHeight <= MAXHEIGHT:
-            rd = get4LengthOrHeightIndicatorReference(GraphIndicator.Weight4Height, sex, lengthOrHeight)
+            rd = get4LengthOrHeightIndicatorReference(GraphIndicator['Weight4Height'], sex, lengthOrHeight)
         else
             return new IndicatorValue()
 
