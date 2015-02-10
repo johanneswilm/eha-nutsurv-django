@@ -9,6 +9,58 @@ General Note: For some reason completely foreign to me [Vernon], WHO performed a
 import sys
 import math
 
+def roundFloat(number, decimalPlaces):
+    if not decimalPlaces:
+        decimalPlaces = 2
+    elif decimalPlaces < 0:
+        decimalPlaces = 0
+    else
+        decimalPlaces = int(decimalPlaces)
+    p = math.pow(10, decimalPlaces)
+    return round(number * p) / p
+}
+
+
+# Lists all the 'logical' indicators, i.e. considering W4L and W4H to
+# be one indicator.
+Indicator = {
+    'Weight4LengthOrHeight': 0,
+    'Weight4Age': 1,
+    'LengthOrHeight4Age': 2,
+    'BMI4Age': 3,
+    'HC4Age': 4,
+    'MUAC4Age': 5,
+    'TSF4Age': 6,
+    'SSF4Age': 7
+}
+
+# Lists all the 'physical' indicators, i.e. separately considering W4L and W4H.
+GraphIndicator = {
+    'Weight4Height': -1,
+    'Weight4Length': Indicator.Weight4LengthOrHeight,
+    'Weight4Age': Indicator.Weight4Age,
+    'LengthOrHeight4Age': Indicator.LengthOrHeight4Age,
+    'BMI4Age': Indicator.BMI4Age,
+    'HC4Age': Indicator.HC4Age,
+    'MUAC4Age': Indicator.MUAC4Age,
+    'TSF4Age': Indicator.TSF4Age,
+    'SSF4Age': Indicator.SSF4Age
+}
+
+# The different anthro z-score flags.
+Flag = {
+    'Flag_None': 0,
+    'W4LHZ': 1,
+    'LH4AZ': 2,
+    'W4AZ': 3,
+    'W4LHZ_LH4AZ': 4,
+    'W4LHZ_W4AZ': 5,
+    'LH4AZ_W4AZ': 6,
+    'W4LHZ_LH4AZ_W4AZ': 7,
+    'BMI4AZ': 8
+}
+
+
 
 
 class AnthropometricResult(object):
