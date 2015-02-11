@@ -8,15 +8,17 @@ General Note: For some reason completely foreign to me [Vernon], WHO performed a
 
 import sys
 import math
+import os
+import json
 
-def roundFloat(number, decimalPlaces):
-    if not decimalPlaces:
-        decimalPlaces = 2
-    elif decimalPlaces < 0:
-        decimalPlaces = 0
+def roundFloat(number, decimal_places):
+    if not decimal_places:
+        decimal_places = 2
+    elif decimal_places < 0:
+        decimal_places = 0
     else:
-        decimalPlaces = int(decimalPlaces)
-    p = math.pow(10, decimalPlaces)
+        decimal_places = int(decimal_places)
+    p = math.pow(10, decimal_places)
     return round(number * p) / p
 
 
@@ -66,6 +68,7 @@ class AnthropometricResult(object):
     pass  # fields will be dynamically assigned in Python
 
 NaN = float('NaN')  # the floating point value "Not A Number"
+undefined = None
 
 #Boundaries for input values, checked on the UI and data import sides
 # The min weight for a child, in kg.
@@ -170,10 +173,33 @@ MAXZSCOREBOUNDS = [5, 5, 6, 5, 5, 5, 5, 5]
 
 _useReferenceTablesCache = False  # [Vernon] WHO did not use cache on mobiles, we will follow that lead, for now.
 
+
+def get4AgeIndicatorRefData(ind, sex, ageInDays):
+    indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
+    json_data = open(indicator_file).read()
+    data = json.loads(json_data)
+    print (ind+"-"+sex+"-"+str(ageInDays))
+    find_first = next((item for item in data if item["Sex"] == sex and round(int(item["age"])) == int(ageInDays)), False)
+    print(find_first)
+    return find_first
+
+def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What happens with the interpolate value?
+    indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
+    json_data = open(indicator_file).read()
+    data = json.loads(json_data)
+    # In all of the files there is only either height or length, so choose based on which one is available
+    if 'length' in data[0]:
+        key_name = 'length'
+    else:
+        key_name = 'height'
+    find_first = next((item for item in data if item["Sex"] == sex and round(int(item[key_name])) == lengthOrHeight), False)
+    print(find_first)
+    return find_first
+
 # Used for storing data points from the indicator reference tables.
 class ReferenceData(object):
 
-    def __init__(self, x=NotImplemented, y=NaN, el=NaN, m=NaN, s=NaN):
+    def __init__(self, x=NaN, y=NaN, el=NaN, m=NaN, s=NaN):
         # References the X-axis value: age, height or weight
         self.X = x
         self.Y = y
@@ -181,7 +207,7 @@ class ReferenceData(object):
         self.M = m
         self.S = s
 
-SetExtreme = ReferenceData(None, NaN, NaN, NaN, NaN)
+SetExtreme = ReferenceData(NaN, NaN, NaN, NaN, NaN)
 
 class IndicatorValue(object):
 
@@ -199,7 +225,7 @@ def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
 
     output = {
         'lengthOrHeight': NaN,
-        'isLength': undefined
+        'isLength': NaN
     }
 
     if ageInDays < 0:
@@ -221,21 +247,26 @@ def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
                 output['lengthOrHeight'] = lengthOrHeight
     return output
 
+# This function assumes access to function get4AgeIndicatorRefData(ind, sex,
+# ageInDays) which provides L, M, S for a given age and sex from whatever
+# database they are stored in (see databasereader.py in the old kivy app code).
+# This function assumes that the data it gets from the aforementioned function
+# is exactly in the same format as the data the Python implementation used to
+# get (i.e. a table with the values of interest in row 0 and columns
+# addressable by their name (i.e. 'L', 'M' or 'S')).
+
 def get4AgeIndicatorReference(ind, sex, ageInDays):
     if not _useReferenceTablesCache:
-        dt = databasereader.Get4AgeIndicatorRefData(ind, sex, ageInDays)
-
-        rd = ReferenceData(ageInDays)
-        if len(dt) == 0:
-            return SetExtreme
-        dr = dt[0]
-        rd.L = dr["L"]
-        rd.M = dr["M"]
-        rd.S = dr["S"]
-        return rd
+        data = get4AgeIndicatorRefData(ind, sex, ageInDays)
+        if data:
+            return ReferenceData(ageInDays, undefined, float(data['L']), float(data['M']), float(data['S']))
+        else:
+            # if no data have been found from the DB, we return extreme values
+            return ReferenceData()
     else:
-        assert not _useReferenceTablesCache, 'Cache not used in this implementation'
-        return SetExtreme
+        raise NotImplementedError()
+
+
 
 
 # Crops a value to a defined precision.
@@ -280,12 +311,16 @@ def symetricCrop(value, precision):
 #   understand how to write get4LengthOrHeightRefData()).
 
 def get4LengthOrHeightIndicatorReference(ind, sex, lengthOrHeight):
-    croppedLH = symetricCrop(lengthOrHeight, 1);
-    interpolate = (croppedLH != lengthOrHeight);
+    croppedLH = symetricCrop(lengthOrHeight, 1)
+    if croppedLH != lengthOrHeight:
+        interpolate = True
+    else:
+        interpolate = False
+
     if not _useReferenceTablesCache:
         data = get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate)
-        if data.length > 0:
-            return ReferenceData(lengthOrHeight, undefined, data[0]['L'], data[0]['M'], data[0]['S'])
+        if data:
+            return ReferenceData(lengthOrHeight, undefined, float(data['L']), float(data['M']), float(data['S']))
         else:
             # if no data have been found from the DB, we return extreme values
             return ReferenceData()
@@ -322,7 +357,7 @@ def computeWeight4Age(ageInDays, weight, sex, hasOedema):
 
     if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight  < INPUT_MINWEIGHT:
         return IndicatorValue(True)
-    rd = get4AgeIndicatorReference(GraphIndicator['Weight4Age'], sex, int(round(ageInDays, 0)))
+    rd = get4AgeIndicatorReference('Weight4Age', sex, int(round(ageInDays, 0)))
     rd.Y = weight
     return calculateZandP(rd, True)
 
@@ -330,7 +365,7 @@ def computeWeight4Age(ageInDays, weight, sex, hasOedema):
 def computeLengthOrHeight4Age(ageInDays, lengthOrHeight, sex):
     if ageInDays < 0 or ageInDays > MAXDAYS or lengthOrHeight < 1:
         return IndicatorValue(True)
-    rd = get4AgeIndicatorReference(GraphIndicator['LengthOrHeight4Age'], sex, ageInDays)
+    rd = get4AgeIndicatorReference('LengthOrHeight4Age', sex, ageInDays)
     rd.Y = lengthOrHeight
     return calculateZandP(rd, False)
 
@@ -352,7 +387,6 @@ def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOede
 
     rd.Y = weight
     return calculateZandP(rd, true)
-
 
 
 # Computes the anthro result for the given raw data values.
@@ -378,8 +412,8 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
         if height is not None:
             adjusted =  getAdjustedLengthOrHeight(int(ar.ageInDays), height, isRecumbent)
 
-            ar.lengthOrHeightAdjusted = adjusted.lengthOrHeight
-            ar.IsLength = adjusted.isLength
+            ar.lengthOrHeightAdjusted = adjusted['lengthOrHeight']
+            ar.isLength = adjusted['isLength']
 
         # WAZ
         ivw = computeWeight4Age(ar.ageInDays, ar.weight, ar.sex, hasOedema)
@@ -409,8 +443,8 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
         ar.ZW4LH = roundFloat(ivwhz.Z, DEFAULTPRECISION_ZSCORE)
         ar.PW4LH = roundFloat(ivwhz.P, DEFAULTPRECISION_PERCENTILE)
     else:
-        ar.lengthOrHeight = undefined
-        ar.lengthOrHeightAdjusted = undefined
-        ar.ZW4LH = undefined
-        ar.PW4LH = undefined
+        ar.lengthOrHeight = NaN
+        ar.lengthOrHeightAdjusted = NaN
+        ar.ZW4LH = NaN
+        ar.PW4LH = NaN
     return ar
