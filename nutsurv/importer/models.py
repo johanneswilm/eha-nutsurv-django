@@ -1,4 +1,4 @@
-import uuid, random, json
+import uuid, random, json, math
 
 from datetime import datetime
 from jsonfield import JSONField
@@ -40,20 +40,26 @@ class FormhubData(models.Model):
                 member["gender"] = "F"
             members.append(member)
 
-        if 'content/note_7' in self.contents:
+        if 'consent/note_7' in self.contents:
             for fh_woman in self.contents['consent/note_7']:
-                name = fh_woman["consent/note_7/womanname1"]
-                member = next((item for item in members if item["firstName"] == name), None)
+                if "consent/note_7/womanname1" in fh_woman:
+                    name = fh_woman["consent/note_7/womanname1"]
+                    member = next((item for item in members if item["firstName"] == name), None)
+                else:
+                    member = False #TODO: log as non-imported woman survey
                 if member:
                     member["surveyType"] = "women"
                     member["survey"] = {}
                     if 'consent/note_7/wom_muac' in fh_woman:
                         member["survey"]["muac"] = fh_woman["consent/note_7/wom_muac"]
 
-        if 'content/child' in self.contents:
+        if 'consent/child' in self.contents:
             for fh_child in self.contents['consent/child']:
-                name = fh_child["consent/child/child_name"]
-                member = next((item for item in members if item["firstName"] == name), None)
+                if "consent/child/child_name" in fh_child:
+                    name = fh_child["consent/child/child_name"]
+                    member = next((item for item in members if item["firstName"] == name), None)
+                else:
+                    member = False #TODO: log as non-imported child survey
                 if member:
                     member["surveyType"] = "child"
                     member["survey"] = {}
@@ -70,35 +76,54 @@ class FormhubData(models.Model):
                             member["survey"]["edema"] = 'N'
                         else:
                             member["survey"]["edema"] = 'Y'
-                    if all (terms in fh_child for terms in ('consent/child/child_60/muac', 'consent/child/child_60/height', 'consent/child/child_60/weight', 'consent/child/child/months', 'consent/child/child_60/edema')):
+                    #if all (terms in fh_child for terms in ('consent/child/child_60/muac', 'consent/child/child_60/height', 'consent/child/child_60/weight', 'consent/child/child/months', 'consent/child/child_60/edema')):
+                    if 'consent/child/months' in fh_child:
                         ageInDays = fh_child['consent/child/months'] * anthrocomputation.DAYSINMONTH
-                        sex = member["gender"]
+                    else:
+                        ageInDays = None
+                    sex = member["gender"]
+                    if 'consent/child/child_60/weight' in fh_child:
                         weight = fh_child['consent/child/child_60/weight']
+                    else:
+                        weight = None
+                    if 'consent/child/child_60/height' in fh_child:
                         height = fh_child['consent/child/child_60/height']
-                        if fh_child['consent/child/child_60/measure'] == 2:
-                            isRecumbent = True
-                        else:
-                            isRecumbent = False
-                        if fh_child['consent/child/child_60/edema'] == 0:
-                            hasOedema = True
-                        else:
-                            hasOedema = False
-                        hc = None # Not used it seems.
+                    else:
+                        height = None
+                    if 'consent/child/child_60/measure' in fh_child and fh_child['consent/child/child_60/measure'] == 2:
+                        isRecumbent = True
+                    else:
+                        isRecumbent = False
+                    if 'consent/child/child_60/edema' in fh_child and fh_child['consent/child/child_60/edema'] > 0:
+                        hasOedema = True
+                    else:
+                        hasOedema = False
+                    hc = None # Not used.
+                    if 'consent/child/child_60/muac' in fh_child:
                         muac = fh_child['consent/child/child_60/muac']
-                        tsf = None # Not used it seems.
-                        ssf = None # Not used it seems.
-                        child_zscores = anthrocomputation.getAnthroResult( ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, muac, tsf, ssf)
+                    else:
+                        muac = None
+                    tsf = None # Not used.
+                    ssf = None # Not used.
+                    zscores = anthrocomputation.getAnthroResult( ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, muac, tsf, ssf)
+                    if 'ZLH4A' in zscores or 'ZW4A' in zscores or 'ZW4LH' in zscores:
+                        print zscores
                         member["survey"]["zscores"] = {}
-                        member["survey"]["zscores"]["haz"] = child_zscores["ZLH4A"]
-                        member["survey"]["zscores"]["waz"] = child_zscores["ZW4A"]
-                        member["survey"]["zscores"]["whz"] = child_zscores["ZW4LH"]
+                        if 'ZLH4A' in zscores and not math.isnan(zscores["ZLH4A"]):
+                            member["survey"]["zscores"]["haz"] = zscores["ZLH4A"]
+                        if 'ZW4A' in zscores and not math.isnan(zscores["ZW4A"]):
+                            member["survey"]["zscores"]["waz"] = zscores["ZW4A"]
+                        if 'ZW4LH' in zscores and not math.isnan(zscores["ZW4LH"]):
+                            member["survey"]["zscores"]["whz"] = zscores["ZW4LH"]
+                    else:
+                        print zscores
 
 
         converted_json = {
             "uuid": self.contents['_uuid'],
-            "syncDate": self.contents['_submission_time'],
+            "syncDate": self.contents['_submission_time'] + ".000Z", # From simple date/time to datetime with timezone
             "startTime": self.contents['starttime'],
-            "created": self.contents['_submission_time'],
+            "created": self.contents['_submission_time']  + ".000Z", # From simple date/time to datetime with timezone
             "_rev": str(uuid.uuid4()), # TODO: Using a UUID here for now. not sure this is good enough.
             "modified": self.contents['_submission_time'],
             "householdID": self.contents['hh_number'],
@@ -114,7 +139,6 @@ class FormhubData(models.Model):
             "tools":{},
             "history":[]
         }
-        print converted_json
         self.converted_json_document.json = converted_json
         self.converted_json_document.save()
 
@@ -202,14 +226,14 @@ class FakeTeams(models.Model):
             assistant = [random.choice(FIRST_NAMES),random.choice(LAST_NAMES)];
             self.contents = {
                 "uuid": str(uuid.uuid4()),
-                "created": datetime.now().isoformat(),
+                "created": datetime.utcnow().isoformat()[:-3] + 'Z', # Trying to get a date/time stamp as JS outputs it.
                 "_rev": str(uuid.uuid4()), # TODO: Using a UUID here for now. not sure this is good enough.
-                "modified": datetime.now().isoformat(),
+                "modified": datetime.utcnow().isoformat()[:-3] +'Z', # Trying to get a date/time stamp as JS outputs it.
                 "teamID": self.team_id,
                 "members":[
                     {
                         "designation":"Team Leader",
-                        "firstName":team_leader[0][0],
+                        "firstName": team_leader[0][0],
                         "mobile":"0" + str(random.randint(10000000000,99999999999)),
                         "lastName": team_leader[1],
                         "age": random.randint(30, 58),
