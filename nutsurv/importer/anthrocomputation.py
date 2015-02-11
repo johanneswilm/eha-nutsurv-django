@@ -12,6 +12,7 @@ import os
 import json
 
 def roundFloat(number, decimal_places):
+    print(number,decimal_places)
     if not decimal_places:
         decimal_places = 2
     elif decimal_places < 0:
@@ -21,9 +22,16 @@ def roundFloat(number, decimal_places):
     p = math.pow(10, decimal_places)
     return round(number * p) / p
 
+def isFinite(value):
+  try:
+    float(value)
+    if not math.isinf(value) and not math.isnan(value):
+        return True
+    else:
+        return False
+  except ValueError:
+    return False
 
-class AnthropometricResult(object):
-    pass  # fields will be dynamically assigned in Python
 
 NaN = float('NaN')  # the floating point value "Not A Number"
 undefined = None
@@ -118,10 +126,18 @@ NCHSMAXLENGTHORHEIGHT_FEMALE = 137
 
 # The amount in cm to add/subtract when correcting from height to length and vice-versa.
 HEIGHTCORRECTION = 0.7
-DEFAULTPRECISION_MEASURE = NotImplemented
-DEFAULTPRECISION_ZSCORE = NotImplemented
-DEFAULTPRECISION_PERCENTILE = NotImplemented
-DEFAULTPRECISION_BMI = NotImplemented
+
+# Default number of decimals for measurements.
+DEFAULTPRECISION_MEASURE = 2
+
+# Default number of decimals for z-scores.
+DEFAULTPRECISION_ZSCORE = 2
+
+# Default number of decimals for percentiles.
+DEFAULTPRECISION_PERCENTILE = 1
+
+# Default number of decimals for BMI values.
+DEFAULTPRECISION_BMI = 1
 
 # Contains the default min bounds of the indicators.
 MINZSCOREBOUNDS = [-5, -6, -6, -5, -5, -5, -5, -5]
@@ -136,9 +152,9 @@ def get4AgeIndicatorRefData(ind, sex, ageInDays):
     indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
     json_data = open(indicator_file).read()
     data = json.loads(json_data)
-    print (ind+"-"+sex+"-"+str(ageInDays))
+    #print (ind+"-"+sex+"-"+str(ageInDays))
     find_first = next((item for item in data if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
-    print(find_first)
+    #print(find_first)
     return find_first
 
 def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What happens with the interpolate value?
@@ -150,8 +166,8 @@ def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What hap
         key_name = 'length'
     else:
         key_name = 'height'
-    find_first = next((item for item in data if item["Sex"] == sex and round(int(item[key_name])) == lengthOrHeight), False)
-    print(find_first)
+    find_first = next((item for item in data if item["Sex"] == sex and round(float(item[key_name])) == round(lengthOrHeight)), False)
+    #print(find_first)
     return find_first
 
 # Used for storing data points from the indicator reference tables.
@@ -169,15 +185,32 @@ SetExtreme = ReferenceData(NaN, NaN, NaN, NaN, NaN)
 
 class IndicatorValue(object):
 
-    def __init__(self, p=NotImplemented, z=NaN):
-
-        if p is True:
-            self.P = NaN
-        else:
-            self.P = p
-
+    def __init__(self, p=NaN, z=NaN):
+        self.P = p
         self.Z = z
 
+def centile(z_score_value):
+    if (z_score_value < -3 or z_score_value > 3):
+        return NaN;
+    abs_val = math.fabs(z_score_value)
+    # try to approximate with a 5-degree polynomial function
+    P1 = (
+        1 - 1 / math.sqrt(2 * math.pi) * math.exp(-math.pow(abs_val, 2) / 2)
+        * (
+            0.31938 * (1 / (1 + 0.2316419 * abs_val))
+            - 0.356563782 * math.pow(1 / (1 + 0.2316419 * abs_val), 2)
+            + 1.781477937 * math.pow(1 / (1 + 0.2316419 * abs_val), 3)
+            - 1.82125 * math.pow(1 / (1 + 0.2316419 * abs_val), 4)
+            + 1.330274429 * math.pow(1 / (1 + 0.2316419 * abs_val), 5)
+        )
+    )
+    P1 *= 100
+    if z_score_value < 0:
+        P1 = 100 - P1
+    if 0 <= P1 and P1 <= 100:
+        return P1
+    else:
+        return NaN
 
 def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
 
@@ -252,7 +285,7 @@ def symetricCrop(value, precision):
     step = value * ten_to_precision
     if not isFinite(step) or not step:
         return output
-    step = parseInt(step) / ten_to_precision
+    step = int(step) / ten_to_precision
     if not isFinite(step) or not step:
         return output
     else:
@@ -307,15 +340,16 @@ def calculateZandP(refDat, computeFinalZScore):
                 output.Z = 3.0 + (refDat.Y - SD3pos) / (SD3pos - SD2pos)
     except FloatingPointError:  # V.Cole: using more specific trap. WHO was too liberal.
         output = IndicatorValue(True)  # return an out-of-range indication
+    output.P = centile(output.Z)
     return output
 
 
 # Computes the weight-for-age indicator result.
 def computeWeight4Age(ageInDays, weight, sex, hasOedema):
-    print(ageInDays)
-    print(weight)
-    print(sex)
-    print(hasOedema)
+    #print(ageInDays)
+    #print(weight)
+    #print(sex)
+    #print(hasOedema)
     if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight  < INPUT_MINWEIGHT:
         return IndicatorValue(True)
     rd = get4AgeIndicatorReference('Weight4Age', sex, int(round(ageInDays, 0)))
@@ -347,67 +381,67 @@ def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOede
             return IndicatorValue()
 
     rd.Y = weight
-    return calculateZandP(rd, true)
+    return calculateZandP(rd, True)
 
 
 # Computes the anthro result for the given raw data values.
 def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, muac, tsf, ssf):
 
-    ar = AnthropometricResult()
-    ar.sex = sex
+    ar = {}
+    ar['sex'] = sex
 
-    ar.ageUnknown = ageInDays is None
-    ar.heightUnknown = height is None
+    ar['ageUnknown'] = ageInDays is None
+    ar['heightUnknown'] = height is None
 
-    if sex not in ["M", "F"] or (ar.ageUnknown and ar.heightUnknown):
+    if sex not in ["M", "F"] or (ar['ageUnknown'] and ar['heightUnknown']):
         return ar
 
-    ar.weight = weight if weight is not None else NaN
-    ar.lengthOrHeightAdjusted = NaN
-    ar.isLength = isRecumbent
+    ar['weight'] = weight if weight is not None else NaN
+    ar['lengthOrHeightAdjusted'] = NaN
+    ar['isLength'] = isRecumbent
 
     if ageInDays is not None:
-        ar.ageInDays = ageInDays
+        ar['ageInDays'] = ageInDays
 
         # first: check & adjust length/height
         if height is not None:
-            adjusted =  getAdjustedLengthOrHeight(int(ar.ageInDays), height, isRecumbent)
+            adjusted =  getAdjustedLengthOrHeight(int(ar['ageInDays']), height, isRecumbent)
 
-            ar.lengthOrHeightAdjusted = adjusted['lengthOrHeight']
-            ar.isLength = adjusted['isLength']
+            ar['lengthOrHeightAdjusted'] = adjusted['lengthOrHeight']
+            ar['isLength'] = adjusted['isLength']
 
         # WAZ
-        ivw = computeWeight4Age(ar.ageInDays, ar.weight, ar.sex, hasOedema)
-        ar.PW4A = ivw.P
-        ar.ZW4A = ivw.Z
+        ivw = computeWeight4Age(ar['ageInDays'], ar['weight'], ar['sex'], hasOedema)
+        ar['PW4A'] = ivw.P
+        ar['ZW4A'] = ivw.Z
 
         # HAZ
-        ivh = computeLengthOrHeight4Age(ar.ageInDays, ar.lengthOrHeightAdjusted, ar.sex)
-        ar.ZLH4A = ivh.Z
-        ar.PLH4A = ivh.P
+        ivh = computeLengthOrHeight4Age(ar['ageInDays'], ar['lengthOrHeightAdjusted'], ar['sex'])
+        ar['ZLH4A'] = ivh.Z
+        ar['PLH4A'] = ivh.P
 
     ageAbove60CompletedMonths = False
     if not ageInDays:
         ageAbove60CompletedMonths = ageInDays > MAXDAYS
     # check if WHZ can be calculated, if not set as undefined
-    if not height and not ageAbove60CompletedMonths:
-        ar.lengthOrHeight = height
-        if not ar.lengthOrHeightAdjusted:
-            if ar.isLength:
+    if not (height and ageAbove60CompletedMonths):
+        ar['lengthOrHeight'] = height
+        if not ar['lengthOrHeightAdjusted']:
+            if ar['isLength']:
                 adjusted_height_mindays = HEIGHT_MINDAYS - 1
             else:
                 adjusted_height_mindays = HEIGHT_MINDAYS
-            ar.lengthOrHeight = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # Really?
-            ar.lengthOrHeightAdjusted = ar.lengthOrHeight
+            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # Really?
+            ar['lengthOrHeightAdjusted'] = ar['lengthOrHeight']
 
         # weight-for-length/height aka WHZ
-        ivwhz = computeWeight4LengthOrHeight(ar.weight, ar.lengthOrHeightAdjusted, ar.sex, ar.isLength, hasOedema)
+        ivwhz = computeWeight4LengthOrHeight(ar['weight'], ar['lengthOrHeightAdjusted'], ar['sex'], ar['isLength'], hasOedema)
 
-        ar.ZW4LH = roundFloat(ivwhz.Z, DEFAULTPRECISION_ZSCORE)
-        ar.PW4LH = roundFloat(ivwhz.P, DEFAULTPRECISION_PERCENTILE)
+        ar['ZW4LH'] = roundFloat(ivwhz.Z, DEFAULTPRECISION_ZSCORE)
+        ar['PW4LH'] = roundFloat(ivwhz.P, DEFAULTPRECISION_PERCENTILE)
     else:
-        ar.lengthOrHeight = NaN
-        ar.lengthOrHeightAdjusted = NaN
-        ar.ZW4LH = NaN
-        ar.PW4LH = NaN
+        ar['lengthOrHeight'] = NaN
+        ar['lengthOrHeightAdjusted'] = NaN
+        ar['ZW4LH'] = NaN
+        ar['PW4LH'] = NaN
     return ar
