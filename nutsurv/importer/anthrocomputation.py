@@ -146,24 +146,28 @@ MAXZSCOREBOUNDS = [5, 5, 6, 5, 5, 5, 5, 5]
 
 _useReferenceTablesCache = False  # [Vernon] WHO did not use cache on mobiles, we will follow that lead, for now.
 
+# Used to not load the same json file several times within a session
+INDICATOR_TABLES = {}
 
 def get4AgeIndicatorRefData(ind, sex, ageInDays):
-    indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
-    json_data = open(indicator_file).read()
-    data = json.loads(json_data)
-    find_first = next((item for item in data if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
+    if not ind in INDICATOR_TABLES:
+        indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
+        json_data = open(indicator_file).read()
+        INDICATOR_TABLES[ind] = json.loads(json_data)
+    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
     return find_first
 
 def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What happens with the interpolate value?
-    indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
-    json_data = open(indicator_file).read()
-    data = json.loads(json_data)
+    if not ind in INDICATOR_TABLES:
+        indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
+        json_data = open(indicator_file).read()
+        INDICATOR_TABLES[ind] = json.loads(json_data)
     # In all of the files there is only either height or length, so choose based on which one is available
-    if 'length' in data[0]:
+    if 'length' in INDICATOR_TABLES[ind][0]:
         key_name = 'length'
     else:
         key_name = 'height'
-    find_first = next((item for item in data if item["Sex"] == sex and round(float(item[key_name])) == round(lengthOrHeight)), False)
+    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and math.trunc(float(item[key_name])) == round(lengthOrHeight)), False)
     return find_first
 
 # Used for storing data points from the indicator reference tables.
@@ -217,7 +221,7 @@ def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
 
     output = {
         'lengthOrHeight': NaN,
-        'isLength': NaN
+        'isLength': undefined
     }
 
     if ageInDays < 0:
@@ -368,17 +372,15 @@ def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOede
     if hasOedema or not weight >= INPUT_MINWEIGHT:
         return IndicatorValue()
 
-
     if useLength:
-        if lengthOrHeight >= MINLENGTH and lengthOrHeight <= MAXLENGTH:
-            rd = get4LengthOrHeightIndicatorReference('Weight4Length', sex, lengthOrHeight)
-        else:
-            return IndicatorValue()
+        indicator = 'Weight4Length'
     else:
-        if lengthOrHeight >= MINHEIGHT and lengthOrHeight <= MAXHEIGHT:
-            rd = get4LengthOrHeightIndicatorReference('Weight4Height', sex, lengthOrHeight)
-        else:
-            return IndicatorValue()
+        indicator = 'Weight4Height'
+
+    if lengthOrHeight >= MINLENGTH and lengthOrHeight <= MAXLENGTH:
+        rd = get4LengthOrHeightIndicatorReference(indicator, sex, lengthOrHeight)
+    else:
+        return IndicatorValue()
 
     rd.Y = weight
     return calculateZandP(rd, True)
@@ -431,7 +433,7 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
                 adjusted_height_mindays = HEIGHT_MINDAYS - 1
             else:
                 adjusted_height_mindays = HEIGHT_MINDAYS
-            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # Really?
+            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # Really? This returns an object
             ar['lengthOrHeightAdjusted'] = ar['lengthOrHeight']
 
         # weight-for-length/height aka WHZ
