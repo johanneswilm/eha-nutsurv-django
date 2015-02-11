@@ -5,29 +5,29 @@ from jsonfield import JSONField
 
 from django.db import models
 
-from dashboard.models import JSONDocument
+from dashboard.models import HouseholdSurveyJSON
 from importer import anthrocomputation
 
 
-class FormhubData(models.Model):
-    contents = JSONField(null=True, blank=True, help_text=' ')
+class FormhubSurvey(models.Model):
     uuid = models.CharField(max_length=256,unique=True)
-    converted_json_document = models.ForeignKey(JSONDocument, null=True, blank=True)
+    json = JSONField(null=True, blank=True, help_text=' ')
+    converted_household_survey = models.ForeignKey(HouseholdSurveyJSON, null=True, blank=True)
 
     def __unicode__(self):
         return self.uuid
 
     class Meta:
-        verbose_name_plural = 'Formhub Data Entries'
+        verbose_name_plural = 'Formhub Survey Entries'
 
 
-    def convert_to_json_document (self):
-        if not all (terms in self.contents for terms in ('hh_number', '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', 'starttime', 'endtime', '_submission_time', '_uuid', 'consent/hh_roster')):
+    def convert_to_household_survey (self):
+        if not all (terms in self.json for terms in ('hh_number', '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', 'starttime', 'endtime', '_submission_time', '_uuid', 'consent/hh_roster')):
             return # Basic info not there, we give up. TODO: log error
-        if not self.converted_json_document:
-            self.converted_json_document = JSONDocument.objects.create()
+        if not self.converted_household_survey:
+            self.converted_household_survey, created = HouseholdSurveyJSON.objects.get_or_create(uuid=self.uuid)
         members = []
-        for fh_member in self.contents['consent/hh_roster']:
+        for fh_member in self.json['consent/hh_roster']:
             member = {
                 "firstName": fh_member['consent/hh_roster/listing/name'],
                 "age": fh_member['consent/hh_roster/listing/age_years'],
@@ -40,8 +40,8 @@ class FormhubData(models.Model):
                 member["gender"] = "F"
             members.append(member)
 
-        if 'consent/note_7' in self.contents:
-            for fh_woman in self.contents['consent/note_7']:
+        if 'consent/note_7' in self.json:
+            for fh_woman in self.json['consent/note_7']:
                 if "consent/note_7/womanname1" in fh_woman:
                     name = fh_woman["consent/note_7/womanname1"]
                     member = next((item for item in members if item["firstName"] == name), None)
@@ -53,8 +53,8 @@ class FormhubData(models.Model):
                     if 'consent/note_7/wom_muac' in fh_woman:
                         member["survey"]["muac"] = fh_woman["consent/note_7/wom_muac"]
 
-        if 'consent/child' in self.contents:
-            for fh_child in self.contents['consent/child']:
+        if 'consent/child' in self.json:
+            for fh_child in self.json['consent/child']:
                 if "consent/child/child_name" in fh_child:
                     name = fh_child["consent/child/child_name"]
                     member = next((item for item in members if item["firstName"] == name), None)
@@ -106,8 +106,8 @@ class FormhubData(models.Model):
                     tsf = None # Not used.
                     ssf = None # Not used.
                     zscores = anthrocomputation.getAnthroResult( ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, muac, tsf, ssf)
-                    if ('ZLH4A' in zscores and not math.isnan(zscores["ZLH4A"]))
-                        or ('ZW4A' in zscores and not math.isnan(zscores["ZW4A"]))
+                    if ('ZLH4A' in zscores and not math.isnan(zscores["ZLH4A"])) \
+                        or ('ZW4A' in zscores and not math.isnan(zscores["ZW4A"])) \
                         or ('ZW4LH' in zscores and not math.isnan(zscores["ZW4LH"])):
                         member["survey"]["zscores"] = {}
                         if 'ZLH4A' in zscores and not math.isnan(zscores["ZLH4A"]):
@@ -119,27 +119,27 @@ class FormhubData(models.Model):
 
 
         converted_json = {
-            "uuid": self.contents['_uuid'],
-            "syncDate": self.contents['_submission_time'] + ".000Z", # From simple date/time to datetime with timezone
-            "startTime": self.contents['starttime'],
-            "created": self.contents['_submission_time']  + ".000Z", # From simple date/time to datetime with timezone
+            "uuid": self.json['_uuid'],
+            "syncDate": self.json['_submission_time'] + ".000Z", # From simple date/time to datetime with timezone
+            "startTime": self.json['starttime'],
+            "created": self.json['_submission_time']  + ".000Z", # From simple date/time to datetime with timezone
             "_rev": str(uuid.uuid4()), # TODO: Using a UUID here for now. not sure this is good enough.
-            "modified": self.contents['_submission_time'],
-            "householdID": self.contents['hh_number'],
-            "cluster": self.contents['cluster'],
-            "endTime": self.contents['endtime'],
+            "modified": self.json['_submission_time'],
+            "householdID": self.json['hh_number'],
+            "cluster": self.json['cluster'],
+            "endTime": self.json['endtime'],
             "location": [
-                self.contents['_gps_latitude'],
-                self.contents['_gps_longitude']
+                self.json['_gps_latitude'],
+                self.json['_gps_longitude']
             ],
             "members": members,
-            "team": FakeTeams.objects.get_or_create(team_id = self.contents['team_num'])[0].contents,
-            "_id": self.contents['_uuid'],
+            "team": FakeTeams.objects.get_or_create(team_id = self.json['team_num'])[0].json,
+            "_id": self.json['_uuid'],
             "tools":{},
             "history":[]
         }
-        self.converted_json_document.json = converted_json
-        self.converted_json_document.save()
+        self.converted_household_survey.json = converted_json
+        self.converted_household_survey.save()
 
 
 
@@ -211,19 +211,19 @@ class FakeTeams(models.Model):
     usage.
     """
 
-    contents = JSONField(null=True, blank=True, help_text=' ')
+    json = JSONField(null=True, blank=True, help_text=' ')
     team_id = models.IntegerField(unique=True)
 
     def __unicode__(self):
         return str(self.team_id)
 
     def save(self, *args, **kwargs):
-        if not self.contents:
+        if not self.json:
             # If the team does not yet exist, create random team data.
             team_leader = [random.choice(FIRST_NAMES),random.choice(LAST_NAMES)];
             anthropometrist = [random.choice(FIRST_NAMES),random.choice(LAST_NAMES)];
             assistant = [random.choice(FIRST_NAMES),random.choice(LAST_NAMES)];
-            self.contents = {
+            self.json = {
                 "uuid": str(uuid.uuid4()),
                 "created": datetime.utcnow().isoformat()[:-3] + 'Z', # Trying to get a date/time stamp as JS outputs it.
                 "_rev": str(uuid.uuid4()), # TODO: Using a UUID here for now. not sure this is good enough.

@@ -2,6 +2,38 @@ var fileInput = document.getElementById('file_import'),
     importStatus = document.getElementById('import_status'),
     exportErrors=[];
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';'), cookie, i;
+        for (i = 0; i < cookies.length; i++) {
+            cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function resetFakeTeams(callback) {
+    exportObject = {};
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", '/importer/reset_fake_teams', true);
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status == 200) {
+            return callback();
+        }
+    }
+
+    xhr.send(JSON.stringify(exportObject));
+}
+
 
 fileInput.addEventListener('change', function(e) {
     /* Load the selected file, 1MB at a time. Then split into lines and unless at the very end of the file,
@@ -44,20 +76,6 @@ fileInput.addEventListener('change', function(e) {
         } else {
             importStatus.innerHTML = 'Done!';
         }
-    }
-
-    function resetFakeTeams(callback) {
-        exportObject = {};
-        xhr = new XMLHttpRequest();
-        xhr.open("POST", '/importer/reset_fake_teams', true);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status == 200) {
-                return callback();
-            }
-        }
-
-        xhr.send(JSON.stringify(exportObject));
     }
 
     function undoSplitsInsideQuotes(splitData, separator) {
@@ -111,6 +129,7 @@ fileInput.addEventListener('change', function(e) {
 
         lineData.forEach(function(line) {
             var fields = undoSplitsInsideQuotes(line.split(','), ','),
+                post_url = (POST_KEY.length===0) ? '/importer/register_formhub_survey': '/importer/register_formhub_survey?key=' + POST_KEY,
                 exportObject = {},
                 xhr;
 
@@ -153,9 +172,10 @@ fileInput.addEventListener('change', function(e) {
 
             });
 
-            // Send exportObject as json via ajax to formhub import webhook. The structure should be the same as other data coming directly from formhub. TODO: Handle optional post keyfor extra security.
+
+            // Send exportObject as json via ajax to formhub import webhook. The structure should be the same as other data coming directly from formhub.
             xhr = new XMLHttpRequest();
-            xhr.open("POST", '/importer/register_formhub_data', true);
+            xhr.open("POST", post_url, true);
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 201)) {
@@ -165,7 +185,6 @@ fileInput.addEventListener('change', function(e) {
                         initiateRead();
                     }
                 } else  if (xhr.readyState == 4 &! (xhr.status == 200 || xhr.status == 201)) {
-                    console.log(exportObject);
                     exportErrors.push(exportObject);
                 }
             }

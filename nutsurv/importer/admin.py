@@ -4,6 +4,6 @@ from . import models
 
 admin.site.register(
     (
-        models.FormhubData,
+        models.FormhubSurvey,
     )
 )

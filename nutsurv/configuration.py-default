@@ -9,3 +9,7 @@ DATABASES = {
         'CONN_MAX_AGE': 15               # The max time in seconds a database$
     }
 }
+
+# Add a secret text that has to be added to all posts from formhub.
+# This is to increase security as posts from formhub will not hold the CSRF security info.
+POST_KEY = ""

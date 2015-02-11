@@ -12,13 +12,18 @@ from . import models
 @login_required
 def importer(request):
     response = {}
+    # If a post_key is specified in the settings we use
+    # it as a "security" measure
+    post_key = getattr(settings, "POST_KEY", None)
+    if post_key:
+        response['POST_KEY'] = post_key
     return render(request, 'importer/index.html', response)
 
-@csrf_exempt
 @require_POST
 def reset_fake_teams(request):
+    print 'done'
     response = {}
-    models.FakeTeams.objects.all().delete()
+    #models.FakeTeams.objects.all().delete()
     status = 200
     return JsonResponse(
         response,
@@ -28,7 +33,7 @@ def reset_fake_teams(request):
 
 @csrf_exempt
 @require_POST
-def register_formhub_data(request):
+def register_formhub_survey(request):
 
     # If a post_key is specified in the settings we use
     # it as a "security" measure
@@ -51,12 +56,12 @@ def register_formhub_data(request):
     response={}
     status = 200
 
-    formhubdata, created = models.FormhubData.objects.get_or_create(uuid=json_object['_uuid'])
-    formhubdata.contents = json_object
-
-    formhubdata.save()
-    formhubdata.convert_to_json_document()
-    formhubdata.save()
+    formhub_survey, created = models.FormhubSurvey.objects.get_or_create(uuid=json_object['_uuid'])
+    formhub_survey.json = json_object
+    print formhub_survey.uuid
+    formhub_survey.save()
+    formhub_survey.convert_to_household_survey()
+    formhub_survey.save()
 
     if created:
         status = 201
