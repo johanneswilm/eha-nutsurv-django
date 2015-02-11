@@ -12,7 +12,6 @@ import os
 import json
 
 def roundFloat(number, decimal_places):
-    print(number,decimal_places)
     if not decimal_places:
         decimal_places = 2
     elif decimal_places < 0:
@@ -152,9 +151,7 @@ def get4AgeIndicatorRefData(ind, sex, ageInDays):
     indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
     json_data = open(indicator_file).read()
     data = json.loads(json_data)
-    #print (ind+"-"+sex+"-"+str(ageInDays))
     find_first = next((item for item in data if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
-    #print(find_first)
     return find_first
 
 def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What happens with the interpolate value?
@@ -167,7 +164,6 @@ def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What hap
     else:
         key_name = 'height'
     find_first = next((item for item in data if item["Sex"] == sex and round(float(item[key_name])) == round(lengthOrHeight)), False)
-    #print(find_first)
     return find_first
 
 # Used for storing data points from the indicator reference tables.
@@ -181,7 +177,12 @@ class ReferenceData(object):
         self.M = m
         self.S = s
 
-SetExtreme = ReferenceData(NaN, NaN, NaN, NaN, NaN)
+#    def set_extreme(self):
+#        this.X = undefined
+#        this.Y = undefined
+#        this.L = undefined
+#        this.M = undefined
+#        this.S = undefined
 
 class IndicatorValue(object):
 
@@ -191,7 +192,7 @@ class IndicatorValue(object):
 
 def centile(z_score_value):
     if (z_score_value < -3 or z_score_value > 3):
-        return NaN;
+        return NaN
     abs_val = math.fabs(z_score_value)
     # try to approximate with a 5-degree polynomial function
     P1 = (
@@ -324,35 +325,34 @@ def calculateZandP(refDat, computeFinalZScore):
         return IndicatorValue(True)  # returns an "invalid" value (NaN, NaN)
 
     output = IndicatorValue()
-    try:
-        if refDat.L != 0:
-            output.Z = (math.pow((refDat.Y / refDat.M), refDat.L) - 1.0) / (refDat.L * refDat.S)
-        else:
-            output.Z = math.pow((refDat.Y / refDat.M), refDat.L)
-        if computeFinalZScore:
-            if output.Z < -3.0:
-                SD3neg = refDat.M * math.pow((1.0 + refDat.L * refDat.S * -3.0), (1.0 / refDat.L))
-                SD2neg = refDat.M * math.pow((1.0 + refDat.L * refDat.S * -2.0), (1.0 / refDat.L))
-                output.Z = -3.0 - (SD3neg - refDat.Y) / (SD2neg - SD3neg)
-            elif output.Z > 3.0:
-                SD2pos = refDat.M * math.pow((1.0 + refDat.L * refDat.S * 2.0), (1.0 / refDat.L))
-                SD3pos = refDat.M * math.pow((1.0 + refDat.L * refDat.S * 3.0), (1.0 / refDat.L))
-                output.Z = 3.0 + (refDat.Y - SD3pos) / (SD3pos - SD2pos)
-    except FloatingPointError:  # V.Cole: using more specific trap. WHO was too liberal.
-        output = IndicatorValue(True)  # return an out-of-range indication
+    if refDat.Y == undefined or refDat.M == undefined or refDat.L == undefined:
+        return output
+    # The following block of code (till the except/catch below) was enclosed
+    # in a try in the original python and c#. The conditionals above and below have been
+    # modified to avoid using them to control the flow (which is standard in
+    # python but a bad practice in C# and most other languages).
+    if refDat.L != 0:
+        output.Z = (math.pow((refDat.Y / refDat.M), refDat.L) - 1.0) / (refDat.L * refDat.S)
+    else:
+        output.Z = math.pow((refDat.Y / refDat.M), refDat.L)
+    if computeFinalZScore:
+        if output.Z < -3.0:
+            SD3neg = refDat.M * math.pow((1.0 + refDat.L * refDat.S * -3.0), (1.0 / refDat.L))
+            SD2neg = refDat.M * math.pow((1.0 + refDat.L * refDat.S * -2.0), (1.0 / refDat.L))
+            output.Z = -3.0 - (SD3neg - refDat.Y) / (SD2neg - SD3neg)
+        elif output.Z > 3.0:
+            SD2pos = refDat.M * math.pow((1.0 + refDat.L * refDat.S * 2.0), (1.0 / refDat.L))
+            SD3pos = refDat.M * math.pow((1.0 + refDat.L * refDat.S * 3.0), (1.0 / refDat.L))
+            output.Z = 3.0 + (refDat.Y - SD3pos) / (SD3pos - SD2pos)
     output.P = centile(output.Z)
     return output
 
 
 # Computes the weight-for-age indicator result.
 def computeWeight4Age(ageInDays, weight, sex, hasOedema):
-    #print(ageInDays)
-    #print(weight)
-    #print(sex)
-    #print(hasOedema)
     if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight  < INPUT_MINWEIGHT:
         return IndicatorValue(True)
-    rd = get4AgeIndicatorReference('Weight4Age', sex, int(round(ageInDays, 0)))
+    rd = get4AgeIndicatorReference('Weight4Age', sex, round(ageInDays))
     rd.Y = weight
     return calculateZandP(rd, True)
 
@@ -360,13 +360,13 @@ def computeWeight4Age(ageInDays, weight, sex, hasOedema):
 def computeLengthOrHeight4Age(ageInDays, lengthOrHeight, sex):
     if ageInDays < 0 or ageInDays > MAXDAYS or lengthOrHeight < 1:
         return IndicatorValue(True)
-    rd = get4AgeIndicatorReference('LengthOrHeight4Age', sex, ageInDays)
+    rd = get4AgeIndicatorReference('LengthOrHeight4Age', sex, round(ageInDays))
     rd.Y = lengthOrHeight
     return calculateZandP(rd, False)
 
 def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOedema):
     if hasOedema or not weight >= INPUT_MINWEIGHT:
-        return IndicatorValue();
+        return IndicatorValue()
 
 
     if useLength:
