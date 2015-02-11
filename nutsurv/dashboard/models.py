@@ -5,29 +5,39 @@ import dateutil.relativedelta
 import scipy.stats
 
 from django.db import models
-from django.core.validators import MinValueValidator
 
 import django.contrib.gis.db.models as gismodels
 from django.contrib.gis.geos import Point
 
 from jsonfield import JSONField
-from jsonschema import validate, ValidationError
 
 from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
 
 
-class JSONDocument(models.Model):
+class HouseholdSurveyJSON(models.Model):
     class Meta:
-        verbose_name_plural = 'JSON documents'
+        verbose_name = 'household survey'
 
-    # Set help_text to something else than empty but still invisible so that
-    # the JSONField does not set it to its custom default (we want nothing
-    # displayed).
-    json = JSONField(null=True, blank=True, help_text=' ')
+    json = JSONField(
+        null=True, blank=True,
+        help_text='A JSON document containing data acquired from one '
+                  'household.  Typically not edited here but uploaded from a '
+                  'mobile application used by a team of surveyors in the '
+                  'field.  If in doubt, do not edit.'
+    )
+    uuid = models.CharField(
+        max_length=255, unique=True,
+        help_text='A unique identifier of an individual household survey.  '
+                  'Typically assigned by a mobile application before the data '
+                  'is uploaded to the server.  If in doubt, do no edit.'
+    )
 
     def __unicode__(self):
         # Try to build a name describing a survey.
+        if not self.json:
+            # If field json is invalid then there is no way to compute the name.
+            return u'invalid {}'.format(self._meta.verbose_name)
         if 'householdID' in self.json:
             household = self.json['householdID']
         else:
@@ -46,23 +56,9 @@ class JSONDocument(models.Model):
             cluster, household, team_name, start_time
         )
 
-    def guess_type(self, list_of_json_document_types):
-        """Matches the stored JSON document with the document types provided
-        using list_of_json_document_types.  The order of the JSONDocumentType
-        objects determines their priority as the method stops as soon as the
-        first match is found.
-
-        :param list_of_json_document_types:
-        :return: the matched JSONDocumentType or None if no match found
-        """
-        for json_document_type in list_of_json_document_types:
-            if json_document_type.matches(self):
-                return json_document_type
-        return None
-
     @classmethod
     def find_all_surveys_by_team(cls, team_id):
-        """This method finds all instances of JSONDocument which can be
+        """This method finds all instances of HouseholdSurveyJSON which can be
         associated with team given by team_id.  If team_id is None, the method
         finds those where team_id is None (unlikely) or where the JSON document
         does not contain an object named 'team' containing another object named
@@ -78,7 +74,7 @@ class JSONDocument(models.Model):
         return output
 
     def find_all_surveys_by_this_team(self):
-        """This method finds all instances of JSONDocument which were created
+        """This method finds all instances of HouseholdSurveyJSON which were created
         by team who created this instance.  If this document is does not have
         a valid team/team_id or the team_id is None (in both cases the document
         is not a valid survey data structure), it returns an empty list.
@@ -243,35 +239,13 @@ class JSONDocument(models.Model):
             else:
                 return age_in_months
 
-
-class JSONDocumentType(models.Model):
-    class Meta:
-        verbose_name_plural = 'JSON document types'
-
-    name = models.CharField(max_length=255)
-    schema = JSONField(null=True, blank=True, help_text=' ')
-    priority = models.IntegerField(unique=True, blank=True, null=True,
-                                   default=10,
-                                   validators=[MinValueValidator(0)],
-                                   help_text='Leave empty for the lowest '
-                                             'priority'
-                                   )
-
-    def matches(self, json_document):
+    def get_uuid(self):
         try:
-            validate(json_document.json, self.schema)
-        except ValidationError:
-            matches = False
+            uuid = self.json['uuid']
+        except KeyError:
+            return None
         else:
-            matches = True
-        return matches
-
-    @staticmethod
-    def get_all_by_priority():
-        return JSONDocumentType.objects.all().order_by('priority')
-
-    def __unicode__(self):
-        return self.name
+            return uuid
 
 
 class Alert(models.Model):
@@ -292,72 +266,78 @@ class Alert(models.Model):
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
 
     @classmethod
-    def run_alert_checks_on_document(cls, json_document):
+    def run_alert_checks_on_document(cls, household_survey):
         """This method runs all the defined alert checks which leads to
         relevant alerts being created in case they are triggered by data stored
-        in json_document.
+        in household_survey.
         """
-        cls.sex_ratio_alert(json_document)
-        cls.child_age_in_months_ratio_alert(json_document)
-        cls.child_age_displacement_alert(json_document)
-        cls.woman_age_14_15_displacement_alert(json_document)
-        cls.woman_age_4549_5054_displacement_alert(json_document)
-        cls.digit_preference_alert(json_document)
+        cls.sex_ratio_alert(household_survey)
+        cls.child_age_in_months_ratio_alert(household_survey)
+        cls.child_age_displacement_alert(household_survey)
+        cls.woman_age_14_15_displacement_alert(household_survey)
+        cls.woman_age_4549_5054_displacement_alert(household_survey)
+        cls.digit_preference_alert(household_survey)
 
     @classmethod
-    def sex_ratio_alert(cls, json_document, test='binomial'):
+    def sex_ratio_alert(cls, household_survey, test='chi-squared'):
         """In the data of children from 0-59 months of age, we expect to find
         an even number boys and girls. If chi-square of sex ratio < 0.001 then
         report an alert on dashboard "Sex-ratio issue in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         children = []
         for survey in surveys:
             children.extend(survey.get_child_records())
         boys = 0
         girls = 0
         for child in children:
-            age = JSONDocument.get_childs_age_in_months(child)
+            age = HouseholdSurveyJSON.get_childs_age_in_months(child)
             if age is None:
                 continue
             elif age < 60:
-                gender = JSONDocument.get_household_member_gender(child)
+                gender = HouseholdSurveyJSON.get_household_member_gender(child)
                 if gender == 'M':
                     boys += 1
                 elif gender == 'F':
                     girls += 1
+        if boys + girls == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([boys, girls], p=0.5)
         else:
             expected = (boys + girls) / 2.0
             chi2, p = scipy.stats.chisquare([boys, girls], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Sex-ratio issue in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def child_age_in_months_ratio_alert(cls, json_document, test='binomial'):
+    def child_age_in_months_ratio_alert(cls, household_survey,
+                                        test='chi-squared'):
         """In the data of children from 6-59 months of age, we expect an age
         ratio of 6-29 months to 30-59 months to be around 0.85. If a chi-square
         test of the age ratio 6-29 months / 30-59 months is significantly
         < 0.001 from expected 0.85 then report an alert on dashboard "Age ratio
         issue in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         children = []
         for survey in surveys:
             children.extend(survey.get_child_records())
         age6to29 = 0
         age30to59 = 0
         for child in children:
-            age = JSONDocument.get_childs_age_in_months(child)
+            age = HouseholdSurveyJSON.get_childs_age_in_months(child)
             if age is None:
                 continue
             elif 5 < age < 30:
@@ -372,6 +352,11 @@ class Alert(models.Model):
         # child being 30 to 59 months old).
         # p3059 = 1 - p629 = 0.5405405405405405
 
+        if age6to29 + age30to59 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age6to29, age30to59], p=p629)
         else:
@@ -382,29 +367,29 @@ class Alert(models.Model):
                 [expected6to29, expected30to59]
             )
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Age ratio issue in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def child_age_displacement_alert(cls, json_document, test='binomial'):
+    def child_age_displacement_alert(cls, household_survey, test='chi-squared'):
         """Ratio of children aged 5 years / children aged 4 years is expected
         to equal 1. If the chi-square of this ratio is significantly < 0.001
         from expected 1 then report an alert on dashboard "Child age
         displacement issue in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         children = []
         for survey in surveys:
             children.extend(survey.get_child_records())
         age4 = 0
         age5 = 0
         for child in children:
-            age = JSONDocument.get_household_members_age_in_years(child)
+            age = HouseholdSurveyJSON.get_household_members_age_in_years(child)
             if age is None:
                 continue
             elif age == 4:
@@ -412,35 +397,41 @@ class Alert(models.Model):
             elif age == 5:
                 age5 += 1
 
+        if age4 + age5 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age4, age5], p=0.5)
         else:
             expected = (age4 + age5) / 2.0
             chi2, p = scipy.stats.chisquare([age4, age5], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Child age displacement issue in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def woman_age_14_15_displacement_alert(cls, json_document, test='binomial'):
+    def woman_age_14_15_displacement_alert(
+            cls, household_survey, test='chi-squared'):
         """Ratio of women aged 14 / women aged 15 is expected to equal 1. If
         the chi-square of this ratio is significantly < 0.001 from expected 1
         then report an alert on dashboard "Woman age displacement issue (14/15)
         in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         women = []
         for survey in surveys:
             women.extend(survey.get_women_records())
         age14 = 0
         age15 = 0
         for woman in women:
-            age = JSONDocument.get_household_members_age_in_years(woman)
+            age = HouseholdSurveyJSON.get_household_members_age_in_years(woman)
             if age is None:
                 continue
             elif age == 14:
@@ -448,6 +439,11 @@ class Alert(models.Model):
             elif age == 15:
                 age15 += 1
 
+        if age14 + age15 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age14, age15], p=0.5)
         else:
@@ -455,7 +451,7 @@ class Alert(models.Model):
             chi2, p = scipy.stats.chisquare(
                 [age14, age15], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = \
                 'Woman age displacement issue (14/15) in team {}'.format(team)
             # Only add if there is no same alert among unarchived.
@@ -463,23 +459,23 @@ class Alert(models.Model):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def woman_age_4549_5054_displacement_alert(cls, json_document,
-                                               test='binomial'):
+    def woman_age_4549_5054_displacement_alert(cls, household_survey,
+                                               test='chi-squared'):
         """Ratio of women aged 45-49 / women aged 50-54 is expected to equal 1.
         If the chi-square of this ratio is significantly < 0.001 from expected
         1 then report an alert on dashboard "Woman age displacement issue
         (45-49/50-54) in team NAME".
-        N.B. This method uses binomial two-tailed test by default.  Chi-square
-        test is used only if argument test is not set to 'binomial'.
+        This method implements both binomial two-tailed test and chi-square
+        test.  The latter is the default (as per client's request).
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         women = []
         for survey in surveys:
             women.extend(survey.get_women_records())
         age4549 = 0
         age5054 = 0
         for woman in women:
-            age = JSONDocument.get_household_members_age_in_years(woman)
+            age = HouseholdSurveyJSON.get_household_members_age_in_years(woman)
             if age is None:
                 continue
             elif 44 < age < 50:
@@ -487,6 +483,11 @@ class Alert(models.Model):
             elif 49 < age < 55:
                 age5054 += 1
 
+        if age4549 + age5054 == 0:
+            # Chi-square impossible to compute (expected value is 0 which would
+            # cause division by zero) and binomial equals 1 so no alert
+            # necessary.
+            return
         if test == 'binomial':
             p = scipy.stats.binom_test([age4549, age5054], p=0.5)
         else:
@@ -494,7 +495,7 @@ class Alert(models.Model):
             chi2, p = scipy.stats.chisquare(
                 [age4549, age5054], [expected, expected])
         if p < 0.001:
-            team = json_document.get_team_name()
+            team = household_survey.get_team_name()
             alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
                          '{}'.format(team)
             # Only add if there is no same alert among unarchived.
@@ -502,7 +503,7 @@ class Alert(models.Model):
                 Alert.objects.create(text=alert_text)
 
     @classmethod
-    def digit_preference_alert(cls, json_document):
+    def digit_preference_alert(cls, household_survey):
         """If terminal digit preference score for weight, height or MUAC > 20,
         then report alert on dashboard "Digit preference issue in Team NAME".
         N.B. this function calculates and checks TDPS for each variable (i.e.
@@ -510,7 +511,7 @@ class Alert(models.Model):
         terminal digit preferences scores satisfies the condition then the
         alert is triggered.
         """
-        surveys = json_document.find_all_surveys_by_this_team()
+        surveys = household_survey.find_all_surveys_by_this_team()
         data_points = {'muac': [], 'weight': [], 'height': []}
         for survey in surveys:
             subjects = survey.get_women_and_child_records()
@@ -561,7 +562,7 @@ class Alert(models.Model):
         # Check if any of the computed scores triggers the alert.
         for k in terminal_digit_preference_score:
             if terminal_digit_preference_score[k] > 20:
-                team = json_document.get_team_name()
+                team = household_survey.get_team_name()
                 alert_text = 'Digit preference issue in team {}'.format(team)
                 # Only add if there is no same alert among unarchived.
                 if not Alert.objects.filter(text=alert_text, archived=False):
