@@ -167,7 +167,7 @@ def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What hap
         key_name = 'length'
     else:
         key_name = 'height'
-    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and math.trunc(float(item[key_name])) == round(lengthOrHeight)), False)
+    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and math.trunc(float(item[key_name])) == round(lengthOrHeight)), False) # TODO: Figure out why we truncate here rather than round.
     return find_first
 
 # Used for storing data points from the indicator reference tables.
@@ -433,7 +433,7 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
                 adjusted_height_mindays = HEIGHT_MINDAYS - 1
             else:
                 adjusted_height_mindays = HEIGHT_MINDAYS
-            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # Really? This returns an object
+            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # TODO: Figure out if we really want this. This returns an object
             ar['lengthOrHeightAdjusted'] = ar['lengthOrHeight']
 
         # weight-for-length/height aka WHZ
