@@ -22,48 +22,6 @@ def roundFloat(number, decimal_places):
     return round(number * p) / p
 
 
-# Lists all the 'logical' indicators, i.e. considering W4L and W4H to
-# be one indicator.
-Indicator = {
-    'Weight4LengthOrHeight': 0,
-    'Weight4Age': 1,
-    'LengthOrHeight4Age': 2,
-    'BMI4Age': 3,
-    'HC4Age': 4,
-    'MUAC4Age': 5,
-    'TSF4Age': 6,
-    'SSF4Age': 7
-}
-
-# Lists all the 'physical' indicators, i.e. separately considering W4L and W4H.
-GraphIndicator = {
-    'Weight4Height': -1,
-    'Weight4Length': Indicator['Weight4LengthOrHeight'],
-    'Weight4Age': Indicator['Weight4Age'],
-    'LengthOrHeight4Age': Indicator['LengthOrHeight4Age'],
-    'BMI4Age': Indicator['BMI4Age'],
-    'HC4Age': Indicator['HC4Age'],
-    'MUAC4Age': Indicator['MUAC4Age'],
-    'TSF4Age': Indicator['TSF4Age'],
-    'SSF4Age': Indicator['SSF4Age']
-}
-
-# The different anthro z-score flags.
-Flag = {
-    'Flag_None': 0,
-    'W4LHZ': 1,
-    'LH4AZ': 2,
-    'W4AZ': 3,
-    'W4LHZ_LH4AZ': 4,
-    'W4LHZ_W4AZ': 5,
-    'LH4AZ_W4AZ': 6,
-    'W4LHZ_LH4AZ_W4AZ': 7,
-    'BMI4AZ': 8
-}
-
-
-
-
 class AnthropometricResult(object):
     pass  # fields will be dynamically assigned in Python
 
@@ -179,7 +137,7 @@ def get4AgeIndicatorRefData(ind, sex, ageInDays):
     json_data = open(indicator_file).read()
     data = json.loads(json_data)
     print (ind+"-"+sex+"-"+str(ageInDays))
-    find_first = next((item for item in data if item["Sex"] == sex and round(int(item["age"])) == int(ageInDays)), False)
+    find_first = next((item for item in data if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
     print(find_first)
     return find_first
 
@@ -354,7 +312,10 @@ def calculateZandP(refDat, computeFinalZScore):
 
 # Computes the weight-for-age indicator result.
 def computeWeight4Age(ageInDays, weight, sex, hasOedema):
-
+    print(ageInDays)
+    print(weight)
+    print(sex)
+    print(hasOedema)
     if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight  < INPUT_MINWEIGHT:
         return IndicatorValue(True)
     rd = get4AgeIndicatorReference('Weight4Age', sex, int(round(ageInDays, 0)))
@@ -376,12 +337,12 @@ def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOede
 
     if useLength:
         if lengthOrHeight >= MINLENGTH and lengthOrHeight <= MAXLENGTH:
-            rd = get4LengthOrHeightIndicatorReference(GraphIndicator['Weight4Length'], sex, lengthOrHeight)
+            rd = get4LengthOrHeightIndicatorReference('Weight4Length', sex, lengthOrHeight)
         else:
             return IndicatorValue()
     else:
         if lengthOrHeight >= MINHEIGHT and lengthOrHeight <= MAXHEIGHT:
-            rd = get4LengthOrHeightIndicatorReference(GraphIndicator['Weight4Height'], sex, lengthOrHeight)
+            rd = get4LengthOrHeightIndicatorReference('Weight4Height', sex, lengthOrHeight)
         else:
             return IndicatorValue()
 
@@ -419,6 +380,8 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
         ivw = computeWeight4Age(ar.ageInDays, ar.weight, ar.sex, hasOedema)
         ar.PW4A = ivw.P
         ar.ZW4A = ivw.Z
+
+        # HAZ
         ivh = computeLengthOrHeight4Age(ar.ageInDays, ar.lengthOrHeightAdjusted, ar.sex)
         ar.ZLH4A = ivh.Z
         ar.PLH4A = ivh.P
