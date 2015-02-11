@@ -23,7 +23,7 @@ def importer(request):
 def reset_fake_teams(request):
     print 'done'
     response = {}
-    #models.FakeTeams.objects.all().delete()
+    models.FakeTeams.objects.all().delete()
     status = 200
     return JsonResponse(
         response,
