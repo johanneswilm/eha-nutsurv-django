@@ -106,8 +106,9 @@ class FormhubData(models.Model):
                     tsf = None # Not used.
                     ssf = None # Not used.
                     zscores = anthrocomputation.getAnthroResult( ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, muac, tsf, ssf)
-                    if 'ZLH4A' in zscores or 'ZW4A' in zscores or 'ZW4LH' in zscores:
-                        print zscores
+                    if ('ZLH4A' in zscores and not math.isnan(zscores["ZLH4A"]))
+                        or ('ZW4A' in zscores and not math.isnan(zscores["ZW4A"]))
+                        or ('ZW4LH' in zscores and not math.isnan(zscores["ZW4LH"])):
                         member["survey"]["zscores"] = {}
                         if 'ZLH4A' in zscores and not math.isnan(zscores["ZLH4A"]):
                             member["survey"]["zscores"]["haz"] = zscores["ZLH4A"]
@@ -115,8 +116,6 @@ class FormhubData(models.Model):
                             member["survey"]["zscores"]["waz"] = zscores["ZW4A"]
                         if 'ZW4LH' in zscores and not math.isnan(zscores["ZW4LH"]):
                             member["survey"]["zscores"]["whz"] = zscores["ZW4LH"]
-                    else:
-                        print zscores
 
 
         converted_json = {
