@@ -2,6 +2,7 @@ import datetime
 import dateutil.parser
 import dateutil.relativedelta
 
+import numpy
 import scipy.stats
 
 from django.db import models
@@ -55,6 +56,43 @@ class HouseholdSurveyJSON(models.Model):
         return u'cluster: {}; household: {}; team: {}; start time: {}'.format(
             cluster, household, team_name, start_time
         )
+
+    def _get_time_stamp(self, key):
+        try:
+            time_string = self.json[key]
+        except KeyError:
+            return None
+        try:
+            time_stamp = dateutil.parser.parse(time_string)
+        except TypeError:
+            return None
+        else:
+            return time_stamp
+
+    def get_start_time(self):
+        return self._get_time_stamp('startTime')
+
+    def get_end_time(self):
+        return self._get_time_stamp('endTime')
+
+    def get_survey_duration(self):
+        """This method calculates duration of the survey in minutes (i.e. the
+        difference between the survey end time and its start time).  If any of
+        the two time stamps is missing or invalid or the difference is less
+        than zero, it returns None.
+        """
+        start_time = self.get_start_time()
+        end_time = self.get_end_time()
+        if isinstance(start_time, datetime.datetime) and \
+                isinstance(end_time, datetime.datetime):
+            delta = end_time - start_time
+            if delta.total_seconds() >= 0:
+                # Return the survey duration in minutes.
+                return delta.total_seconds() / 60.0
+            else:
+                return None
+        else:
+            return None
 
     @classmethod
     def find_all_surveys_by_team(cls, team_id):
@@ -277,6 +315,7 @@ class Alert(models.Model):
         cls.woman_age_14_15_displacement_alert(household_survey)
         cls.woman_age_4549_5054_displacement_alert(household_survey)
         cls.digit_preference_alert(household_survey)
+        cls.data_collection_time_alert(household_survey)
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):
@@ -570,6 +609,252 @@ class Alert(models.Model):
                 # Only one alert should be emitted so no need to finish the
                 # loop.
                 break
+
+    @classmethod
+    def data_collection_time_alert(cls, household_survey):
+        """If timestamp for any data point in data collection is <07:00 hours
+        or >20:00 hours then report alert on dashboard "Data collection time
+        issue in team NAME (survey: UUID)".
+        If any of the time stamps is not a valid date, the alert is triggered
+        too.
+        N.B. This function performs these checks for both the start time and
+        the end time.  The alert is triggered if any of them satisfies the
+        condition mentioned above.
+        """
+        t700h = datetime.time(7)
+        t2000h = datetime.time(20)
+        start = household_survey.get_start_time()
+        end = household_survey.get_end_time()
+        triggered = False
+        for t in (start, end):
+            if t is None:
+                triggered = True
+                break
+            elif t.time() < t700h or t.time() > t2000h:
+                triggered = True
+                break
+        if triggered:
+            team = household_survey.get_team_name()
+            alert_text = u'Data collection time issue in team {} (survey: {})'.\
+                format(team, household_survey.uuid)
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False):
+                Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def time_to_complete_single_survey_alerts(cls):
+        """This method is meant to be run once a day (or every few days),
+        typically after midgnight.  It processes all household surveys and
+        performs the following check (and emits the following alert if
+        appropriate) for each detected team and each day since the beginning to
+        the day (inclusive) before the method is run:
+
+        If daily average of time in minutes to complete HH interview by team
+        <50% of survey median, create alert "Time to complete household survey
+        issue in team NAME on day DATE-IN-ISO-FORMAT"
+
+        N.B. The alert is not emitted if identical (team, date) alert already
+        present.
+
+        N.B. In case the start and end time for the survey indicate different
+        days, it is the end time which allocates the survey to a particular day.
+
+        N.B. Per Robert's request (https://sprint.ly/product/17761/item/161),
+        the median is calculated using all available surveys (i.e. including
+        the surveys from the day when the method is run).
+        """
+        # Get the current date to make sure that only earlier surveys are
+        # included.
+        today = datetime.date.today()
+        # Prepare storage for intermediate data.
+        by_team = {}
+        survey_durations = []
+
+        # Process all household surveys.
+        surveys = HouseholdSurveyJSON.objects.all()
+        for survey in surveys:
+            duration = survey.get_survey_duration()
+            # Check if it is possible to include this data point (duration must
+            # be a number).
+            if not isinstance(duration, (int, float)):
+                continue
+            # Store duration for median calculations.
+            survey_durations.append(duration)
+
+            team = survey.get_team_name()
+            # If no valid team name, the duration can only be used to calculate
+            # the median.
+            if team == 'UNNAMED':
+                continue
+            # At this point we know that the survey contained a valid end time
+            # so no need to check that.  Get the date.
+            collection_date = survey.get_end_time().date()
+            # If collection date earlier than today, store the data for further
+            # processing.
+            if collection_date < today:
+                if team not in by_team:
+                    by_team[team] = {}
+                if collection_date not in by_team[team]:
+                    by_team[team][collection_date] = {
+                        'average': duration,
+                        'n': 1,
+                        }
+                else:
+                    n = by_team[team][collection_date]['n'] + 1.0
+                    old = by_team[team][collection_date]['average']
+                    new = (n - 1) / n * old + 1 / n * duration
+                    by_team[team][collection_date]['n'] = n
+                    by_team[team][collection_date]['average'] = new
+
+        # Calculate the value to check the averages against (50% of median).
+        half_median = numpy.median(survey_durations) / 2.0
+
+        # Process all data collected above and produce alerts when triggered.
+        for team in by_team:
+            for day in by_team[team]:
+                if by_team[team][day]['average'] < half_median:
+                    alert_text = u'Time to complete household survey issue ' \
+                                 u'in team {} ' \
+                                 u'on day {}'.format(team, day.isoformat())
+                    # Only add if there is no identical alert among unarchived.
+                    if not Alert.objects.filter(
+                            text=alert_text,
+                            archived=False):
+                        Alert.objects.create(text=alert_text)
+
+    @classmethod
+    def daily_data_collection_duration_alerts(cls):
+        """This method is meant to be run once a day (or every few days),
+        typically after midnight.  It processes all household surveys and
+        performs the following check (and emits the following alert if
+        appropriate) for each detected team and each day since the beginning to
+        the day (inclusive) before the method is run:
+
+        If daily average of hours to complete daily data collection by team
+        <50% of survey median, create alert "Duration of data collection issue
+        in team NAME"
+
+        Invalid data points are ignored:
+            - cases when the start and end time for the survey indicate
+              different days
+            - both start and end time missing or invalid
+            - the end precedes the start
+
+        N.B. The alert is not emitted if identical (team, date) alert already
+        present.
+        """
+        # Get the current date to make sure that only earlier surveys are
+        # included.
+        today = datetime.date.today()
+        # Prepare storage for intermediate data.
+        by_team = {}
+
+        # Process all household surveys.
+        surveys = HouseholdSurveyJSON.objects.all()
+        for survey in surveys:
+            team = survey.get_team_name()
+            # If no valid team name or id then this data point cannot be used.
+            if team == 'UNNAMED':
+                continue
+            start = survey.get_start_time()
+            end = survey.get_end_time()
+            # Ignore invalid data points.
+            if start is not None and end is not None:
+                if start.date() != end.date():
+                    continue
+                elif start > end:
+                    continue
+            if start is None and end is None:
+                continue
+            # At this point at least one time is not None and in case both are
+            # valid time stamps then both are set to the same day.
+
+            # Get the collection date.
+            if start is not None:
+                day = start.date()
+            else:
+                day = end.date()
+
+            # If collection date earlier than today, store the data for further
+            # processing.  Otherwise, ignore.
+            if day >= today:
+                continue
+
+            if team not in by_team:
+                # Previously unseen team detected.  Initialise storage.
+                by_team[team] = {}
+            if day not in by_team[team]:
+                # Previously unseen day detected.  Initialise data for this day
+                # with the current values of start and end (possible Nones).
+                by_team[team][day] = {
+                    'start': start,
+                    'end': end,
+                    }
+            # A different survey for the same day has been previously processed.
+            else:
+                # Detect the earliest start time for a given day.
+                if not (by_team[team][day]['start'] is None or start is None):
+                    if start < by_team[team][day]['start']:
+                        by_team[team][day]['start'] = start
+                elif start is not None:
+                    by_team[team][day]['start'] = start
+                # Detect the latest end time for a given day.
+                if not (by_team[team][day]['end'] is None or end is None):
+                    if end > by_team[team][day]['end']:
+                        by_team[team][day]['end'] = end
+                elif end is not None:
+                    by_team[team][day]['end'] = end
+
+        # Delete invalid data points and create a vector of all durations to
+        # calculate the median.
+        durations = []
+        for team in by_team.keys():
+            team_durations = []
+            for day in by_team[team].keys():
+                start = by_team[team][day]['start']
+                end = by_team[team][day]['end']
+                # Delete invalid dates.
+                if start is None or end is None:
+                    del by_team[team][day]
+                    continue
+                elif start > end:
+                    del by_team[team][day]
+                    continue
+                # Compute and store durations.
+                delta = end - start
+                duration = delta.total_seconds()
+                team_durations.append(duration)
+                # Delete the processed data for this day.  No longer needed.
+                del by_team[team][day]
+
+            # Delete the team if no valid data points available and proceed to
+            # the next.
+            if len(team_durations) < 1:
+                del by_team[team]
+                continue
+
+            # Update the durations vector with the just processed team data.
+            durations.extend(team_durations)
+
+            # Compute the daily average for the team.
+            by_team[team]['daily average'] = numpy.average(team_durations)
+        # Stop here if no valid data points found (nothing to check and the
+        # median would be NaN).
+        if len(durations) < 1:
+            return
+        # Calculate the value to check the averages against (50% of median).
+        half_median = numpy.median(durations) / 2.0
+
+        # Process all data collected above and produce alerts when triggered.
+        for team in by_team:
+            if by_team[team]['daily average'] < half_median:
+                alert_text = u'Duration of data collection issue ' \
+                             u'in team {}'.format(team)
+                # Only add if there is no identical alert among unarchived.
+                if not Alert.objects.filter(
+                        text=alert_text,
+                        archived=False):
+                    Alert.objects.create(text=alert_text)
 
     @classmethod
     def archive_all_alerts(cls):
