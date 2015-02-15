@@ -425,13 +425,14 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             age = member['age']
             output['members'].append({'gender': gender,
                                       'age': age})
-            if member['surveyType'] == 'child':
-                child = member['survey']
-                output['child_surveys'].append(child)
-            elif member['surveyType'] == 'women':
-                woman = member['survey']
-                woman['age'] = age
-                output['women_surveys'].append(woman)
+            if 'surveyType' in member:
+                if member['surveyType'] == 'child':
+                    child = member['survey']
+                    output['child_surveys'].append(child)
+                elif member['surveyType'] == 'women':
+                    woman = member['survey']
+                    woman['age'] = age
+                    output['women_surveys'].append(woman)
 
         # calculate correct_area
         output['correct_area'] = cls._correct_area(output['cluster'],

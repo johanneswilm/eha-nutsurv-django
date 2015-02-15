@@ -157,7 +157,7 @@ def get4AgeIndicatorRefData(ind, sex, ageInDays):
     find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
     return find_first
 
-def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What happens with the interpolate value?
+def get4LengthOrHeightRefData(ind, sex, lengthOrHeight):
     if not ind in INDICATOR_TABLES:
         indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
         json_data = open(indicator_file).read()
@@ -167,7 +167,7 @@ def get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate): # What hap
         key_name = 'length'
     else:
         key_name = 'height'
-    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and math.trunc(float(item[key_name])) == round(lengthOrHeight)), False) # TODO: Figure out why we truncate here rather than round.
+    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(float(item[key_name])) == round(lengthOrHeight)), False)
     return find_first
 
 # Used for storing data points from the indicator reference tables.
@@ -307,14 +307,9 @@ def symetricCrop(value, precision):
 #   understand how to write get4LengthOrHeightRefData()).
 
 def get4LengthOrHeightIndicatorReference(ind, sex, lengthOrHeight):
-    croppedLH = symetricCrop(lengthOrHeight, 1)
-    if croppedLH != lengthOrHeight:
-        interpolate = True
-    else:
-        interpolate = False
 
     if not _useReferenceTablesCache:
-        data = get4LengthOrHeightRefData(ind, sex, lengthOrHeight, interpolate)
+        data = get4LengthOrHeightRefData(ind, sex, lengthOrHeight)
         if data:
             return ReferenceData(lengthOrHeight, undefined, float(data['L']), float(data['M']), float(data['S']))
         else:

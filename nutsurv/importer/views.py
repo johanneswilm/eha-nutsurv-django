@@ -21,7 +21,6 @@ def importer(request):
 
 @require_POST
 def reset_fake_teams(request):
-    print 'done'
     response = {}
     models.FakeTeams.objects.all().delete()
     status = 200
