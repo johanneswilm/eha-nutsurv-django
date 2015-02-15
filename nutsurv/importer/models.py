@@ -31,8 +31,6 @@ class FormhubSurvey(models.Model):
             member = {
                 "firstName": fh_member['consent/hh_roster/listing/name'],
                 "age": fh_member['consent/hh_roster/listing/age_years'],
-                "surveyType": "",
-                "survey": {}
             }
             if fh_member['consent/hh_roster/listing/sex'] == 1:
                 member["gender"] = "M"
