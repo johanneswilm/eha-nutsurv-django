@@ -5,7 +5,7 @@ from jsonfield import JSONField
 
 from django.db import models
 
-from dashboard.models import HouseholdSurveyJSON
+from dashboard import models as dashboard_models
 from importer import anthrocomputation
 
 from pytz import timezone
@@ -19,7 +19,7 @@ def convert_to_utc_js_datestring(date_string):
 class FormhubSurvey(models.Model):
     uuid = models.CharField(max_length=256,unique=True)
     json = JSONField(null=True, blank=True, help_text=' ')
-    converted_household_survey = models.ForeignKey(HouseholdSurveyJSON, \
+    converted_household_survey = models.ForeignKey(dashboard_models.HouseholdSurveyJSON, \
         null=True, blank=True)
 
     def __unicode__(self):
@@ -41,7 +41,8 @@ class FormhubSurvey(models.Model):
             return # Basic info not there, we give up. TODO: log error
         if not self.converted_household_survey:
             self.converted_household_survey, created = \
-                HouseholdSurveyJSON.objects.get_or_create(uuid=self.uuid)
+                dashboard_models.HouseholdSurveyJSON.objects.get_or_create( \
+                    uuid=self.uuid)
         members = []
         for fh_member in self.json['consent/hh_roster']:
             member = {
@@ -98,6 +99,7 @@ class FormhubSurvey(models.Model):
                         else:
                             member["survey"]["edema"] = 'Y'
                     if 'consent/child/months' in fh_child:
+                        member["survey"]["ageInMonths"] = fh_child['consent/child/months']
                         ageInDays = fh_child['consent/child/months'] \
                             * anthrocomputation.DAYSINMONTH
                     else:
@@ -178,6 +180,43 @@ class FormhubSurvey(models.Model):
         }
         self.converted_household_survey.json = converted_json
         self.converted_household_survey.save()
+
+        # Check whether other pieces of info are there as they should be.
+        if all (terms in self.json for terms in ('state', 'cluster', \
+            'cluster_name', 'lga')):
+            cluster_data = \
+                dashboard_models.ClustersJSON.get_most_recently_modified()
+            if cluster_data != None:
+                cluster_number = str(self.json['cluster'])
+                # We make everything depend on the existence of the cluster number in the cluster db.
+                if not cluster_number in cluster_data.json['clusters']:
+                    cluster_data.json['clusters'][cluster_number] = {
+                        "cluster_name":self.json['cluster_name'],
+                        "lga_name":str(self.json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
+                        "state_name":str(self.json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
+                    }
+                    cluster_data.save()
+                    state_number = str(self.json['state'])
+                    cluster_state_data = dashboard_models.ClustersPerState.get_active()
+                    if not cluster_state_data == None:
+                        if not state_number in cluster_state_data.json:
+                            cluster_state_data.json[state_number] = {
+                                "standard": 10,
+                                "reserve": 5
+                            }
+                            cluster_state_data.save()
+                    states_data = dashboard_models.States.get_active()
+                    if not states_data == None:
+                        if not state_number in states_data.json:
+                            states_data.json.append(state_number)
+                            states_data.save()
+        team_number = str(self.json['team_num'])
+        team_data = dashboard_models.ClustersPerTeam.get_active()
+        if not team_data == None:
+            if not team_number in team_data.json:
+                team_data.json[team_number] = 0
+                team_data.save()
+
 
 
 

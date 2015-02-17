@@ -19,10 +19,10 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 
-function resetFakeTeams(callback) {
+function resetData(callback) {
     exportObject = {};
     xhr = new XMLHttpRequest();
-    xhr.open("POST", '/importer/reset_fake_teams', true);
+    xhr.open("POST", '/importer/reset_data', true);
     xhr.setRequestHeader('X-CSRFToken', csrftoken);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
@@ -52,7 +52,7 @@ fileInput.addEventListener('change', function(e) {
 
         if (!fakeTeamsReset) {
             fakeTeamsReset = true;
-            return resetFakeTeams(function(){onload(e)}); // Delete all old fake teams in the DB
+            return resetData(function(){onload(e)}); // Delete all old fake teams in the DB
         }
 
         if (!fieldDefinitions) {
@@ -182,7 +182,7 @@ fileInput.addEventListener('change', function(e) {
                     saveCounter++;
                     if (saveCounter===lineData.length) {
                         // This 1MB block of data has been saves succesfully to the database. Now initiate another block.
-                        initiateRead();
+                        //initiateRead();
                     }
                 } else  if (xhr.readyState == 4 &! (xhr.status == 200 || xhr.status == 201)) {
                     exportErrors.push(exportObject);

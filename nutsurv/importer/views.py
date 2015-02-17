@@ -9,6 +9,8 @@ from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonRespo
 
 from . import models
 
+from dashboard import models as dashboard_models
+
 @login_required
 def importer(request):
     response = {}
@@ -20,9 +22,34 @@ def importer(request):
     return render(request, 'importer/index.html', response)
 
 @require_POST
-def reset_fake_teams(request):
+def reset_data(request):
     response = {}
     models.FakeTeams.objects.all().delete()
+    models.FormhubSurvey.objects.all().delete()
+    dashboard_models.HouseholdSurveyJSON.objects.all().delete()
+    dashboard_models.Alert.objects.all().delete()
+    cluster_data = dashboard_models.ClustersJSON.get_most_recently_modified()
+    if cluster_data == None:
+        cluster_data = dashboard_models.ClustersJSON.objects.create()
+    cluster_data.json = {
+        "clusters": {}
+    }
+    cluster_data.save()
+    team_data = dashboard_models.ClustersPerTeam.get_active()
+    if team_data == None:
+        team_data = dashboard_models.ClustersPerTeam.objects.create()
+    team_data.json = {}
+    team_data.save()
+    cluster_state_data = dashboard_models.ClustersPerState.get_active()
+    if cluster_state_data == None:
+        cluster_state_data = dashboard_models.ClustersPerState.objects.create()
+    cluster_state_data.json = {}
+    cluster_state_data.save()
+    states_data = dashboard_models.States.get_active()
+    if states_data == None:
+        states_data = dashboard_models.States.objects.create()
+    states_data.json = []
+    states_data.save()
     status = 200
     return JsonResponse(
         response,

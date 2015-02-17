@@ -175,7 +175,7 @@ var missingData = {
             }
 
             _.each(survey.members, function(member) {
-                if (member.age < 5) {
+                if (member.age < 6) {
                     childrenTotal++;
                 }
             });

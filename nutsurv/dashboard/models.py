@@ -1380,7 +1380,7 @@ class StatesWithReserveClusters(UniqueActiveNamedDocument):
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing the states with '
-                  u'reserve clusters.',
+                  u'reserve clusters enabled.',
         default="""
             For example:
 
