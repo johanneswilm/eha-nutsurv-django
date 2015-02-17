@@ -428,6 +428,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             if 'surveyType' in member:
                 if member['surveyType'] == 'child':
                     child = member['survey']
+                    child['gender'] = member['gender']
                     output['child_surveys'].append(child)
                 elif member['surveyType'] == 'women':
                     woman = member['survey']

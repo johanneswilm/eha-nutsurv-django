@@ -141,8 +141,13 @@ var ageDistribution = {
             }
             if (survey.hasOwnProperty('child_surveys')) {
                 _.each(survey.child_surveys, function(child) {
-                    var childAge = new Date(new Date()-new Date(child.birthDate)),
+                    var childAge, months;
+                    if (child.hasOwnProperty('birthDate')) {
+                        childAge = new Date(new Date()-new Date(child.birthDate));
                         months = (childAge.getYear()-70)*12+childAge.getMonth();
+                    } else {
+                        months = child.ageInMonths;
+                    }
                     if (ages.hasOwnProperty(months)) {
                         ages[months] ++;
                     } else {
