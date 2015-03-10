@@ -85,6 +85,10 @@ Run the server:
 
     ./manage.py runserver
 
+Run the server globally access (for [Vagrant access](https://github.com/eHealthAfrica/tools-reference/blob/master/vagrant.md)):
+
+    ./manage.py runserver 0.0.0.0:8000    
+
 Access it in your web browser at http://localhost:8000/
 
 ===================
