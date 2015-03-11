@@ -139,19 +139,19 @@ var dataQuality = {
         });
 
         if (WHZs.length > 0) {
-            WHZs.sort();
+            WHZs.sort(function(a,b){return a - b});
             WHZkde.data = kde(WHZs).points(graphRange);
         } else {
             WHZkde.data = [];
         }
         if (WHZs.length > 0) {
-            WAZs.sort();
+            WAZs.sort(function(a,b){return a - b});
             WAZkde.data = kde(WAZs).points(graphRange);
         } else {
             WAZkde.data = [];
         }
         if (HAZs.length > 0) {
-            HAZs.sort();
+            HAZs.sort(function(a,b){return a - b});
             HAZkde.data = kde(HAZs).points(graphRange);
         } else {
             HAZkde.data = [];
@@ -169,12 +169,14 @@ var dataQuality = {
         dataQuality.WAZDataQualityPlot.setupGrid();
         dataQuality.WAZDataQualityPlot.draw();
 
-        MUACs.sort();
+        MUACs.sort(function(a,b){return a - b});
+
         muacMin = MUACs[0];
         muacMax = MUACs[MUACs.length-1];
 
         /* Muacs should be shown between the lowest and the highest available value*/
         muacGraphRange = Array.apply(null, {length: (muacMax-muacMin)*10}).map(Function.call, function(Number){return (Number/10+muacMin);}), /* muacMin to muacMax n .1 increments */
+
         MUACkde.data = kde(MUACs).points(muacGraphRange);
 
         muacAxes = dataQuality.MUACDataQualityPlot.getAxes();
@@ -183,6 +185,7 @@ var dataQuality = {
         dataQuality.MUACDataQualityPlot.setData([MUACkde]);
         dataQuality.MUACDataQualityPlot.setupGrid();
         dataQuality.MUACDataQualityPlot.draw();
+
     },
     table: false,
     drawTable: function () {
