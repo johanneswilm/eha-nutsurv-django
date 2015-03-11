@@ -1,5 +1,6 @@
 var fileInput = document.getElementById('file_import'),
     importStatus = document.getElementById('import_status'),
+    maxRecordsInput = document.getElementById('max_records'),
     exportErrors=[];
 
 function getCookie(name) {
@@ -40,11 +41,13 @@ fileInput.addEventListener('change', function(e) {
     discard the last line as it will likely only be a part of a line.
     Set instead the next 1MB to start at the start of the last line */
 
-    var file = document.getElementById('file_import').files[0],
+    var file = fileInput.files[0],
         reader = new FileReader(),
         offset = 0,
         fieldDefinitions = false,
-        fakeTeamsReset = false;
+        fakeTeamsReset = false,
+        maxRecords = maxRecordsInput.value==='' ? false : parseInt(maxRecordsInput.value, 10),
+        recordCounter = 0;
 
     function onload (e) {
         var data = e.target.result,
@@ -69,12 +72,10 @@ fileInput.addEventListener('change', function(e) {
     reader.onload = onload;
 
     function initiateRead() {
-        if (offset < file.size) {
+        if ((maxRecords && recordCounter < maxRecords && offset < file.size) || offset < file.size) {
+          console.log([maxRecords, recordCounter, offset, file.size])
             reader.readAsText(file.slice(offset, (1024 * 1024) + offset));
             offset += 1024 * 1024;
-            importStatus.innerHTML = 'Importing: ' + parseInt((offset/file.size) * 100) + '%';
-        } else {
-            importStatus.innerHTML = 'Done!';
         }
     }
 
@@ -133,8 +134,12 @@ fileInput.addEventListener('change', function(e) {
                 exportObject = {},
                 xhr;
 
+            if (maxRecords && maxRecords <= recordCounter) {
+                return false;
+            }
             if (fields.length === 1) { // Encountered an empty line
                 saveCounter++;
+                recordCounter++;
                 if (saveCounter===lineData.length) {
                     // This 1MB block of data has been saves succesfully to the database. Now initiate another block.
                     initiateRead();
@@ -180,9 +185,25 @@ fileInput.addEventListener('change', function(e) {
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 201)) {
                     saveCounter++;
+                    recordCounter++;
+                    if (maxRecords) {
+                        if (recordCounter >= maxRecords || offset >= file.size) {
+                            importStatus.innerHTML = 'Done!';
+                        } else {
+                            importStatus.innerHTML = 'Importing: ' + parseInt((recordCounter/maxRecords) * 100) + '%';
+                        }
+                    } else {
+                        if (offset < file.size) {
+                            importStatus.innerHTML = 'Importing: ' + parseInt((offset/file.size) * 100) + '%';
+                        } else {
+                            importStatus.innerHTML = 'Done!';
+                        }
+                    }
+
+
                     if (saveCounter===lineData.length) {
                         // This 1MB block of data has been saves succesfully to the database. Now initiate another block.
-                        //initiateRead();
+                        initiateRead();
                     }
                 } else  if (xhr.readyState == 4 &! (xhr.status == 200 || xhr.status == 201)) {
                     exportErrors.push(exportObject);
