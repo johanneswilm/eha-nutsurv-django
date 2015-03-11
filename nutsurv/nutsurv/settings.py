@@ -117,7 +117,8 @@ BOWER_INSTALLED_APPS = (
     'leaflet#0.7.3',
     'lodash#3.0.0',
     'parse-python-indentation#0.1.0',
-    'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.2'
+    'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.2',
+    'font-awesome#4.2.0'
 )
 
 try:
