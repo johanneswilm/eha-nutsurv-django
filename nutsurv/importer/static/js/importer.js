@@ -72,8 +72,7 @@ fileInput.addEventListener('change', function(e) {
     reader.onload = onload;
 
     function initiateRead() {
-        if ((maxRecords && recordCounter < maxRecords && offset < file.size) || offset < file.size) {
-          console.log([maxRecords, recordCounter, offset, file.size])
+        if (file && ((maxRecords && recordCounter < maxRecords && offset < file.size) || offset < file.size)) {
             reader.readAsText(file.slice(offset, (1024 * 1024) + offset));
             offset += 1024 * 1024;
         }
