@@ -29,8 +29,8 @@ def reset_data(request):
     dashboard_models.HouseholdSurveyJSON.objects.all().delete()
     dashboard_models.Alert.objects.all().delete()
 
-    dashboard_models.ClustersJSON.objects.all().delete()
-    cluster_data = dashboard_models.ClustersJSON()
+    dashboard_models.Clusters.objects.all().delete()
+    cluster_data = dashboard_models.Clusters()
     cluster_data.json = {}
     cluster_data.save()
 

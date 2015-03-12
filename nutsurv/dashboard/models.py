@@ -870,7 +870,7 @@ class Alert(models.Model):
         cls.objects.filter(text=text, archived=archived).delete()
 
 
-class ClustersJSON(models.Model):
+class Clusters(UniqueActiveNamedDocument):
     """A JSON document containing information about clusters in the format
     shown below:
     {
@@ -887,8 +887,15 @@ class ClustersJSON(models.Model):
             ...
     }
     """
+    name_or_id = models.CharField(
+        max_length=255, unique=True, blank=False,
+        help_text=u'Please enter a unique name or id of your "clusters" document.')
+
+    def __unicode__(self):
+        return self.name_or_id
+
     class Meta:
-        verbose_name_plural = 'The "Clusters" JSON documents'
+        verbose_name_plural = 'The "Clusters" documents'
 
     json = JSONField(
         null=True, blank=True,
@@ -896,28 +903,7 @@ class ClustersJSON(models.Model):
                   u'clusters for the planned survey.',
         default={}
         )
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return u'JSON Data for Clusters (pk: {}; created: {}; last modified: ' \
-               u'{})'.format(self.pk, self.created, self.last_modified)
-
-    @classmethod
-    def get_most_recently_created(cls):
-        clusters = cls.objects.order_by('-created')
-        if clusters:
-            return clusters[0]
-        else:
-            return None
-
-    @classmethod
-    def get_most_recently_modified(cls):
-        clusters = cls.objects.order_by('-last_modified')
-        if clusters:
-            return clusters[0]
-        else:
-            return None
 
     @classmethod
     def get_cluster_from_most_recently_modified(cls, cluster_id):
@@ -1046,14 +1032,11 @@ class LGA(Area):
                                u'found!'.format(name, state_name, country_part))
 
 
-class QuestionnaireSpecification(models.Model):
+class QuestionnaireSpecification(UniqueActiveDocument):
     class Meta:
         verbose_name_plural = 'The "Questionnaire Specification" documents'
 
-    name_or_id = models.CharField(
-        max_length=255, unique=True, blank=False,
-        help_text=u'Please enter a unique name or id of your new questionnaire '
-                  u'specification.')
+
     specification = models.TextField(
         blank=False,
         help_text=u'Please enter or copy & paste your new questionnaire '
@@ -1066,45 +1049,11 @@ class QuestionnaireSpecification(models.Model):
                   u'To familiarise yourself with the version of QSL used here '
                   u'please read <a href="/static/qsl.html" target="_blank">'
                   u'this document</a>.')
-    active = MaxOneActiveQuestionnaireField(
-        default=False,
-        help_text=u'Activate this questionnaire specification.  Only one '
-                  u'questionnaire specification may be active at any given '
-                  u'time.')
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.name_or_id
 
-    @classmethod
-    def get_active(cls):
-        active_qss = cls.objects.filter(active__exact=True)
-        c = active_qss.count()
-        if c == 1:
-            return active_qss[0]
-        elif c == 0:
-            return None
-        else:
-            raise RuntimeError(u'More than one active questionnaire '
-                               u'specification found.  This should not happen. '
-                               u'Please check the database.')
 
-    @classmethod
-    def get_most_recently_created(cls):
-        questionnaire_specifications = cls.objects.order_by('-created')
-        if questionnaire_specifications:
-            return questionnaire_specifications[0]
-        else:
-            return None
-
-    @classmethod
-    def get_most_recently_modified(cls):
-        questionnaire_specifications = cls.objects.order_by('-last_modified')
-        if questionnaire_specifications:
-            return questionnaire_specifications[0]
-        else:
-            return None
 
 
 class UniqueActiveDocument(models.Model):
