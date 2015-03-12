@@ -125,6 +125,6 @@ BOWER_INSTALLED_APPS = (
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
 except IOError as e:
-    print "Did not load local configuraion:", e
+    print "Did not load local configuration:", e
 else:
     exec f in globals()
