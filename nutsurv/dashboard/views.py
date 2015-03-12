@@ -703,7 +703,7 @@ class ClustersJSONView(View):
         """
         doc = ClustersJSON.get_most_recently_modified()
         if doc:
-            data = doc.json
+            data = {'clusters': doc.json}
         else:
             data = {'clusters': {}}
         return HttpResponse(json.dumps(data), content_type='application/json')

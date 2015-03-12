@@ -189,8 +189,8 @@ class FormhubSurvey(models.Model):
             if cluster_data != None:
                 cluster_number = str(self.json['cluster'])
                 # We make everything depend on the existence of the cluster number in the cluster db.
-                if not cluster_number in cluster_data.json['clusters']:
-                    cluster_data.json['clusters'][cluster_number] = {
+                if not cluster_number in cluster_data.json:
+                    cluster_data.json[cluster_number] = {
                         "cluster_name":self.json['cluster_name'],
                         "lga_name":str(self.json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
                         "state_name":str(self.json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.

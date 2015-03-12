@@ -874,7 +874,6 @@ class ClustersJSON(models.Model):
     """A JSON document containing information about clusters in the format
     shown below:
     {
-        "clusters": {
             "723": {
                 "cluster_name": "Share",
                 "lga_name": "Ifelodun",
@@ -886,7 +885,6 @@ class ClustersJSON(models.Model):
                 "state_name": "Delta"
             }
             ...
-        }
     }
     """
     class Meta:
@@ -896,24 +894,7 @@ class ClustersJSON(models.Model):
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing all the '
                   u'clusters for the planned survey.',
-        default="""
-        For example:
-
-        {
-            "clusters": {
-                "723": {
-                    "cluster_name": "Share",
-                    "lga_name": "Ifelodun",
-                    "state_name": "Kwara"
-                },
-                "318": {
-                    "cluster_name": "Emadadja",
-                    "lga_name": "Udu",
-                    "state_name": "Delta"
-                }
-            }
-        }
-        """
+        default={}
         )
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
@@ -959,9 +940,8 @@ class ClustersJSON(models.Model):
         # The cluster JSON data provided stores cluster_ids as strings and some
         # other parts of the system use integers for that.
         cluster_id = str(cluster_id)
-        if 'clusters' in self.json:
-            if cluster_id in self.json['clusters']:
-                cluster = self.json['clusters'][cluster_id]
+        if cluster_id in self.json:
+            cluster = self.json[cluster_id]
         return cluster
 
 
@@ -1177,6 +1157,160 @@ class UniqueActiveNamedDocument(UniqueActiveDocument):
 
 
 class ClustersPerState(UniqueActiveNamedDocument):
+    """
+    For example:
+
+    {
+            "Kano": {
+                "standard": 5,
+                "reserve": 3
+                },
+            "Lagos": {
+                "standard": 7,
+                "reserve": 3
+                },
+            "Kaduna": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Katsina": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Oyo": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Rivers": {
+                "standard": 6,
+                "reserve": 3
+                },
+            "Bauchi": {
+                "standard": 3,
+                "reserve": 3
+                },
+            "Jigawa": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Benue": {
+                "standard": 9,
+                "reserve": 3
+                },
+            "Anambra": {
+                "standard": 10,
+                "reserve": 3
+                },
+            "Borno": {
+                "standard": 11,
+                "reserve": 3
+                },
+            "Delta": {
+                "standard": 12,
+                "reserve": 3
+                },
+            "Imo": {
+                "standard": 13,
+                "reserve": 3
+                },
+            "Niger": {
+                "standard": 14,
+                "reserve": 3
+                },
+            "Akwa Ibom": {
+                "standard": 11,
+                "reserve": 3
+                },
+            "Ogun": {
+                "standard": 10,
+                "reserve": 3
+                },
+            "Sokoto": {
+                "standard": 3,
+                "reserve": 3
+                },
+            "Ondo": {
+                "standard": 20,
+                "reserve": 3
+                },
+            "Osun": {
+                "standard": 1,
+                "reserve": 3
+                },
+            "Kogi": {
+                "standard": 7,
+                "reserve": 3
+                },
+            "Zamfara": {
+                "standard": 6,
+                "reserve": 3
+                },
+            "Enugu": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Kebbi": {
+                "standard": 9,
+                "reserve": 3
+                },
+            "Edo": {
+                "standard": 7,
+                "reserve": 2
+                },
+            "Plateau": {
+                "standard": 10,
+                "reserve": 4
+                },
+            "Adamawa": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Cross River": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Abia": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Ekiti": {
+                "standard": 12,
+                "reserve": 5
+                },
+            "Kwara": {
+                "standard": 15,
+                "reserve": 6
+                },
+            "Gombe": {
+                "standard": 7,
+                "reserve": 3
+                },
+            "Yobe": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Taraba": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Ebonyi": {
+                "standard": 12,
+                "reserve": 3
+                },
+            "Nasarawa": {
+                "standard": 13,
+                "reserve": 3
+                },
+            "Bayelsa": {
+                "standard": 14,
+                "reserve": 3
+                },
+            "Abuja Federal Capital Territory": {
+                "standard": 30,
+                "reserve": 3
+                }
+    }
+    """
     class Meta:
         verbose_name_plural = 'The "Clusters per State" documents'
 
@@ -1186,194 +1320,53 @@ class ClustersPerState(UniqueActiveNamedDocument):
                   u'standard and reserve clusters per state.  E.g.: { "states":'
                   u' { "Kano": { "standard": 5, "reserve": 3 }, "Lagos": { '
                   u'"standard": 7, "reserve": 3 } } }',
-        default="""
-            For example:
-
-            {
-                    "Kano": {
-                        "standard": 5,
-                        "reserve": 3
-                        },
-                    "Lagos": {
-                        "standard": 7,
-                        "reserve": 3
-                        },
-                    "Kaduna": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Katsina": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Oyo": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Rivers": {
-                        "standard": 6,
-                        "reserve": 3
-                        },
-                    "Bauchi": {
-                        "standard": 3,
-                        "reserve": 3
-                        },
-                    "Jigawa": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Benue": {
-                        "standard": 9,
-                        "reserve": 3
-                        },
-                    "Anambra": {
-                        "standard": 10,
-                        "reserve": 3
-                        },
-                    "Borno": {
-                        "standard": 11,
-                        "reserve": 3
-                        },
-                    "Delta": {
-                        "standard": 12,
-                        "reserve": 3
-                        },
-                    "Imo": {
-                        "standard": 13,
-                        "reserve": 3
-                        },
-                    "Niger": {
-                        "standard": 14,
-                        "reserve": 3
-                        },
-                    "Akwa Ibom": {
-                        "standard": 11,
-                        "reserve": 3
-                        },
-                    "Ogun": {
-                        "standard": 10,
-                        "reserve": 3
-                        },
-                    "Sokoto": {
-                        "standard": 3,
-                        "reserve": 3
-                        },
-                    "Ondo": {
-                        "standard": 20,
-                        "reserve": 3
-                        },
-                    "Osun": {
-                        "standard": 1,
-                        "reserve": 3
-                        },
-                    "Kogi": {
-                        "standard": 7,
-                        "reserve": 3
-                        },
-                    "Zamfara": {
-                        "standard": 6,
-                        "reserve": 3
-                        },
-                    "Enugu": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Kebbi": {
-                        "standard": 9,
-                        "reserve": 3
-                        },
-                    "Edo": {
-                        "standard": 7,
-                        "reserve": 2
-                        },
-                    "Plateau": {
-                        "standard": 10,
-                        "reserve": 4
-                        },
-                    "Adamawa": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Cross River": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Abia": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Ekiti": {
-                        "standard": 12,
-                        "reserve": 5
-                        },
-                    "Kwara": {
-                        "standard": 15,
-                        "reserve": 6
-                        },
-                    "Gombe": {
-                        "standard": 7,
-                        "reserve": 3
-                        },
-                    "Yobe": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Taraba": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Ebonyi": {
-                        "standard": 12,
-                        "reserve": 3
-                        },
-                    "Nasarawa": {
-                        "standard": 13,
-                        "reserve": 3
-                        },
-                    "Bayelsa": {
-                        "standard": 14,
-                        "reserve": 3
-                        },
-                    "Abuja Federal Capital Territory": {
-                        "standard": 30,
-                        "reserve": 3
-                        }
-            }
-        """
+        default={}
     )
 
 
 class States(UniqueActiveNamedDocument):
+    """
+        For example:
+
+        [
+            "Kano", "Lagos", "Kaduna",
+            "Katsina", "Oyo", "Rivers",
+            "Bauchi", "Jigawa", "Benue",
+            "Anambra", "Borno", "Delta",
+            "Imo", "Niger", "Akwa Ibom",
+            "Ogun", "Sokoto", "Ondo",
+            "Osun", "Kogi", "Zamfara",
+            "Enugu", "Kebbi", "Edo",
+            "Plateau", "Adamawa",
+            "Cross River", "Abia",
+            "Ekiti", "Kwara", "Gombe",
+            "Yobe", "Taraba", "Ebonyi",
+            "Nasarawa", "Bayelsa",
+            "Abuja Federal Capital Territory"
+        ]
+    """
     class Meta:
         verbose_name_plural = 'The "States" documents'
 
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the states data.',
-        default="""
-            For example:
-
-            [
-                "Kano", "Lagos", "Kaduna",
-                "Katsina", "Oyo", "Rivers",
-                "Bauchi", "Jigawa", "Benue",
-                "Anambra", "Borno", "Delta",
-                "Imo", "Niger", "Akwa Ibom",
-                "Ogun", "Sokoto", "Ondo",
-                "Osun", "Kogi", "Zamfara",
-                "Enugu", "Kebbi", "Edo",
-                "Plateau", "Adamawa",
-                "Cross River", "Abia",
-                "Ekiti", "Kwara", "Gombe",
-                "Yobe", "Taraba", "Ebonyi",
-                "Nasarawa", "Bayelsa",
-                "Abuja Federal Capital Territory"
-            ]
-        """
+        default=[]
     )
 
 
 class StatesWithReserveClusters(UniqueActiveNamedDocument):
+    """
+        For example:
+
+        [
+            "Kano",
+            "Gombe",
+            "Yobe",
+            "Abuja Federal Capital Territory"
+        ]
+    """
+
     class Meta:
         verbose_name_plural = 'The "States with Reserve Clusters" documents'
 
@@ -1381,20 +1374,20 @@ class StatesWithReserveClusters(UniqueActiveNamedDocument):
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing the states with '
                   u'reserve clusters enabled.',
-        default="""
-            For example:
-
-            [
-                "Kano",
-                "Gombe",
-                "Yobe",
-                "Abuja Federal Capital Territory"
-            ]
-        """
+        default=[]
     )
 
 
 class ClustersPerTeam(UniqueActiveNamedDocument):
+    """
+        For example:
+
+        {
+            "1": 5,
+            "2": 15,
+            "3": 17
+        }
+    """
     class Meta:
         verbose_name_plural = 'The "Clusters per Team" documents'
 
@@ -1402,13 +1395,5 @@ class ClustersPerTeam(UniqueActiveNamedDocument):
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the (planned) '
                   u'number of clusters per each team.',
-        default="""
-            For example:
-
-            {
-                "1": 5,
-                "2": 15,
-                "3": 17
-            }
-        """
+        default={}
     )
