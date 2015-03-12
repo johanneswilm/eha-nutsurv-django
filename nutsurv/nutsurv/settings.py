@@ -127,8 +127,10 @@ BOWER_INSTALLED_APPS = (
 
 COMPRESS_PRECOMPILERS = (
         ('text/sass', 'sass --compass "{infile}" "{outfile}"'),
-        ('text/scss', 'sass --scss --compass "{infile}" "{outfile}"'),
+        ('text/scss', 'sass -I components/bower_components/ehealth-bootstrap  --scss --compass "{infile}" "{outfile}"'),
         )
+
+
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))

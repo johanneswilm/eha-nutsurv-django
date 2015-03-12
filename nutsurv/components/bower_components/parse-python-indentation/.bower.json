@@ -1,0 +1,30 @@
+{
+  "name": "parse-python-indentation",
+  "version": "0.1.0",
+  "authors": [
+    "Johannes Wilm http://www.johanneswilm.org"
+  ],
+  "description": "a javascript library to parse text files that are indented python style",
+  "main": "parsePythonIndention.js",
+  "keywords": [
+    "javascript",
+    "python",
+    "parsing"
+  ],
+  "license": "Apache 2.0",
+  "ignore": [
+    "**/.*",
+    "bower.json"
+  ],
+  "homepage": "https://github.com/johanneswilm/parsePythonIndention.js",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "b58c7383332c255fa49a45d3a0bf763d0832af96"
+  },
+  "_source": "git://github.com/johanneswilm/parsePythonIndention.js.git",
+  "_target": "0.1.0",
+  "_originalSource": "parse-python-indentation",
+  "_direct": true
+}
