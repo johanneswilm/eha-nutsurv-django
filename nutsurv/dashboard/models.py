@@ -869,6 +869,52 @@ class Alert(models.Model):
         """
         cls.objects.filter(text=text, archived=archived).delete()
 
+class UniqueActiveDocument(models.Model):
+    active = UniqueActiveField(
+        default=False,
+        help_text=u'Activate this document.  Only one document of this type '
+                  u'may be active at any given time.')
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def get_active(cls):
+        active_instances = cls.objects.filter(active__exact=True)
+        c = active_instances.count()
+        if c == 1:
+            return active_instances[0]
+        elif c == 0:
+            return None
+        else:
+            raise RuntimeError(
+                u'More than one active "{}" found.  This should not happen.  '
+                u'Please check the database.'.format(cls._meta.verbose_name))
+
+    @classmethod
+    def get_most_recently_created(cls):
+        instances = cls.objects.all().order_by('-created')
+        if instances:
+            return instances[0]
+        else:
+            return None
+
+    @classmethod
+    def get_most_recently_modified(cls):
+        instances = cls.objects.all().order_by('-last_modified')
+        if instances:
+            return instances[0]
+        else:
+            return None
+
+
+class UniqueActiveNamedDocument(UniqueActiveDocument):
+    name_or_id = models.CharField(
+        max_length=255, unique=True, blank=False,
+        help_text=u'Please enter a unique name or id of your new document.')
+
+    def __unicode__(self):
+        return self.name_or_id
+
 
 class Clusters(UniqueActiveNamedDocument):
     """A JSON document containing information about clusters in the format
@@ -887,9 +933,6 @@ class Clusters(UniqueActiveNamedDocument):
             ...
     }
     """
-    name_or_id = models.CharField(
-        max_length=255, unique=True, blank=False,
-        help_text=u'Please enter a unique name or id of your "clusters" document.')
 
     def __unicode__(self):
         return self.name_or_id
@@ -1049,57 +1092,6 @@ class QuestionnaireSpecification(UniqueActiveDocument):
                   u'To familiarise yourself with the version of QSL used here '
                   u'please read <a href="/static/qsl.html" target="_blank">'
                   u'this document</a>.')
-
-    def __unicode__(self):
-        return self.name_or_id
-
-
-
-
-class UniqueActiveDocument(models.Model):
-    active = UniqueActiveField(
-        default=False,
-        help_text=u'Activate this document.  Only one document of this type '
-                  u'may be active at any given time.')
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-
-    @classmethod
-    def get_active(cls):
-        active_instances = cls.objects.filter(active__exact=True)
-        c = active_instances.count()
-        if c == 1:
-            return active_instances[0]
-        elif c == 0:
-            return None
-        else:
-            raise RuntimeError(
-                u'More than one active "{}" found.  This should not happen.  '
-                u'Please check the database.'.format(cls._meta.verbose_name))
-
-    @classmethod
-    def get_most_recently_created(cls, category_string):
-        instances = cls.objects.filter(
-            category=category_string).order_by('-created')
-        if instances:
-            return instances[0]
-        else:
-            return None
-
-    @classmethod
-    def get_most_recently_modified(cls, category_string):
-        instances = cls.objects.filter(
-            category=category_string).order_by('-last_modified')
-        if instances:
-            return instances[0]
-        else:
-            return None
-
-
-class UniqueActiveNamedDocument(UniqueActiveDocument):
-    name_or_id = models.CharField(
-        max_length=255, unique=True, blank=False,
-        help_text=u'Please enter a unique name or id of your new document.')
 
     def __unicode__(self):
         return self.name_or_id
