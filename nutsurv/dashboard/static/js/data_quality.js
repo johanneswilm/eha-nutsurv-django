@@ -128,7 +128,7 @@ var dataQuality = {
                             WHZs.push(child.zscores.WHZ);
                         }
                         if (child.zscores.hasOwnProperty('HAZ')) {
-                            HAZs.push(child.zscores.HAZ);
+                            HAZs.push(parseInt(child.zscores.HAZ*100)/100);
                         }
                         if (child.zscores.hasOwnProperty('WAZ')) {
                             WAZs.push(child.zscores.WAZ);
@@ -141,6 +141,7 @@ var dataQuality = {
         if (WHZs.length > 0) {
             WHZs.sort(function(a,b){return a - b});
             WHZkde.data = kde(WHZs).points(graphRange);
+            console.log(WHZs);
         } else {
             WHZkde.data = [];
         }
@@ -153,6 +154,7 @@ var dataQuality = {
         if (HAZs.length > 0) {
             HAZs.sort(function(a,b){return a - b});
             HAZkde.data = kde(HAZs).points(graphRange);
+            console.log(HAZs);
         } else {
             HAZkde.data = [];
         }

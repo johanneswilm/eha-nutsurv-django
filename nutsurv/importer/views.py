@@ -28,28 +28,35 @@ def reset_data(request):
     models.FormhubSurvey.objects.all().delete()
     dashboard_models.HouseholdSurveyJSON.objects.all().delete()
     dashboard_models.Alert.objects.all().delete()
-    cluster_data = dashboard_models.ClustersJSON.get_most_recently_modified()
-    if cluster_data == None:
-        cluster_data = dashboard_models.ClustersJSON.objects.create()
+
+    dashboard_models.ClustersJSON.objects.all().delete()
+    cluster_data = dashboard_models.ClustersJSON()
     cluster_data.json = {
         "clusters": {}
     }
     cluster_data.save()
-    team_data = dashboard_models.ClustersPerTeam.get_active()
-    if team_data == None:
-        team_data = dashboard_models.ClustersPerTeam.objects.create()
+
+    dashboard_models.ClustersPerTeam.objects.all().delete()
+    team_data = dashboard_models.ClustersPerTeam()
     team_data.json = {}
+    team_data.name_or_id = 'default_clusters_per_team'
+    team_data.active = True
     team_data.save()
-    cluster_state_data = dashboard_models.ClustersPerState.get_active()
-    if cluster_state_data == None:
-        cluster_state_data = dashboard_models.ClustersPerState.objects.create()
+
+    dashboard_models.ClustersPerState.objects.all().delete()
+    cluster_state_data = dashboard_models.ClustersPerState()
     cluster_state_data.json = {}
+    cluster_state_data.name_or_id = 'default_clusters_per_state'
+    cluster_state_data.active = True
     cluster_state_data.save()
-    states_data = dashboard_models.States.get_active()
-    if states_data == None:
-        states_data = dashboard_models.States.objects.create()
+
+    dashboard_models.States.objects.all().delete()
+    states_data = dashboard_models.States()
     states_data.json = []
+    states_data.name_or_id = 'default_states'
+    states_data.active = True
     states_data.save()
+
     status = 200
     return JsonResponse(
         response,

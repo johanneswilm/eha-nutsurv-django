@@ -872,7 +872,7 @@ class Alert(models.Model):
 
 class ClustersJSON(models.Model):
     """A JSON document containing information about clusters in the format
-    requested by Johannes and shown below:
+    shown below:
     {
         "clusters": {
             "723": {
