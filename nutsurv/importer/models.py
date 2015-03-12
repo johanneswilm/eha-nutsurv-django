@@ -142,15 +142,15 @@ class FormhubSurvey(models.Model):
                         member["survey"]["zscores"] = {}
                         if 'ZLH4A' in zscores \
                             and not math.isnan(zscores["ZLH4A"]):
-                            member["survey"]["zscores"]["haz"] = \
+                            member["survey"]["zscores"]["HAZ"] = \
                                 zscores["ZLH4A"]
                         if 'ZW4A' in zscores \
                             and not math.isnan(zscores["ZW4A"]):
-                            member["survey"]["zscores"]["waz"] = \
+                            member["survey"]["zscores"]["WAZ"] = \
                                 zscores["ZW4A"]
                         if 'ZW4LH' in zscores \
                             and not math.isnan(zscores["ZW4LH"]):
-                            member["survey"]["zscores"]["whz"] = \
+                            member["survey"]["zscores"]["WHZ"] = \
                                 zscores["ZW4LH"]
 
 
