@@ -109,6 +109,10 @@ var home = {
     },
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
     drawAlerts: function (data) {
+
+		console.log('home screen data items');	
+		console.log(data);
+
         jQuery('#home_alerts_list').empty();
         _.each(data.alerts,function(alert){
             jQuery('#home_alerts_list').append(home.alertTmp({alert:alert}));
