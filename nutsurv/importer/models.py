@@ -217,6 +217,9 @@ class FormhubSurvey(models.Model):
                 team_data.json[team_number] = 0
                 team_data.save()
 
+        # Check for all relevant household alerts
+        if self.converted_household_survey.json != None:
+            dashboard_models.Alert.run_alert_checks_on_document(self.converted_household_survey)
 
 
 

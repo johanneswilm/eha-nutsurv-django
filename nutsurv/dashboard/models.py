@@ -126,7 +126,7 @@ class HouseholdSurveyJSON(models.Model):
     def get_team_id(self):
         try:
             team_id = self.json['team']['teamID']
-        except KeyError:
+        except TypeError:
             return None
         else:
             return team_id
@@ -175,7 +175,7 @@ class HouseholdSurveyJSON(models.Model):
             else:
                 survey_start_time = None
             for member in self.json['members']:
-                if member['surveyType'] in survey_types:
+                if 'surveyType' in member and member['surveyType'] in survey_types:
                     member['survey_start_time'] = survey_start_time
                     output.append(member)
         return output
@@ -227,13 +227,15 @@ class HouseholdSurveyJSON(models.Model):
         months.
         On failure, it returns None.
         """
+        if not 'survey' in child:
+            return None
         # Start by trying to calculate the child's age based on their date of
         # birth, if it has been recorder, as it has higher priority than the
         # recorder age in months.
-        dob = child['survey']['birthDate']
         # On success, the following if-statement FINISHES the function execution
         # and returns a computed value.
-        if dob:
+        if 'birthDate' in child['survey']:
+            dob = child['survey']['birthDate']
             # Try to get the survey start date to use it later for the child's
             # age computations.
             survey_start_time_string = child['survey_start_time']
@@ -263,19 +265,19 @@ class HouseholdSurveyJSON(models.Model):
                 delta = dateutil.relativedelta.relativedelta(survey_date, dob)
                 # return the computed age in months
                 return delta.years * 12 + delta.months
-            else:
-                dob = None  # something must have gone wrong
 
         # The following lines should be executed only if the attempt to
         # calculate the child's age based on their date of birth (above) was
         # unsuccessful.
-        if dob is None:
-            try:
-                age_in_months = int(child['survey']['ageInMonths'])
-            except ValueError:
-                return None
-            else:
-                return age_in_months
+        if not 'ageInMonths' in child['survey']:
+            return None
+
+        try:
+            age_in_months = int(child['survey']['ageInMonths'])
+        except ValueError:
+            return None
+
+        return age_in_months
 
     def get_uuid(self):
         try:
@@ -589,15 +591,16 @@ class Alert(models.Model):
         # Calculate terminal digit preference scores
         for k in terminal_digit_preference_score:
             total_number_of_digits = sum(terminal_digit_counts[k])
-            expected = total_number_of_digits / 10.0
-            chi2 = sum(
-                [
-                    (i - expected) ** 2 / expected
-                    for i in terminal_digit_counts[k]
-                ]
-            )
-            terminal_digit_preference_score[k] =\
-                100 * (chi2 / (9 * total_number_of_digits)) ** 0.5
+            if total_number_of_digits > 0:
+                expected = total_number_of_digits / 10.0
+                chi2 = sum(
+                    [
+                        (i - expected) ** 2 / expected
+                        for i in terminal_digit_counts[k]
+                    ]
+                )
+                terminal_digit_preference_score[k] =\
+                    100 * (chi2 / (9 * total_number_of_digits)) ** 0.5
         # Check if any of the computed scores triggers the alert.
         for k in terminal_digit_preference_score:
             if terminal_digit_preference_score[k] > 20:
