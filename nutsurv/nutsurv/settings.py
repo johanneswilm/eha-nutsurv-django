@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'accounts',
     'importer',
     'djangobower',
+    'compressor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,6 +103,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 BOWER_INSTALLED_APPS = (
@@ -121,6 +123,12 @@ BOWER_INSTALLED_APPS = (
     'font-awesome#4.2.0'
 )
 
+
+
+COMPRESS_PRECOMPILERS = (
+        ('text/sass', 'sass --compass "{infile}" "{outfile}"'),
+        ('text/scss', 'sass --scss --compass "{infile}" "{outfile}"'),
+        )
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
