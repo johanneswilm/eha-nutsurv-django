@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from models import HouseholdSurveyJSON
 from models import Alert
-from models import ClustersJSON
+from models import Clusters
 from models import LGA
 from models import QuestionnaireSpecification
 from models import ClustersPerState
@@ -19,7 +19,7 @@ class QuestionnaireSpecificationAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
-class ClustersJSONAdmin(admin.ModelAdmin):
+class ClustersAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
@@ -40,7 +40,7 @@ class ClustersPerTeamAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Alert, AlertAdmin)
-admin.site.register(ClustersJSON, ClustersJSONAdmin)
+admin.site.register(Clusters, ClustersAdmin)
 admin.site.register(QuestionnaireSpecification, QuestionnaireSpecificationAdmin)
 admin.site.register(ClustersPerState, ClustersPerStateAdmin)
 admin.site.register(States, StatesAdmin)

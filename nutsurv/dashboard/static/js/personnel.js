@@ -115,11 +115,11 @@ var personnel = {
                 { name: 'gender', data: 'gender' },
                 { name: 'phone', data: 'phone' },
                 { name: 'email', data: 'email' },
+                { name: 'date', data: 'date' },
                 { name: 'state', data: 'state' },
                 { name: 'lga', data: 'lga' },
                 { name: 'cluster', data: 'cluster' },
-                { name: 'cluster_number', data: 'cluster_number' },
-                { name: 'date', data: 'date' },
+                { name: 'cluster_number', data: 'cluster_number' }
             ],
             "order": [[ 1, "asc" ]]
         });
