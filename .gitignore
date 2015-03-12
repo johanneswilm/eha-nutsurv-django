@@ -17,3 +17,5 @@ venv/
 nutsurv-venv/
 nutsurv/dashboard/bower_components/
 */bower_components
+configuration.py
+.sass-cache
