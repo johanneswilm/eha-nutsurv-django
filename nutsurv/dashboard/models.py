@@ -968,8 +968,8 @@ class ClustersJSON(models.Model):
 class Area(gismodels.Model):
     """Written for a geospatial data set containing the following fields:
     name_0 - country (top level)
-    name_1 - state (middle level, contained in area name_0)
-    name_2 - LGA (subarea of name_1)
+    name_1 - 1st Admin (middle level, contained in area name_0)
+    name_2 - 2nd Admin (subarea of name_1)
     varname_2 - an alternative name for area name_2 (optional, can be empty)
     """
     # Attributes of interest from the shapefile.
@@ -982,11 +982,11 @@ class Area(gismodels.Model):
     name_1 = gismodels.CharField(
         max_length=255,
         help_text='The area one level higher than this one (i.e. the area '
-                  'containing this area (e.g. the name of a state))'
+                  'containing this area (e.g. the name of a 1st Admin))'
     )
     name_2 = gismodels.CharField(
         max_length=255,
-        help_text='The name of this area (e.g. the name of an LGA))'
+        help_text='The name of this area (e.g. the name of an 2nd Admin))'
     )
     varname_2 = gismodels.CharField(
         max_length=255, blank=True,
@@ -1020,7 +1020,7 @@ class Area(gismodels.Model):
 
 class LGA(Area):
     class Meta:
-        verbose_name = 'LGA'
+        verbose_name = '2nd Admin'
 
     def get_lga_name(self):
         return self.name_2
@@ -1062,7 +1062,7 @@ class LGA(Area):
                 country_part = u' and country "{}"'.format(country_name)
             else:
                 country_part = u''
-            raise RuntimeError(u'More than one LGA named "{}" in state "{}"{} '
+            raise RuntimeError(u'More than one 2nd Admin named "{}" in 1st Admin "{}"{} '
                                u'found!'.format(name, state_name, country_part))
 
 
@@ -1178,12 +1178,12 @@ class UniqueActiveNamedDocument(UniqueActiveDocument):
 
 class ClustersPerState(UniqueActiveNamedDocument):
     class Meta:
-        verbose_name_plural = 'The "Clusters per State" documents'
+        verbose_name_plural = 'The "Clusters per 1st Admin" documents'
 
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the number of '
-                  u'standard and reserve clusters per state.  E.g.: { "states":'
+                  u'standard and reserve clusters per 1st Admin.  E.g.: { "states":'
                   u' { "Kano": { "standard": 5, "reserve": 3 }, "Lagos": { '
                   u'"standard": 7, "reserve": 3 } } }',
         default="""
@@ -1345,11 +1345,11 @@ class ClustersPerState(UniqueActiveNamedDocument):
 
 class States(UniqueActiveNamedDocument):
     class Meta:
-        verbose_name_plural = 'The "States" documents'
+        verbose_name_plural = 'The "1st Admin" documents'
 
     json = JSONField(
         null=True, blank=True,
-        help_text=u'Please enter the JSON structure defining the states data.',
+        help_text=u'Please enter the JSON structure defining the 1st Admin data.',
         default="""
             For example:
 
@@ -1375,11 +1375,11 @@ class States(UniqueActiveNamedDocument):
 
 class StatesWithReserveClusters(UniqueActiveNamedDocument):
     class Meta:
-        verbose_name_plural = 'The "States with Reserve Clusters" documents'
+        verbose_name_plural = 'The "1st Admin with Reserve Clusters" documents'
 
     json = JSONField(
         null=True, blank=True,
-        help_text=u'Please enter the JSON structure describing the states with '
+        help_text=u'Please enter the JSON structure describing the 1st Admin with '
                   u'reserve clusters enabled.',
         default="""
             For example:
