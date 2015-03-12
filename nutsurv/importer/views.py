@@ -29,11 +29,9 @@ def reset_data(request):
     dashboard_models.HouseholdSurveyJSON.objects.all().delete()
     dashboard_models.Alert.objects.all().delete()
 
-    dashboard_models.ClustersJSON.objects.all().delete()
-    cluster_data = dashboard_models.ClustersJSON()
-    cluster_data.json = {
-        "clusters": {}
-    }
+    dashboard_models.Clusters.objects.all().delete()
+    cluster_data = dashboard_models.Clusters()
+    cluster_data.json = {}
     cluster_data.save()
 
     dashboard_models.ClustersPerTeam.objects.all().delete()
@@ -91,7 +89,6 @@ def register_formhub_survey(request):
 
     formhub_survey, created = models.FormhubSurvey.objects.get_or_create(uuid=json_object['_uuid'])
     formhub_survey.json = json_object
-    print formhub_survey.uuid
     formhub_survey.save()
     formhub_survey.convert_to_household_survey()
     formhub_survey.save()

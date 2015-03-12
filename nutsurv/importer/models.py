@@ -185,12 +185,12 @@ class FormhubSurvey(models.Model):
         if all (terms in self.json for terms in ('state', 'cluster', \
             'cluster_name', 'lga')):
             cluster_data = \
-                dashboard_models.ClustersJSON.get_most_recently_modified()
+                dashboard_models.Clusters.get_most_recently_modified()
             if cluster_data != None:
                 cluster_number = str(self.json['cluster'])
                 # We make everything depend on the existence of the cluster number in the cluster db.
-                if not cluster_number in cluster_data.json['clusters']:
-                    cluster_data.json['clusters'][cluster_number] = {
+                if not cluster_number in cluster_data.json:
+                    cluster_data.json[cluster_number] = {
                         "cluster_name":self.json['cluster_name'],
                         "lga_name":str(self.json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
                         "state_name":str(self.json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
@@ -217,6 +217,9 @@ class FormhubSurvey(models.Model):
                 team_data.json[team_number] = 0
                 team_data.save()
 
+        # Check for all relevant household alerts
+        if self.converted_household_survey.json != None:
+            dashboard_models.Alert.run_alert_checks_on_document(self.converted_household_survey)
 
 
 
