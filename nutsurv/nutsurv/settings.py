@@ -96,7 +96,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '../static')
 
 # Bower http://django-bower.readthedocs.org/en/latest/index.html
-BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'dashboard')
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -117,7 +117,8 @@ BOWER_INSTALLED_APPS = (
     'leaflet#0.7.3',
     'lodash#3.0.0',
     'parse-python-indentation#0.1.0',
-    'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.2'
+    'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.5',
+    'font-awesome#4.2.0'
 )
 
 try:
