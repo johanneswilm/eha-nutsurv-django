@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'tastypie',
     'accounts',
     'importer',
-    'djangobower'
+    'djangobower',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,7 +121,4 @@ BOWER_INSTALLED_APPS = (
     'font-awesome#4.2.0'
 )
 
-try:
-    exec open(os.path.join(PROJECT_PATH, 'configuration.py')) in globals()
-except:  # todo: change this exception to something more specific
-    pass
+exec open(os.path.join(PROJECT_PATH, 'configuration.py')) in globals()
