@@ -343,6 +343,15 @@ class Alert(models.Model):
 
     @classmethod
     def mapping_check_alert(cls, household_survey):
+        """These are four different alerts related to location and cluster id.
+        mapping_check_missing_cluster_id: Cluster ID is missing.
+        mapping_check_missing_location: Location is missing.
+        mapping_check_unknown_cluster: Cluster ID is given, but it's unknown to
+            the server
+        mapping_check_wrong_location: Cluster ID and location are given and known
+            to the server, but the location is not inside the boundaries of the
+            cluster that the data supposedly comes from.
+        """
         cluster_id = household_survey.get_cluster_id()
         location = household_survey.get_location()
         team_name = household_survey.get_team_name()
