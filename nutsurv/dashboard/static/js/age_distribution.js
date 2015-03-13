@@ -6,8 +6,11 @@ var ageDistribution = {
     },
     initiate: function() {
         var selectors = jQuery('#age_distribution_teams,#age_distribution_states');
-        //selectors.selectpicker();
+        selectors.selectpicker();
         selectors.on('change', ageDistribution.changeStateOrTeam);
+        //jQuery('#age_distribution_teams,#age_distribution_states').selectmenu({
+        //    change: ageDistribution.changeStateOrTeam
+        //});
 
         jQuery('#age_distribution_households_download').on('click', ageDistribution.downloadHouseholdAgeListCSV);
         jQuery('#age_distribution_children_download').on('click', ageDistribution.downloadChildrenAgeListCSV);
