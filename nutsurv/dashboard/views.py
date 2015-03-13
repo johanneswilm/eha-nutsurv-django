@@ -11,7 +11,7 @@ from django.conf import settings
 
 from models import Alert
 from models import HouseholdSurveyJSON
-from models import ClustersJSON
+from models import Clusters
 from models import LGA
 from models import QuestionnaireSpecification
 from models import ClustersPerState
@@ -377,7 +377,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
     @staticmethod
     def _correct_area(cluster_id, location):
         # get cluster data
-        cluster = ClustersJSON.get_cluster_from_most_recently_modified(
+        cluster = Clusters.get_cluster_from_most_recently_modified(
             cluster_id)
         # if cluster data not found, assume location incorrect
         if cluster is None:
@@ -701,9 +701,9 @@ class ClustersJSONView(View):
             }
         }
         """
-        doc = ClustersJSON.get_most_recently_modified()
+        doc = Clusters.get_most_recently_modified()
         if doc:
-            data = doc.json
+            data = {'clusters': doc.json}
         else:
             data = {'clusters': {}}
         return HttpResponse(json.dumps(data), content_type='application/json')

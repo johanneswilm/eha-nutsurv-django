@@ -126,7 +126,7 @@ class HouseholdSurveyJSON(models.Model):
     def get_team_id(self):
         try:
             team_id = self.json['team']['teamID']
-        except KeyError:
+        except TypeError:
             return None
         else:
             return team_id
@@ -175,7 +175,7 @@ class HouseholdSurveyJSON(models.Model):
             else:
                 survey_start_time = None
             for member in self.json['members']:
-                if member['surveyType'] in survey_types:
+                if 'surveyType' in member and member['surveyType'] in survey_types:
                     member['survey_start_time'] = survey_start_time
                     output.append(member)
         return output
@@ -227,13 +227,15 @@ class HouseholdSurveyJSON(models.Model):
         months.
         On failure, it returns None.
         """
+        if not 'survey' in child:
+            return None
         # Start by trying to calculate the child's age based on their date of
         # birth, if it has been recorder, as it has higher priority than the
         # recorder age in months.
-        dob = child['survey']['birthDate']
         # On success, the following if-statement FINISHES the function execution
         # and returns a computed value.
-        if dob:
+        if 'birthDate' in child['survey']:
+            dob = child['survey']['birthDate']
             # Try to get the survey start date to use it later for the child's
             # age computations.
             survey_start_time_string = child['survey_start_time']
@@ -263,19 +265,19 @@ class HouseholdSurveyJSON(models.Model):
                 delta = dateutil.relativedelta.relativedelta(survey_date, dob)
                 # return the computed age in months
                 return delta.years * 12 + delta.months
-            else:
-                dob = None  # something must have gone wrong
 
         # The following lines should be executed only if the attempt to
         # calculate the child's age based on their date of birth (above) was
         # unsuccessful.
-        if dob is None:
-            try:
-                age_in_months = int(child['survey']['ageInMonths'])
-            except ValueError:
-                return None
-            else:
-                return age_in_months
+        if not 'ageInMonths' in child['survey']:
+            return None
+
+        try:
+            age_in_months = int(child['survey']['ageInMonths'])
+        except ValueError:
+            return None
+
+        return age_in_months
 
     def get_uuid(self):
         try:
@@ -589,15 +591,16 @@ class Alert(models.Model):
         # Calculate terminal digit preference scores
         for k in terminal_digit_preference_score:
             total_number_of_digits = sum(terminal_digit_counts[k])
-            expected = total_number_of_digits / 10.0
-            chi2 = sum(
-                [
-                    (i - expected) ** 2 / expected
-                    for i in terminal_digit_counts[k]
-                ]
-            )
-            terminal_digit_preference_score[k] =\
-                100 * (chi2 / (9 * total_number_of_digits)) ** 0.5
+            if total_number_of_digits > 0:
+                expected = total_number_of_digits / 10.0
+                chi2 = sum(
+                    [
+                        (i - expected) ** 2 / expected
+                        for i in terminal_digit_counts[k]
+                    ]
+                )
+                terminal_digit_preference_score[k] =\
+                    100 * (chi2 / (9 * total_number_of_digits)) ** 0.5
         # Check if any of the computed scores triggers the alert.
         for k in terminal_digit_preference_score:
             if terminal_digit_preference_score[k] > 20:
@@ -869,12 +872,57 @@ class Alert(models.Model):
         """
         cls.objects.filter(text=text, archived=archived).delete()
 
+class UniqueActiveDocument(models.Model):
+    active = UniqueActiveField(
+        default=False,
+        help_text=u'Activate this document.  Only one document of this type '
+                  u'may be active at any given time.')
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
-class ClustersJSON(models.Model):
+    @classmethod
+    def get_active(cls):
+        active_instances = cls.objects.filter(active__exact=True)
+        c = active_instances.count()
+        if c == 1:
+            return active_instances[0]
+        elif c == 0:
+            return None
+        else:
+            raise RuntimeError(
+                u'More than one active "{}" found.  This should not happen.  '
+                u'Please check the database.'.format(cls._meta.verbose_name))
+
+    @classmethod
+    def get_most_recently_created(cls):
+        instances = cls.objects.all().order_by('-created')
+        if instances:
+            return instances[0]
+        else:
+            return None
+
+    @classmethod
+    def get_most_recently_modified(cls):
+        instances = cls.objects.all().order_by('-last_modified')
+        if instances:
+            return instances[0]
+        else:
+            return None
+
+
+class UniqueActiveNamedDocument(UniqueActiveDocument):
+    name_or_id = models.CharField(
+        max_length=255, unique=True, blank=False,
+        help_text=u'Please enter a unique name or id of your new document.')
+
+    def __unicode__(self):
+        return self.name_or_id
+
+
+class Clusters(UniqueActiveNamedDocument):
     """A JSON document containing information about clusters in the format
     shown below:
     {
-        "clusters": {
             "723": {
                 "cluster_name": "Share",
                 "lga_name": "Ifelodun",
@@ -886,57 +934,22 @@ class ClustersJSON(models.Model):
                 "state_name": "Delta"
             }
             ...
-        }
     }
     """
+
+    def __unicode__(self):
+        return self.name_or_id
+
     class Meta:
-        verbose_name_plural = 'The "Clusters" JSON documents'
+        verbose_name_plural = 'The "Clusters" documents'
 
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing all the '
                   u'clusters for the planned survey.',
-        default="""
-        For example:
-
-        {
-            "clusters": {
-                "723": {
-                    "cluster_name": "Share",
-                    "lga_name": "Ifelodun",
-                    "state_name": "Kwara"
-                },
-                "318": {
-                    "cluster_name": "Emadadja",
-                    "lga_name": "Udu",
-                    "state_name": "Delta"
-                }
-            }
-        }
-        """
+        default={}
         )
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return u'JSON Data for Clusters (pk: {}; created: {}; last modified: ' \
-               u'{})'.format(self.pk, self.created, self.last_modified)
-
-    @classmethod
-    def get_most_recently_created(cls):
-        clusters = cls.objects.order_by('-created')
-        if clusters:
-            return clusters[0]
-        else:
-            return None
-
-    @classmethod
-    def get_most_recently_modified(cls):
-        clusters = cls.objects.order_by('-last_modified')
-        if clusters:
-            return clusters[0]
-        else:
-            return None
 
     @classmethod
     def get_cluster_from_most_recently_modified(cls, cluster_id):
@@ -959,9 +972,8 @@ class ClustersJSON(models.Model):
         # The cluster JSON data provided stores cluster_ids as strings and some
         # other parts of the system use integers for that.
         cluster_id = str(cluster_id)
-        if 'clusters' in self.json:
-            if cluster_id in self.json['clusters']:
-                cluster = self.json['clusters'][cluster_id]
+        if cluster_id in self.json:
+            cluster = self.json[cluster_id]
         return cluster
 
 
@@ -1066,14 +1078,11 @@ class LGA(Area):
                                u'found!'.format(name, state_name, country_part))
 
 
-class QuestionnaireSpecification(models.Model):
+class QuestionnaireSpecification(UniqueActiveDocument):
     class Meta:
         verbose_name_plural = 'The "Questionnaire Specification" documents'
 
-    name_or_id = models.CharField(
-        max_length=255, unique=True, blank=False,
-        help_text=u'Please enter a unique name or id of your new questionnaire '
-                  u'specification.')
+
     specification = models.TextField(
         blank=False,
         help_text=u'Please enter or copy & paste your new questionnaire '
@@ -1086,97 +1095,166 @@ class QuestionnaireSpecification(models.Model):
                   u'To familiarise yourself with the version of QSL used here '
                   u'please read <a href="/static/qsl.html" target="_blank">'
                   u'this document</a>.')
-    active = MaxOneActiveQuestionnaireField(
-        default=False,
-        help_text=u'Activate this questionnaire specification.  Only one '
-                  u'questionnaire specification may be active at any given '
-                  u'time.')
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return self.name_or_id
-
-    @classmethod
-    def get_active(cls):
-        active_qss = cls.objects.filter(active__exact=True)
-        c = active_qss.count()
-        if c == 1:
-            return active_qss[0]
-        elif c == 0:
-            return None
-        else:
-            raise RuntimeError(u'More than one active questionnaire '
-                               u'specification found.  This should not happen. '
-                               u'Please check the database.')
-
-    @classmethod
-    def get_most_recently_created(cls):
-        questionnaire_specifications = cls.objects.order_by('-created')
-        if questionnaire_specifications:
-            return questionnaire_specifications[0]
-        else:
-            return None
-
-    @classmethod
-    def get_most_recently_modified(cls):
-        questionnaire_specifications = cls.objects.order_by('-last_modified')
-        if questionnaire_specifications:
-            return questionnaire_specifications[0]
-        else:
-            return None
-
-
-class UniqueActiveDocument(models.Model):
-    active = UniqueActiveField(
-        default=False,
-        help_text=u'Activate this document.  Only one document of this type '
-                  u'may be active at any given time.')
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-
-    @classmethod
-    def get_active(cls):
-        active_instances = cls.objects.filter(active__exact=True)
-        c = active_instances.count()
-        if c == 1:
-            return active_instances[0]
-        elif c == 0:
-            return None
-        else:
-            raise RuntimeError(
-                u'More than one active "{}" found.  This should not happen.  '
-                u'Please check the database.'.format(cls._meta.verbose_name))
-
-    @classmethod
-    def get_most_recently_created(cls, category_string):
-        instances = cls.objects.filter(
-            category=category_string).order_by('-created')
-        if instances:
-            return instances[0]
-        else:
-            return None
-
-    @classmethod
-    def get_most_recently_modified(cls, category_string):
-        instances = cls.objects.filter(
-            category=category_string).order_by('-last_modified')
-        if instances:
-            return instances[0]
-        else:
-            return None
-
-
-class UniqueActiveNamedDocument(UniqueActiveDocument):
-    name_or_id = models.CharField(
-        max_length=255, unique=True, blank=False,
-        help_text=u'Please enter a unique name or id of your new document.')
 
     def __unicode__(self):
         return self.name_or_id
 
 
 class ClustersPerState(UniqueActiveNamedDocument):
+    """
+    For example:
+
+    {
+            "Kano": {
+                "standard": 5,
+                "reserve": 3
+                },
+            "Lagos": {
+                "standard": 7,
+                "reserve": 3
+                },
+            "Kaduna": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Katsina": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Oyo": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Rivers": {
+                "standard": 6,
+                "reserve": 3
+                },
+            "Bauchi": {
+                "standard": 3,
+                "reserve": 3
+                },
+            "Jigawa": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Benue": {
+                "standard": 9,
+                "reserve": 3
+                },
+            "Anambra": {
+                "standard": 10,
+                "reserve": 3
+                },
+            "Borno": {
+                "standard": 11,
+                "reserve": 3
+                },
+            "Delta": {
+                "standard": 12,
+                "reserve": 3
+                },
+            "Imo": {
+                "standard": 13,
+                "reserve": 3
+                },
+            "Niger": {
+                "standard": 14,
+                "reserve": 3
+                },
+            "Akwa Ibom": {
+                "standard": 11,
+                "reserve": 3
+                },
+            "Ogun": {
+                "standard": 10,
+                "reserve": 3
+                },
+            "Sokoto": {
+                "standard": 3,
+                "reserve": 3
+                },
+            "Ondo": {
+                "standard": 20,
+                "reserve": 3
+                },
+            "Osun": {
+                "standard": 1,
+                "reserve": 3
+                },
+            "Kogi": {
+                "standard": 7,
+                "reserve": 3
+                },
+            "Zamfara": {
+                "standard": 6,
+                "reserve": 3
+                },
+            "Enugu": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Kebbi": {
+                "standard": 9,
+                "reserve": 3
+                },
+            "Edo": {
+                "standard": 7,
+                "reserve": 2
+                },
+            "Plateau": {
+                "standard": 10,
+                "reserve": 4
+                },
+            "Adamawa": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Cross River": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Abia": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Ekiti": {
+                "standard": 12,
+                "reserve": 5
+                },
+            "Kwara": {
+                "standard": 15,
+                "reserve": 6
+                },
+            "Gombe": {
+                "standard": 7,
+                "reserve": 3
+                },
+            "Yobe": {
+                "standard": 8,
+                "reserve": 3
+                },
+            "Taraba": {
+                "standard": 15,
+                "reserve": 3
+                },
+            "Ebonyi": {
+                "standard": 12,
+                "reserve": 3
+                },
+            "Nasarawa": {
+                "standard": 13,
+                "reserve": 3
+                },
+            "Bayelsa": {
+                "standard": 14,
+                "reserve": 3
+                },
+            "Abuja Federal Capital Territory": {
+                "standard": 30,
+                "reserve": 3
+                }
+    }
+    """
     class Meta:
         verbose_name_plural = 'The "Clusters per 1st Admin" documents'
 
@@ -1186,194 +1264,53 @@ class ClustersPerState(UniqueActiveNamedDocument):
                   u'standard and reserve clusters per 1st Admin.  E.g.: { "states":'
                   u' { "Kano": { "standard": 5, "reserve": 3 }, "Lagos": { '
                   u'"standard": 7, "reserve": 3 } } }',
-        default="""
-            For example:
-
-            {
-                    "Kano": {
-                        "standard": 5,
-                        "reserve": 3
-                        },
-                    "Lagos": {
-                        "standard": 7,
-                        "reserve": 3
-                        },
-                    "Kaduna": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Katsina": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Oyo": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Rivers": {
-                        "standard": 6,
-                        "reserve": 3
-                        },
-                    "Bauchi": {
-                        "standard": 3,
-                        "reserve": 3
-                        },
-                    "Jigawa": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Benue": {
-                        "standard": 9,
-                        "reserve": 3
-                        },
-                    "Anambra": {
-                        "standard": 10,
-                        "reserve": 3
-                        },
-                    "Borno": {
-                        "standard": 11,
-                        "reserve": 3
-                        },
-                    "Delta": {
-                        "standard": 12,
-                        "reserve": 3
-                        },
-                    "Imo": {
-                        "standard": 13,
-                        "reserve": 3
-                        },
-                    "Niger": {
-                        "standard": 14,
-                        "reserve": 3
-                        },
-                    "Akwa Ibom": {
-                        "standard": 11,
-                        "reserve": 3
-                        },
-                    "Ogun": {
-                        "standard": 10,
-                        "reserve": 3
-                        },
-                    "Sokoto": {
-                        "standard": 3,
-                        "reserve": 3
-                        },
-                    "Ondo": {
-                        "standard": 20,
-                        "reserve": 3
-                        },
-                    "Osun": {
-                        "standard": 1,
-                        "reserve": 3
-                        },
-                    "Kogi": {
-                        "standard": 7,
-                        "reserve": 3
-                        },
-                    "Zamfara": {
-                        "standard": 6,
-                        "reserve": 3
-                        },
-                    "Enugu": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Kebbi": {
-                        "standard": 9,
-                        "reserve": 3
-                        },
-                    "Edo": {
-                        "standard": 7,
-                        "reserve": 2
-                        },
-                    "Plateau": {
-                        "standard": 10,
-                        "reserve": 4
-                        },
-                    "Adamawa": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Cross River": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Abia": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Ekiti": {
-                        "standard": 12,
-                        "reserve": 5
-                        },
-                    "Kwara": {
-                        "standard": 15,
-                        "reserve": 6
-                        },
-                    "Gombe": {
-                        "standard": 7,
-                        "reserve": 3
-                        },
-                    "Yobe": {
-                        "standard": 8,
-                        "reserve": 3
-                        },
-                    "Taraba": {
-                        "standard": 15,
-                        "reserve": 3
-                        },
-                    "Ebonyi": {
-                        "standard": 12,
-                        "reserve": 3
-                        },
-                    "Nasarawa": {
-                        "standard": 13,
-                        "reserve": 3
-                        },
-                    "Bayelsa": {
-                        "standard": 14,
-                        "reserve": 3
-                        },
-                    "Abuja Federal Capital Territory": {
-                        "standard": 30,
-                        "reserve": 3
-                        }
-            }
-        """
+        default={}
     )
 
 
 class States(UniqueActiveNamedDocument):
+    """
+        For example:
+
+        [
+            "Kano", "Lagos", "Kaduna",
+            "Katsina", "Oyo", "Rivers",
+            "Bauchi", "Jigawa", "Benue",
+            "Anambra", "Borno", "Delta",
+            "Imo", "Niger", "Akwa Ibom",
+            "Ogun", "Sokoto", "Ondo",
+            "Osun", "Kogi", "Zamfara",
+            "Enugu", "Kebbi", "Edo",
+            "Plateau", "Adamawa",
+            "Cross River", "Abia",
+            "Ekiti", "Kwara", "Gombe",
+            "Yobe", "Taraba", "Ebonyi",
+            "Nasarawa", "Bayelsa",
+            "Abuja Federal Capital Territory"
+        ]
+    """
     class Meta:
         verbose_name_plural = 'The "1st Admin" documents'
 
     json = JSONField(
         null=True, blank=True,
-        help_text=u'Please enter the JSON structure defining the 1st Admin data.',
-        default="""
-            For example:
-
-            [
-                "Kano", "Lagos", "Kaduna",
-                "Katsina", "Oyo", "Rivers",
-                "Bauchi", "Jigawa", "Benue",
-                "Anambra", "Borno", "Delta",
-                "Imo", "Niger", "Akwa Ibom",
-                "Ogun", "Sokoto", "Ondo",
-                "Osun", "Kogi", "Zamfara",
-                "Enugu", "Kebbi", "Edo",
-                "Plateau", "Adamawa",
-                "Cross River", "Abia",
-                "Ekiti", "Kwara", "Gombe",
-                "Yobe", "Taraba", "Ebonyi",
-                "Nasarawa", "Bayelsa",
-                "Abuja Federal Capital Territory"
-            ]
-        """
+        help_text=u'Please enter the JSON structure defining the 1st Admin area data.',
+        default=[]
     )
 
 
 class StatesWithReserveClusters(UniqueActiveNamedDocument):
+    """
+        For example:
+
+        [
+            "Kano",
+            "Gombe",
+            "Yobe",
+            "Abuja Federal Capital Territory"
+        ]
+    """
+
     class Meta:
         verbose_name_plural = 'The "1st Admin with Reserve Clusters" documents'
 
@@ -1381,20 +1318,20 @@ class StatesWithReserveClusters(UniqueActiveNamedDocument):
         null=True, blank=True,
         help_text=u'Please enter the JSON structure describing the 1st Admin with '
                   u'reserve clusters enabled.',
-        default="""
-            For example:
-
-            [
-                "Kano",
-                "Gombe",
-                "Yobe",
-                "Abuja Federal Capital Territory"
-            ]
-        """
+        default=[]
     )
 
 
 class ClustersPerTeam(UniqueActiveNamedDocument):
+    """
+        For example:
+
+        {
+            "1": 5,
+            "2": 15,
+            "3": 17
+        }
+    """
     class Meta:
         verbose_name_plural = 'The "Clusters per Team" documents'
 
@@ -1402,13 +1339,5 @@ class ClustersPerTeam(UniqueActiveNamedDocument):
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the (planned) '
                   u'number of clusters per each team.',
-        default="""
-            For example:
-
-            {
-                "1": 5,
-                "2": 15,
-                "3": 17
-            }
-        """
+        default={}
     )
