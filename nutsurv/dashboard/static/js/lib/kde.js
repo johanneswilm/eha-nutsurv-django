@@ -10,7 +10,6 @@
  John Firebaugh (kde, CC0)
  Larry Battle (average/variance, MIT)
  */
- 
 function kde(sample) {
     /* Epanechnikov kernel */
     function epanechnikov(u) {
@@ -96,8 +95,6 @@ function kde(sample) {
 
     return {
         points: function(points) {
-
-
             return points.map(function(x) {
                 var y = sample.map(function(v) {
                     return kernel(x - v);
