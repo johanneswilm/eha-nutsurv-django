@@ -675,8 +675,10 @@ class Alert(models.Model):
                 'type': 'data_collection_time',
                 'team_name': team_name,
                 'team_id': team_id,
-                'survey': household_survey.uuid
+                'survey': household_survey.uuid,
             }
+            if 'location' in household_survey.json:
+                alert_json['location'] = household_survey.json['location']
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False):
                 Alert.objects.create(text=alert_text,json=alert_json)
@@ -684,7 +686,7 @@ class Alert(models.Model):
     @classmethod
     def time_to_complete_single_survey_alerts(cls):
         """This method is meant to be run once a day (or every few days),
-        typically after midgnight.  It processes all household surveys and
+        typically after midnight.  It processes all household surveys and
         performs the following check (and emits the following alert if
         appropriate) for each detected team and each day since the beginning to
         the day (inclusive) before the method is run:
