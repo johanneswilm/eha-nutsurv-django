@@ -419,7 +419,7 @@ class Alert(models.Model):
             team = household_survey.get_team_name()
             alert_text = 'Age ratio issue in team {}'.format(team)
             alert_json = {
-                'type': 'age_ratio',
+                'type': 'child_age_in_months_ratio',
                 'team': team
             }
             # Only add if there is no same alert among unarchived.
@@ -512,7 +512,7 @@ class Alert(models.Model):
             alert_text = \
                 'Woman age displacement issue (14/15) in team {}'.format(team)
             alert_json = {
-                'type': 'woman_age_displacement_14/15',
+                'type': 'woman_age_14_15_displacement',
                 'team': team
             }
             # Only add if there is no same alert among unarchived.
@@ -560,7 +560,7 @@ class Alert(models.Model):
             alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
                          '{}'.format(team)
             alert_json = {
-                'type': 'woman_age_displacement_45-49/50-54',
+                'type': 'woman_age_4549_5054_displacement',
                 'team': team
             }
             # Only add if there is no same alert among unarchived.
@@ -632,7 +632,7 @@ class Alert(models.Model):
                 team_id = household_survey.get_team_id()
                 alert_text = 'Digit preference issue in team {}'.format(team_id)
                 alert_json = {
-                    'type': 'digit_preference_issue',
+                    'type': 'digit_preference',
                     'team_id': team_id,
                     'team_name': team_name
                 }
@@ -762,7 +762,7 @@ class Alert(models.Model):
                                  u'in team {} ' \
                                  u'on day {}'.format(team_id, day.isoformat())
                     alert_json = {
-                        'type': 'household_survey_time',
+                        'type': 'time_to_complete_single_survey',
                         'team_id': team_id,
                         'team_name': by_team[team_id]['team_name'],
                         'day': day.isoformat()
@@ -906,7 +906,7 @@ class Alert(models.Model):
                 alert_text = u'Duration of data collection issue ' \
                              u'in team {}'.format(team_id)
                 alert_json = {
-                    'type': 'duration_collection',
+                    'type': 'daily_data_collection_duration',
                     'team_id': team_id,
                     'team_name': by_team[team_id]['team_name']
                 }

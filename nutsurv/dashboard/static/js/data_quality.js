@@ -141,6 +141,7 @@ var dataQuality = {
         if (WHZs.length > 0) {
             WHZs.sort(function(a,b){return a - b});
             WHZkde.data = kde(WHZs).points(graphRange);
+            //WHZkde.data=[];
             console.log(WHZs);
         } else {
             WHZkde.data = [];
