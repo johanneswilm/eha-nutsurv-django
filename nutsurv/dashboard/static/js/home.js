@@ -110,11 +110,14 @@ var home = {
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
     drawAlerts: function (data) {
 
-		console.log(data);
-
         jQuery('#home_alerts_list').empty();
 
         _.each(data.alerts, function(alert) {
+
+            if (alert.category === 'map') {
+            console.log(alert.message.type);
+            }
+
 
             var alertTemplate = _.template($('#home-alert-item').html());
             var alertType = home.alertType[alert.message.type];
@@ -124,10 +127,6 @@ var home = {
 
     },
     alertType: {
-        mapping_check: {
-            title: 'Mapping Check',
-            icon: 'fa-map-marker'
-        },
         data_collection_time: {
             title: 'Data Collection Time',
             icon: 'fa-clock-o'
@@ -167,6 +166,14 @@ var home = {
         daily_data_collection_duration: {
             title: 'Daily Data Collection Duration',
             icon: 'fa-calendar'
+        },
+        mapping_check_unknown_cluster: {
+            title: 'Mapping Check Unknown Cluster',
+            icon: 'fa-map-marker'
+        },
+        mapping_check_unknown_cluster: {
+            title: 'Mapping Check Unknown Cluster',
+            icon: 'fa-map-marker'
         }
     },
     createAlertsCSV: function (data) {
