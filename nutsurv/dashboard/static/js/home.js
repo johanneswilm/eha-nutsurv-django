@@ -114,14 +114,9 @@ var home = {
 
         _.each(data.alerts, function(alert) {
 
-            if (alert.category === 'map') {
-            console.log(alert.message.type);
-            }
-
-
             var alertTemplate = _.template($('#home-alert-item').html());
             var alertType = home.alertType[alert.message.type];
-            jQuery('#home_alerts_list').append(alertTemplate({ message: alert.message, type: alertType }));
+            jQuery('#home_alerts_list').append(alertTemplate({ alert: alert, type: alertType }));
 
         });
 
@@ -166,10 +161,6 @@ var home = {
         daily_data_collection_duration: {
             title: 'Daily Data Collection Duration',
             icon: 'fa-calendar'
-        },
-        mapping_check_unknown_cluster: {
-            title: 'Mapping Check Unknown Cluster',
-            icon: 'fa-map-marker'
         },
         mapping_check_unknown_cluster: {
             title: 'Mapping Check Unknown Cluster',

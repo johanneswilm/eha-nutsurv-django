@@ -41,15 +41,15 @@
         <div class="alert-name col-sm-7">
             <h3 class="alert-title"><%= type.title %></h3>
             <span class="alert-details">
-                <strong><%= message.team_name %></strong>
-                <% if (message.location !== undefined) { %>
-                in <a href="#" class="" data-geo="<%= message.location[0] + ',' + message.location[1] %>">Show Map</a>
-                <% } %>
+                <strong><%= alert.message.team_name %></strong>
+                on <%= moment(alert.timestamp).format('ll') %>
             </span>
         </div>
         <div class="col-sm-4 text-right">
             <a href="#" class="alert-action btn btn-primary btn-sm">Contact</a>
-            <a href="#" class="alert-action btn btn-primary btn-sm">View Map</a>
+            <% if (alert.message.location !== undefined) { %>
+            <a href="#" data-geo="<%= alert.message.location[0] + ',' + alert.message.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
+            <% } %>        
         </div>
         <div class="clearfix"></div>
         <div class="col-sm-12"><hr class="alert-line"></div>
