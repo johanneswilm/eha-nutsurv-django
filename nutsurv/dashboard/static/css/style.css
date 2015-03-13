@@ -8,8 +8,31 @@ body {
 }
 
 
+/* Home */
+hr.alert-line {
+	border-top: 1px solid #b9b9b9;
+}
 
-.leaflet-container:-webkit-full-screen{
+.alert-icon {
+	font-size: 48px;
+	color: #b9b9b9;
+}
+
+.alert-item h3 {
+	margin-top: 0px;
+}
+
+.alert-item .alert-action {
+	margin-left: 15px;
+}
+
+.alert-details {
+	color: #b9b9b9;
+}
+
+
+
+.leaflet-container:-webkit-full-screen {
   display: block;
 }
 
