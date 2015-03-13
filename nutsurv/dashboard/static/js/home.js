@@ -110,15 +110,63 @@ var home = {
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
     drawAlerts: function (data) {
 
-		console.log('home screen data items');	
-		console.log(data);
-
         jQuery('#home_alerts_list').empty();
-        _.each(data.alerts,function(alert){
-            jQuery('#home_alerts_list').append(home.alertTmp({alert:alert}));
+
+        _.each(data.alerts, function(alert) {
+
+            var alertTemplate = _.template($('#home-alert-item').html());
+            var alertType = home.alertType[alert.message.type];
+            jQuery('#home_alerts_list').append(alertTemplate({ alert: alert, type: alertType }));
+
         });
+
     },
-    alertTmp: _.template('<li><%- alert.message %> (<%- new Date(alert.timestamp) %>)</li>'),
+    alertType: {
+        data_collection_time: {
+            title: 'Data Collection Time',
+            icon: 'fa-clock-o'
+        },
+        child_age_displacement: {
+            title: 'Child Age Displacement',
+            icon: 'fa-child'
+        },
+        child_age_in_months_ratio: { 
+            title: 'Child Age Months Ratio',
+            icon: 'fa-child'
+        },
+        womange_age_14_15_displacement: {
+            title: 'Women Aged 14 - 15 Displacement',
+            icon: 'fa-female'
+        },
+        woman_age_4549_5054_displacement: {
+            title: 'Women aged 45 to 54 have displacement',
+            icon: 'fa-female'
+        },
+        sex_ratio: { 
+            title: 'Sex Ratio',
+            icon: 'fa-users'
+        },        
+        digit_preference: {
+            title: 'Digit Preference',
+            icon: 'fa-calculator'
+        },
+        digit_preference_issue: {
+            title: 'Digit Preferences Issue',
+            icon: 'fa-clipboard'
+        },
+        time_to_complete_single_survey: {
+            title: 'Time to Complete Single Survey',
+            icon: 'fa-clock-o'
+        },
+        daily_data_collection_duration: {
+            title: 'Daily Data Collection Duration',
+            icon: 'fa-calendar'
+        },
+        mapping_check_unknown_cluster: {
+            title: 'Mapping Check Unknown Cluster',
+            icon: 'fa-map-marker'
+        }
+    },
     createAlertsCSV: function (data) {
         var output = 'timestamp,message\n';
         _.each(data.alerts,function(alert){
