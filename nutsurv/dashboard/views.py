@@ -541,6 +541,7 @@ class AlertsJSONView(LoginRequiredView):
         return [
             {
                 'timestamp': alert.created.isoformat(),
+                'category': alert.category,
                 'message': alert.json
             } for alert in alerts
         ]
