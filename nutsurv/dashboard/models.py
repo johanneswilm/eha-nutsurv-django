@@ -356,24 +356,34 @@ class Alert(models.Model):
         location = household_survey.get_location()
         team_name = household_survey.get_team_name()
         team_id = household_survey.get_team_id()
-        # if cluster or location not given, stop check
+
         if cluster_id is None:
-            alert_text = 'No cluster ID for survey of team {}'.format(team_id)
+            alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
+                    team_id,
+                    household_survey.uuid)
             alert_json = {
                 'type': 'mapping_check_missing_cluster_id',
                 'team_name': team_name,
                 'team_id': team_id,
+                'survey_id': household_survey.uuid,
             }
+            if location:
+                alert_json['location'] = location
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
                 Alert.objects.create(text=alert_text,json=alert_json,category='map')
         if location is None:
-            alert_text = 'No location for survey of team {}'.format(team_id)
+            alert_text = 'No location for survey of team {} (survey {})'.format(
+                    team_id,
+                    household_survey.uuid)
             alert_json = {
                 'type': 'mapping_check_missing_location',
                 'team_name': team_name,
                 'team_id': team_id,
+                'survey_id': household_survey.uuid,
             }
+            if cluster_id:
+                alert_json['cluster_id'] = cluster_id
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
                 Alert.objects.create(text=alert_text,json=alert_json,category='map')
@@ -384,12 +394,17 @@ class Alert(models.Model):
             cluster_id)
         # if cluster data not found, assume location incorrect
         if cluster is None:
-            alert_text = 'Unknown cluster ID {}'.format(cluster_id)
+            alert_text = 'Unknown cluster ID {} for team {} (survey {})'.format(
+                    cluster_id,
+                    team_id,
+                    household_survey.uuid)
             alert_json = {
                 'type': 'mapping_check_unknown_cluster',
                 'team_name': team_name,
                 'team_id': team_id,
-                'cluster_id': cluster_id
+                'cluster_id': cluster_id,
+                'survey_id': household_survey.uuid,
+                'location': location
             }
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
@@ -417,7 +432,8 @@ class Alert(models.Model):
                 'cluster_id': cluster_id,
                 'lga_name': lga_name,
                 'state_name': state_name,
-                'survey_id': household_survey.uuid
+                'survey_id': household_survey.uuid,
+                'location': location
             }
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(text=alert_text, archived=False, category='map'):

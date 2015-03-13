@@ -377,8 +377,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
     @staticmethod
     def _correct_area(cluster_id, location):
         # get cluster data
-        cluster = Clusters.get_cluster_from_most_recently_modified(
-            cluster_id)
+        cluster = Clusters.get_cluster_from_active(cluster_id)
         # if cluster data not found, assume location incorrect
         if cluster is None:
             return False
@@ -532,12 +531,29 @@ class AlertsJSONView(LoginRequiredView):
 
     @staticmethod
     def _find_all_alerts():
-        """Computes and returns a list of strings each string representing one
-        alert.  Archived alerts are not included.  Alerts are sorted by their
+        """Computes and returns a list of json objects each string representing
+        one alert.  Archived alerts are not included.  Alerts are sorted by their
         creation date in the reverse chronological order (i.e. the list starts
         from the most recent).
         """
         alerts = Alert.objects.filter(archived=False).order_by('-created')
+        return [
+            {
+                'timestamp': alert.created.isoformat(),
+                'category': alert.category,
+                'message': alert.json
+            } for alert in alerts
+        ]
+
+    def find_all_alerts_for_category(category):
+        """Computes and returns a list of json objects each string representing
+        one alert for a particular category.  Archived alerts are not included.
+        Alerts are sorted by their creation date in the reverse chronological
+        order (i.e. the list starts from the most recent).
+        """
+        alerts = Alert.objects.filter(
+                category=category,
+                archived=False).order_by('-created')
         return [
             {
                 'timestamp': alert.created.isoformat(),
