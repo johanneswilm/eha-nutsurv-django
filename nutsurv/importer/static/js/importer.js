@@ -1,6 +1,8 @@
 var fileInput = document.getElementById('file_import'),
-    importStatus = document.getElementById('import_status'),
     maxRecordsInput = document.getElementById('max_records'),
+    dataInput = document.getElementById('data_input'),
+    importStatus = document.getElementById('import_status'),
+    importFinished = false,
     exportErrors=[];
 
 function getCookie(name) {
@@ -45,16 +47,19 @@ fileInput.addEventListener('change', function(e) {
         reader = new FileReader(),
         offset = 0,
         fieldDefinitions = false,
-        fakeTeamsReset = false,
+        dataReset = false,
         maxRecords = maxRecordsInput.value==='' ? false : parseInt(maxRecordsInput.value, 10),
+        totalSaveCounter = 0,
         recordCounter = 0;
+
+    dataInput.parentNode.removeChild(dataInput);
 
     function onload (e) {
         var data = e.target.result,
             lineData = undoSplitsInsideQuotes(data.split(/\r?\n/g), '\r\n');
 
-        if (!fakeTeamsReset) {
-            fakeTeamsReset = true;
+        if (!dataReset) {
+            dataReset = true;
             return resetData(function(){onload(e)}); // Delete all old fake teams in the DB
         }
 
@@ -72,7 +77,7 @@ fileInput.addEventListener('change', function(e) {
     reader.onload = onload;
 
     function initiateRead() {
-        if (file && ((maxRecords && recordCounter < maxRecords && offset < file.size) || offset < file.size)) {
+        if (!(importFinished) && file && offset < file.size) {
             reader.readAsText(file.slice(offset, (1024 * 1024) + offset));
             offset += 1024 * 1024;
         }
@@ -128,14 +133,16 @@ fileInput.addEventListener('change', function(e) {
         var saveCounter = 0;
 
         lineData.forEach(function(line) {
+
             var fields = undoSplitsInsideQuotes(line.split(','), ','),
                 post_url = (POST_KEY.length===0) ? '/importer/register_formhub_survey': '/importer/register_formhub_survey?key=' + POST_KEY,
                 exportObject = {},
                 xhr;
 
-            if (maxRecords && maxRecords <= recordCounter) {
-                return false;
+            if (importFinished) {
+              return false;
             }
+
             if (fields.length === 1) { // Encountered an empty line
                 saveCounter++;
                 recordCounter++;
@@ -145,6 +152,14 @@ fileInput.addEventListener('change', function(e) {
                 }
                 return false;
             }
+
+            recordCounter++;
+            if (maxRecords && recordCounter >= maxRecords || offset >= file.size) {
+                importFinished = true;
+            }
+
+
+
             fieldDefinitions.forEach(function(fieldName, counter){
                 var value = fields[counter],
                     fieldDefinition;
@@ -184,12 +199,12 @@ fileInput.addEventListener('change', function(e) {
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 201)) {
                     saveCounter++;
-                    recordCounter++;
+                    totalSaveCounter++;
                     if (maxRecords) {
-                        if (recordCounter >= maxRecords || offset >= file.size) {
+                        if (totalSaveCounter >= maxRecords || offset >= file.size) {
                             importStatus.innerHTML = 'Done!';
                         } else {
-                            importStatus.innerHTML = 'Importing: ' + parseInt((recordCounter/maxRecords) * 100) + '%';
+                            importStatus.innerHTML = 'Importing: ' + parseInt((totalSaveCounter/maxRecords) * 100) + '%';
                         }
                     } else {
                         if (offset < file.size) {

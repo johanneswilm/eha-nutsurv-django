@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'accounts',
     'importer',
     'djangobower',
+    'compressor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,6 +103,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 BOWER_INSTALLED_APPS = (
@@ -118,8 +120,18 @@ BOWER_INSTALLED_APPS = (
     'lodash#3.0.0',
     'parse-python-indentation#0.1.0',
     'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.5',
-    'font-awesome#4.2.0'
+    'font-awesome#4.2.0',
+    'moment#2.9.0',
+    'moment-timezone#0.3.0'
 )
+
+
+
+COMPRESS_PRECOMPILERS = (
+        ('text/sass', 'sassc "{infile}" "{outfile}"'),
+        ('text/scss', 'sassc -m -I components/bower_components/ehealth-bootstrap "{infile}" "{outfile}"'),
+        )
+
 
 
 try:

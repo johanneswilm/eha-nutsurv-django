@@ -8,3 +8,5 @@ python-mimeparse
 django-bower
 pytz
 django-cors-headers
+django_compressor
+libsass

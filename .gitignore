@@ -15,6 +15,11 @@ db.*
 .coverage
 htmlcov
 venv/
+static/
 nutsurv-venv/
-nutsurv/dashboard/bower_components/
+nutsurv/configuration.py
+*/bower_components
+configuration.py
+.sass-cache
 nutsurv/components/
+nutsurv/.sass-cache/

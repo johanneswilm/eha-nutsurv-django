@@ -141,7 +141,6 @@ var dataQuality = {
         if (WHZs.length > 0) {
             WHZs.sort(function(a,b){return a - b});
             WHZkde.data = kde(WHZs).points(graphRange);
-            console.log(WHZs);
         } else {
             WHZkde.data = [];
         }
@@ -154,7 +153,6 @@ var dataQuality = {
         if (HAZs.length > 0) {
             HAZs.sort(function(a,b){return a - b});
             HAZkde.data = kde(HAZs).points(graphRange);
-            console.log(HAZs);
         } else {
             HAZkde.data = [];
         }

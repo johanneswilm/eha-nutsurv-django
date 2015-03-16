@@ -1,4 +1,7 @@
 <!doctype html>
+{% load compress %}
+{% load static %}
+
 <html lang="en">
 
 <head>
@@ -7,12 +10,13 @@
 
     <link rel="icon" href="/static/favicon.ico">
 
-    {% load static %}
     <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
 
-	<link rel="stylesheet" href='{% static 'font-awesome/css/font-awesome.css' %}' />
-    <link rel="stylesheet" href='{% static 'ehealth-bootstrap/default/bootstrap.css' %}' />
-    <link rel="stylesheet" href='{% static 'ehealth-bootstrap/default/bootstrap-ehealth.css' %}' />
+	  <link rel="stylesheet" href='{% static 'font-awesome/css/font-awesome.css' %}' />
+    {% compress css %}
+    <link rel="stylesheet" type="text/scss" href='{% static 'ehealth-bootstrap/default/bootstrap.scss' %}' />
+    <link rel="stylesheet" type="text/scss" href='{% static 'ehealth-bootstrap/default/bootstrap-ehealth.scss' %}' />
+    {% endcompress %}
 
     <link rel="stylesheet" href='{% static 'bootstrap-select/dist/css/bootstrap-select.css' %}' />
     <link rel="stylesheet" href='{% static 'leaflet/dist/leaflet.css' %}' />
@@ -35,6 +39,7 @@
     <script src='{% static 'datatables-responsive/js/dataTables.responsive.js' %}'></script>
     <script src='{% static 'datatables-tabletools/js/dataTables.tableTools.js' %}'></script>
     <script src='{% static 'datatables-bootstrap3-plugin/media/js/datatables-bootstrap3.js' %}'></script>
+    <script src='{% static 'moment/min/moment.min.js' %}'></script>
 
     <script src="/static/js/lib/FileSaver.min.js"></script>
     <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>

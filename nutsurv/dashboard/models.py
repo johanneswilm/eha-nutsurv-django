@@ -131,6 +131,22 @@ class HouseholdSurveyJSON(models.Model):
         else:
             return team_id
 
+    def get_location(self):
+        try:
+            location = self.json['location']
+        except TypeError:
+            return None
+        else:
+            return location
+
+    def get_cluster_id(self):
+        try:
+            location = self.json['cluster']
+        except TypeError:
+            return None
+        else:
+            return location
+
     def get_team_leader_name(self):
         """Returns a team leader name or None if no team leader name found.
         """
@@ -290,10 +306,15 @@ class HouseholdSurveyJSON(models.Model):
 
 class Alert(models.Model):
     """New alerts are only created if there is no unarchived alert having the
-    same content of the text field.  The user may still create alerts manually
+    same content of the json field.  The user may still create alerts manually
     using the admin interface.
     """
     text = models.TextField()
+    json = JSONField(
+        null=True, blank=True,
+        help_text='A JSON document containing data for one alert.'
+    )
+    category = models.CharField(max_length=255,default='general')
     archived = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
@@ -311,6 +332,7 @@ class Alert(models.Model):
         relevant alerts being created in case they are triggered by data stored
         in household_survey.
         """
+        cls.mapping_check_alert(household_survey)
         cls.sex_ratio_alert(household_survey)
         cls.child_age_in_months_ratio_alert(household_survey)
         cls.child_age_displacement_alert(household_survey)
@@ -318,6 +340,104 @@ class Alert(models.Model):
         cls.woman_age_4549_5054_displacement_alert(household_survey)
         cls.digit_preference_alert(household_survey)
         cls.data_collection_time_alert(household_survey)
+
+    @classmethod
+    def mapping_check_alert(cls, household_survey):
+        """These are four different alerts related to location and cluster id.
+        mapping_check_missing_cluster_id: Cluster ID is missing.
+        mapping_check_missing_location: Location is missing.
+        mapping_check_unknown_cluster: Cluster ID is given, but it's unknown to
+            the server
+        mapping_check_wrong_location: Cluster ID and location are given and known
+            to the server, but the location is not inside the boundaries of the
+            cluster that the data supposedly comes from.
+        """
+        cluster_id = household_survey.get_cluster_id()
+        location = household_survey.get_location()
+        team_name = household_survey.get_team_name()
+        team_id = household_survey.get_team_id()
+
+        if cluster_id is None:
+            alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
+                    team_id,
+                    household_survey.uuid)
+            alert_json = {
+                'type': 'mapping_check_missing_cluster_id',
+                'team_name': team_name,
+                'team_id': team_id,
+                'survey_id': household_survey.uuid,
+            }
+            if location:
+                alert_json['location'] = location
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='map')
+        if location is None:
+            alert_text = 'No location for survey of team {} (survey {})'.format(
+                    team_id,
+                    household_survey.uuid)
+            alert_json = {
+                'type': 'mapping_check_missing_location',
+                'team_name': team_name,
+                'team_id': team_id,
+                'survey_id': household_survey.uuid,
+            }
+            if cluster_id:
+                alert_json['cluster_id'] = cluster_id
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='map')
+        if not (cluster_id and location):
+            return
+        # get cluster data
+        cluster = Clusters.get_cluster_from_active(
+            cluster_id)
+        # if cluster data not found, assume location incorrect
+        if cluster is None:
+            alert_text = 'Unknown cluster ID {} for team {} (survey {})'.format(
+                    cluster_id,
+                    team_id,
+                    household_survey.uuid)
+            alert_json = {
+                'type': 'mapping_check_unknown_cluster',
+                'team_name': team_name,
+                'team_id': team_id,
+                'cluster_id': cluster_id,
+                'survey_id': household_survey.uuid,
+                'location': location
+            }
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='map')
+            return
+        # if cluster data found, get state and LGA
+        lga_name = cluster.get('lga_name', None)
+        state_name = cluster.get('state_name', None)
+        # if LGA and state names not found, assume database inconsistencies and abort
+        if not (lga_name and state_name):
+            return False
+        # if state and LGA found, check the location
+        lga = LGA.find_lga(name=lga_name, state_name=state_name)
+        if lga is None:
+            # if no LGA found, assume database inconsistencies and abort
+            return False
+
+        if not lga.contains_location(location):
+            alert_text = 'Wrong location for team {} (survey {})'.format(team_id,
+                    household_survey.uuid)
+            alert_json = {
+                'type': 'mapping_check_wrong_location',
+                'team_name': team_name,
+                'team_id': team_id,
+                'cluster_id': cluster_id,
+                'lga_name': lga_name,
+                'state_name': state_name,
+                'survey_id': household_survey.uuid,
+                'location': location
+            }
+            # Only add if there is no same alert among unarchived.
+            if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='map')
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):
@@ -354,11 +474,17 @@ class Alert(models.Model):
             expected = (boys + girls) / 2.0
             chi2, p = scipy.stats.chisquare([boys, girls], [expected, expected])
         if p < 0.001:
-            team = household_survey.get_team_name()
-            alert_text = 'Sex-ratio issue in team {}'.format(team)
+            team_name = household_survey.get_team_name()
+            team_id = household_survey.get_team_id()
+            alert_text = 'Sex ratio issue in team {}'.format(team_id)
+            alert_json = {
+                'type': 'sex_ratio',
+                'team_name': team_name,
+                'team_id': team_id
+            }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(text=alert_text, archived=False):
-                Alert.objects.create(text=alert_text)
+            if not Alert.objects.filter(text=alert_text, archived=False, category='sex'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='sex')
 
     @classmethod
     def child_age_in_months_ratio_alert(cls, household_survey,
@@ -408,11 +534,17 @@ class Alert(models.Model):
                 [expected6to29, expected30to59]
             )
         if p < 0.001:
-            team = household_survey.get_team_name()
+            team_name = household_survey.get_team_name()
+            team_id = household_survey.get_team_id()
             alert_text = 'Age ratio issue in team {}'.format(team)
+            alert_json = {
+                'type': 'child_age_in_months_ratio',
+                'team_name': team_name,
+                'team_id': team_id
+            }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(text=alert_text, archived=False):
-                Alert.objects.create(text=alert_text)
+            if not Alert.objects.filter(text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='age_distribution')
 
     @classmethod
     def child_age_displacement_alert(cls, household_survey, test='chi-squared'):
@@ -449,11 +581,17 @@ class Alert(models.Model):
             expected = (age4 + age5) / 2.0
             chi2, p = scipy.stats.chisquare([age4, age5], [expected, expected])
         if p < 0.001:
-            team = household_survey.get_team_name()
+            team_name = household_survey.get_team_name()
+            team_id = household_survey.get_team_id()
             alert_text = 'Child age displacement issue in team {}'.format(team)
+            alert_json = {
+                'type': 'child_age_displacement',
+                'team_name': team_name,
+                'team_id': team_id
+            }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(text=alert_text, archived=False):
-                Alert.objects.create(text=alert_text)
+            if not Alert.objects.filter(text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='age_distribution')
 
     @classmethod
     def woman_age_14_15_displacement_alert(
@@ -495,9 +633,14 @@ class Alert(models.Model):
             team = household_survey.get_team_name()
             alert_text = \
                 'Woman age displacement issue (14/15) in team {}'.format(team)
+            alert_json = {
+                'type': 'woman_age_14_15_displacement',
+                'team_name': team_name,
+                'team_id': team_id
+            }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(text=alert_text, archived=False):
-                Alert.objects.create(text=alert_text)
+            if not Alert.objects.filter(text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='age_distribution')
 
     @classmethod
     def woman_age_4549_5054_displacement_alert(cls, household_survey,
@@ -536,12 +679,18 @@ class Alert(models.Model):
             chi2, p = scipy.stats.chisquare(
                 [age4549, age5054], [expected, expected])
         if p < 0.001:
-            team = household_survey.get_team_name()
+            team_name = household_survey.get_team_name()
+            team_id = household_survey.get_team_id()
             alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
-                         '{}'.format(team)
+                         '{}'.format(team_id)
+            alert_json = {
+                'type': 'woman_age_4549_5054_displacement',
+                'team_id': team_id,
+                'team_name': team_name
+            }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(text=alert_text, archived=False):
-                Alert.objects.create(text=alert_text)
+            if not Alert.objects.filter(text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='age_distribution')
 
     @classmethod
     def digit_preference_alert(cls, household_survey):
@@ -604,11 +753,17 @@ class Alert(models.Model):
         # Check if any of the computed scores triggers the alert.
         for k in terminal_digit_preference_score:
             if terminal_digit_preference_score[k] > 20:
-                team = household_survey.get_team_name()
-                alert_text = 'Digit preference issue in team {}'.format(team)
+                team_name = household_survey.get_team_name()
+                team_id = household_survey.get_team_id()
+                alert_text = 'Digit preference issue in team {}'.format(team_id)
+                alert_json = {
+                    'type': 'digit_preference',
+                    'team_id': team_id,
+                    'team_name': team_name
+                }
                 # Only add if there is no same alert among unarchived.
-                if not Alert.objects.filter(text=alert_text, archived=False):
-                    Alert.objects.create(text=alert_text)
+                if not Alert.objects.filter(text=alert_text, archived=False,category='number_distribution'):
+                    Alert.objects.create(text=alert_text,json=alert_json,category='number_distribution')
                 # Only one alert should be emitted so no need to finish the
                 # loop.
                 break
@@ -637,17 +792,27 @@ class Alert(models.Model):
                 triggered = True
                 break
         if triggered:
-            team = household_survey.get_team_name()
+            team_name = household_survey.get_team_name()
+            team_id = household_survey.get_team_id()
             alert_text = u'Data collection time issue in team {} (survey: {})'.\
-                format(team, household_survey.uuid)
+                format(team_id, household_survey.uuid)
+            alert_json = {
+                'type': 'data_collection_time',
+                'team_name': team_name,
+                'team_id': team_id,
+                'survey': household_survey.uuid,
+            }
+            location = household_survey.get_location()
+            if location:
+                alert_json['location'] = location
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(text=alert_text, archived=False):
-                Alert.objects.create(text=alert_text)
+            if not Alert.objects.filter(text=alert_text, archived=False, category='timing'):
+                Alert.objects.create(text=alert_text,json=alert_json,category='timing')
 
     @classmethod
     def time_to_complete_single_survey_alerts(cls):
         """This method is meant to be run once a day (or every few days),
-        typically after midgnight.  It processes all household surveys and
+        typically after midnight.  It processes all household surveys and
         performs the following check (and emits the following alert if
         appropriate) for each detected team and each day since the beginning to
         the day (inclusive) before the method is run:
@@ -684,10 +849,11 @@ class Alert(models.Model):
             # Store duration for median calculations.
             survey_durations.append(duration)
 
-            team = survey.get_team_name()
-            # If no valid team name, the duration can only be used to calculate
+            team_id = survey.get_team_id()
+            team_name = survey.get_team_name()
+            # If no valid team id, the duration can only be used to calculate
             # the median.
-            if team == 'UNNAMED':
+            if team_id == None:
                 continue
             # At this point we know that the survey contained a valid end time
             # so no need to check that.  Get the date.
@@ -695,35 +861,48 @@ class Alert(models.Model):
             # If collection date earlier than today, store the data for further
             # processing.
             if collection_date < today:
-                if team not in by_team:
-                    by_team[team] = {}
-                if collection_date not in by_team[team]:
-                    by_team[team][collection_date] = {
+                if team_id not in by_team:
+                    by_team[team_id] = {
+                        'team_name': team_name,
+                    }
+                if collection_date not in by_team[team_id]:
+                    by_team[team_id][collection_date] = {
                         'average': duration,
                         'n': 1,
                         }
                 else:
-                    n = by_team[team][collection_date]['n'] + 1.0
-                    old = by_team[team][collection_date]['average']
+                    n = by_team[team_id][collection_date]['n'] + 1.0
+                    old = by_team[team_id][collection_date]['average']
                     new = (n - 1) / n * old + 1 / n * duration
-                    by_team[team][collection_date]['n'] = n
-                    by_team[team][collection_date]['average'] = new
+                    by_team[team_id][collection_date]['n'] = n
+                    by_team[team_id][collection_date]['average'] = new
 
         # Calculate the value to check the averages against (50% of median).
         half_median = numpy.median(survey_durations) / 2.0
 
         # Process all data collected above and produce alerts when triggered.
-        for team in by_team:
-            for day in by_team[team]:
-                if by_team[team][day]['average'] < half_median:
+        for team_id in by_team:
+            for day in by_team[team_id]:
+                if by_team[team_id][day]['average'] < half_median:
                     alert_text = u'Time to complete household survey issue ' \
                                  u'in team {} ' \
-                                 u'on day {}'.format(team, day.isoformat())
-                    # Only add if there is no identical alert among unarchived.
+                                 u'on day {}'.format(team_id, day.isoformat())
+                    alert_json = {
+                        'type': 'time_to_complete_single_survey',
+                        'team_id': team_id,
+                        'team_name': by_team[team_id]['team_name'],
+                        'day': day.isoformat()
+                    }
+                    # Only add if there is no same alert among unarchived.
                     if not Alert.objects.filter(
                             text=alert_text,
-                            archived=False):
-                        Alert.objects.create(text=alert_text)
+                            archived=False,
+                            category='timing'):
+                        Alert.objects.create(
+                                text=alert_text,
+                                json=alert_json,
+                                category='timing')
+
 
     @classmethod
     def daily_data_collection_duration_alerts(cls):
@@ -755,9 +934,10 @@ class Alert(models.Model):
         # Process all household surveys.
         surveys = HouseholdSurveyJSON.objects.all()
         for survey in surveys:
-            team = survey.get_team_name()
-            # If no valid team name or id then this data point cannot be used.
-            if team == 'UNNAMED':
+            team_id = survey.get_team_id()
+            team_name = survey.get_team_name()
+            # If no valid team id then this data point cannot be used.
+            if team_id == None:
                 continue
             start = survey.get_start_time()
             end = survey.get_end_time()
@@ -783,10 +963,12 @@ class Alert(models.Model):
             if day >= today:
                 continue
 
-            if team not in by_team:
+            if team_id not in by_team:
                 # Previously unseen team detected.  Initialise storage.
-                by_team[team] = {}
-            if day not in by_team[team]:
+                by_team[team_id] = {
+                    'team_name': team_name
+                }
+            if day not in by_team[team_id]:
                 # Previously unseen day detected.  Initialise data for this day
                 # with the current values of start and end (possible Nones).
                 by_team[team][day] = {
@@ -796,51 +978,51 @@ class Alert(models.Model):
             # A different survey for the same day has been previously processed.
             else:
                 # Detect the earliest start time for a given day.
-                if not (by_team[team][day]['start'] is None or start is None):
-                    if start < by_team[team][day]['start']:
-                        by_team[team][day]['start'] = start
+                if not (by_team[team_id][day]['start'] is None or start is None):
+                    if start < by_team[team_id][day]['start']:
+                        by_team[team_id][day]['start'] = start
                 elif start is not None:
-                    by_team[team][day]['start'] = start
+                    by_team[team_id][day]['start'] = start
                 # Detect the latest end time for a given day.
-                if not (by_team[team][day]['end'] is None or end is None):
-                    if end > by_team[team][day]['end']:
-                        by_team[team][day]['end'] = end
+                if not (by_team[team_id][day]['end'] is None or end is None):
+                    if end > by_team[team_id][day]['end']:
+                        by_team[team_id][day]['end'] = end
                 elif end is not None:
-                    by_team[team][day]['end'] = end
+                    by_team[team_id][day]['end'] = end
 
         # Delete invalid data points and create a vector of all durations to
         # calculate the median.
         durations = []
-        for team in by_team.keys():
+        for team_id in by_team.keys():
             team_durations = []
-            for day in by_team[team].keys():
-                start = by_team[team][day]['start']
-                end = by_team[team][day]['end']
+            for day in by_team[team_id].keys():
+                start = by_team[team_id][day]['start']
+                end = by_team[team_id][day]['end']
                 # Delete invalid dates.
                 if start is None or end is None:
-                    del by_team[team][day]
+                    del by_team[team_id][day]
                     continue
                 elif start > end:
-                    del by_team[team][day]
+                    del by_team[team_id][day]
                     continue
                 # Compute and store durations.
                 delta = end - start
                 duration = delta.total_seconds()
                 team_durations.append(duration)
                 # Delete the processed data for this day.  No longer needed.
-                del by_team[team][day]
+                del by_team[team_id][day]
 
             # Delete the team if no valid data points available and proceed to
             # the next.
             if len(team_durations) < 1:
-                del by_team[team]
+                del by_team[team_id]
                 continue
 
             # Update the durations vector with the just processed team data.
             durations.extend(team_durations)
 
             # Compute the daily average for the team.
-            by_team[team]['daily average'] = numpy.average(team_durations)
+            by_team[team_id]['daily average'] = numpy.average(team_durations)
         # Stop here if no valid data points found (nothing to check and the
         # median would be NaN).
         if len(durations) < 1:
@@ -849,15 +1031,24 @@ class Alert(models.Model):
         half_median = numpy.median(durations) / 2.0
 
         # Process all data collected above and produce alerts when triggered.
-        for team in by_team:
-            if by_team[team]['daily average'] < half_median:
+        for team_id in by_team:
+            if by_team[team_id]['daily average'] < half_median:
                 alert_text = u'Duration of data collection issue ' \
-                             u'in team {}'.format(team)
-                # Only add if there is no identical alert among unarchived.
+                             u'in team {}'.format(team_id)
+                alert_json = {
+                    'type': 'daily_data_collection_duration',
+                    'team_id': team_id,
+                    'team_name': by_team[team_id]['team_name']
+                }
+                # Only add if there is no same alert among unarchived.
                 if not Alert.objects.filter(
                         text=alert_text,
-                        archived=False):
-                    Alert.objects.create(text=alert_text)
+                        archived=False,
+                        category='timing'):
+                    Alert.objects.create(
+                            text=alert_text,
+                            json=alert_json,
+                            category='timing')
 
     @classmethod
     def archive_all_alerts(cls):
@@ -950,18 +1141,9 @@ class Clusters(UniqueActiveNamedDocument):
         default={}
         )
 
-
     @classmethod
-    def get_cluster_from_most_recently_modified(cls, cluster_id):
-        clusters = cls.get_most_recently_modified()
-        if clusters:
-            return clusters.get_cluster(cluster_id)
-        else:
-            return None
-
-    @classmethod
-    def get_cluster_from_most_recently_created(cls, cluster_id):
-        clusters = cls.get_most_recently_created()
+    def get_cluster_from_active(cls, cluster_id):
+        clusters = cls.get_active()
         if clusters:
             return clusters.get_cluster(cluster_id)
         else:

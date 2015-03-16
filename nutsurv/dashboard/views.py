@@ -374,27 +374,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         return HttpResponse(json.dumps(surveys),
                             content_type='application/json')
 
-    @staticmethod
-    def _correct_area(cluster_id, location):
-        # get cluster data
-        cluster = Clusters.get_cluster_from_most_recently_modified(
-            cluster_id)
-        # if cluster data not found, assume location incorrect
-        if cluster is None:
-            return False
-        # if cluster data found, get state and LGA
-        lga_name = cluster.get('lga_name', None)
-        state_name = cluster.get('state_name', None)
-        # if LGA and state names not found, assume location incorrect
-        if not (lga_name and state_name):
-            return False
-        # if state and LGA found, check the location
-        lga = LGA.find_lga(name=lga_name, state_name=state_name)
-        if lga is None:
-            # if no LGA found, assume location incorrect
-            return False
-        else:
-            return lga.contains_location(location)
 
     @classmethod
     def _musa_to_johannes(cls, musa_json):
@@ -435,10 +414,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                     woman['age'] = age
                     output['women_surveys'].append(woman)
 
-        # calculate correct_area
-        output['correct_area'] = cls._correct_area(output['cluster'],
-                                                   output['location'])
-
         # get rid of empty child_/women_surveys
         if not len(output['child_surveys']):
             del output['child_surveys']
@@ -456,7 +431,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 'location': [6.9249100685,
                              8.6650104523
                 ],
-                'correct_area': True,
                 'cluster': 657,
                 'startTime': '2014-10-18T19:56:23',
                 'endTime': '2014-10-18T20:43:23',
@@ -532,8 +506,8 @@ class AlertsJSONView(LoginRequiredView):
 
     @staticmethod
     def _find_all_alerts():
-        """Computes and returns a list of strings each string representing one
-        alert.  Archived alerts are not included.  Alerts are sorted by their
+        """Computes and returns a list of json objects each string representing
+        one alert.  Archived alerts are not included.  Alerts are sorted by their
         creation date in the reverse chronological order (i.e. the list starts
         from the most recent).
         """
@@ -541,7 +515,8 @@ class AlertsJSONView(LoginRequiredView):
         return [
             {
                 'timestamp': alert.created.isoformat(),
-                'message': alert.text
+                'category': alert.category,
+                'message': alert.json
             } for alert in alerts
         ]
 
