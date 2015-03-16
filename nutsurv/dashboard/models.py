@@ -536,7 +536,7 @@ class Alert(models.Model):
         if p < 0.001:
             team_name = household_survey.get_team_name()
             team_id = household_survey.get_team_id()
-            alert_text = 'Age ratio issue in team {}'.format(team)
+            alert_text = 'Age ratio issue in team {}'.format(team_name)
             alert_json = {
                 'type': 'child_age_in_months_ratio',
                 'team_name': team_name,
@@ -583,7 +583,7 @@ class Alert(models.Model):
         if p < 0.001:
             team_name = household_survey.get_team_name()
             team_id = household_survey.get_team_id()
-            alert_text = 'Child age displacement issue in team {}'.format(team)
+            alert_text = 'Child age displacement issue in team {}'.format(team_name)
             alert_json = {
                 'type': 'child_age_displacement',
                 'team_name': team_name,
@@ -630,9 +630,10 @@ class Alert(models.Model):
             chi2, p = scipy.stats.chisquare(
                 [age14, age15], [expected, expected])
         if p < 0.001:
-            team = household_survey.get_team_name()
+            team_name = household_survey.get_team_name()
+            team_id = household_survey.get_team_id()
             alert_text = \
-                'Woman age displacement issue (14/15) in team {}'.format(team)
+                'Woman age displacement issue (14/15) in team {}'.format(team_name)
             alert_json = {
                 'type': 'woman_age_14_15_displacement',
                 'team_name': team_name,
@@ -971,7 +972,7 @@ class Alert(models.Model):
             if day not in by_team[team_id]:
                 # Previously unseen day detected.  Initialise data for this day
                 # with the current values of start and end (possible Nones).
-                by_team[team][day] = {
+                by_team[team_id][day] = {
                     'start': start,
                     'end': end,
                     }
