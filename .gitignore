@@ -1,3 +1,4 @@
+configuration.py
 *.log
 *.swp
 *.pot

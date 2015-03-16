@@ -5,9 +5,8 @@ jsonschema
 django-tastypie
 python-dateutil
 python-mimeparse
-numpy
-scipy
 django-bower
 pytz
+django-cors-headers
 django_compressor
 libsass
