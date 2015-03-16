@@ -3,7 +3,46 @@ eha-nutsurv-django
 
 NutSurv - Data collection and quality assurance tools for Nutrition Surveys on mobile devices
 
-# Installation
+
+# Install with Docker
+
+Install [Docker](https://docs.docker.com/installation/#installation)
+
+
+Get the code
+
+    git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
+
+Build the container
+
+    sudo docker build .
+
+Make your local settings
+
+    set the DATABASE settings in `./nutsurv/configuration.py`
+
+For a NEW databse ONLY
+
+    sudo docker run --net=host -v $(pwd):/opt/nutsurv -i -t nutsurv psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U nutsurv_dev
+    Password for user nutsurv_dev:
+
+Run the server
+
+    sudo docker run --net=host -v $(pwd):/opt/nutsurv -t nutsurv python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8000
+    Performing system checks...
+
+    System check identified no issues (0 silenced).
+
+    You have unapplied migrations; your app may not work properly until they are applied.
+    Run 'python manage.py migrate' to apply them.
+
+    March 16, 2015 - 10:22:06
+    Django version 1.7.6, using settings 'nutsurv.settings'
+    Starting development server at http://0.0.0.0:8000/
+    Quit the server with CONTROL-C.
+
+
+# Manual Installation
 
 
 The following has been tested on Ubuntu 14.04. Other versions of Linux/Ubuntu or Mac OS X will have
@@ -12,7 +51,7 @@ to make minor adjustments.
 First install all needed dependencies:
 
     sudo apt-get install git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev
-    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev
+    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev python-numpy python-scipy
 
 Then get the sources (enter username/password):
 
@@ -87,7 +126,7 @@ Run the server:
 
 Run the server globally access (for [Vagrant access](https://github.com/eHealthAfrica/tools-reference/blob/master/vagrant.md)):
 
-    ./manage.py runserver 0.0.0.0:8000    
+    ./manage.py runserver 0.0.0.0:8000
 
 Access it in your web browser at http://localhost:8000/
 
