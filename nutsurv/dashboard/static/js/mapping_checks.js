@@ -1,12 +1,12 @@
 var mappingChecks = {
     urls : {
-        survey: '/dashboard/aggregatesurveydatajsonview/'
+        alerts: '/dashboard/alertsjsonview/'
     },
     initiate: function () {
         jQuery('#mapping_checks_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
 
         mappingChecks.createMap();
-        dataGetter.addNew(mappingChecks.urls.survey, mappingChecks.updateMap, true);
+        dataGetter.addNew(mappingChecks.urls.alerts, mappingChecks.updateMap, true);
     },
     createMap: function () {
       var osm = L.tileLayer(map.osmUrl, {
@@ -27,23 +27,24 @@ var mappingChecks = {
     },
     mapMarkers: [],
     incorrectSurveys: false,
+    popupTmp: _.template('ERROR!<br>Team <%- team_name %>(<%- team_id%>)<% if (cluster_id) { %><br>Cluster #: <%- cluster_id %><% } %>'),
     updateMap: function (data) {
-      var group, incorrectSurveys = [];
+      var group, incorrectSurveys = [],
+        mapAlerts = _.where(data.alerts, {category:'map'});
         _.each(mappingChecks.mapMarkers, function(marker) {
             // Remove all previous markers
             home.map.removeLayer(marker);
         });
-        _.each(data.survey_data, function(survey){
-            var icon = survey.correct_area ? map.markers.green : map.markers.red,
-            marker = L.marker(survey.location, {icon: icon}),
-            popupHTML = "Team: "+survey.team+"<br>"+"Cluster #: "+survey.cluster;
-            mappingChecks.mapMarkers.push(marker);
-            if (survey.correct_area) {
-                marker.addTo(mappingChecks.map).bindPopup(popupHTML);
-            } else {
-                marker.addTo(mappingChecks.map).bindPopup("ERROR!<br>"+popupHTML);
-                incorrectSurveys.push({team: survey.team, cluster: survey.cluster});
+
+        _.each(mapAlerts, function(mapAlert){
+            var marker;
+            if (mapAlert.message.hasOwnProperty('location')) {
+                marker = L.marker(mapAlert.message.location, {icon: map.markers.red}),
+                mappingChecks.mapMarkers.push(marker),
+                marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert.message));
             }
+            incorrectSurveys.push(mapAlert.message);
+
         });
         mappingChecks.incorrectSurveys = incorrectSurveys;
         group = new L.featureGroup(mappingChecks.mapMarkers);
@@ -55,10 +56,10 @@ var mappingChecks = {
             return false;
         }
 
-        var output = 'team,cluster\n';
+        var output = 'team_id,cluster_id\n';
 
         _.each(mappingChecks.incorrectSurveys, function (survey) {
-            output += survey.team + ',' + survey.cluster + '\n';
+            output += survey.team_id + ',' + survey.cluster_id + '\n';
         });
 
         saveAs(
@@ -69,10 +70,15 @@ var mappingChecks = {
     drawAlerts: function (incorrectSurveys) {
         jQuery('#mapping_checks_alerts_list').empty();
         _.each(incorrectSurveys,function(survey){
-            jQuery('#mapping_checks_alerts_list').append(mappingChecks.alertTmp(survey));
+            jQuery('#mapping_checks_alerts_list').append(mappingChecks.alertTmp[survey.type](survey));
         });
     },
-    alertTmp: _.template('<li>Incorrect placement! Team <%- team %></li>'),
+    alertTmp: {
+        'mapping_check_wrong_location': _.template('<li>Wrong location! Team <%- team_name %> (<%- team_id %>)</li>'),
+        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team <%- team_name %> (<%- team_id %>)</li>'),
+        'mapping_check_missing_location': _.template('<li>Missing location! Team <%- team_name %> (<%- team_id %>)</li>'),
+        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team <%- team_name %> (<%- team_id %>)</li>')
+    }
 
 };
 
