@@ -15,7 +15,7 @@ Get the code
 
 Build the container
 
-    sudo docker build .
+    docker build -t nutsurv .
 
 Make your local settings
 
