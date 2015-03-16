@@ -9,3 +9,5 @@ numpy
 scipy
 django-bower
 pytz
+django_compressor
+libsass
