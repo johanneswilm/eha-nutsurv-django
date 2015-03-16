@@ -1,0 +1,7 @@
+language: python
+
+install:
+  - pip install pylint
+
+script:
+  - pylint nutsurv --disable=all --enable=E0602
