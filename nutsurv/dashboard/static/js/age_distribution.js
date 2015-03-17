@@ -122,7 +122,7 @@ var ageDistribution = {
         }
         var output = 'age (years),count\n';
 
-        _.every(ageDistribution.householdAgeList, function(age) {
+        _.each(ageDistribution.householdAgeList, function(age) {
             output += age[0] + ',' + age[1] + '\n';
         });
 
@@ -172,7 +172,7 @@ var ageDistribution = {
         }
         var output = 'age (months),count\n';
 
-        _.every(ageDistribution.childrenAgeList, function(age) {
+        _.each(ageDistribution.childrenAgeList, function(age) {
             output += age[0] + ',' + age[1] + '\n';
         });
 
