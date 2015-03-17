@@ -15,32 +15,20 @@ Get the code
 
 Build the container
 
-    sudo docker build .
+    sudo docker-compose build
 
-Make your local settings
-
-    set the DATABASE settings in `./nutsurv/configuration.py`
-
-For a NEW databse ONLY
-
-    sudo docker run --net=host -v $(pwd):/opt/nutsurv -i -t nutsurv psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U nutsurv_dev
-    Password for user nutsurv_dev:
+Make your local settings set the DATABASE settings in `./nutsurv/configuration.py`
 
 Run the server
 
-    sudo docker run --net=host -v $(pwd):/opt/nutsurv -t nutsurv python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8000
-    Performing system checks...
+    sudo docker-compose up
 
-    System check identified no issues (0 silenced).
+For a NEW database ONLY
 
-    You have unapplied migrations; your app may not work properly until they are applied.
-    Run 'python manage.py migrate' to apply them.
+    Open a NEW terminal or tab
 
-    March 16, 2015 - 10:22:06
-    Django version 1.7.6, using settings 'nutsurv.settings'
-    Starting development server at http://0.0.0.0:8000/
-    Quit the server with CONTROL-C.
-
+    sudo docker run -i --net host  -t nutsurv_web:latest  psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
+    sudo docker run -i --net host  -t nutsurv_web:latest  psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
 
 # Manual Installation
 
