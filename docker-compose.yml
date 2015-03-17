@@ -1,14 +1,10 @@
 db:
   image: "mdillon/postgis:9.4"
   net: "host"
-  ports:
-   - "5432:5432"
   volumes:
    - ./postgresql:/var/lib/postgresql
 web:
   build: .
-  ports:
-   - "8000:8000"
   volumes:
    - .:/opt/nutsurv/
   net: "host"
