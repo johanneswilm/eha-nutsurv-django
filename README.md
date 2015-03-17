@@ -20,7 +20,7 @@ Make your local settings set the DATABASE settings in `./nutsurv/configuration.p
 
 Run the server
 
-    sudo docker-compose up
+    sudo docker-compose up --no-recreate
 
 ### For a NEW database ONLY
  
@@ -36,7 +36,7 @@ Now set up the db
     python /opt/nutsurv/nutsurv/manage.py migrate
 
 ### Good job!
-The website should be available at http://HOST:8000
+The website should be available at http://HOST:8001
 
 # Manual Installation
 
