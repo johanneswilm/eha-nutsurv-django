@@ -185,7 +185,7 @@ class FormhubSurvey(models.Model):
         if all (terms in self.json for terms in ('state', 'cluster', \
             'cluster_name', 'lga')):
             cluster_data = \
-                dashboard_models.Clusters.get_most_recently_modified()
+                dashboard_models.Clusters.get_active()
             if cluster_data != None:
                 cluster_number = str(self.json['cluster'])
                 # We make everything depend on the existence of the cluster number in the cluster db.
@@ -210,6 +210,7 @@ class FormhubSurvey(models.Model):
                         if not state_number in states_data.json:
                             states_data.json.append(state_number)
                             states_data.save()
+
         team_number = str(self.json['team_num'])
         team_data = dashboard_models.ClustersPerTeam.get_active()
         if not team_data == None:
