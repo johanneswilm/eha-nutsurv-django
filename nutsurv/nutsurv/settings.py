@@ -14,15 +14,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 PROJECT_ROOT = PROJECT_PATH
 
-# For zero downtime deploys
-import uwsgi
-from uwsgidecorators import timer
-from django.utils import autoreload
+try:
+    # For zero downtime deploys
+    import uwsgi
+    from uwsgidecorators import timer
+    from django.utils import autoreload
 
-@timer(3)
-def change_code_gracefull_reload(sig):
-    if autoreload.code_changed():
-        uwsgi.reload()
+    @timer(3)
+    def change_code_gracefull_reload(sig):
+        if autoreload.code_changed():
+            uwsgi.reload()
+
+except Exception as e:
+    print e
 
 
 # Quick-start development settings - unsuitable for production
@@ -103,8 +107,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, '../media')
 
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '../static')
 
 # Bower http://django-bower.readthedocs.org/en/latest/index.html

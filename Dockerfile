@@ -8,6 +8,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y gfortran libopenb
 
 ADD . /opt/nutsurv
 RUN pip install -r /opt/nutsurv/requirements/development.txt
-RUN npm install bower
+RUN npm install -g bower
 
 CMD supervisord -c /opt/nutsurv/config/supervisord.conf
