@@ -8,12 +8,11 @@ NutSurv - Data collection and quality assurance tools for Nutrition Surveys on m
 
 Install [Docker](https://docs.docker.com/installation/#installation)
 
-
-Get the code
+## Get the code
 
     git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
 
-Build the container
+### Build the container
 
     sudo docker-compose build
 
@@ -23,12 +22,21 @@ Run the server
 
     sudo docker-compose up
 
-For a NEW database ONLY
+### For a NEW database ONLY
+ 
+Open a NEW terminal or tab and connect to the database with a new container
 
-    Open a NEW terminal or tab
+    sudo docker run -v ~/nutsurv/:/opt/nutsurv -i --net host  -t nutsurv_web:latest bash
 
-    sudo docker run -i --net host  -t nutsurv_web:latest  psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
-    sudo docker run -i --net host  -t nutsurv_web:latest  psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
+Now set up the db
+    
+    psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
+    psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
+    python /opt/nutsurv/nutsurv/manage.py makemigrations
+    python /opt/nutsurv/nutsurv/manage.py migrate
+
+### Good job!
+The website should be available at http://HOST:8000
 
 # Manual Installation
 
