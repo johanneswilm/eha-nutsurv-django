@@ -2,6 +2,8 @@ import datetime
 import dateutil.parser
 import dateutil.relativedelta
 
+import uuid
+
 import numpy
 import scipy.stats
 
@@ -1065,12 +1067,20 @@ class Alert(models.Model):
         cls.objects.filter(text=text, archived=archived).delete()
 
 class UniqueActiveDocument(models.Model):
+#    active_id = models.CharField(
+#        max_length=255, unique=True, blank=False, default=uuid.uuid1,
+#        primary_key=True,
+#        help_text=u'Please enter a unique id of your new document.')
+    #id = models.IntegerField(default=0)
     active = UniqueActiveField(
         default=False,
         help_text=u'Activate this document.  Only one document of this type '
                   u'may be active at any given time.')
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True,null=True)
+    last_modified = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        abstract = True
 
     @classmethod
     def get_active(cls):
@@ -1103,12 +1113,16 @@ class UniqueActiveDocument(models.Model):
 
 
 class UniqueActiveNamedDocument(UniqueActiveDocument):
+#    named_id = models.AutoField(primary_key=True)
     name_or_id = models.CharField(
-        max_length=255, unique=True, blank=False,
+        max_length=255, unique=True, blank=False, default=uuid.uuid1,
         help_text=u'Please enter a unique name or id of your new document.')
 
     def __unicode__(self):
         return self.name_or_id
+
+    class Meta:
+        abstract = True
 
 
 class Clusters(UniqueActiveNamedDocument):
@@ -1261,7 +1275,7 @@ class LGA(Area):
                                u'found!'.format(name, state_name, country_part))
 
 
-class QuestionnaireSpecification(UniqueActiveDocument):
+class QuestionnaireSpecification(UniqueActiveNamedDocument):
     class Meta:
         verbose_name_plural = 'The "Questionnaire Specification" documents'
 
