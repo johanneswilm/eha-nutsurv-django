@@ -67,58 +67,10 @@
           </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active">
-              <a href="/dashboard/home">
-                <i class="fa fa-home"></i> Home
-              </a>
-            </li>
-            <li>
-              <a href="/dashboard/survey_completed">
-                <i class="fa fa-check"></i> Surveys Completed
-              </a>
-            </li>
-            <li>
-              <a href="/dashboard/mapping_checks">
-                <i class="fa fa-map-marker"></i> Mapping Checks
-              </a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
-                <i class="fa fa-search"></i> Inspect Data <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a class="navbar-dropdown-link" href="/dashboard/age_distribution">Age Distribution</a>
-                </li>
-                <li>
-                  <a class="navbar-dropdown-link" href="/dashboard/missing_data">Missing Data</a>
-                </li>
-                <li>
-                  <a class="navbar-dropdown-link" href="/dashboard/data_quality">Data Quality</a>
-                </li>
-                <li>
-                  <a class="navbar-dropdown-link" href="/dashboard/time_of_data_collection">Time of Collection</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/dashboard/personnel">
-                <i class="fa fa-user"></i> Personnel
-              </a>
-            </li>
-          </ul>
+          {% block tabs %}{% include 'dashboard/_tabs.html' %}{% endblock %}
           <ul class="nav navbar-nav navbar-right">
-            <li id="last_update_li">
-              <a id="last_update" href="#">
-                  <i class="fa fa-refresh"></i> <span class="button_label"></span>
-              </a>
-            </li>
-            <li>
-                <a href="/accounts/logout/">
-                    <i class="fa fa-power-off"></i> Logout
-                </a>
-            </li>
+            <li id="last_update_li"> <a id="last_update" href="#"> <i class="fa fa-refresh"></i> <span class="button_label"></span> </a> </li>
+            <li> <a href="/accounts/logout/"> <i class="fa fa-power-off"></i> Logout </a> </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

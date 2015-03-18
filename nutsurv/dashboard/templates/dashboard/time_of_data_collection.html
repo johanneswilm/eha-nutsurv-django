@@ -1,4 +1,5 @@
 {% extends "dashboard/index.html" %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='inspect_data' %}{% endblock %}
 {% block content %}
 <div id="time_of_data_collection_chart" >
     <div class="page-header">
