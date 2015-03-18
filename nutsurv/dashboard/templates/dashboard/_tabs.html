@@ -1,0 +1,24 @@
+<ul class="nav navbar-nav">
+  <li class="{% if active_tab == 'home' %}active{% endif %}"> <a href="/dashboard/home"> <i class="fa fa-home"></i> Home </a> </li>
+  <li class="{% if active_tab == 'survey_completed' %}active{% endif %}"> <a href="/dashboard/survey_completed"> <i class="fa fa-check"></i> Surveys Completed </a> </li>
+  <li class="{% if active_tab == 'mapping_checks' %}active{% endif %}"> <a href="/dashboard/mapping_checks"> <i class="fa fa-map-marker"></i> Mapping Checks </a> </li>
+  <li class="dropdown{% if active_tab == 'inspect_data' %} active{% endif %}"> <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
+      <i class="fa fa-search"></i> Inspect Data <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+      <li>
+        <a class="navbar-dropdown-link" href="/dashboard/age_distribution">Age Distribution</a>
+      </li>
+      <li>
+        <a class="navbar-dropdown-link" href="/dashboard/missing_data">Missing Data</a>
+      </li>
+      <li>
+        <a class="navbar-dropdown-link" href="/dashboard/data_quality">Data Quality</a>
+      </li>
+      <li>
+        <a class="navbar-dropdown-link" href="/dashboard/time_of_data_collection">Time of Collection</a>
+      </li>
+    </ul>
+  </li>
+  <li class="{% if active_tab == 'personnel' %}active{% endif %}"> <a href="/dashboard/personnel"> <i class="fa fa-user"></i> Personnel </a> </li>
+</ul>

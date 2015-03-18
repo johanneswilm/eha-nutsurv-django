@@ -1,3 +1,6 @@
+{% extends "dashboard/base.html" %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='inspect_data' %}{% endblock %}
+{% block content %}
 <div id="time_of_data_collection_chart" >
     <div class="page-header">
         <div class="selection_choices">
@@ -40,3 +43,4 @@
 </div>
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/time_of_data_collection.js"></script>
+{% endblock content %}

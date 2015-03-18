@@ -22,8 +22,8 @@ hr.alert-line {
 	margin-top: 0px;
 }
 
-.alert-item .alert-action {
-	margin-left: 15px;
+.alert-actions a:nth-child(2) {
+  margin-left: 15px;
 }
 
 .alert-details {
