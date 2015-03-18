@@ -1,3 +1,6 @@
+{% extends "dashboard/base.html" %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='inspect_data' %}{% endblock %}
+{% block content %}
 <div class="page-header">
     <div class="selection_choices">
       <select id="age_distribution_teams" name="age_distribution_teams">
@@ -27,3 +30,4 @@
 </div>
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/age_distribution.js"></script>
+{% endblock content %}

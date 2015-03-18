@@ -56,69 +56,21 @@
     <nav class="navbar navbar-dashboard navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="/dashboard/home">
             <img class="pull-left" src="/static/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> <span class="navbar-brand-name">NutSurv</span>
           </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active">
-              <a data-target="#tab_home" data-toggle="tab" href="/dashboard/home">
-                <i class="fa fa-home"></i> Home
-              </a>
-            </li>
-            <li>
-              <a data-target="#tab_survey_completed" data-toggle="tab" href="/dashboard/survey_completed">
-                <i class="fa fa-check"></i> Surveys Completed
-              </a>
-            </li>
-            <li>
-              <a data-target="#tab_mapping_checks" data-toggle="tab" href="/dashboard/mapping_checks">
-                <i class="fa fa-map-marker"></i> Mapping Checks
-              </a>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                <i class="fa fa-search"></i> Inspect Data <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a class="navbar-dropdown-link" data-target="#tab_age_distribution" data-toggle="tab" href="/dashboard/age_distribution">Age Distribution</a>
-                </li>
-                <li>
-                  <a class="navbar-dropdown-link" data-target="#tab_missing_data" data-toggle="tab" href="/dashboard/missing_data">Missing Data</a>
-                </li>
-                <li>
-                  <a class="navbar-dropdown-link" data-target="#tab_data_quality" data-toggle="tab" href="/dashboard/data_quality">Data Quality</a>
-                </li>
-                <li>
-                  <a class="navbar-dropdown-link" data-target="#tab_time_of_data_collection" data-toggle="tab" href="/dashboard/time_of_data_collection">Time of Collection</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a data-target="#tab_personnel" data-toggle="tab" href="/dashboard/personnel">
-                <i class="fa fa-user"></i> Personnel
-              </a>
-            </li>
-          </ul>
+          {% block tabs %}{% include 'dashboard/_tabs.html' %}{% endblock %}
           <ul class="nav navbar-nav navbar-right">
-            <li id="last_update_li">
-              <a id="last_update" href="#">
-                  <i class="fa fa-refresh"></i> <span class="button_label"></span>
-              </a>
-            </li>
-            <li>
-                <a href="/accounts/logout/">
-                    <i class="fa fa-power-off"></i> Logout
-                </a>
-            </li>
+            <li id="last_update_li"> <a id="last_update" href="#"> <i class="fa fa-refresh"></i> <span class="button_label"></span> </a> </li>
+            <li> <a href="/accounts/logout/"> <i class="fa fa-power-off"></i> Logout </a> </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -130,7 +82,8 @@
 
           <!-- Tab panes -->
           <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="tab_home"></div>
+              {% block content %}
+              <div role="tabpanel" class="tab-pane" id="tab_home"></div>
               <div role="tabpanel" class="tab-pane" id="tab_survey_completed"></div>
               <div role="tabpanel" class="tab-pane" id="tab_mapping_checks"></div>
               <div role="tabpanel" class="tab-pane" id="tab_age_distribution"></div>
@@ -138,6 +91,7 @@
               <div role="tabpanel" class="tab-pane" id="tab_data_quality"></div>
               <div role="tabpanel" class="tab-pane" id="tab_time_of_data_collection"></div>
               <div role="tabpanel" class="tab-pane" id="tab_personnel"></div>
+              {% endblock content %}
           </div>
       </div>
 
