@@ -31,8 +31,8 @@ urlpatterns = patterns('',
                        url(r'^', include(router.urls)),
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-                       url(r'^$', 'dashboard.views.dashboard', name='index'),
                        url(r'^home$', 'dashboard.views.home', name='home'),
+
                        url(r'^mapping_checks$',
                            'dashboard.views.mapping_checks',
                            name='mapping_checks'),
