@@ -113,11 +113,9 @@ var home = {
         jQuery('#home_alerts_list').empty();
 
         _.each(data.alerts, function(alert) {
-
             var alertTemplate = _.template($('#home-alert-item').html());
             var alertType = home.alertType[alert.message.type];
             jQuery('#home_alerts_list').append(alertTemplate({ alert: alert, type: alertType }));
-
         });
 
     },
