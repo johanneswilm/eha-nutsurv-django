@@ -1,3 +1,6 @@
+{% extends "dashboard/base.html" %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='mapping_checks' %}{% endblock %}
+{% block content %}
 <div class="page-header">
     <h1><i class="fa fa-map-marker"></i> Mapping Checks</h1>
 </div>
@@ -21,3 +24,4 @@
     </div>
 </div>
 <script src="/static/js/mapping_checks.js"></script>
+{% endblock content %}

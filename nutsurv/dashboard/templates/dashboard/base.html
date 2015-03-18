@@ -1,0 +1,103 @@
+<!doctype html>
+{% load compress %}
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NutSurv dashboard</title>
+
+    <link rel="icon" href="/static/favicon.ico">
+
+    <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
+
+	  <link rel="stylesheet" href='{% static 'font-awesome/css/font-awesome.css' %}' />
+    {% compress css %}
+    <link rel="stylesheet" type="text/scss" href='{% static 'ehealth-bootstrap/default/bootstrap.scss' %}' />
+    <link rel="stylesheet" type="text/scss" href='{% static 'ehealth-bootstrap/default/bootstrap-ehealth.scss' %}' />
+    {% endcompress %}
+
+    <link rel="stylesheet" href='{% static 'bootstrap-select/dist/css/bootstrap-select.css' %}' />
+    <link rel="stylesheet" href='{% static 'leaflet/dist/leaflet.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables/media/css/jquery.dataTables.min.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables-bootstrap3-plugin/media/css/datatables-bootstrap3.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables-responsive//css/dataTables.responsive.css' %}' />
+    <link rel="stylesheet" href='{% static 'datatables-tabletools/css/dataTables.tableTools.css' %}' />
+
+    <link rel="stylesheet" href='/static/css/leaflet.fullscreen.css' />
+    <link rel="stylesheet" href='/static/css/style.css' />
+
+    <script src='{% static 'jquery/jquery.min.js' %}'></script>
+    <script src='{% static 'leaflet/dist/leaflet.js' %}'></script>
+    <script src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
+    <script src='{% static 'bootstrap/js/dropdown.js' %}'></script>
+    <script src='{% static 'bootstrap-select/dist/js/bootstrap-select.min.js' %}'></script>
+    <script src='{% static 'lodash/lodash.js' %}'></script>
+    <script src='{% static 'jquery-flot/jquery.flot.js' %}'></script>
+    <script src='{% static 'datatables/media/js/jquery.dataTables.min.js' %}'></script>
+    <script src='{% static 'datatables-responsive/js/dataTables.responsive.js' %}'></script>
+    <script src='{% static 'datatables-tabletools/js/dataTables.tableTools.js' %}'></script>
+    <script src='{% static 'datatables-bootstrap3-plugin/media/js/datatables-bootstrap3.js' %}'></script>
+    <script src='{% static 'moment/min/moment.min.js' %}'></script>
+
+    <script src="/static/js/lib/FileSaver.min.js"></script>
+    <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>
+    <script src="/static/js/lib/tab.js"></script>
+    <script src="/static/js/data_getter.js"></script>
+    <script src="/static/js/map.js"></script>
+    <script src="/static/js/index.js"></script>
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <nav class="navbar navbar-dashboard navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/dashboard/home">
+            <img class="pull-left" src="/static/ehealth-bootstrap/images/app-navbar-nutrition-dashboard.png"> <span class="navbar-brand-name">NutSurv</span>
+          </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          {% block tabs %}{% include 'dashboard/_tabs.html' %}{% endblock %}
+          <ul class="nav navbar-nav navbar-right">
+            <li id="last_update_li"> <a id="last_update" href="#"> <i class="fa fa-refresh"></i> <span class="button_label"></span> </a> </li>
+            <li> <a href="/accounts/logout/"> <i class="fa fa-power-off"></i> Logout </a> </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div id="tabs" role="tabpanel ">
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+              {% block content %}
+              <div role="tabpanel" class="tab-pane" id="tab_home"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_survey_completed"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_mapping_checks"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_age_distribution"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_missing_data"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_data_quality"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_time_of_data_collection"></div>
+              <div role="tabpanel" class="tab-pane" id="tab_personnel"></div>
+              {% endblock content %}
+          </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+
+</html>

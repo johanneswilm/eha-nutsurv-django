@@ -19,13 +19,6 @@ from models import States
 from models import StatesWithReserveClusters
 from models import ClustersPerTeam
 
-
-@login_required
-def dashboard(request):
-    response = {}
-    return render(request, 'dashboard/index.html', response)
-
-
 @login_required
 def home(request):
     response = {}

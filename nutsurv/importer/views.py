@@ -19,7 +19,7 @@ def importer(request):
     post_key = getattr(settings, "POST_KEY", None)
     if post_key:
         response['POST_KEY'] = post_key
-    return render(request, 'importer/index.html', response)
+    return render(request, 'importer/base.html', response)
 
 @require_POST
 def reset_data(request):
@@ -32,6 +32,8 @@ def reset_data(request):
     dashboard_models.Clusters.objects.all().delete()
     cluster_data = dashboard_models.Clusters()
     cluster_data.json = {}
+    cluster_data.name_or_id = 'default_clusters'
+    cluster_data.active = True
     cluster_data.save()
 
     dashboard_models.ClustersPerTeam.objects.all().delete()
@@ -40,6 +42,13 @@ def reset_data(request):
     team_data.name_or_id = 'default_clusters_per_team'
     team_data.active = True
     team_data.save()
+
+    dashboard_models.StatesWithReserveClusters.objects.all().delete()
+    state_reserve_data = dashboard_models.StatesWithReserveClusters()
+    state_reserve_data.json = []
+    state_reserve_data.name_or_id = 'default_state_reserve_data'
+    state_reserve_data.active = True
+    state_reserve_data.save()
 
     dashboard_models.ClustersPerState.objects.all().delete()
     cluster_state_data = dashboard_models.ClustersPerState()
