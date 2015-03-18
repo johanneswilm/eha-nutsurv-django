@@ -1,3 +1,5 @@
+{% extends "dashboard/index.html" %}
+{% block content %}
 <div class="page-header">
     <div class="selection_choices">
       <select id="missing_data_teams" name="missing_data_teams">
@@ -30,3 +32,4 @@
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/missing_data.js"></script>
 <script src="/static/js/lib/parseQSL.js"></script>
+{% endblock content %}
