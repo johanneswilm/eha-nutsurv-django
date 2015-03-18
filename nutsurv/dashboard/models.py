@@ -321,6 +321,24 @@ class Alert(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
+    def team_id(self):
+        return self.json.get('team_id')
+
+    def team_name(self):
+        return self.json.get('team_name')
+
+    def cluster_id(self):
+        return self.json.get('cluster_id')
+
+    def location(self):
+        return self.json.get('location')
+
+    def type(self):
+        return self.json.get('type')
+
+    def survey_id(self):
+        return self.json.get('survey_id')
+
     def __unicode__(self):
         if self.archived:
             archived = u', archived'

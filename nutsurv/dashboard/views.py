@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.conf import settings
 
+from rest_framework import viewsets
+from .serializers import AlertSerializer
+
 from models import Alert
 from models import HouseholdSurveyJSON
 from models import Clusters
@@ -675,3 +678,15 @@ class ClustersJSONView(View):
         else:
             data = {'clusters': {}}
         return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+
+
+class AlertViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Alerts to be viewed.
+    """
+
+    template_name = 'dashboard/alert.html'
+    queryset = Alert.objects.all()
+    serializer_class = AlertSerializer
