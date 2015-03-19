@@ -8,6 +8,7 @@ import numpy
 import scipy.stats
 
 from django.db import models
+from rest_framework.reverse import reverse
 
 import django.contrib.gis.db.models as gismodels
 from django.contrib.gis.geos import Point
@@ -345,6 +346,9 @@ class Alert(models.Model):
         else:
             archived = u''
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
+
+    def get_absolute_url(self):
+        return reverse('alert-detail', args=[str(self.id)])
 
     @classmethod
     def run_alert_checks_on_document(cls, household_survey):
