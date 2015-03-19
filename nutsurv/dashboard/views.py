@@ -512,7 +512,8 @@ class AlertsJSONView(LoginRequiredView):
             {
                 'timestamp': alert.created.isoformat(),
                 'category': alert.category,
-                'message': alert.json
+                'message': alert.json,
+                'url': alert.get_absolute_url(),
             } for alert in alerts
         ]
 
