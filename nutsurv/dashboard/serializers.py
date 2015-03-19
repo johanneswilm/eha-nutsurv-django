@@ -13,6 +13,7 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
             'category',
             'text',
             'archived',
+            'created',
 
             # TODO fields still in json
             'team_id',

@@ -1,7 +1,7 @@
 var home = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        alerts: '/dashboard/alertsjsonview/',
+        alerts: '/dashboard/alerts/',
         teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
@@ -112,9 +112,9 @@ var home = {
 
         jQuery('#home_alerts_list').empty();
 
-        _.each(data.alerts, function(alert) {
+        _.each(data.results, function(alert) {
             var alertTemplate = _.template($('#home-alert-item').html());
-            var alertType = home.alertType[alert.message.type];
+            var alertType = home.alertType[alert.type];
             jQuery('#home_alerts_list').append(alertTemplate({ alert: alert, type: alertType }));
         });
 
@@ -166,9 +166,9 @@ var home = {
         }
     },
     createAlertsCSV: function (data) {
-        var output = 'timestamp,message\n';
+        var output = 'created,text\n';
         _.each(data.alerts,function(alert){
-            output += alert.timestamp + ',' + alert.message + '\n';
+            output += alert.created + ',' + alert.text + '\n';
         });
         home.alertsCSV = output;
     },
