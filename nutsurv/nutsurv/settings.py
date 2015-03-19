@@ -159,5 +159,6 @@ try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
 except IOError as e:
     print "Did not load local configuration:", e
+    print "That's ok, but you may want to copy the configurations.py-default"
 else:
     exec f in globals()
