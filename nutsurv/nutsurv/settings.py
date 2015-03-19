@@ -134,7 +134,6 @@ COMPRESS_PRECOMPILERS = (
         )
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10,
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
