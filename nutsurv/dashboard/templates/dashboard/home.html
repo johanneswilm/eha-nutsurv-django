@@ -50,11 +50,11 @@
         </div>
         <div class="alert-actions col-sm-4 text-right">
             <% if (alert.type === 'mapping_check_unknown_cluster' && alert.location !== undefined) { %>
-            <a href="#" data-geo="<%= alert.location[0] + ',' + alert.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
+            <a href="<%= alert.url %>" data-geo="<%= alert.location[0] + ',' + alert.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
             <% } else { %>
-            <a href="#" class="alert-action btn btn-primary btn-sm">View Details</a>
+            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
             <% } %>
-            <a href="#" class="alert-action btn btn-primary btn-sm">Contact Team</a>
+            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">Contact Team</a>
         </div>
         <div class="clearfix"></div>
         <div class="col-sm-12"><hr class="alert-line"></div>
