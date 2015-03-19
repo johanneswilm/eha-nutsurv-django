@@ -12,6 +12,7 @@ var home = {
         dataGetter.addNew(home.urls.survey, home.updateMap, true);
 
         dataGetter.addNew(home.urls.alerts, home.drawAlerts, true);
+        home.paginateAlerts();
         dataGetter.addNew(home.urls.alerts, home.createAlertsCSV, true);
 
         dataGetter.addNew(home.urls.survey, home.drawLatestContacts, true);
@@ -110,12 +111,13 @@ var home = {
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
     drawAlerts: function (data) {
 
-        jQuery('#home_alerts_list').empty();
+        var alert_list = $('#home_alerts_list').find('div.list');
+        alert_list.empty();
 
         _.each(data.alerts, function(alert) {
             var alertTemplate = _.template($('#home-alert-item').html());
             var alertType = home.alertType[alert.message.type];
-            jQuery('#home_alerts_list').append(alertTemplate({ alert: alert, type: alertType }));
+            alert_list.append(alertTemplate({ alert: alert, type: alertType }));
         });
 
     },
@@ -164,6 +166,47 @@ var home = {
             title: 'Mapping Check Unknown Cluster',
             icon: 'fa-map-marker'
         }
+    },
+    paginateAlerts: function() {
+
+        var type_html = '<option value="all">All</option>';
+        _.each(home.alertType, function(type, key) {
+            type_html += '<option value="' + key + '">' + type.title + '</option>\n';
+        });
+
+        $('#home_alerts_filter_type').append(type_html);
+
+//        setTimeout(function() {
+
+            var paginateAlertList = new List('home_alerts_list', {
+                valueNames: ['alert-title', 'alert-details', 'alert_type'],
+                page: 10,
+                plugins: [ ListPagination({}) ] 
+            });
+    
+    
+        	// Sort By Category
+        	$('#home_alerts_filter_type').change(function() {			
+        		var this_type = $(this).val().toString();
+        		if (this_type == 'all') {
+        	        paginateAlertList.filter();
+        	    }
+        	    else {
+        	        paginateAlertList.filter(function(item) {
+        	            if (item.values().alert_type == this_type) {
+        	                return true;
+        	            }
+        	            else {
+        	                return false;
+        	            }
+        	        });
+        	    }
+                return false;
+          	});
+
+//        }, 1000);
+
+
     },
     createAlertsCSV: function (data) {
         var output = 'timestamp,message\n';
