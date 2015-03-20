@@ -1,0 +1,80 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><i class="fa fa-map-marker"></i> {{ text }}</h1>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="fa fa-map-marker" aria-hidden="true"></span> Map</div>
+            <div class="panel-body">
+                <div id="mapping_checks_map" class="map"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="fa fa-bell" aria-hidden="true"></span> Details</div>
+            <div class="panel-body" id="mapping_checks_alerts">
+              <dl>
+                <dt>Category</dt><dd>{{ category }}</dd>
+                <dt>Type</dt><dd>{{ type }}</dd>
+                <dt>Team ID</dt><dd>{{ team_id }}</dd>
+                <dt>Team Name</dt><dd>{{ team_name }}</dd>
+                <dt>Cluster ID</dt><dd>{{ cluster_id }}</dd>
+                <dt>Survey ID</dt><dd>{{ survey_id }}</dd>
+                <dt>Archived</dt><dd>{{ archived }}</dd>
+              </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+var mapObj;
+var osm;
+
+var popupTmp = _.template('ERROR!<br>Team <%- team_name %>(<%- team_id%>)<% if (cluster_id) { %><br>Cluster #: <%- cluster_id %><% } %>');
+
+function createMap() {
+    osm = L.tileLayer(map.osmUrl, {
+        minZoom: 1,
+        maxZoom: 18,
+        attribution: false
+    });
+    mapObj = L.map('mapping_checks_map', {
+        minZoom: 1,
+        maxZoom: 18,
+        layers: [osm],
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: 'topleft'
+        }
+    });
+    mapObj.attributionControl.setPrefix('');
+}
+
+function addMarker(mapAlert) {
+    var marker = L.marker(
+        mapAlert.location, {
+            icon: map.markers.red
+        }
+    );
+    marker.addTo(mapObj).bindPopup(popupTmp(mapAlert));
+
+    var group = new L.featureGroup([marker]);
+    mapObj.fitBounds(group.getBounds());
+    mapObj.setZoom(10);
+}
+
+createMap();
+$.get(window.location.pathname, function(mapAlert) {
+    addMarker(mapAlert)
+});
+
+</script>
+
+{% endblock content %}

@@ -19,7 +19,7 @@ def importer(request):
     post_key = getattr(settings, "POST_KEY", None)
     if post_key:
         response['POST_KEY'] = post_key
-    return render(request, 'importer/base.html', response)
+    return render(request, 'importer/index.html', response)
 
 @require_POST
 def reset_data(request):

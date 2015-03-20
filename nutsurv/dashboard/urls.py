@@ -1,4 +1,7 @@
 from django.conf.urls import include, patterns, url
+
+from rest_framework import routers
+
 from tastypie.api import Api
 
 from api.resources import HouseholdSurveyJSONResource
@@ -6,7 +9,6 @@ from api.resources import HouseholdSurveyJSONResource
 from dashboard.views import TeamsJSONView
 from dashboard.views import AggregateSurveyDataJSONView
 from dashboard.views import SurveyedClustersPerTeamJSONView
-from dashboard.views import AlertsJSONView
 from dashboard.views import PersonnelJSONView
 from dashboard.views import ActiveQuestionnaireSpecificationView
 from dashboard.views import ClustersPerStateJSONView
@@ -14,14 +16,22 @@ from dashboard.views import StatesJSONView
 from dashboard.views import StatesWithReserveClustersJSONView
 from dashboard.views import ClustersPerTeamJSONView
 from dashboard.views import ClustersJSONView
+from dashboard.views import AlertViewSet
 
 v1_api = Api(api_name='v1')
 v1_api.register(HouseholdSurveyJSONResource())
 
+router = routers.DefaultRouter()
+router.register(r'alerts', AlertViewSet)
+
 urlpatterns = patterns('',
-                       (r'^api/', include(v1_api.urls)),
-                       url(r'^$', 'dashboard.views.dashboard', name='index'),
+                       url(r'^api/', include(v1_api.urls)),
+
+                       url(r'^', include(router.urls)),
+                       url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
                        url(r'^home$', 'dashboard.views.home', name='home'),
+
                        url(r'^mapping_checks$',
                            'dashboard.views.mapping_checks',
                            name='mapping_checks'),
@@ -59,9 +69,6 @@ urlpatterns = patterns('',
                        url(r'^surveyedclustersperteamjsonview/$',
                            SurveyedClustersPerTeamJSONView.as_view(),
                            name='surveyed-clusters-per-team-json-view'),
-                       url(r'^alertsjsonview/$',
-                           AlertsJSONView.as_view(),
-                           name='alerts-json-view'),
                        url(r'^activequestionnairespecificationview/$',
                            ActiveQuestionnaireSpecificationView.as_view(),
                            name='active-questionnaire-specification-view'),

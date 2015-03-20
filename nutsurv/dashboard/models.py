@@ -8,6 +8,7 @@ import numpy
 import scipy.stats
 
 from django.db import models
+from rest_framework.reverse import reverse
 
 import django.contrib.gis.db.models as gismodels
 from django.contrib.gis.geos import Point
@@ -321,12 +322,33 @@ class Alert(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
+    def team_id(self):
+        return self.json.get('team_id')
+
+    def team_name(self):
+        return self.json.get('team_name')
+
+    def cluster_id(self):
+        return self.json.get('cluster_id')
+
+    def location(self):
+        return self.json.get('location')
+
+    def type(self):
+        return self.json.get('type')
+
+    def survey_id(self):
+        return self.json.get('survey_id')
+
     def __unicode__(self):
         if self.archived:
             archived = u', archived'
         else:
             archived = u''
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
+
+    def get_absolute_url(self):
+        return reverse('alert-detail', args=[str(self.id)])
 
     @classmethod
     def run_alert_checks_on_document(cls, household_survey):

@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.conf import settings
 
+from rest_framework import viewsets
+from .serializers import AlertSerializer
+
 from models import Alert
 from models import HouseholdSurveyJSON
 from models import Clusters
@@ -479,41 +482,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
 
         return survey_data
 
-
-class AlertsJSONView(LoginRequiredView):
-    def get(self, request, *args, **kwargs):
-        """Generates an HTTP response with a JSON document containing
-        alerts in the format requested by Johannes and shown in the example
-        below:
-        {
-            "alerts": [
-                "GPS position issue with Ahmad in Nasarawa state",
-                "Digit preference issue with Peter in Kogi state",
-                "Age distribution issue with Mahamadou in Kano"
-            ]
-        }
-        """
-        alerts = {'alerts': self._find_all_alerts()}
-        return HttpResponse(json.dumps(alerts),
-                            content_type='application/json')
-
-    @staticmethod
-    def _find_all_alerts():
-        """Computes and returns a list of json objects each string representing
-        one alert.  Archived alerts are not included.  Alerts are sorted by their
-        creation date in the reverse chronological order (i.e. the list starts
-        from the most recent).
-        """
-        alerts = Alert.objects.filter(archived=False).order_by('-created')
-        return [
-            {
-                'timestamp': alert.created.isoformat(),
-                'category': alert.category,
-                'message': alert.json
-            } for alert in alerts
-        ]
-
-
 class ActiveQuestionnaireSpecificationView(View):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a text document containing the
@@ -675,3 +643,15 @@ class ClustersJSONView(View):
         else:
             data = {'clusters': {}}
         return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+
+
+class AlertViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Alerts to be viewed.
+    """
+
+    template_name = 'dashboard/alert.html'
+    queryset = Alert.objects.filter(archived=False).order_by('-created')
+    serializer_class = AlertSerializer

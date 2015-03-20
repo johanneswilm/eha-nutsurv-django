@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'djangobower',
     'compressor',
     'corsheaders',
+    'rest_framework',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -153,6 +154,14 @@ COMPRESS_PRECOMPILERS = (
         ('text/scss', 'sassc -m -I components/bower_components/ehealth-bootstrap "{infile}" "{outfile}"'),
         )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+}
 
 
 try:

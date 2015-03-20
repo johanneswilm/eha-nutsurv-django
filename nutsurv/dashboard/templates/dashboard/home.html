@@ -44,17 +44,17 @@
         <div class="alert-name col-sm-7">
             <h3 class="alert-title"><%= type.title %></h3>
             <span class="alert-details">
-                <strong><%= alert.message.team_name %></strong>
-                on <%= alert.timestamp %>
+                <strong><%= alert.team_name %></strong>
+                on <%= alert.created %>
             </span>
         </div>
         <div class="alert-actions col-sm-4 text-right">
-            <% if (alert.message.type === 'mapping_check_unknown_cluster' && alert.message.location !== undefined) { %>
-            <a href="#" data-geo="<%= alert.message.location[0] + ',' + alert.message.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
+            <% if (alert.type === 'mapping_check_unknown_cluster' && alert.location !== undefined) { %>
+            <a href="<%= alert.url %>" data-geo="<%= alert.location[0] + ',' + alert.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
             <% } else { %>
-            <a href="#" class="alert-action btn btn-primary btn-sm">View Details</a>
+            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
             <% } %>
-            <a href="#" class="alert-action btn btn-primary btn-sm">Contact Team</a>
+            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">Contact Team</a>
         </div>
         <div class="clearfix"></div>
         <div class="col-sm-12"><hr class="alert-line"></div>
