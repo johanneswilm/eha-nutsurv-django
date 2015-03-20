@@ -23,13 +23,13 @@ Run the server
     sudo docker-compose up --no-recreate
 
 ### For a NEW database ONLY
- 
+
 Open a NEW terminal or tab and connect to the database with a new container
 
-    sudo docker run -v ~/nutsurv/:/opt/nutsurv -i --net host  -t nutsurv_web:latest bash
+    sudo docker run -v $(pwd):/opt/nutsurv -i --net host  -t nutsurv_web:latest bash
 
 Now set up the db
-    
+
     psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
     psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
     python /opt/nutsurv/nutsurv/manage.py makemigrations
