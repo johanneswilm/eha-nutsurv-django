@@ -1,8 +1,3 @@
-db:
-  image: "mdillon/postgis:9.4"
-  net: "host"
-  volumes:
-   - ./postgresql:/var/lib/postgresql
 web:
   build: .
   volumes:
