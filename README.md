@@ -8,39 +8,35 @@ NutSurv - Data collection and quality assurance tools for Nutrition Surveys on m
 
 Install [Docker](https://docs.docker.com/installation/#installation)
 
-
-Get the code
+## Get the code
 
     git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
 
-Build the container
+### Build the container
 
-    docker build -t nutsurv .
+    sudo docker-compose build
 
-Make your local settings
-
-    set the DATABASE settings in `./nutsurv/configuration.py`
-
-For a NEW databse ONLY
-
-    sudo docker run --net=host -v $(pwd):/opt/nutsurv -i -t nutsurv psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U nutsurv_dev
-    Password for user nutsurv_dev:
+Make your local settings set the DATABASE settings in `./nutsurv/configuration.py`
 
 Run the server
 
-    sudo docker run --net=host -v $(pwd):/opt/nutsurv -t nutsurv python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8000
-    Performing system checks...
+    sudo docker-compose up --no-recreate
 
-    System check identified no issues (0 silenced).
+### For a NEW database ONLY
 
-    You have unapplied migrations; your app may not work properly until they are applied.
-    Run 'python manage.py migrate' to apply them.
+Open a NEW terminal or tab and connect to the database with a new container
 
-    March 16, 2015 - 10:22:06
-    Django version 1.7.6, using settings 'nutsurv.settings'
-    Starting development server at http://0.0.0.0:8000/
-    Quit the server with CONTROL-C.
+    sudo docker run -v $(pwd):/opt/nutsurv -i --net host  -t nutsurv_web:latest bash
 
+Now set up the db
+
+    psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
+    psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
+    python /opt/nutsurv/nutsurv/manage.py makemigrations
+    python /opt/nutsurv/nutsurv/manage.py migrate
+
+### Good job!
+The website should be available at http://HOST:8001
 
 # Manual Installation
 
@@ -52,7 +48,7 @@ First install all needed dependencies:
 
     sudo apt-get install git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev
     libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev
-    
+
     pip install numpy scipy
 
 Then get the sources (enter username/password):
