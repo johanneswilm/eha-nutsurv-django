@@ -14,20 +14,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 PROJECT_ROOT = PROJECT_PATH
 
-try:
-    # For zero downtime deploys
-    import uwsgi
-    from uwsgidecorators import timer
-    from django.utils import autoreload
-
-    @timer(3)
-    def change_code_gracefull_reload(sig):
-        if autoreload.code_changed():
-            uwsgi.reload()
-
-except Exception as e:
-    print e
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
