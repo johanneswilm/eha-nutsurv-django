@@ -47,35 +47,18 @@ to make minor adjustments.
 First install all needed dependencies:
 
     sudo apt-get install git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev
-    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev
-
-    pip install numpy scipy
-
-Then get the sources (enter username/password):
-
-    git clone https://github.com/eHealthAfrica/eha-nutsurv-django.git nutsurv
-
-Install [Node](http://nodejs.org)
-
-**Mac OS (via NVM)**
-
-    curl https://raw.githubusercontent.com/creationix/nvm/v0.23.2/install.sh | bash
-    nvm install stable
-
-**Ubuntu**
-
-    curl -sL https://deb.nodesource.com/setup | sudo bash -
-    sudo apt-get install -y nodejs
-
-**Debian (as root)**
-
-    apt-get install curl
-    curl -sL https://deb.nodesource.com/setup | bash -
-    apt-get install -y nodejs
+    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev postgresql-server-dev-all
+    g++ gfortran nodejs npm nodejs-legacy
 
 Install [Bower](http://bower.io) for front-end packages
 
-    npm install bower
+    sudo npm install bower -g
+
+
+Then get the sources (enter github username/password):
+
+    git clone https://github.com/eHealthAfrica/eha-nutsurv-django.git nutsurv
+
 
 Now create a python virtual environment:
 
@@ -84,6 +67,10 @@ Now create a python virtual environment:
 Activate the virtual env (has to be done every time you want to run the application)
 
     source nutsurv-venv/bin/activate
+
+Enter the source folder:
+
+    cd nutsurv
 
 Either install python requirements for a production environment:
 
@@ -118,11 +105,11 @@ Add the front-end dependencies via [django-bower](http://django-bower.readthedoc
 
     ./manage.py bower install
 
-Run the server:
+Run the server either locally:
 
     ./manage.py runserver
 
-Run the server globally access (for [Vagrant access](https://github.com/eHealthAfrica/tools-reference/blob/master/vagrant.md)):
+Or run the server with global access (for [Vagrant access](https://github.com/eHealthAfrica/tools-reference/blob/master/vagrant.md)):
 
     ./manage.py runserver 0.0.0.0:8000
 

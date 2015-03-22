@@ -1,3 +1,5 @@
+numpy
+scipy
 Django==1.7.6
 psycopg2
 jsonfield
@@ -13,3 +15,4 @@ django_compressor
 libsass
 supervisor
 uwsgi
+django-appconf
