@@ -1,6 +1,6 @@
 var mappingChecks = {
     urls : {
-        alerts: '/dashboard/alertsjsonview/'
+        alerts: '/dashboard/alerts/'
     },
     initiate: function () {
         jQuery('#mapping_checks_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
@@ -30,7 +30,8 @@ var mappingChecks = {
     popupTmp: _.template('ERROR!<br>Team <%- team_name %>(<%- team_id%>)<% if (cluster_id) { %><br>Cluster #: <%- cluster_id %><% } %>'),
     updateMap: function (data) {
       var group, incorrectSurveys = [],
-        mapAlerts = _.where(data.alerts, {category:'map'});
+
+        mapAlerts = _.where(data, {category:'map'});
         _.each(mappingChecks.mapMarkers, function(marker) {
             // Remove all previous markers
             home.map.removeLayer(marker);
@@ -38,12 +39,12 @@ var mappingChecks = {
 
         _.each(mapAlerts, function(mapAlert){
             var marker;
-            if (mapAlert.message.hasOwnProperty('location')) {
-                marker = L.marker(mapAlert.message.location, {icon: map.markers.red}),
+            if (mapAlert.hasOwnProperty('location')) {
+                marker = L.marker(mapAlert.location, {icon: map.markers.red}),
                 mappingChecks.mapMarkers.push(marker),
-                marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert.message));
+                marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
             }
-            incorrectSurveys.push(mapAlert.message);
+            incorrectSurveys.push(mapAlert);
 
         });
         mappingChecks.incorrectSurveys = incorrectSurveys;

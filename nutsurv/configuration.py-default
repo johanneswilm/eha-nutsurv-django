@@ -1,14 +1,15 @@
+CORS_ORIGIN_ALLOW_ALL = True
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql'$
-        'NAME': 'nutsurv',                      # Or path to database file if using $
-        'USER': 'nutsurv',                      # Not used with sqlite3.
-        'PASSWORD': '123456',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.$
-        'PORT': '',                      # Set to empty string for default. N$
-        'CONN_MAX_AGE': 15               # The max time in seconds a database$
-    }
-}
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'HOST': 'localhost',
+            'PORT': '5432',
+            }
+        }
+
 
 # Add a secret text that has to be added to all posts from formhub.
 # This is to increase security as posts from formhub will not hold the CSRF security info.
