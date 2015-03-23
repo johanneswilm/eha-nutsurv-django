@@ -36,7 +36,7 @@ var surveyCompletedTeams = {
             return false;
         }
 
-        var surveyData = dataGetter.downloads[home.urls.survey].data.survey_data,
+        var surveyData = dataGetter.downloads[surveyCompletedTeams.urls.survey].data.survey_data,
             clustersPerTeamData = dataGetter.downloads[surveyCompletedTeams.urls.clustersPerTeam].data.teams,
             teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data.teams,
             perTeamData = [];

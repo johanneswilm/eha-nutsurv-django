@@ -9,7 +9,6 @@ from api.resources import HouseholdSurveyJSONResource
 from dashboard.views import TeamsJSONView
 from dashboard.views import AggregateSurveyDataJSONView
 from dashboard.views import SurveyedClustersPerTeamJSONView
-from dashboard.views import AlertsJSONView
 from dashboard.views import PersonnelJSONView
 from dashboard.views import ActiveQuestionnaireSpecificationView
 from dashboard.views import ClustersPerStateJSONView
@@ -39,9 +38,6 @@ urlpatterns = patterns('',
                        url(r'^age_distribution$',
                            'dashboard.views.age_distribution',
                            name='age_distribution'),
-                       url(r'^survey_completed$',
-                           'dashboard.views.survey_completed',
-                           name='survey_completed'),
                        url(r'^survey_completed_teams$',
                            'dashboard.views.survey_completed_teams',
                            name='survey_completed_teams'),
@@ -70,9 +66,6 @@ urlpatterns = patterns('',
                        url(r'^surveyedclustersperteamjsonview/$',
                            SurveyedClustersPerTeamJSONView.as_view(),
                            name='surveyed-clusters-per-team-json-view'),
-                       url(r'^alertsjsonview/$',
-                           AlertsJSONView.as_view(),
-                           name='alerts-json-view'),
                        url(r'^activequestionnairespecificationview/$',
                            ActiveQuestionnaireSpecificationView.as_view(),
                            name='active-questionnaire-specification-view'),

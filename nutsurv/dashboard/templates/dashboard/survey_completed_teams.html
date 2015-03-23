@@ -1,3 +1,18 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fa fa-check"></i> Surveys Completed</h1>
+</div>
+
+<div id="tabs" role="tabpanel">
+  <ul id="survey_completed_tabs" class="nav nav-tabs">
+    <li><a href="/dashboard/survey_completed_states">States</a></li>
+    <li class="active"><a href="/dashboard/survey_completed_teams">Teams</a></li>
+  </ul>
+</div>
+
+</div>
 <div id="survey_completed_teams_main" class="alone_block">
     <table id="survey_completed_teams_table" class="table">
         <thead>
@@ -34,3 +49,4 @@
     </table>
 </div>
 <script src="/static/js/survey_completed_teams.js"></script>
+{% endblock content %}

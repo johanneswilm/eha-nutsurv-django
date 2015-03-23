@@ -1,10 +1,10 @@
 var home = {
-    urls : {
+    urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        alerts: '/dashboard/alertsjsonview/',
+        alerts: '/dashboard/alerts/',
         teams: '/dashboard/teamsjsonview/'
     },
-    initiate: function () {
+    initiate: function() {
         jQuery('#home_alerts_download').on('click', home.downloadAlertsCSV);
         jQuery('#home_lastcontact_download').on('click', home.downloadLatestTeamContactsCSV);
 
@@ -18,7 +18,8 @@ var home = {
         dataGetter.addNew(home.urls.teams, home.drawLatestContacts, false);
 
     },
-    createMap: function () {
+    mapMarkers: L.markerClusterGroup(),
+    createMap: function() {
         var osm = L.tileLayer(map.osmUrl, {
             minZoom: 1,
             maxZoom: 18,
@@ -35,26 +36,30 @@ var home = {
         });
         home.map.attributionControl.setPrefix('');
 
+        home.map.addLayer(home.mapMarkers);
+
     },
-    mapMarkers: [],
-    updateMap: function (data) {
-      var group;
-        _.each(home.mapMarkers, function(marker) {
-            // Remove all previous markers
-            home.map.removeLayer(marker);
+    updateMap: function(data) {
+        var group;
+
+        home.mapMarkers.clearLayers();
+
+        _.each(data.survey_data, function(survey) {
+            var marker = L.marker(survey.location, {
+                    icon: map.markers.green
+                }),
+                popupHTML = "Team: " + survey.team + "<br>" + "Cluster #: " + survey.cluster;
+            marker.bindPopup(popupHTML);
+            home.mapMarkers.addLayer(marker);
         });
-        _.each(data.survey_data, function(survey){
-            var marker = L.marker(survey.location, {icon: map.markers.green}),
-                popupHTML = "Team: "+survey.team+"<br>"+"Cluster #: "+survey.cluster;
-            home.mapMarkers.push(marker);
-            marker.addTo(home.map).bindPopup(popupHTML);
-        });
-        group = new L.featureGroup(home.mapMarkers);
-        home.map.fitBounds(group.getBounds());
+
+
+        home.map.fitBounds(home.mapMarkers.getBounds());
+
     },
     latestTeamContacts: false,
-    drawLatestContacts: function (data) {
-        if (!dataGetter.checkAll([home.urls.survey,home.urls.teams])) {
+    drawLatestContacts: function(data) {
+        if (!dataGetter.checkAll([home.urls.survey, home.urls.teams])) {
             /* Check that all the relative data has been downloaded, else cancel.
             This function will be called for each piece of arriving data, so it
             will be executed once the last piece of data arrives.
@@ -67,8 +72,10 @@ var home = {
             teamData = dataGetter.downloads[home.urls.teams].data.teams;
 
         jQuery('#home_last_contact_list').empty();
-        _.each(surveyData, function (survey) {
-            var latestContact = _.find(latestTeamContacts, {team: survey.team});
+        _.each(surveyData, function(survey) {
+            var latestContact = _.find(latestTeamContacts, {
+                team: survey.team
+            });
             if (!latestContact) {
                 latestTeamContacts.push({
                     team: survey.team,
@@ -79,12 +86,16 @@ var home = {
             }
         });
         home.latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
-        _.each(home.latestTeamContacts, function(contact){
-            jQuery('#home_last_contact_list').append(home.contactTmp({teamNo: contact.team, teamName: teamData[contact.team], time: contact.time}));
+        _.each(home.latestTeamContacts, function(contact) {
+            jQuery('#home_last_contact_list').append(home.contactTmp({
+                teamNo: contact.team,
+                teamName: teamData[contact.team],
+                time: contact.time
+            }));
         });
 
     },
-    downloadLatestTeamContactsCSV: function () {
+    downloadLatestTeamContactsCSV: function() {
         if (!home.latestTeamContacts) {
             return false;
         }
@@ -97,25 +108,27 @@ var home = {
         var output = 'team ID,team name,timestamp\n',
             teamData = dataGetter.downloads[home.urls.teams].data.teams;
 
-        _.each(home.latestTeamContacts, function(contact){
-            output += contact.team+',"'+teamData[contact.team]+'",'+contact.time+'\n';
+        _.each(home.latestTeamContacts, function(contact) {
+            output += contact.team + ',"' + teamData[contact.team] + '",' + contact.time + '\n';
         });
 
         saveAs(
-            new Blob( [output], {type : 'text/csv'}),
+            new Blob([output], {
+                type: 'text/csv'
+            }),
             'latest_team_contacts.csv'
         );
 
     },
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
-    drawAlerts: function (data) {
+    drawAlerts: function(data) {
 
         var alert_list = $('#home_alerts_list').find('div.list');
         alert_list.empty();
 
-        _.each(data.alerts, function(alert) {
+        _.each(data, function(alert) {
             var alertTemplate = _.template($('#home-alert-item').html());
-            var alertType = home.alertType[alert.message.type];
+            var alertType = home.alertType[alert.type];
             alert_list.append(alertTemplate({ alert: alert, type: alertType }));
         });
 
@@ -131,7 +144,7 @@ var home = {
             title: 'Child Age Displacement',
             icon: 'fa-child'
         },
-        child_age_in_months_ratio: { 
+        child_age_in_months_ratio: {
             title: 'Child Age Months Ratio',
             icon: 'fa-child'
         },
@@ -143,10 +156,10 @@ var home = {
             title: 'Women aged 45 to 54 have displacement',
             icon: 'fa-female'
         },
-        sex_ratio: { 
+        sex_ratio: {
             title: 'Sex Ratio',
             icon: 'fa-users'
-        },        
+        },
         digit_preference: {
             title: 'Digit Preference',
             icon: 'fa-calculator'
@@ -214,21 +227,23 @@ var home = {
             modal.find('span.team-id').text(button.data('team_id'))
         });
     },
-    createAlertsCSV: function (data) {
-        var output = 'timestamp,message\n';
-        _.each(data.alerts,function(alert){
-            output += alert.timestamp + ',' + alert.message + '\n';
+    createAlertsCSV: function(data) {
+        var output = 'created,text\n';
+        _.each(data.alerts, function(alert) {
+            output += alert.created + ',' + alert.text + '\n';
         });
         home.alertsCSV = output;
     },
     alertsCSV: false,
-    downloadAlertsCSV: function () {
+    downloadAlertsCSV: function() {
         if (!home.alertsCSV) {
             return false;
         }
 
         saveAs(
-            new Blob( [home.alertsCSV], {type : 'text/csv'}),
+            new Blob([home.alertsCSV], {
+                type: 'text/csv'
+            }),
             'alerts.csv'
         );
 

@@ -11,3 +11,5 @@ pytz
 django-cors-headers
 django_compressor
 libsass
+supervisor
+uwsgi
