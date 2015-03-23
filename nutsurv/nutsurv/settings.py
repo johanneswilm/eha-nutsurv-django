@@ -125,6 +125,7 @@ BOWER_INSTALLED_APPS = (
     'jquery#1.10.2',
     'jquery-flot#0.8.3',
     'leaflet#0.7.3',
+    'leaflet.markercluster#0.4.0',
     'lodash#3.0.0',
     'parse-python-indentation#0.1.0',
     'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.5',
