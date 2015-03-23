@@ -71,7 +71,9 @@ var surveyCompletedTeams = {
             perTeamData.push(teamObject);
         });
         _.each(surveyData, function(survey) {
-            var teamObject = _.findWhere(perTeamData, {team: survey.team});
+            var teamObject = _.findWhere(perTeamData, {team: survey.team}),
+            childMembers = _.where(survey.members, {'surveyType': 'child'}),
+            womenMembers = _.where(survey.members, {'surveyType': 'women'});
             // Increase the number of households surveyed for this team by one.
             if (teamObject) {
                 teamObject.households++;
@@ -87,7 +89,6 @@ var surveyCompletedTeams = {
                     }
                 }
 
-
                 teamObject.members += survey.members.length;
                 if (survey.members.length < teamObject.minMembers || teamObject.minMembers === -1) {
                     teamObject.minMembers = survey.members.length;
@@ -96,24 +97,24 @@ var surveyCompletedTeams = {
                     teamObject.maxMembers = survey.members.length;
                 }
 
-                if ('women_surveys' in survey) {
-                    teamObject.women += survey.women_surveys.length;
-                    if (survey.women_surveys.length < teamObject.minWomen || teamObject.minWomen === -1) {
-                        teamObject.minWomen = survey.women_surveys.length;
-                    }
-                    if (survey.women_surveys.length > teamObject.maxWomen) {
-                        teamObject.maxWomen = survey.women_surveys.length;
-                    }
+
+                teamObject.women += womenMembers.length;
+                if (womenMembers.length < teamObject.minWomen || teamObject.minWomen === -1) {
+                    teamObject.minWomen = womenMembers.length;
                 }
-                if ('child_surveys' in survey) {
-                    teamObject.children += survey.child_surveys.length;
-                    if (survey.child_surveys.length < teamObject.minChildren || teamObject.minChildren === -1) {
-                        teamObject.minChildren = survey.child_surveys.length;
-                    }
-                    if (survey.child_surveys.length > teamObject.maxChildren) {
-                        teamObject.maxChildren = survey.child_surveys.length;
-                    }
+                if (womenMembers.length > teamObject.maxWomen) {
+                    teamObject.maxWomen = womenMembers.length;
                 }
+
+
+                teamObject.children += childMembers.length;
+                if (childMembers.length < teamObject.minChildren || teamObject.minChildren === -1) {
+                    teamObject.minChildren = childMembers.length;
+                }
+                if (childMembers.length > teamObject.maxChildren) {
+                    teamObject.maxChildren = childMembers.length;
+                }
+
             }
 
         });

@@ -136,28 +136,32 @@ var ageDistribution = {
         var ages = {};
 
         _.each(data.survey_data, function(survey) {
+            var childSurveys;
+
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
             if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
                 return true;
             }
-            if (survey.hasOwnProperty('child_surveys')) {
-                _.each(survey.child_surveys, function(child) {
-                    var childAge, months;
-                    if (child.hasOwnProperty('birthDate')) {
-                        childAge = new Date(new Date()-new Date(child.birthDate));
-                        months = (childAge.getYear()-70)*12+childAge.getMonth();
-                    } else {
-                        months = child.ageInMonths;
-                    }
-                    if (ages.hasOwnProperty(months)) {
-                        ages[months] ++;
-                    } else {
-                        ages[months] = 1;
-                    }
-                });
-            }
+
+            childSurveys = _.pluck(_.where(survey.members, {'surveyType': 'child'}), 'survey');
+
+            _.each(childSurveys, function(child) {
+                var childAge, months;
+                if (child.hasOwnProperty('birthDate')) {
+                    childAge = new Date(new Date()-new Date(child.birthDate));
+                    months = (childAge.getYear()-70)*12+childAge.getMonth();
+                } else {
+                    months = child.ageInMonths;
+                }
+                if (ages.hasOwnProperty(months)) {
+                    ages[months] ++;
+                } else {
+                    ages[months] = 1;
+                }
+            });
+
         });
         ageDistribution.childrenAgeList = _.map(ages, function(num, age) {
             return [parseInt(age), num];
