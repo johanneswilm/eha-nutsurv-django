@@ -120,6 +120,7 @@ var home = {
         });
 
         home.paginateAlerts();
+        home.contacModalAlerts();
     },
     alertType: {
         data_collection_time: {
@@ -204,6 +205,14 @@ var home = {
             return false;
       	});
 
+    },
+    contacModalAlerts: function () {
+        $('#contact-team-modal').on('show.bs.modal', function(event) {    
+            var button = $(event.relatedTarget)    
+            var modal = $(this)
+            modal.find('span.team-name').text(button.data('team'))
+            modal.find('span.team-id').text(button.data('team_id'))
+        });
     },
     createAlertsCSV: function (data) {
         var output = 'timestamp,message\n';
