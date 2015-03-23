@@ -12,7 +12,6 @@ var home = {
         dataGetter.addNew(home.urls.survey, home.updateMap, true);
 
         dataGetter.addNew(home.urls.alerts, home.drawAlerts, true);
-        home.paginateAlerts();
         dataGetter.addNew(home.urls.alerts, home.createAlertsCSV, true);
 
         dataGetter.addNew(home.urls.survey, home.drawLatestContacts, true);
@@ -120,6 +119,7 @@ var home = {
             alert_list.append(alertTemplate({ alert: alert, type: alertType }));
         });
 
+        home.paginateAlerts();
     },
     alertType: {
         data_collection_time: {
@@ -176,36 +176,33 @@ var home = {
 
         $('#home_alerts_filter_type').append(type_html);
 
-//        setTimeout(function() {
 
-            var paginateAlertList = new List('home_alerts_list', {
-                valueNames: ['alert-title', 'alert-details', 'alert_type'],
-                page: 10,
-                plugins: [ ListPagination({}) ] 
-            });
-    
-    
-        	// Sort By Category
-        	$('#home_alerts_filter_type').change(function() {			
-        		var this_type = $(this).val().toString();
-        		if (this_type == 'all') {
-        	        paginateAlertList.filter();
-        	    }
-        	    else {
-        	        paginateAlertList.filter(function(item) {
-        	            if (item.values().alert_type == this_type) {
-        	                return true;
-        	            }
-        	            else {
-        	                return false;
-        	            }
-        	        });
-        	    }
-                return false;
-          	});
+        // Paginate with list.js
+        var paginateAlertList = new List('home_alerts_list', {
+            valueNames: ['alert_title', 'alert_details', 'alert_type'],
+            page: 10,
+            plugins: [ ListPagination({}) ] 
+        });
 
-//        }, 1000);
-
+    	// Sort By Category
+    	$('#home_alerts_filter_type').change(function() {			
+    		var this_type = $(this).val().toString();
+    		if (this_type == 'all') {
+    	        paginateAlertList.filter();
+    	    }
+    	    else {            
+    	        paginateAlertList.filter(function(item) {
+                    console.log('item.values() ' + item.values().alert_type);
+    	            if (item.values().alert_type == this_type) {
+    	                return true;
+    	            }
+    	            else {
+    	                return false;
+    	            }
+    	        });
+    	    }
+            return false;
+      	});
 
     },
     createAlertsCSV: function (data) {

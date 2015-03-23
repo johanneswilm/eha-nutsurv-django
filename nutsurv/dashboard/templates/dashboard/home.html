@@ -43,29 +43,29 @@
 </div>
 
 <script id="home-alert-item" type="text/template">
-        <div class="row alert-item">
-            <span class="alert_type" style="display: none;"><%= alert.message.type %></span>
-            <div class="col-sm-1 text-right">
-                <i class="alert-icon fa <%= type.icon %>"></i>
-            </div>
-            <div class="alert-name col-sm-7">
-                <h3 class="alert-title"><%= type.title %></h3>
-                <span class="alert-details">
-                    <strong><%= alert.message.team_name %></strong>
-                    on <%= alert.timestamp %>
-                </span>
-            </div>
-            <div class="alert-actions col-sm-4 text-right">
-                <% if (alert.message.type === 'mapping_check_unknown_cluster' && alert.message.location !== undefined) { %>
-                <a href="<%= alert.url %>" data-geo="<%= alert.message.location[0] + ',' + alert.message.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
-                <% } else { %>
-                <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
-                <% } %>
-                <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">Contact Team</a>
-            </div>
-            <div class="clearfix"></div>
-            <div class="col-sm-12"><hr class="alert-line"></div>
+    <div class="row alert-item">
+        <span class="alert_type" style="display: none;"><%= alert.message.type %></span>
+        <div class="col-sm-1 text-right">
+            <i class="alert-icon fa <%= type.icon %>"></i>
         </div>
+        <div class="alert-name col-sm-7">
+            <h3 class="alert_title"><%= type.title %></h3>
+            <span class="alert-details alert_details">
+                <strong><%= alert.message.team_name %></strong>
+                on <%= alert.timestamp %>
+            </span>
+        </div>
+        <div class="alert-actions col-sm-4 text-right">
+            <% if (alert.message.type === 'mapping_check_unknown_cluster' && alert.message.location !== undefined) { %>
+            <a href="<%= alert.url %>" data-geo="<%= alert.message.location[0] + ',' + alert.message.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
+            <% } else { %>
+            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
+            <% } %>
+            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">Contact Team</a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-sm-12"><hr class="alert-line"></div>
+    </div>
 </script>
 
 
