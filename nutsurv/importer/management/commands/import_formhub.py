@@ -1,5 +1,10 @@
+
 from django.core.management.base import BaseCommand, CommandError
-from importer.models import FormhubSurvey
+from django.db.utils import IntegrityError
+
+from dashboard.models import HouseholdSurveyJSON
+
+from ...models import FakeTeams
 
 import csv
 import re
@@ -7,6 +12,23 @@ import re
 from pprint import pprint
 
 SPLIT_SEGMENT_RE = re.compile("([^\[]*)(?:\[(\d+)\])?")
+
+def find_household_members(data):
+    members = []
+    if 'consent' in data and 'hh_roster' in data['consent']:
+        for fh_member in data['consent']['hh_roster']:
+            member = {
+                "firstName": fh_member['listing']['name'],
+                "age": fh_member['listing']['age_years'],
+            }
+            if fh_member['listing']['sex'] == 1:
+                member["gender"] = "M"
+            else:
+                member["gender"] = "F"
+
+            members.append(member)
+
+    return members
 
 def parse_flat_formhub_csv(rawdata):
     parsed = {}
@@ -61,6 +83,7 @@ class Command(BaseCommand):
             for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
 
                 if not headers:
+                    # first row is the headers
                     headers = row
                     continue
 
@@ -68,8 +91,35 @@ class Command(BaseCommand):
 
                 parsed = parse_flat_formhub_csv(rawdata)
 
-                formhub_survey, created = FormhubSurvey.objects.get_or_create(uuid=parsed['_uuid'])
-                formhub_survey.json = parsed
-                formhub_survey.save()
-                formhub_survey.convert_to_household_survey()
-                formhub_survey.save()
+                members = find_household_members(parsed)
+
+                try:
+                    household_survey, created = HouseholdSurveyJSON.objects.get_or_create(
+                        uuid=parsed['_uuid'],
+                        json={
+                            "uuid": parsed['_uuid'],
+                            "syncDate": parsed['_submission_time'] + ".000Z",
+                            "startTime": parsed['starttime'],
+                            "created": parsed['_submission_time']  + ".000Z",
+                            "modified": parsed['_submission_time'],
+                            "householdID": parsed['hh_number'],
+                            "cluster": parsed['cluster'],
+                            "endTime": parsed['endtime'],
+                            "location": [
+                                parsed['_gps_latitude'],
+                                parsed['_gps_longitude']
+                            ],
+                            "members": members,
+                            "team": FakeTeams.objects.get_or_create(team_id = \
+                                parsed['team_num'])[0].json,
+                            "_id": parsed['_uuid'],
+                            "tools":{},
+                            "history":[]
+                        }
+                    )
+                except IntegrityError as e:
+                    created = False
+                except KeyError as e:
+                    print e
+
+                print row_no, 'created' if created else 'exists', parsed['_uuid']
