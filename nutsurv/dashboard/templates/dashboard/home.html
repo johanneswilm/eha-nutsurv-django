@@ -83,7 +83,13 @@
             <% } else { %>
             <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
             <% } %>
-            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">Contact Team</a>
+            <button type="button" class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#contact-team-modal"
+                    data-team="<%= alert.message.team_name %>"
+                    data-team_id="<%= alert.message.team_id %>">
+                Contact Team
+            </button>
         </div>
     </div>
 </script>
