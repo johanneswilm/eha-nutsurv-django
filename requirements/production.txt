@@ -13,4 +13,3 @@ django_compressor
 libsass
 supervisor
 uwsgi
-django-appconf
