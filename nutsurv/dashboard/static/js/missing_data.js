@@ -87,6 +87,8 @@ var missingData = {
 
         _.each(surveyData, function(survey) {
 
+            var womenMembers;
+
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
@@ -100,9 +102,10 @@ var missingData = {
                 }
             });
 
-            _.each(survey.women_surveys, function(woman) {
+            womenMembers = _.where(survey.members, {'surveyType': 'women'});
+            _.each(womenMembers, function(woman) {
                 _.each(collectableData, function(detail) {
-                    if (detail in woman) {
+                    if (detail in woman || detail in woman.survey) {
                         womenDetails[detail] ++;
                     }
                 });
@@ -167,6 +170,8 @@ var missingData = {
 
         _.each(surveyData, function(survey) {
 
+            var childMembers;
+
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
@@ -180,9 +185,11 @@ var missingData = {
                 }
             });
 
-            _.each(survey.child_surveys, function(child) {
+            childMembers = _.where(survey.members, {'surveyType': 'child'});
+
+            _.each(childMembers, function(child) {
                 _.each(collectableData, function(detail) {
-                    if (detail in child) {
+                    if (detail in child || detail in child.survey) {
                         childDetails[detail] ++;
                     }
                 });

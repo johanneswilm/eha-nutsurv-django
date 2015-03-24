@@ -36,7 +36,6 @@ Now set up the db withing the docker bash shell
     python /opt/nutsurv/nutsurv/manage.py createsuperuser
     python /opt/nutsurv/nutsurv/manage.py loaddata testdata
 
-
 # Run the server
 
 ### As prodcution-ish
