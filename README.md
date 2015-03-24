@@ -72,9 +72,9 @@ Enter the source folder:
 
     cd nutsurv
 
-Install Numpy/Scipy:
+Install Numpy/Scipy/Appconf:
 
-    pip install numpy scipy
+    pip install numpy scipy django-appconf
 
 Either install python requirements for a production environment:
 
