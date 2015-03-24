@@ -128,8 +128,7 @@ var home = {
 
         _.each(data, function(alert) {
             var alertTemplate = _.template($('#home-alert-item').html());
-            var alertType = home.alertType[alert.type];
-            alert_list.append(alertTemplate({ alert: alert, type: alertType }));
+            alert_list.append(alertTemplate(_.assign(alert, home.alertType[alert.type])));
         });
 
         home.paginateAlerts();
@@ -193,7 +192,7 @@ var home = {
 
         // Paginate with list.js
         var paginateAlertList = new List('home_alerts_list', {
-            valueNames: ['alert_title', 'alert_details', 'alert_type'],
+            valueNames: ['alert_title', 'alert_team_name', 'alert_type'],
             page: 10,
             plugins: [ ListPagination({}) ] 
         });
