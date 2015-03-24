@@ -79,7 +79,9 @@ var surveyCompletedStates = {
             var state = clusterInfo.findState(survey.cluster),
             stateObject = _.findWhere(perStateData, {state: state});
             // Increase the number of households surveyed for this state by one.
-            stateObject.households++;
+            stateObject.households++,
+            childMembers = _.where(survey.members, {'surveyType': 'child'}),
+            womenMembers = _.where(survey.members, {'surveyType': 'women'});
 
             if (!(survey.cluster in stateObject.clusterCodes)) {
                 stateObject.clusterCodes[survey.cluster] = 1;
@@ -101,24 +103,24 @@ var surveyCompletedStates = {
                 stateObject.maxMembers = survey.members.length;
             }
 
-            if ('women_surveys' in survey) {
-                stateObject.women += survey.women_surveys.length;
-                if (survey.women_surveys.length < stateObject.minWomen || stateObject.minWomen === -1) {
-                    stateObject.minWomen = survey.women_surveys.length;
-                }
-                if (survey.women_surveys.length > stateObject.maxWomen) {
-                    stateObject.maxWomen = survey.women_surveys.length;
-                }
+
+            stateObject.women += womenMembers.length;
+            if (womenMembers.length < stateObject.minWomen || stateObject.minWomen === -1) {
+                stateObject.minWomen = womenMembers.length;
             }
-            if ('child_surveys' in survey) {
-                stateObject.children += survey.child_surveys.length;
-                if (survey.child_surveys.length < stateObject.minChildren || stateObject.minChildren === -1) {
-                    stateObject.minChildren = survey.child_surveys.length;
-                }
-                if (survey.child_surveys.length > stateObject.maxChildren) {
-                    stateObject.maxChildren = survey.child_surveys.length;
-                }
+            if (womenMembers.length > stateObject.maxWomen) {
+                stateObject.maxWomen = womenMembers.length;
             }
+
+
+            stateObject.children += childMembers.length;
+            if (childMembers.length < stateObject.minChildren || stateObject.minChildren === -1) {
+                stateObject.minChildren = childMembers.length;
+            }
+            if (childMembers.length > stateObject.maxChildren) {
+                stateObject.maxChildren = childMembers.length;
+            }
+
 
         });
 
