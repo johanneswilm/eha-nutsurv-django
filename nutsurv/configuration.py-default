@@ -11,7 +11,7 @@ DATABASES = {
         }
 
 # Sentry for develoment
-# https://app.getsentry.com/ehealthnigeriaorg/development/?newinstall=1
+# https://app.getsentry.com/ehealthnigeriaorg/nutsurv-dev/?newinstall=1
 RAVEN_CONFIG = {
     'dsn': 'SOMETHING',
 }
