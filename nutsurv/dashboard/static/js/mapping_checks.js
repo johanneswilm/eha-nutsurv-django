@@ -29,28 +29,33 @@ var mappingChecks = {
     incorrectSurveys: false,
     popupTmp: _.template('ERROR!<br>Team <%- team_name %>(<%- team_id%>)<% if (cluster_id) { %><br>Cluster #: <%- cluster_id %><% } %>'),
     updateMap: function (data) {
+
       var group, incorrectSurveys = [],
-
         mapAlerts = _.where(data, {category:'map'});
-        _.each(mappingChecks.mapMarkers, function(marker) {
-            // Remove all previous markers
-            home.map.removeLayer(marker);
-        });
+        if (mapAlerts.length > 0) {
+            _.each(mappingChecks.mapMarkers, function(marker) {
+                // Remove all previous markers
+                home.map.removeLayer(marker);
+            });
 
-        _.each(mapAlerts, function(mapAlert){
-            var marker;
-            if (mapAlert.hasOwnProperty('location')) {
-                marker = L.marker(mapAlert.location, {icon: map.markers.red}),
-                mappingChecks.mapMarkers.push(marker),
-                marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
-            }
-            incorrectSurveys.push(mapAlert);
+            _.each(mapAlerts, function(mapAlert){
+                var marker;
+                if (mapAlert.hasOwnProperty('location')) {
+                    marker = L.marker(mapAlert.location, {icon: map.markers.red}),
+                    mappingChecks.mapMarkers.push(marker),
+                    marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
+                }
+                incorrectSurveys.push(mapAlert);
 
-        });
-        mappingChecks.incorrectSurveys = incorrectSurveys;
-        group = new L.featureGroup(mappingChecks.mapMarkers);
-        mappingChecks.map.fitBounds(group.getBounds());
-        mappingChecks.drawAlerts(mappingChecks.incorrectSurveys);
+            });
+            mappingChecks.incorrectSurveys = incorrectSurveys;
+            group = new L.featureGroup(mappingChecks.mapMarkers);
+            mappingChecks.map.fitBounds(group.getBounds());
+            mappingChecks.drawAlerts(mappingChecks.incorrectSurveys);
+        } else {
+          mappingChecks.drawAlerts([{type:'no_alerts'}]);
+        }
+
     },
     downloadAlertsCSV: function () {
         if (!mappingChecks.incorrectSurveys) {
@@ -78,7 +83,8 @@ var mappingChecks = {
         'mapping_check_wrong_location': _.template('<li>Wrong location! Team <%- team_name %> (<%- team_id %>)</li>'),
         'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team <%- team_name %> (<%- team_id %>)</li>'),
         'mapping_check_missing_location': _.template('<li>Missing location! Team <%- team_name %> (<%- team_id %>)</li>'),
-        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team <%- team_name %> (<%- team_id %>)</li>')
+        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team <%- team_name %> (<%- team_id %>)</li>'),
+        'no_alerts': _.template('<li>Currently there are no map alerts</li>')
     }
 
 };
