@@ -4,7 +4,7 @@ from django.db.utils import IntegrityError
 
 from dashboard.models import HouseholdSurveyJSON
 
-from ...models import FakeTeams
+from ...models import FakeTeams, update_mapping_documents_from_new_survey
 
 import csv
 import re
@@ -121,5 +121,7 @@ class Command(BaseCommand):
                     created = False
                 except KeyError as e:
                     print e
+
+                update_mapping_documents_from_new_survey(household_survey.json)
 
                 print row_no, 'created' if created else 'exists', parsed['_uuid']
