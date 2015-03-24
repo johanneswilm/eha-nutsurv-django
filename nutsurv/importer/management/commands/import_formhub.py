@@ -127,7 +127,10 @@ class Command(BaseCommand):
                 except IntegrityError as e:
                     created = False
                 except KeyError as e:
-                    print e
+                    created = False
+                    logging.error('%r', parsed)
+                    logging.exception(e)
+
                 if created:
                     update_mapping_documents_from_new_survey(household_survey.json)
                     Alert.run_alert_checks_on_document(household_survey)
