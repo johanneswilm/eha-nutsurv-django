@@ -131,7 +131,9 @@ BOWER_INSTALLED_APPS = (
     'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.5',
     'font-awesome#4.2.0',
     'moment#2.9.0',
-    'moment-timezone#0.3.0'
+    'moment-timezone#0.3.0',
+    'list.js#1.1.1',
+    'list.pagination.js'
 )
 
 

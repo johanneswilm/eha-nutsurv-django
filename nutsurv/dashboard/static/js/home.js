@@ -123,17 +123,17 @@ var home = {
     contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
     drawAlerts: function(data) {
 
-        jQuery('#home_alerts_list').empty();
+        var alert_list = $('#home_alerts_list').find('div.list');
+        alert_list.empty();
 
         _.each(data, function(alert) {
             var alertTemplate = _.template($('#home-alert-item').html());
             var alertType = home.alertType[alert.type];
-            jQuery('#home_alerts_list').append(alertTemplate({
-                alert: alert,
-                type: alertType
-            }));
+            alert_list.append(alertTemplate({ alert: alert, type: alertType }));
         });
 
+        home.paginateAlerts();
+        home.contacModalAlerts();
     },
     alertType: {
         data_collection_time: {
@@ -180,6 +180,52 @@ var home = {
             title: 'Mapping Check Unknown Cluster',
             icon: 'fa-map-marker'
         }
+    },
+    paginateAlerts: function() {
+
+        var type_html = '<option value="all">All</option>';
+        _.each(home.alertType, function(type, key) {
+            type_html += '<option value="' + key + '">' + type.title + '</option>\n';
+        });
+
+        $('#home_alerts_filter_type').append(type_html);
+
+
+        // Paginate with list.js
+        var paginateAlertList = new List('home_alerts_list', {
+            valueNames: ['alert_title', 'alert_details', 'alert_type'],
+            page: 10,
+            plugins: [ ListPagination({}) ] 
+        });
+
+    	// Sort By Category
+    	$('#home_alerts_filter_type').change(function() {			
+    		var this_type = $(this).val().toString();
+    		if (this_type == 'all') {
+    	        paginateAlertList.filter();
+    	    }
+    	    else {            
+    	        paginateAlertList.filter(function(item) {
+                    console.log('item.values() ' + item.values().alert_type);
+    	            if (item.values().alert_type == this_type) {
+    	                return true;
+    	            }
+    	            else {
+    	                return false;
+    	            }
+    	        });
+    	    }
+            return false;
+      	});
+
+    },
+    contacModalAlerts: function () {
+        $('#contact-team-modal').on('show.bs.modal', function(event) {    
+            var button = $(event.relatedTarget)    
+            var modal = $(this)
+            modal.find('span.team-name').text(button.data('team'))
+            modal.find('span.team-id').text(button.data('team_id'))
+        });
     },
     createAlertsCSV: function(data) {
         var output = 'created,text\n';
