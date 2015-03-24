@@ -106,8 +106,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '../static')
 
 # Bower http://django-bower.readthedocs.org/en/latest/index.html
-BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
-
+BOWER_COMPONENTS_ROOT = STATIC_ROOT
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
