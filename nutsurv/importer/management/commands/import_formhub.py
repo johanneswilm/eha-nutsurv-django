@@ -8,6 +8,8 @@ from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset
 
 import csv
 import re
+import logging
+from datetime import datetime
 
 from pprint import pprint
 
@@ -78,6 +80,9 @@ class Command(BaseCommand):
 
         reset_data()
 
+        last_10_seconds = None
+        imported_last_10_seconds = 0
+
         with open(filename) as csvfile:
 
             headers = None
@@ -127,6 +132,12 @@ class Command(BaseCommand):
                     update_mapping_documents_from_new_survey(household_survey.json)
                     Alert.run_alert_checks_on_document(household_survey)
 
+                if datetime.now().second/10 != last_10_seconds:
+                    print "\n\n===> imported {} records in the last 10 seconds, that is {} records/s\n\n".format(imported_last_10_seconds, imported_last_10_seconds/10.0)
+                    last_10_seconds = datetime.now().second/10
+                    imported_last_10_seconds = 0
+                else:
+                    imported_last_10_seconds += 1
 
 
                 print row_no, 'created' if created else 'exists', parsed['_uuid']
