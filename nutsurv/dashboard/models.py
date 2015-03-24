@@ -24,7 +24,8 @@ class HouseholdSurveyJSON(models.Model):
         verbose_name = 'household survey'
 
     json = JSONField(
-        null=True, blank=True,
+        null=False,
+        blank=False,
         help_text='A JSON document containing data acquired from one '
                   'household.  Typically not edited here but uploaded from a '
                   'mobile application used by a team of surveyors in the '
