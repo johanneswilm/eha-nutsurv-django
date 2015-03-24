@@ -102,10 +102,19 @@ var ageDistribution = {
                 return true;
             }
             _.each(survey.members, function(member) {
-                if (ages.hasOwnProperty(member.age)) {
-                    ages[member.age] ++;
+                if (member.hasOwnProperty('age')) {
+                  if (member.age == 999) {
+                    console.warn('Member age: 999');
+                    return;
+                  }
+                    if (ages.hasOwnProperty(member.age)) {
+                        ages[member.age] ++;
+                    } else {
+                        ages[member.age] = 1;
+                    }
                 } else {
-                    ages[member.age] = 1;
+                    console.warn('No member age defined');
+                    return;
                 }
             });
         });
@@ -136,28 +145,42 @@ var ageDistribution = {
         var ages = {};
 
         _.each(data.survey_data, function(survey) {
+            var childSurveys;
+
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
             if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
                 return true;
             }
-            if (survey.hasOwnProperty('child_surveys')) {
-                _.each(survey.child_surveys, function(child) {
-                    var childAge, months;
-                    if (child.hasOwnProperty('birthDate')) {
-                        childAge = new Date(new Date()-new Date(child.birthDate));
-                        months = (childAge.getYear()-70)*12+childAge.getMonth();
-                    } else {
-                        months = child.ageInMonths;
+
+
+            childSurveys = _.pluck(_.where(survey.members, {'surveyType': 'child'}), 'survey');
+
+
+            _.each(childSurveys, function(child) {
+                var childAge, months;
+                if (child.hasOwnProperty('birthDate')) {
+                    childAge = new Date(new Date()-new Date(child.birthDate));
+                    months = (childAge.getYear()-70)*12+childAge.getMonth();
+                } else if (child.hasOwnProperty('ageInMonths')) {
+                    months = child.ageInMonths;
+                    if (months == 99) {
+                        console.warn('Child age: 99');
+                        return;
                     }
-                    if (ages.hasOwnProperty(months)) {
-                        ages[months] ++;
-                    } else {
-                        ages[months] = 1;
-                    }
-                });
-            }
+                } else {
+                    console.warn('No child age defined');
+                    return;
+                }
+
+                if (ages.hasOwnProperty(months)) {
+                    ages[months] ++;
+                } else {
+                    ages[months] = 1;
+                }
+            });
+
         });
         ageDistribution.childrenAgeList = _.map(ages, function(num, age) {
             return [parseInt(age), num];

@@ -50,8 +50,8 @@ var dataQuality = {
     drawCharts: function() {
         var options = {
             yaxis: {
-                tickDecimals: 0,
-                min: 0
+                min: 0,
+                show: false
             },
             xaxis: {
                 tickDecimals: 0,
@@ -60,10 +60,10 @@ var dataQuality = {
             }
         }, muacOptions = {
             yaxis: {
-                tickDecimals: 0,
+                show: false
             },
             xaxis: {
-                tickDecimals: 0,
+                tickDecimals: 0
             }
         };
 
@@ -112,30 +112,34 @@ var dataQuality = {
 
 
         _.each(data.survey_data, function(survey) {
+            var childSurveys;
+
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
             if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
                 return true;
             }
-            if (survey.hasOwnProperty('child_surveys')) {
-                _.each(survey.child_surveys, function(child) {
-                    if (child.hasOwnProperty('muac')) {
-                        MUACs.push(child.muac);
+
+            childSurveys = _.pluck(_.where(survey.members, {'surveyType': 'child'}), 'survey');
+
+            _.each(childSurveys, function(child) {
+                if (child.hasOwnProperty('muac')) {
+                    MUACs.push(child.muac);
+                }
+                if (child.hasOwnProperty('zscores')) {
+                    if (child.zscores.hasOwnProperty('WHZ')) {
+                        WHZs.push(child.zscores.WHZ);
                     }
-                    if (child.hasOwnProperty('zscores')) {
-                        if (child.zscores.hasOwnProperty('WHZ')) {
-                            WHZs.push(child.zscores.WHZ);
-                        }
-                        if (child.zscores.hasOwnProperty('HAZ')) {
-                            HAZs.push(parseInt(child.zscores.HAZ*100)/100);
-                        }
-                        if (child.zscores.hasOwnProperty('WAZ')) {
-                            WAZs.push(child.zscores.WAZ);
-                        }
+                    if (child.zscores.hasOwnProperty('HAZ')) {
+                        HAZs.push(parseInt(child.zscores.HAZ*100)/100);
                     }
-                });
-            }
+                    if (child.zscores.hasOwnProperty('WAZ')) {
+                        WAZs.push(child.zscores.WAZ);
+                    }
+                }
+            });
+
         });
 
         if (WHZs.length > 0) {
@@ -202,6 +206,8 @@ var dataQuality = {
             hazMissing = 0, hazFlagged = 0, hazPresent = 0, hazN;
 
         _.each(data.survey_data, function(survey) {
+            var childSurveys;
+
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
@@ -210,46 +216,47 @@ var dataQuality = {
             }
             /* This assumes that one child survey is sent in for each child < 60 months,
             even if all fields of a particular child survey may be left blank. */
-            if (survey.hasOwnProperty('child_surveys')) {
 
-                _.each(survey.child_surveys, function(child) {
-                    if (child.hasOwnProperty('muac')) {
-                        muacPresent++;
-                    } else {
-                        muacMissing++;
-                    }
-                    if (child.hasOwnProperty('zscores')) {
-                        if (child.zscores.hasOwnProperty('WHZ')) {
-                            whzPresent++;
-                            if (child.zscores.WHZ < -5 || child.zscores.WHZ > 5) {
-                                whzFlagged++;
-                            }
-                        } else {
-                            whzMissing++;
-                        }
-                        if (child.zscores.hasOwnProperty('HAZ')) {
-                            hazPresent++;
-                            if (child.zscores.HAZ < -6 || child.zscores.HAZ > 6) {
-                                hazFlagged++;
-                            }
-                        } else {
-                            hazMissing++;
-                        }
-                        if (child.zscores.hasOwnProperty('WAZ')) {
-                            wazPresent++;
-                            if (child.zscores.WAZ < -6 || child.zscores.WAZ > 6) {
-                                wazFlagged++;
-                            }
-                        } else {
-                            wazMissing++;
+            childSurveys = _.pluck(_.where(survey.members, {'surveyType': 'child'}), 'survey');
+
+            _.each(childSurveys, function(child) {
+                if (child.hasOwnProperty('muac')) {
+                    muacPresent++;
+                } else {
+                    muacMissing++;
+                }
+                if (child.hasOwnProperty('zscores')) {
+                    if (child.zscores.hasOwnProperty('WHZ')) {
+                        whzPresent++;
+                        if (child.zscores.WHZ < -5 || child.zscores.WHZ > 5) {
+                            whzFlagged++;
                         }
                     } else {
                         whzMissing++;
+                    }
+                    if (child.zscores.hasOwnProperty('HAZ')) {
+                        hazPresent++;
+                        if (child.zscores.HAZ < -6 || child.zscores.HAZ > 6) {
+                            hazFlagged++;
+                        }
+                    } else {
                         hazMissing++;
+                    }
+                    if (child.zscores.hasOwnProperty('WAZ')) {
+                        wazPresent++;
+                        if (child.zscores.WAZ < -6 || child.zscores.WAZ > 6) {
+                            wazFlagged++;
+                        }
+                    } else {
                         wazMissing++;
                     }
-                });
-            }
+                } else {
+                    whzMissing++;
+                    hazMissing++;
+                    wazMissing++;
+                }
+            });
+
 
         });
 
@@ -296,6 +303,7 @@ var dataQuality = {
 
         _.each(data.survey_data, function(survey) {
 
+            var childMembers;
 
             if (team && team > 0 && team != survey.team) {
                 return true;
@@ -304,38 +312,43 @@ var dataQuality = {
                 return true;
             }
 
-            if (survey.hasOwnProperty('child_surveys')) {
+            childMembers = _.where(survey.members, {'surveyType': 'child'});
 
-                _.each(survey.child_surveys, function(child) {
-                    if (child.hasOwnProperty('gender')) {
-                        if (child.gender==='M') {
-                            maleChildren++;
-                        } else {
-                            femaleChildren++;
-                        }
+
+
+            _.each(childMembers, function(child) {
+                if (child.hasOwnProperty('gender')) {
+                    if (child.gender==='M') {
+                        maleChildren++;
+                    } else {
+                        femaleChildren++;
                     }
-                    if (child.hasOwnProperty('birthDate')) {
-                        birthDate = new Date(child.birthDate);
-                        monthAge =  currentDate.getMonth() -
-                            birthDate.getMonth() +
-                            (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
-                        if (monthAge <30) {
-                            oldChildren++;
-                        } else {
-                            youngChildren++;
-                        }
+                }
+                if (child.hasOwnProperty('birthDate')) {
+                    birthDate = new Date(child.birthDate);
+                    monthAge =  currentDate.getMonth() -
+                        birthDate.getMonth() +
+                        (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
+                    if (monthAge <30) {
+                        oldChildren++;
+                    } else {
+                        youngChildren++;
                     }
-                    if (child.hasOwnProperty('weight')) {
-                        weights.push(child.weight);
+                }
+                if (child.hasOwnProperty('survey')) {
+                    if (child.survey.hasOwnProperty('weight')) {
+                        weights.push(child.survey.weight);
                     }
-                    if (child.hasOwnProperty('height')) {
-                        heights.push(child.height);
+                    if (child.survey.hasOwnProperty('height')) {
+                        heights.push(child.survey.height);
                     }
-                    if (child.hasOwnProperty('muac')) {
-                        MUACs.push(child.muac);
+                    if (child.survey.hasOwnProperty('muac')) {
+                        MUACs.push(child.survey.muac);
                     }
-                });
-            }
+                }
+
+            });
+
 
         });
 

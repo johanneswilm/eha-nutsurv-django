@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'compressor',
     'corsheaders',
     'rest_framework',
+    'raven.contrib.django.raven_compat',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -99,7 +100,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, '../media')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, '../media')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '../static')
@@ -131,7 +132,9 @@ BOWER_INSTALLED_APPS = (
     'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.5',
     'font-awesome#4.2.0',
     'moment#2.9.0',
-    'moment-timezone#0.3.0'
+    'moment-timezone#0.3.0',
+    'list.js#1.1.1',
+    'list.pagination.js'
 )
 
 
@@ -149,6 +152,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
 }
+
 
 
 try:

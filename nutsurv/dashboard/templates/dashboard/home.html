@@ -6,15 +6,20 @@
 </div>
 
 <div class="row">
-
 	<div class="col-md-8">
 	    <div class="panel panel-default">
 	       	<div class="panel-heading"><i class="fa fa-bell"></i> Alerts</div>
 	        <div class="panel-body">
-	            <div id="home_alerts_list"></div>
-				<button id="home_alerts_download" class="btn btn-success pull-right">
-					<i class="fa fa-download"></i> Download
-				</button>
+	            <div id="home_alerts_list">
+                    <input type="text" class="search" placeholder="Search title or team">
+                    <select id="home_alerts_filter_type"></select>
+                    <div class="list"></div>
+                    <ul class="pagination pull-left"></ul>
+    				<button id="home_alerts_download" class="btn btn-success pull-right">
+    					<i class="fa fa-download"></i> Download
+    				</button>
+                </div>
+
 	        </div>
 	    </div>
 	</div>
@@ -33,28 +38,59 @@
 	        </div>
 	    </div>
 	</div>
+</div>
 
+<div class="modal fade" id="contact-team-modal" tabindex="-1" role="dialog" aria-labelledby="contact-team-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">Contact Team</h4>
+            </div>
+            <div class="modal-body">
+                <p><strong>Team</strong>: <span class="team-name"></span></p>
+                <p><strong>Team ID:</strong>: <span class="team-id"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <i class="fa fa-exclamation-circle"></i> Not Contacted
+                </button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">
+                    <i class="fa fa-check"></i> Mark as Contacted
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script id="home-alert-item" type="text/template">
     <div class="row alert-item">
+        <span class="alert_type" style="display:none;"><%= type %></span>
         <div class="col-sm-1 text-right">
-            <i class="alert-icon fa <%= type.icon %>"></i>
+            <i class="alert-icon fa <%= icon %>"></i>
         </div>
         <div class="alert-name col-sm-7">
-            <h3 class="alert-title"><%= type.title %></h3>
+            <h3 class="alert_title"><%= title %></h3>
             <span class="alert-details">
-                <strong><%= alert.team_name %></strong>
-                on <%= alert.created %>
+                <strong class="alert_team_name"><%= team_name %></strong>
+                on <%= created %>
             </span>
         </div>
         <div class="alert-actions col-sm-4 text-right">
-            <% if (alert.type === 'mapping_check_unknown_cluster' && alert.location !== undefined) { %>
-            <a href="<%= alert.url %>" data-geo="<%= alert.location[0] + ',' + alert.location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
+            <% if (type === 'mapping_check_unknown_cluster' && location !== undefined) { %>
+            <a href="<%= url %>" data-geo="<%= location[0] + ',' + location[1] %>" class="alert-action btn btn-primary btn-sm">View Map</a>
             <% } else { %>
-            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
+            <a href="<%= url %>" class="alert-action btn btn-primary btn-sm">View Details</a>
             <% } %>
-            <a href="<%= alert.url %>" class="alert-action btn btn-primary btn-sm">Contact Team</a>
+            <button type="button" class="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#contact-team-modal"
+                    data-team="<%= team_name %>"
+                    data-team_id="<%= team_id %>">
+                Contact Team
+            </button>
         </div>
         <div class="clearfix"></div>
         <div class="col-sm-12"><hr class="alert-line"></div>
