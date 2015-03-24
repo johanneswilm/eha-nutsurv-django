@@ -4,7 +4,7 @@ from django.db.utils import IntegrityError
 
 from dashboard.models import HouseholdSurveyJSON
 
-from ...models import FakeTeams, update_mapping_documents_from_new_survey
+from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
 import csv
 import re
@@ -75,6 +75,8 @@ class Command(BaseCommand):
     help = 'Imports the csv file'
 
     def handle(self, filename, **options):
+
+        reset_data()
 
         with open(filename) as csvfile:
 

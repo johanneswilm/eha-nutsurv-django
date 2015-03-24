@@ -11,6 +11,48 @@ from importer import anthrocomputation
 from pytz import timezone
 import dateutil.parser
 
+def reset_data():
+    FakeTeams.objects.all().delete()
+    FormhubSurvey.objects.all().delete()
+    dashboard_models.HouseholdSurveyJSON.objects.all().delete()
+    dashboard_models.Alert.objects.all().delete()
+
+    dashboard_models.Clusters.objects.all().delete()
+    cluster_data = dashboard_models.Clusters()
+    cluster_data.json = {}
+    cluster_data.name_or_id = 'default_clusters'
+    cluster_data.active = True
+    cluster_data.save()
+
+    dashboard_models.ClustersPerTeam.objects.all().delete()
+    team_data = dashboard_models.ClustersPerTeam()
+    team_data.json = {}
+    team_data.name_or_id = 'default_clusters_per_team'
+    team_data.active = True
+    team_data.save()
+
+    dashboard_models.StatesWithReserveClusters.objects.all().delete()
+    state_reserve_data = dashboard_models.StatesWithReserveClusters()
+    state_reserve_data.json = []
+    state_reserve_data.name_or_id = 'default_state_reserve_data'
+    state_reserve_data.active = True
+    state_reserve_data.save()
+
+    dashboard_models.ClustersPerState.objects.all().delete()
+    cluster_state_data = dashboard_models.ClustersPerState()
+    cluster_state_data.json = {}
+    cluster_state_data.name_or_id = 'default_clusters_per_state'
+    cluster_state_data.active = True
+    cluster_state_data.save()
+
+    dashboard_models.States.objects.all().delete()
+    states_data = dashboard_models.States()
+    states_data.json = []
+    states_data.name_or_id = 'default_states'
+    states_data.active = True
+
+    states_data.save()
+
 def convert_to_utc_js_datestring(date_string):
     """Turn '2014-05-05T17:26:37.401+01' into '2014-05-05T16:26:37.401Z'"""
     parsed_date = dateutil.parser.parse(date_string)
