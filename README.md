@@ -28,7 +28,7 @@ Open a NEW terminal or tab and connect to the database with a new container
 
     sudo docker-compose run web bash
 
-Now set up the db withing the docker bash shell
+Now set up the db within the docker bash shell
 
     psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
     psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
