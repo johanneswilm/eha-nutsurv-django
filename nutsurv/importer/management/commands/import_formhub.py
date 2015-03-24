@@ -139,5 +139,5 @@ class Command(BaseCommand):
                 else:
                     imported_last_10_seconds += 1
 
+                print '[{}]'.format(datetime.now()), row_no, 'created' if created else 'exists', parsed['_uuid']
 
-                print row_no, 'created' if created else 'exists', parsed['_uuid']
