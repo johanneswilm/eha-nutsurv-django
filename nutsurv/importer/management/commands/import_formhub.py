@@ -107,18 +107,23 @@ class Command(BaseCommand):
                             "uuid": parsed['_uuid'],
                             "syncDate": parsed['_submission_time'] + ".000Z",
                             "startTime": parsed['starttime'],
+                            "endTime": parsed['endtime'],
                             "created": parsed['_submission_time']  + ".000Z",
                             "modified": parsed['_submission_time'],
                             "householdID": parsed['hh_number'],
                             "cluster": parsed['cluster'],
-                            "endTime": parsed['endtime'],
+                            "cluster_name": parsed['cluster_name'],
+                            "state": parsed['state'],
+                            "lga": parsed['lga'],
                             "location": [
                                 parsed['_gps_latitude'],
                                 parsed['_gps_longitude']
                             ],
                             "members": members,
-                            "team": FakeTeams.objects.get_or_create(team_id = \
-                                parsed['team_num'])[0].json,
+                            "team_num": parsed['team_num'],
+                            "team": FakeTeams.objects.get_or_create(
+                                team_id=parsed['team_num']
+                            )[0].json,
                             "_id": parsed['_uuid'],
                             "tools":{},
                             "history":[]
