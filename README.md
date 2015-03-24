@@ -6,7 +6,7 @@ NutSurv - Data collection and quality assurance tools for Nutrition Surveys on m
 
 # Install with Docker
 
-Install [Docker](https://docs.docker.com/installation/#installation)
+Install [Docker](https://docs.docker.com/installation/#installation) and [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Get the code
 
