@@ -78,6 +78,12 @@ var surveyCompletedStates = {
         _.each(surveyData, function(survey) {
             var state = clusterInfo.findState(survey.cluster),
             stateObject = _.findWhere(perStateData, {state: state});
+
+            if (!stateObject) {
+                console.warn('Unknown cluster: '+survey.cluster);
+                return;
+            }
+
             // Increase the number of households surveyed for this state by one.
             stateObject.households++,
             childMembers = _.where(survey.members, {'surveyType': 'child'}),
