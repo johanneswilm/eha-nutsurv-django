@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from dashboard.models import HouseholdSurveyJSON
+from dashboard.models import HouseholdSurveyJSON, Alert
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
@@ -123,7 +123,10 @@ class Command(BaseCommand):
                     created = False
                 except KeyError as e:
                     print e
+                if created:
+                    update_mapping_documents_from_new_survey(household_survey.json)
+                    Alert.run_alert_checks_on_document(household_survey)
 
-                update_mapping_documents_from_new_survey(household_survey.json)
+
 
                 print row_no, 'created' if created else 'exists', parsed['_uuid']
