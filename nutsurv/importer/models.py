@@ -1,4 +1,4 @@
-import uuid, random, json, math
+import uuid, random, json, math, logging
 
 from datetime import datetime
 from jsonfield import JSONField
@@ -64,11 +64,14 @@ def update_mapping_documents_from_new_survey(json):
     team_number = str(json['team_num'])
     team_data = dashboard_models.ClustersPerTeam.get_active()
 
-    if not all(key in json for key in ('state', 'cluster', 'cluster_name', 'lga')):
-        return
     if not team_number in team_data.json:
         team_data.json[team_number] = 0
         team_data.save()
+
+    for key in ('state', 'cluster', 'cluster_name', 'lga',):
+        if key not in json:
+            logging.warning('{!r} not in {!r}'.format(key, json)) # just to make sure it's there
+            return
 
     cluster_data = dashboard_models.Clusters.get_active()
     if cluster_data == None:
