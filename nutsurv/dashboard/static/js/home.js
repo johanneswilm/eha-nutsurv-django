@@ -192,7 +192,7 @@ var home = {
 
         // Paginate with list.js
         var paginateAlertList = new List('home_alerts_list', {
-            valueNames: ['alert_title', 'alert_details', 'alert_type'],
+            valueNames: ['alert_title', 'alert_team_name', 'alert_type'],
             page: 10,
             plugins: [ ListPagination({}) ] 
         });

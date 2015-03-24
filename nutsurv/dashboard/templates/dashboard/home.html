@@ -67,13 +67,14 @@
 
 <script id="home-alert-item" type="text/template">
     <div class="row alert-item">
+        <span class="alert_type" style="display:none;"><%= type %></span>
         <div class="col-sm-1 text-right">
             <i class="alert-icon fa <%= icon %>"></i>
         </div>
         <div class="alert-name col-sm-7">
-            <h3 class="alert-title"><%= title %></h3>
+            <h3 class="alert_title"><%= title %></h3>
             <span class="alert-details">
-                <strong><%= team_name %></strong>
+                <strong class="alert_team_name"><%= team_name %></strong>
                 on <%= created %>
             </span>
         </div>
