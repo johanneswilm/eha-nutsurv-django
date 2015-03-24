@@ -154,6 +154,7 @@ var ageDistribution = {
                 return true;
             }
 
+
             childSurveys = _.pluck(_.where(survey.members, {'surveyType': 'child'}), 'survey');
 
 
