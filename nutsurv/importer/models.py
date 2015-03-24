@@ -71,7 +71,7 @@ class FormhubSurvey(models.Model):
         the format that comes from the nutsurv mobile app.
 
         """
-        if not all (terms in self.json for terms in ('hh_number', \
+        if not all (key in self.json for key in ('hh_number', \
             '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', \
             'starttime', 'endtime', '_submission_time', '_uuid', \
             'consent/hh_roster')):
