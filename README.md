@@ -18,140 +18,46 @@ Install [Docker](https://docs.docker.com/installation/#installation)
 
 Make your local settings set the DATABASE settings in `./nutsurv/configuration.py`
 
-Run the server
+### Install bower components
 
-    sudo docker-compose up --no-recreate
+    sudo docker-compose run web /opt/nutsurv/nutsurv/manage.py bower_install -- --allow-root
 
 ### For a NEW database ONLY
 
 Open a NEW terminal or tab and connect to the database with a new container
 
-    sudo docker run -v $(pwd):/opt/nutsurv -i --net host  -t nutsurv_web:latest bash
+    sudo docker-compose run web bash
 
-Now set up the db
+Now set up the db withing the docker bash shell
 
     psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
     psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
-    python /opt/nutsurv/nutsurv/manage.py makemigrations
     python /opt/nutsurv/nutsurv/manage.py migrate
+    python /opt/nutsurv/nutsurv/manage.py createsuperuser
+    python /opt/nutsurv/nutsurv/manage.py loaddata testdata
+
+
+# Run the server
+
+### As prodcution-ish
+
+    sudo docker-compose up --no-recreate
+
+### For development
+
+Open a NEW terminal or tab and connect to the database with a new container
+
+    sudo docker-compose run web bash
+
+Now start the develpment server within the docker shell
+
+    # cd /opt/nutsurv/nutsurv/
+    /opt/nutsurv/nutsurv# ./manage.py runserver 0.0.0.0:8001
+
+
 
 ### Good job!
 The website should be available at http://HOST:8001
-
-# Manual Installation
-
-
-The following has been tested on Ubuntu 14.04. Other versions of Linux/Ubuntu or Mac OS X will have
-to make minor adjustments.
-
-First install all needed dependencies:
-
-    sudo apt-get install git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev
-    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev
-
-    pip install numpy scipy
-
-Then get the sources (enter username/password):
-
-    git clone https://github.com/eHealthAfrica/eha-nutsurv-django.git nutsurv
-
-Install [Node](http://nodejs.org)
-
-**Mac OS (via NVM)**
-
-    curl https://raw.githubusercontent.com/creationix/nvm/v0.23.2/install.sh | bash
-    nvm install stable
-
-**Ubuntu**
-
-    curl -sL https://deb.nodesource.com/setup | sudo bash -
-    sudo apt-get install -y nodejs
-
-**Debian (as root)**
-
-    apt-get install curl
-    curl -sL https://deb.nodesource.com/setup | bash -
-    apt-get install -y nodejs
-
-Install [Bower](http://bower.io) for front-end packages
-
-    npm install bower
-
-Now create a python virtual environment:
-
-    virtualenv --no-site-packages nutsurv-venv
-
-Activate the virtual env (has to be done every time you want to run the application)
-
-    source nutsurv-venv/bin/activate
-
-Either install python requirements for a production environment:
-
-    pip install -r requirements/production.txt
-
-or for development:
-
-    pip install -r requirements/development.txt
-
-Create the database nutsurv_dev (ignore the errors) and enable Postgis:
-
-    sudo -u postgres psql -f make_nutsurv_dev.sql
-    sudo -u postgres psql -d nutsurv_dev -f enable_postgis.sql
-
-Enter the application:
-
-    cd nutsurv
-
-Add structure to the database:
-
-    ./manage.py migrate
-
-Load some test data:
-
-    ./manage.py loaddata testdata
-
-Create superuser in Django:
-
-    ./manage.py createsuperuser
-
-Add the front-end dependencies via [django-bower](http://django-bower.readthedocs.org/en/latest/installation.html)
-
-    ./manage.py bower install
-
-Run the server:
-
-    ./manage.py runserver
-
-Run the server globally access (for [Vagrant access](https://github.com/eHealthAfrica/tools-reference/blob/master/vagrant.md)):
-
-    ./manage.py runserver 0.0.0.0:8000
-
-Access it in your web browser at http://localhost:8000/
-
-===================
-
-# Deployment
-
-Install more system packages:
-
-     sudo apt-get install uwsgi-plugin-python nginx uwsgi
-
-And inside the virtual environment:
-
-     pip install uwsgi
-
-For more instructions about using Django & NginX [go here](http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html)
-
-### Update Deployment
-
-To do an deployment / update of the app do the following steps. *Paths and names may vary (so double check)*
-
-    source venv/bin/activate
-    cd eha-nutsurv-django
-    git pull
-    cd nutsurv
-    ./manage.py collectstatic
-    sudo service uwsgi restart
 
 
 ## Preload GIS data
