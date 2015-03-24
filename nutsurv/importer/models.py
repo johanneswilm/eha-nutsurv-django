@@ -260,7 +260,7 @@ class FormhubSurvey(models.Model):
                 self.json['_gps_longitude']
             ],
             "members": members,
-            "team": FakeTeams.objects.get_or_create(team_id = \
+            "team": FakeTeams.objects.get_or_create(team_id =
                 self.json['team_num'])[0].json,
             "_id": self.json['_uuid'],
             "tools":{},
