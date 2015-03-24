@@ -63,13 +63,12 @@ def update_mapping_documents_from_new_survey(json):
 
     team_number = str(json['team_num'])
     team_data = dashboard_models.ClustersPerTeam.get_active()
-    if not team_data == None:
-        if not team_number in team_data.json:
-            team_data.json[team_number] = 0
-            team_data.save()
 
     if not all(key in json for key in ('state', 'cluster', 'cluster_name', 'lga')):
         return
+    if not team_number in team_data.json:
+        team_data.json[team_number] = 0
+        team_data.save()
 
     cluster_data = dashboard_models.Clusters.get_active()
     if cluster_data == None:
@@ -89,7 +88,7 @@ def update_mapping_documents_from_new_survey(json):
 
     state_number = str(json['state'])
     cluster_state_data = dashboard_models.ClustersPerState.get_active()
-    if not cluster_state_data == None and state_number not in cluster_state_data.json:
+    if state_number not in cluster_state_data.json:
         cluster_state_data.json[state_number] = {
             "standard": 10,
             "reserve": 5
@@ -97,7 +96,7 @@ def update_mapping_documents_from_new_survey(json):
         cluster_state_data.save()
 
     states_data = dashboard_models.States.get_active()
-    if not states_data == None and state_number not in states_data.json:
+    if state_number not in states_data.json:
         states_data.json.append(state_number)
         states_data.save()
 
