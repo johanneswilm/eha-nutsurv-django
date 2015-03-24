@@ -50,8 +50,8 @@ var dataQuality = {
     drawCharts: function() {
         var options = {
             yaxis: {
-                tickDecimals: 0,
-                min: 0
+                min: 0,
+                show: false
             },
             xaxis: {
                 tickDecimals: 0,
@@ -60,10 +60,10 @@ var dataQuality = {
             }
         }, muacOptions = {
             yaxis: {
-                tickDecimals: 0,
+                show: false
             },
             xaxis: {
-                tickDecimals: 0,
+                tickDecimals: 0
             }
         };
 
