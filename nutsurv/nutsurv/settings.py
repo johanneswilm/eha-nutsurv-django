@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'compressor',
     'corsheaders',
     'rest_framework',
+    'raven.contrib.django.raven_compat',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -149,6 +150,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
 }
+
 
 
 try:

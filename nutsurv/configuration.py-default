@@ -10,6 +10,11 @@ DATABASES = {
             }
         }
 
+# Sentry for develoment
+# https://app.getsentry.com/ehealthnigeriaorg/development/?newinstall=1
+RAVEN_CONFIG = {
+    'dsn': 'SOMETHING',
+}
 
 # Add a secret text that has to be added to all posts from formhub.
 # This is to increase security as posts from formhub will not hold the CSRF security info.
