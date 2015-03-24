@@ -102,10 +102,19 @@ var ageDistribution = {
                 return true;
             }
             _.each(survey.members, function(member) {
-                if (ages.hasOwnProperty(member.age)) {
-                    ages[member.age] ++;
+                if (member.hasOwnProperty('age')) {
+                  if (member.age == 999) {
+                    console.warn('Member age: 999');
+                    return;
+                  }
+                    if (ages.hasOwnProperty(member.age)) {
+                        ages[member.age] ++;
+                    } else {
+                        ages[member.age] = 1;
+                    }
                 } else {
-                    ages[member.age] = 1;
+                    console.warn('No member age defined');
+                    return;
                 }
             });
         });
@@ -148,9 +157,17 @@ var ageDistribution = {
                     if (child.hasOwnProperty('birthDate')) {
                         childAge = new Date(new Date()-new Date(child.birthDate));
                         months = (childAge.getYear()-70)*12+childAge.getMonth();
-                    } else {
+                    } else if (child.hasOwnProperty('ageInMonths')) {
                         months = child.ageInMonths;
+                        if (months == 99) {
+                            console.warn('Child age: 99');
+                            return;
+                        }
+                    } else {
+                        console.warn('No child age defined');
+                        return;
                     }
+
                     if (ages.hasOwnProperty(months)) {
                         ages[months] ++;
                     } else {
