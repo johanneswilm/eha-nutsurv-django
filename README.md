@@ -72,6 +72,10 @@ Enter the source folder:
 
     cd nutsurv
 
+Install Numpy/Scipy:
+
+    pip install numpy scipy
+
 Either install python requirements for a production environment:
 
     pip install -r requirements/production.txt

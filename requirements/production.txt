@@ -1,5 +1,3 @@
-numpy
-scipy
 Django==1.7.6
 psycopg2
 jsonfield
