@@ -15,7 +15,7 @@
                         <div class="col-md-5 form-group">
                             <input type="text" class="search form-control" placeholder="Search title or team">
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-5 text-right">
                             <select id="home_alerts_filter_type"></select>
                         </div>
                     </div>
@@ -59,13 +59,11 @@
                 </h3>
             </div>
             <div class="modal-body">
-                <ul class="contact-team-list"></ul>
-            </div>
-            <div class="modal-footer">
+                <ul class="contact-team-list list-group"></ul>
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <i class="fa fa-exclamation-circle"></i> Not Contacted
                 </button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">
+                <button type="button" class="btn btn-success pull-right" data-dismiss="modal">
                     <i class="fa fa-check"></i> Mark as Contacted
                 </button>
             </div>
@@ -106,12 +104,14 @@
 </script>
 
 <script id="contact-team-item" type="text/template">
-    <li>
-        <strong>Name</strong>: <%= firstName %> <%= lastName %><br>
-        <strong>Designation</strong>: <%= designation %><br>    
-        <strong>Gender</strong>:<%= gender %>, <strong>Age</strong>: <%= age %><br>
-        <strong>Mobile</strong>: <%= mobile %><br>
-        <strong>Email</strong>: <a href="mailto:<%= email %>"><%= email %></a>
+    <li class="list-group-item">
+        <div class="clearfix">
+            <strong class="remove-top remove-bottom pull-left"><%= firstName %> <%= lastName %></strong>
+            <em class="pull-right"><%= designation %></em>
+        </div>
+        <%= gender %>, <%= age %> yrs<br>
+        <% if (mobile) { %>Mobile: <%= mobile %><br><% } %>
+        <% if (email) { %>Email: <a href="mailto:<%= email %>"><%= email %></a><% } %>
     </li>
 </script>
 
