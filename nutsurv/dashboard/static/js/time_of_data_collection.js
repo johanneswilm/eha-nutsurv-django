@@ -67,7 +67,8 @@ var timeOfDataCollection = {
 
 
         _.each(data.survey_data, function(survey) {
-            var surveyDate, startTimeArray,endTimeArray, startTime, endTime, surveyTime, surveyTimeString;
+            var surveyStartDate, surveyEndDate, startTime, endTime, surveyTime, surveyTimeString,
+              surveyStart, endHours;
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
@@ -76,8 +77,10 @@ var timeOfDataCollection = {
             }
 
             if(survey.hasOwnProperty('startTime') && survey.hasOwnProperty('endTime')) {
-                surveyTime = new Date(survey.endTime) - new Date(survey.startTime);
-                surveyTimeString = parseInt(surveyTime/60000) + ':' + String('0'+parseInt(surveyTime%60000/1000)).substr(-2);
+                surveyStart = moment(survey.startTime);
+                surveyEnd = moment(survey.endTime);
+                surveyTime = surveyEnd - surveyStart;
+                surveyTimeString = moment(surveyTime).format('HH:mm:ss');
                 if (tableData["per interview, min"] > surveyTimeString || tableData["per interview, min"]==='') {
                     tableData["per interview, min"] = surveyTimeString;
                 }
@@ -87,73 +90,77 @@ var timeOfDataCollection = {
 
                 tableData["per interview, N"]++;
                 totalSurveyTime += surveyTime;
-                startTimeArray = survey.startTime.split('T');
-                endTimeArray = survey.endTime.split('T');
+                surveyStartDate = surveyStart.format('YYYY-MM-DD');
+                surveyEndDate = surveyEnd.format('YYYY-MM-DD');
+                startTime = surveyStart.format('HH:mm:ss');
+                endTime = surveyEnd.format('HH:mm:ss');
 
-                if (startTimeArray[0]===endTimeArray[0]) {
-                    // start and end time are on the same date
-                    surveyDate = startTimeArray[0];
-                    startTime = startTimeArray[1];
-                    endTime = endTimeArray[1];
-                    if (datesTimes.hasOwnProperty(surveyDate)) {
-                        if (datesTimes[surveyDate].start > startTime) {
-                            datesTimes[surveyDate].start = startTime;
-                        }
-                        if (datesTimes[surveyDate].end < endTime) {
-                            datesTimes[surveyDate].end = endTime;
-                        }
-                    } else {
-                        datesTimes[surveyDate] = {
-                            start: startTime,
-                            end: endTime
-                        }
-                    }
 
-                } else {
-                    // TODO: start and end time are on different dates, we should handle this somehow.
+                if (surveyStartDate!=surveyEndDate) {
+                    // TODO: Data collection start and end are not on the same day.
+                    return;
                 }
+
+                if (datesTimes.hasOwnProperty(surveyStartDate)) {
+                    if (datesTimes[surveyStartDate].start > startTime) {
+                        datesTimes[surveyStartDate].start = startTime;
+                    }
+                    if (datesTimes[surveyStartDate].end < endTime) {
+                        datesTimes[surveyStartDate].end = endTime;
+                    }
+                } else {
+                    datesTimes[surveyStartDate] = {
+                        start: startTime,
+                        end: endTime
+                    }
+                }
+
+
 
             }
 
         });
 
         if(tableData["per interview, N"]>0) {
-            averageSurveyTime = parseInt(totalSurveyTime/tableData["per interview, N"]);
-            tableData["per interview, average"] = parseInt(averageSurveyTime/60000) + ':' + String('0'+parseInt(averageSurveyTime%60000/1000)).substr(-2);
+            averageSurveyTime = moment(totalSurveyTime/tableData["per interview, N"]);
+            tableData["per interview, average"] = averageSurveyTime.format('HH:mm:ss');
         }
 
         _.each(datesTimes, function(surveyTimes) {
-            var startTime = new Date('1970-01-01T'+surveyTimes.start).getTime(),
-                endTime = new Date('1970-01-01T'+surveyTimes.end).getTime(),
-                workTime = endTime - startTime,
-                workTimeString = new Date(workTime).toISOString().split('T')[1].split('.')[0];
+            var startTime = moment('1970-01-01T'+surveyTimes.start),
+                endTime = moment('1970-01-01T'+surveyTimes.end),
+                workTime = moment(endTime - startTime),
+                workTimeString = workTime.format('HH:mm:ss'),
+                startTimeString = startTime.format('HH:mm:ss'),
+                endTimeString = endTime.format('HH:mm:ss');
             totalStartTime += startTime;
             totalEndTime += endTime;
+            totalWorkTime += workTime;
+            tableData["daily collection, N"]++;
+
             if (tableData["daily collection, min"] > workTimeString || tableData["daily collection, min"]==='') {
                 tableData["daily collection, min"] = workTimeString;
             }
             if (tableData["daily collection, max"] < workTimeString) {
                 tableData["daily collection, max"] = workTimeString;
             }
-            totalWorkTime += workTime;
-            tableData["daily collection, N"]++;
-            if (tableData["daily collection start, min"] > surveyTimes.start || tableData["daily collection start, min"]==='') {
-                tableData["daily collection start, min"] = surveyTimes.start;
+            if (tableData["daily collection start, min"] > startTimeString || tableData["daily collection start, min"]==='') {
+                tableData["daily collection start, min"] = startTimeString;
             }
-            if (tableData["daily collection start, max"] < surveyTimes.start) {
-                tableData["daily collection start, max"] = surveyTimes.start;
+            if (tableData["daily collection start, max"] < startTimeString) {
+                tableData["daily collection start, max"] = startTimeString;
             }
-            if (tableData["daily collection end, min"] > surveyTimes.end || tableData["daily collection end, min"]==='') {
-                tableData["daily collection end, min"] = surveyTimes.end;
+            if (tableData["daily collection end, min"] > endTimeString || tableData["daily collection end, min"]==='') {
+                tableData["daily collection end, min"] = endTimeString;
             }
-            if (tableData["daily collection end, max"] < surveyTimes.end) {
-                tableData["daily collection end, max"] = surveyTimes.end;
+            if (tableData["daily collection end, max"] < endTimeString) {
+                tableData["daily collection end, max"] = endTimeString;
             }
         });
         if (tableData["daily collection, N"]>0) {
-            tableData["daily collection, average"] = new Date(totalWorkTime/tableData["daily collection, N"]).toISOString().split('T')[1].split('.')[0];
-            tableData["daily collection start, average"] = new Date(totalStartTime/tableData["daily collection, N"]).toISOString().split('T')[1].split('.')[0];
-            tableData["daily collection end, average"] = new Date(totalEndTime/tableData["daily collection, N"]).toISOString().split('T')[1].split('.')[0];
+            tableData["daily collection, average"] = moment(totalWorkTime/tableData["daily collection, N"]).format('HH:mm:ss');
+            tableData["daily collection start, average"] = moment(totalStartTime/tableData["daily collection, N"]).format('HH:mm:ss');
+            tableData["daily collection end, average"] = moment(totalEndTime/tableData["daily collection, N"]).format('HH:mm:ss');
 
             // TODO: Figure out if we really should show the same value thrice
             tableData["daily collection start, N" ] = tableData["daily collection end, N"] = tableData["daily collection, N"];
