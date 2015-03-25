@@ -24,6 +24,10 @@ Make your local settings set the DATABASE settings in `./nutsurv/configuration.p
 
 ### For a NEW database ONLY
 
+For development start the database with docker or skip this line if you are using a different or existing database server
+
+    sudo docker-compose run db
+
 Open a NEW terminal or tab and connect to the database with a new container
 
     sudo docker-compose run web bash
