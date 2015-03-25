@@ -44,7 +44,11 @@ Now set up the db within the docker bash shell
 
 ### For development
 
-Open a NEW terminal or tab and connect to the database with a new container
+Start the database
+
+    sudo docker-compose run db
+
+Open a terminal or tab and connect to the database with a new container
 
     sudo docker-compose run web bash
 
