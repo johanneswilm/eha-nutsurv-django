@@ -141,7 +141,8 @@ BOWER_INSTALLED_APPS = (
 
 COMPRESS_PRECOMPILERS = (
         ('text/sass', 'sassc "{infile}" "{outfile}"'),
-        ('text/scss', 'sassc -m -I components/bower_components/ehealth-bootstrap "{infile}" "{outfile}"'),
+        ('text/scss', 'sassc -m -I /opt/nutsurv/nutsurv/components/bower_components/ehealth-bootstrap/'
+                      ' -I components/bower_components/ehealth-bootstrap "{infile}" "{outfile}"'),
         )
 
 REST_FRAMEWORK = {
