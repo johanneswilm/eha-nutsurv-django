@@ -131,6 +131,7 @@ var home = {
             alert_list.append(alertTemplate(_.assign(alert, home.alertType[alert.type])));
         });
 
+        home.drawAlertFilter();
         home.paginateAlerts();
         home.contacModalAlerts();
     },
@@ -180,15 +181,18 @@ var home = {
             icon: 'fa-map-marker'
         }
     },
-    paginateAlerts: function() {
+    drawAlertFilter: function() {
 
-        var type_html = '<option value="all">All</option>';
+        var type_html = '<option value="all">All Alerts</option>';
         _.each(home.alertType, function(type, key) {
             type_html += '<option value="' + key + '">' + type.title + '</option>\n';
         });
 
+        // Append & Bootstrap Select
         $('#home_alerts_filter_type').append(type_html);
-
+        
+    },
+    paginateAlerts: function() {
 
         // Paginate with list.js
         var paginateAlertList = new List('home_alerts_list', {
@@ -218,9 +222,12 @@ var home = {
 
     },
     contacModalAlerts: function () {
+
+        // Show Modal
         $('#contact-team-modal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
             var modal = $(this)
+            modal.find('#btn-contact-team-contacted').attr('href', button.data('url'))
 
             $.getJSON('/static/testing/team.json', function(team) {
 
@@ -235,6 +242,23 @@ var home = {
                 modal.find('ul.contact-team-list').html(team_html);
             });
         });
+
+        // Mark As Completed
+        $('#btn-contact-team-contacted').on('click', function(event) {
+      		$.ajax({
+      			url: $(event.target).attr('href'),
+      			type: 'PATCH',
+                data: {archived: true}, // FIXME: this needs to be changed to 'completed' value at some point
+      			dataType: 'json',
+      		  	success: function(result) {
+                    // Hide Alert Item
+                    console.log(result);
+                    alert('This will hide the alert from the UI once Issue #215 is completed')
+
+                }
+            });
+        });
+
     },
     createAlertsCSV: function(data) {
         var output = 'created,text\n';
