@@ -69,8 +69,7 @@ var missingData = {
                 "weight",
                 "age",
                 "pregnant",
-                "ante-natal_care",
-                "ever_pregnant"
+                "edema",
             ], womenQSL;
 
         if (!missingData.qsl) {
@@ -146,13 +145,12 @@ var missingData = {
             percentages = [],
             collectableData = [
                 "muac",
-                "gender",
                 "weight",
                 "heightType",
                 "edema",
                 "birthDate",
-                "height",
-                "diarrhoea"
+                "ageInMonths",
+                "height"
             ],
             childrenQSL;
 
