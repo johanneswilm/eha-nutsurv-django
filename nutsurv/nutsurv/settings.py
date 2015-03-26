@@ -134,7 +134,8 @@ BOWER_INSTALLED_APPS = (
     'moment#2.9.0',
     'moment-timezone#0.3.0',
     'list.js#1.1.1',
-    'list.pagination.js'
+    'list.pagination.js',
+    'jquery.cookie#1.4.1'
 )
 
 

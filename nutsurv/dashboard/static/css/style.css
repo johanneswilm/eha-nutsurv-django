@@ -2,6 +2,11 @@ body {
   padding-top: 50px;
 }
 
+.remove-top { margin-top: 0px; }
+.remove-bottom { margin-bottom: 0px; }
+.remove-left { margin-left: 0px; }
+.remove-right { margin-right: 0px; }
+
 .navbar-brand-name {
     position: relative;
     top: 6px;
