@@ -14,8 +14,11 @@ var missingData = {
         dataGetter.addNew(missingData.urls.states, missingData.fillStatesList, false);
         dataGetter.addNew(missingData.urls.survey, missingData.listChildren, true);
         dataGetter.addNew(missingData.urls.survey, missingData.listWomen, true);
+        dataGetter.addNew(missingData.urls.survey, missingData.listHouseholdMembers, false);
         dataGetter.addNew(missingData.urls.qsl, missingData.listChildren, false);
         dataGetter.addNew(missingData.urls.qsl, missingData.listWomen, false);
+        dataGetter.addNew(missingData.urls.qsl, missingData.listHouseholdMembers, false);
+
     },
     fillTeamsList: function(data) {
         var selector = jQuery('#missing_data_teams');
@@ -44,6 +47,7 @@ var missingData = {
             state = jQuery('#missing_data_states').val();
         missingData.listChildren(data, team, state);
         missingData.listWomen(data, team, state);
+        missingData.listHouseholdMembers(data, team, state);
     },
     listTmp: _.template('<li><span class="item"><%- detail.replace(/([A-Z])/g, \' $1\').replace(/^./, function(str){ return str.toUpperCase(); }).replace("_"," ") %>:</span><span class="description"><%= percentage %>%</span></li>'),
     qsl: false,
@@ -210,6 +214,83 @@ var missingData = {
         jQuery('#missing_data_children_list').empty();
         _.each(percentages, function(percentage) {
             jQuery('#missing_data_children_list').append(missingData.listTmp(percentage));
+        });
+    },
+    listHouseholdMembers: function(data, team, state) {
+
+        if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.qsl])) {
+            /* Check that all the relative data has been downloaded, else cancel.
+            See home.js. */
+            return false;
+        }
+        var qsl = dataGetter.downloads[missingData.urls.qsl].data,
+            surveyData = dataGetter.downloads[missingData.urls.survey].data.survey_data,
+            householdMembersTotal = 0,
+            householdMembersDetails = {},
+            percentages = [],
+            collectableData = [
+                "age",
+                "gender"
+            ],
+            householdMembersQSL;
+
+        if (!missingData.qsl) {
+            missingData.qsl = parseQSL(qsl);
+        }
+
+        householdMembersQSL = _.findWhere(missingData.qsl,{key:'household members:'});
+
+        if (householdMembersQSL) {
+            _.each(householdMembersQSL.children, function (detail) {
+                collectableData.push(detail.key);
+            });
+        }
+
+        _.each(collectableData, function(detail) {
+            householdMembersDetails[detail] = 0;
+        });
+
+        _.each(surveyData, function(survey) {
+
+            var householdMembers;
+
+            if (team && team > 0 && team != survey.team) {
+                return true;
+            }
+            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+                return true;
+            }
+
+            _.each(survey.members, function(member) {
+                householdMembersTotal++;
+            });
+
+            householdMembers = survey.members;
+
+            _.each(householdMembers, function(hhMember) {
+                _.each(collectableData, function(detail) {
+                    if (detail in hhMember || detail in hhMember.survey) {
+                        householdMembersDetails[detail] ++;
+                    }
+                });
+            });
+        });
+
+        if (householdMembersTotal > 0) {
+            _.each(collectableData, function(detail) {
+                percentages.push({
+                    detail: detail,
+                    percentage: Math.round((householdMembersTotal - householdMembersDetails[detail]) / householdMembersTotal * 100 * 10) /10
+                });
+            });
+        }
+
+        percentages = _.sortBy(percentages, 'detail');
+
+
+        jQuery('#missing_data_household_members_list').empty();
+        _.each(percentages, function(percentage) {
+            jQuery('#missing_data_household_members_list').append(missingData.listTmp(percentage));
         });
     }
 };
