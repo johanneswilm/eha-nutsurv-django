@@ -98,6 +98,7 @@ var timeOfDataCollection = {
 
                 if (surveyStartDate!=surveyEndDate) {
                     // TODO: Data collection start and end are not on the same day.
+                    console.warn('Survey started and ended on different dates: '+surveyStartDate+' '+surveyEndDate);
                     return;
                 }
 
