@@ -11,7 +11,7 @@ from django.views.generic import View
 from django.conf import settings
 
 from rest_framework import viewsets
-from .serializers import AlertSerializer
+from .serializers import AlertSerializer, HouseholdSurveyJSONSerializer
 
 from models import Alert
 from models import HouseholdSurveyJSON
@@ -22,6 +22,15 @@ from models import ClustersPerState
 from models import States
 from models import StatesWithReserveClusters
 from models import ClustersPerTeam
+
+from rest_framework import viewsets
+
+
+class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
+
+    queryset = HouseholdSurveyJSON.objects.all()
+    serializer_class = HouseholdSurveyJSONSerializer
+
 
 @login_required
 def home(request):
@@ -609,8 +618,6 @@ class ClustersJSONView(View):
         else:
             data = {'clusters': {}}
         return HttpResponse(json.dumps(data), content_type='application/json')
-
-
 
 
 class AlertViewSet(viewsets.ModelViewSet):

@@ -16,13 +16,15 @@ from dashboard.views import StatesJSONView
 from dashboard.views import StatesWithReserveClustersJSONView
 from dashboard.views import ClustersPerTeamJSONView
 from dashboard.views import ClustersJSONView
-from dashboard.views import AlertViewSet
+from dashboard.views import AlertViewSet, HouseholdSurveyJSONViewset
+
 
 v1_api = Api(api_name='v1')
 v1_api.register(HouseholdSurveyJSONResource())
 
 router = routers.DefaultRouter()
 router.register(r'alerts', AlertViewSet)
+router.register(r'surveys', HouseholdSurveyJSONViewset)
 
 urlpatterns = patterns('',
                        url(r'^api/', include(v1_api.urls)),
