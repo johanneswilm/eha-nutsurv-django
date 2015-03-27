@@ -9,9 +9,12 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.conf import settings
+from django.contrib.auth.models import User
+
 
 from rest_framework import viewsets
-from .serializers import AlertSerializer, HouseholdSurveyJSONSerializer
+from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
+                          UserSerializer, TeamMemberSerializer)
 
 from models import Alert
 from models import HouseholdSurveyJSON
@@ -22,12 +25,17 @@ from models import ClustersPerState
 from models import States
 from models import StatesWithReserveClusters
 from models import ClustersPerTeam
+from models import TeamMember
 
 from rest_framework import viewsets
 
 
-class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
+class TeamMemberViewset(viewsets.ModelViewSet):
+    queryset = TeamMember.objects.all()
+    serializer_class = TeamMemberSerializer
 
+
+class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
     queryset = HouseholdSurveyJSON.objects.all()
     serializer_class = HouseholdSurveyJSONSerializer
 

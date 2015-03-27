@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from dashboard.models import HouseholdSurveyJSON, Alert
+from dashboard.models import HouseholdSurveyJSON, Alert, TeamMember
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
@@ -142,6 +142,25 @@ class Command(BaseCommand):
                                 "history":[]
                             }
                         )
+                        lead = household_survey.parse_team_lead()
+                        tm_lead ,created = TeamMember.objects.get_or_create(name=lead['firstName'] + ' ' + lead['lastName'],
+                                phone=lead['mobile'],
+                                email=lead['email'])
+                        household_survey.team_lead = tm_lead
+
+                        assistant = household_survey.parse_team_assistant()
+                        tm_assistant ,created = TeamMember.objects.get_or_create(name=assistant['firstName'] + ' ' + assistant['lastName'],
+                                phone=assistant['mobile'],
+                                email=assistant['email'])
+                        household_survey.team_assistant = tm_assistant
+
+                        anthro = household_survey.parse_team_anthropometrist()
+                        tm_anthro ,created = TeamMember.objects.get_or_create(name=anthro['firstName'] + ' ' + anthro['lastName'],
+                                phone=anthro['mobile'],
+                                email=anthro['email'])
+                        household_survey.team_anthropometrist = tm_anthro
+                        import ipdb
+                        ipdb.set_trace()
                         household_survey.save()
                     except KeyError as e:
                         logging.error('%r', parsed)

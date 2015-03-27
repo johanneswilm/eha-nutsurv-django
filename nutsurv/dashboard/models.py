@@ -12,18 +12,32 @@ from rest_framework.reverse import reverse
 
 import django.contrib.gis.db.models as gismodels
 from django.contrib.gis.geos import Point
+from django.contrib.auth.models import User
 
 from jsonfield import JSONField
 
 from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
+from phonenumber_field.modelfields import PhoneNumberField
+
+
+class TeamMember(models.Model):
+    name = models.CharField(blank=False, max_length=50)
+    phone = PhoneNumberField(blank=True)
+    email = models.EmailField(blank=True)
+
+    def __unicode__(self):
+        return u'%s-%s' % (self.id, self.name)
 
 
 class HouseholdSurveyJSON(models.Model):
     class Meta:
         verbose_name = 'household survey'
 
-    team_id = models.SlugField(db_index=True)
+    team_lead = models.ForeignKey('TeamMember', related_name='surveys_as_team_lead')
+    team_assistant = models.ForeignKey('TeamMember', related_name='surveys_as_team_assistant')
+    team_anthropometrist = models.ForeignKey('TeamMember', related_name='surveys_as_team_anthropometrist')
+
 
     json = JSONField(
         null=False,
@@ -41,8 +55,24 @@ class HouseholdSurveyJSON(models.Model):
                   'is uploaded to the server.  If in doubt, do no edit.'
     )
 
+    def parse_team(self, position):
+        team_members = self.json['team']['members']
+        for m in team_members:
+            designation = m['designation']
+            if designation == position:
+                return m
+
+    def parse_team_lead(self):
+        return self.parse_team('Team Leader')
+
+    def parse_team_assistant(self):
+        return self.parse_team('Assistant')
+
+    def parse_team_anthropometrist(self):
+        return self.parse_team('Anthropometrist')
+
     def save(self, *args, **kwargs):
-        self.team_id = self.get_team_id()
+
         return super(HouseholdSurveyJSON, self).save( *args, **kwargs)
 
     def __unicode__(self):
