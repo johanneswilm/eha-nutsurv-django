@@ -634,5 +634,11 @@ class AlertViewSet(viewsets.ModelViewSet):
     """
 
     template_name = 'dashboard/alert.html'
-    queryset = Alert.objects.filter(archived=False).order_by('-created')
+
+    queryset = Alert.objects.filter(
+        archived=False,
+        completed=False,
+    ).order_by('-created')
+
     serializer_class = AlertSerializer
+

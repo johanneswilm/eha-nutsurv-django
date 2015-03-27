@@ -11,8 +11,15 @@
 	       	<div class="panel-heading"><i class="fa fa-bell"></i> Alerts</div>
 	        <div class="panel-body">
 	            <div id="home_alerts_list">
-                    <input type="text" class="search" placeholder="Search title or team">
-                    <select id="home_alerts_filter_type"></select>
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            <input type="text" class="search form-control" placeholder="Search title or team">
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <select id="home_alerts_filter_type"></select>
+                        </div>
+                    </div>
+                    <hr class="alert-line">
                     <div class="list"></div>
                     <ul class="pagination pull-left"></ul>
     				<button id="home_alerts_download" class="btn btn-success pull-right">
@@ -47,17 +54,16 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="exampleModalLabel">Contact Team</h4>
+                <h3 class="modal-title" id="exampleModalLabel">
+                    <i class="fa fa-comment"></i> Contact Team
+                </h3>
             </div>
             <div class="modal-body">
-                <p><strong>Team</strong>: <span class="team-name"></span></p>
-                <p><strong>Team ID:</strong>: <span class="team-id"></span></p>
-            </div>
-            <div class="modal-footer">
+                <ul class="contact-team-list list-group"></ul>
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <i class="fa fa-exclamation-circle"></i> Not Contacted
                 </button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">
+                <button type="button" class="btn btn-success pull-right" data-dismiss="modal">
                     <i class="fa fa-check"></i> Mark as Contacted
                 </button>
             </div>
@@ -97,6 +103,17 @@
     </div>
 </script>
 
+<script id="contact-team-item" type="text/template">
+    <li class="list-group-item">
+        <div class="clearfix">
+            <strong class="remove-top remove-bottom pull-left"><%= firstName %> <%= lastName %></strong>
+            <em class="pull-right"><%= designation %></em>
+        </div>
+        <%= gender %>, <%= age %> yrs<br>
+        <% if (mobile) { %>Mobile: <%= mobile %><br><% } %>
+        <% if (email) { %>Email: <a href="mailto:<%= email %>"><%= email %></a><% } %>
+    </li>
+</script>
 
 <script src="/static/js/home.js"></script>
 {% endblock content %}

@@ -205,7 +205,6 @@ var home = {
     	    }
     	    else {            
     	        paginateAlertList.filter(function(item) {
-                    console.log('item.values() ' + item.values().alert_type);
     	            if (item.values().alert_type == this_type) {
     	                return true;
     	            }
@@ -219,11 +218,22 @@ var home = {
 
     },
     contacModalAlerts: function () {
-        $('#contact-team-modal').on('show.bs.modal', function(event) {    
-            var button = $(event.relatedTarget)    
+        $('#contact-team-modal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget)
             var modal = $(this)
-            modal.find('span.team-name').text(button.data('team'))
-            modal.find('span.team-id').text(button.data('team_id'))
+
+            $.getJSON('/static/testing/team.json', function(team) {
+
+                var team_html = '';
+                var personTemplate = _.template($('#contact-team-item').html());
+                var personGender = { F: "Female", M: "Male" };
+                _.each(team, function(person, id) {
+                    person.gender = personGender[person.gender];
+                    team_html += personTemplate(person);
+                });
+
+                modal.find('ul.contact-team-list').html(team_html);
+            });
         });
     },
     createAlertsCSV: function(data) {

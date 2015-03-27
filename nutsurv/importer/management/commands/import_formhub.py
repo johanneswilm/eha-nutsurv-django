@@ -82,100 +82,85 @@ class Command(BaseCommand):
 
         last_10_seconds = None
         imported_last_10_seconds = 0
+        with open(filename) as csvfile:
 
-        from pycallgraph import PyCallGraph
-        from pycallgraph.output import GraphvizOutput
+            headers = None
 
-        from pycallgraph import Config
-        from pycallgraph import GlobbingFilter
-        config = Config()
-        config.trace_filter = GlobbingFilter(exclude=[
-                'django.*',
-                ])
+            for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
 
-        graphviz = GraphvizOutput(output_file='dashboard_callgraph.png')
+                if not headers:
+                    # first row is the headers
+                    headers = row
+                    continue
 
-        with PyCallGraph(output=graphviz, config=config):
-            with open(filename) as csvfile:
+                rawdata = dict( ((k, v) for k, v in zip(headers, row) if v != 'n/a'))
 
-                headers = None
+                parsed = parse_flat_formhub_csv(rawdata)
 
-                for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
+                members = find_household_members(parsed)
 
-                    if not headers:
-                        # first row is the headers
-                        headers = row
-                        continue
+                try:
+                    household_survey = HouseholdSurveyJSON(
+                        uuid=parsed['_uuid'],
+                        json={
+                            "uuid": parsed['_uuid'],
+                            "syncDate": parsed['_submission_time'] + ".000Z",
+                            "startTime": parsed['starttime'],
+                            "endTime": parsed['endtime'],
+                            "created": parsed['_submission_time']  + ".000Z",
+                            "modified": parsed['_submission_time'],
+                            "householdID": parsed['hh_number'],
+                            "cluster": parsed['cluster'],
+                            "cluster_name": parsed['cluster_name'],
+                            "state": parsed['state'],
+                            "lga": parsed['lga'],
+                            "location": [
+                                parsed['_gps_latitude'],
+                                parsed['_gps_longitude']
+                            ],
+                            "members": members,
+                            "team_num": parsed['team_num'],
+                            "team": FakeTeams.objects.get_or_create(
+                                team_id=parsed['team_num']
+                            )[0].json,
+                            "_id": parsed['_uuid'],
+                            "tools":{},
+                            "history":[]
+                        }
+                    )
+                    lead = household_survey.parse_team_lead()
+                    tm_lead ,created = TeamMember.objects.get_or_create(name=lead['firstName'] + ' ' + lead['lastName'],
+                            phone=lead['mobile'],
+                            email=lead['email'])
+                    household_survey.team_lead = tm_lead
 
-                    rawdata = dict( ((k, v) for k, v in zip(headers, row) if v != 'n/a'))
+                    assistant = household_survey.parse_team_assistant()
+                    tm_assistant ,created = TeamMember.objects.get_or_create(name=assistant['firstName'] + ' ' + assistant['lastName'],
+                            phone=assistant['mobile'],
+                            email=assistant['email'])
+                    household_survey.team_assistant = tm_assistant
 
-                    parsed = parse_flat_formhub_csv(rawdata)
-
-                    members = find_household_members(parsed)
-
-                    try:
-                        household_survey = HouseholdSurveyJSON(
-                            uuid=parsed['_uuid'],
-                            json={
-                                "uuid": parsed['_uuid'],
-                                "syncDate": parsed['_submission_time'] + ".000Z",
-                                "startTime": parsed['starttime'],
-                                "endTime": parsed['endtime'],
-                                "created": parsed['_submission_time']  + ".000Z",
-                                "modified": parsed['_submission_time'],
-                                "householdID": parsed['hh_number'],
-                                "cluster": parsed['cluster'],
-                                "cluster_name": parsed['cluster_name'],
-                                "state": parsed['state'],
-                                "lga": parsed['lga'],
-                                "location": [
-                                    parsed['_gps_latitude'],
-                                    parsed['_gps_longitude']
-                                ],
-                                "members": members,
-                                "team_num": parsed['team_num'],
-                                "team": FakeTeams.objects.get_or_create(
-                                    team_id=parsed['team_num']
-                                )[0].json,
-                                "_id": parsed['_uuid'],
-                                "tools":{},
-                                "history":[]
-                            }
-                        )
-                        lead = household_survey.parse_team_lead()
-                        tm_lead ,created = TeamMember.objects.get_or_create(name=lead['firstName'] + ' ' + lead['lastName'],
-                                phone=lead['mobile'],
-                                email=lead['email'])
-                        household_survey.team_lead = tm_lead
-
-                        assistant = household_survey.parse_team_assistant()
-                        tm_assistant ,created = TeamMember.objects.get_or_create(name=assistant['firstName'] + ' ' + assistant['lastName'],
-                                phone=assistant['mobile'],
-                                email=assistant['email'])
-                        household_survey.team_assistant = tm_assistant
-
-                        anthro = household_survey.parse_team_anthropometrist()
-                        tm_anthro ,created = TeamMember.objects.get_or_create(name=anthro['firstName'] + ' ' + anthro['lastName'],
-                                phone=anthro['mobile'],
-                                email=anthro['email'])
-                        household_survey.team_anthropometrist = tm_anthro
-                        import ipdb
-                        ipdb.set_trace()
-                        household_survey.save()
-                    except KeyError as e:
-                        logging.error('%r', parsed)
-                        logging.exception(e)
+                    anthro = household_survey.parse_team_anthropometrist()
+                    tm_anthro ,created = TeamMember.objects.get_or_create(name=anthro['firstName'] + ' ' + anthro['lastName'],
+                            phone=anthro['mobile'],
+                            email=anthro['email'])
+                    household_survey.team_anthropometrist = tm_anthro
+                    import ipdb
+                    ipdb.set_trace()
+                    household_survey.save()
+                except KeyError as e:
+                    logging.error('%r', parsed)
+                    logging.exception(e)
 
 
-                    update_mapping_documents_from_new_survey(household_survey.json)
-                    Alert.run_alert_checks_on_document(household_survey)
+                update_mapping_documents_from_new_survey(household_survey.json)
+                Alert.run_alert_checks_on_document(household_survey)
 
-                    if datetime.now().second/10 != last_10_seconds:
-                        print "\n\n===> imported {} records in the last 10 seconds, that is {} records/s\n\n".format(imported_last_10_seconds, imported_last_10_seconds/10.0)
-                        last_10_seconds = datetime.now().second/10
-                        imported_last_10_seconds = 0
-                    else:
-                        imported_last_10_seconds += 1
+                if datetime.now().second/10 != last_10_seconds:
+                    print "\n\n===> imported {} records in the last 10 seconds, that is {} records/s\n\n".format(imported_last_10_seconds, imported_last_10_seconds/10.0)
+                    last_10_seconds = datetime.now().second/10
+                    imported_last_10_seconds = 0
+                else:
+                    imported_last_10_seconds += 1
 
-                    print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid']
-
+                print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid']

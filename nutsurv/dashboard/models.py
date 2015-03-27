@@ -341,19 +341,26 @@ class HouseholdSurveyJSON(models.Model):
 
 
 class Alert(models.Model):
-    """New alerts are only created if there is no unarchived alert having the
+    """
+    New alerts are only created if there is no unarchived alert having the
     same content of the json field.  The user may still create alerts manually
     using the admin interface.
     """
+
     text = models.TextField()
+
     json = JSONField(
         null=True, blank=True,
         help_text='A JSON document containing data for one alert.'
     )
+
     category = models.CharField(max_length=255,default='general')
-    archived = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
+
+    completed = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
 
     def team_id(self):
         return self.json.get('team_id')
