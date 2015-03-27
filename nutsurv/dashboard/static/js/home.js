@@ -254,6 +254,7 @@ var home = {
                     // Hide Alert Item
                     console.log(result);
                     alert('This will hide the alert from the UI once Issue #215 is completed')
+                    
 
                 }
             });

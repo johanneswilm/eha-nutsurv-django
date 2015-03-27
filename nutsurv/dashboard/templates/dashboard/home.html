@@ -65,7 +65,7 @@
                 </button>
                 <button type="button" class="btn btn-success pull-right" id="btn-contact-team-contacted"
                         data-dismiss="modal"
-                        href="http://most-interest.com">
+                        href="">
                     <i class="fa fa-check"></i> Mark as Contacted
                 </button>
             </div>
@@ -74,7 +74,7 @@
 </div>
 
 <script id="home-alert-item" type="text/template">
-    <div class="row alert-item">
+    <div class="row alert-item" id="alert-<%= id %>">
         <span class="alert_type" style="display:none;"><%= type %></span>
         <div class="col-sm-1 text-right">
             <i class="alert-icon fa <%= icon %>"></i>
