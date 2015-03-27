@@ -114,7 +114,9 @@ def find_household_members(data):
     return members
 
 def parse_flat_formhub_csv(rawdata):
+
     parsed = {}
+
     for k, v in rawdata.items():
         path = k.split('/')
 
@@ -153,6 +155,10 @@ def parse_flat_formhub_csv(rawdata):
 
     return parsed
 
+
+def get_rawdata(headers, row):
+    return dict(((k, v) for k, v in zip(headers, row) if v != 'n/a'))
+
 class Command(BaseCommand):
     args = '<filename ...>'
     help = 'Imports the csv file'
@@ -175,7 +181,7 @@ class Command(BaseCommand):
                     headers = row
                     continue
 
-                rawdata = dict( ((k, v) for k, v in zip(headers, row) if v != 'n/a'))
+                rawdata = get_rawdata(headers, row)
 
                 parsed = parse_flat_formhub_csv(rawdata)
 
