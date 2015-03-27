@@ -13,6 +13,8 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
 
             'url',
 
+            'id',
+
             # fields
             'category',
             'text',
