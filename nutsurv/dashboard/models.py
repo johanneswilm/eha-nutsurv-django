@@ -23,19 +23,27 @@ class HouseholdSurveyJSON(models.Model):
     class Meta:
         verbose_name = 'household survey'
 
+    team_id = models.SlugField(db_index=True)
+
     json = JSONField(
-        null=True, blank=True,
+        null=False,
+        blank=False,
         help_text='A JSON document containing data acquired from one '
                   'household.  Typically not edited here but uploaded from a '
                   'mobile application used by a team of surveyors in the '
                   'field.  If in doubt, do not edit.'
     )
+
     uuid = models.CharField(
         max_length=255, unique=True,
         help_text='A unique identifier of an individual household survey.  '
                   'Typically assigned by a mobile application before the data '
                   'is uploaded to the server.  If in doubt, do no edit.'
     )
+
+    def save(self, *args, **kwargs):
+        self.team_id = self.get_team_id()
+        return super(HouseholdSurveyJSON, self).save( *args, **kwargs)
 
     def __unicode__(self):
         # Try to build a name describing a survey.
@@ -106,13 +114,8 @@ class HouseholdSurveyJSON(models.Model):
         'team_id' (useful to find filter out documents non conforming with the
         survey data structure specification).
         """
-        docs = cls.objects.all()
-        output = []
-        for doc in docs:
-            tid = doc.get_team_id()
-            if tid == team_id:
-                output.append(doc)
-        return output
+        docs = cls.objects.filter(team_id=team_id)
+        return docs
 
     def find_all_surveys_by_this_team(self):
         """This method finds all instances of HouseholdSurveyJSON which were created
@@ -308,19 +311,26 @@ class HouseholdSurveyJSON(models.Model):
 
 
 class Alert(models.Model):
-    """New alerts are only created if there is no unarchived alert having the
+    """
+    New alerts are only created if there is no unarchived alert having the
     same content of the json field.  The user may still create alerts manually
     using the admin interface.
     """
+
     text = models.TextField()
+
     json = JSONField(
         null=True, blank=True,
         help_text='A JSON document containing data for one alert.'
     )
+
     category = models.CharField(max_length=255,default='general')
-    archived = models.BooleanField(default=False)
+
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
+
+    completed = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
 
     def team_id(self):
         return self.json.get('team_id')

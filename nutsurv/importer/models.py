@@ -1,4 +1,4 @@
-import uuid, random, json, math
+import uuid, random, json, math, logging
 
 from datetime import datetime
 from jsonfield import JSONField
@@ -11,10 +11,98 @@ from importer import anthrocomputation
 from pytz import timezone
 import dateutil.parser
 
+def reset_data():
+    FakeTeams.objects.all().delete()
+    FormhubSurvey.objects.all().delete()
+    dashboard_models.HouseholdSurveyJSON.objects.all().delete()
+    dashboard_models.Alert.objects.all().delete()
+
+    dashboard_models.Clusters.objects.all().delete()
+    cluster_data = dashboard_models.Clusters()
+    cluster_data.json = {}
+    cluster_data.name_or_id = 'default_clusters'
+    cluster_data.active = True
+    cluster_data.save()
+
+    dashboard_models.ClustersPerTeam.objects.all().delete()
+    team_data = dashboard_models.ClustersPerTeam()
+    team_data.json = {}
+    team_data.name_or_id = 'default_clusters_per_team'
+    team_data.active = True
+    team_data.save()
+
+    dashboard_models.StatesWithReserveClusters.objects.all().delete()
+    state_reserve_data = dashboard_models.StatesWithReserveClusters()
+    state_reserve_data.json = []
+    state_reserve_data.name_or_id = 'default_state_reserve_data'
+    state_reserve_data.active = True
+    state_reserve_data.save()
+
+    dashboard_models.ClustersPerState.objects.all().delete()
+    cluster_state_data = dashboard_models.ClustersPerState()
+    cluster_state_data.json = {}
+    cluster_state_data.name_or_id = 'default_clusters_per_state'
+    cluster_state_data.active = True
+    cluster_state_data.save()
+
+    dashboard_models.States.objects.all().delete()
+    states_data = dashboard_models.States()
+    states_data.json = []
+    states_data.name_or_id = 'default_states'
+    states_data.active = True
+
+    states_data.save()
+
 def convert_to_utc_js_datestring(date_string):
     """Turn '2014-05-05T17:26:37.401+01' into '2014-05-05T16:26:37.401Z'"""
     parsed_date = dateutil.parser.parse(date_string)
     return parsed_date.astimezone(timezone('UTC')).isoformat()[:-6]+'Z'
+
+def update_mapping_documents_from_new_survey(json):
+    # Check whether other pieces of info are there as they should be.
+
+    team_number = str(json['team_num'])
+    team_data = dashboard_models.ClustersPerTeam.get_active()
+
+    if not team_number in team_data.json:
+        team_data.json[team_number] = 0
+        team_data.save()
+
+    for key in ('state', 'cluster', 'cluster_name', 'lga',):
+        if key not in json:
+            logging.warning('{!r} not in {!r}'.format(key, json)) # just to make sure it's there
+            return
+
+    cluster_data = dashboard_models.Clusters.get_active()
+    if cluster_data == None:
+        return
+
+    cluster_number = str(json['cluster'])
+    # We make everything depend on the existence of the cluster number in the cluster db.
+    if cluster_number in cluster_data.json:
+        return
+
+    cluster_data.json[cluster_number] = {
+        "cluster_name": json['cluster_name'],
+        "lga_name": str(json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
+        "state_name": str(json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
+    }
+    cluster_data.save()
+
+    state_number = str(json['state'])
+    cluster_state_data = dashboard_models.ClustersPerState.get_active()
+    if state_number not in cluster_state_data.json:
+        cluster_state_data.json[state_number] = {
+            "standard": 10,
+            "reserve": 5
+        }
+        cluster_state_data.save()
+
+    states_data = dashboard_models.States.get_active()
+    if state_number not in states_data.json:
+        states_data.json.append(state_number)
+        states_data.save()
+
 
 class FormhubSurvey(models.Model):
     uuid = models.CharField(max_length=256,unique=True)
@@ -34,7 +122,7 @@ class FormhubSurvey(models.Model):
         the format that comes from the nutsurv mobile app.
 
         """
-        if not all (terms in self.json for terms in ('hh_number', \
+        if not all (key in self.json for key in ('hh_number', \
             '_gps_latitude', '_gps_longitude', 'cluster', 'team_num', \
             'starttime', 'endtime', '_submission_time', '_uuid', \
             'consent/hh_roster')):
@@ -172,7 +260,7 @@ class FormhubSurvey(models.Model):
                 self.json['_gps_longitude']
             ],
             "members": members,
-            "team": FakeTeams.objects.get_or_create(team_id = \
+            "team": FakeTeams.objects.get_or_create(team_id =
                 self.json['team_num'])[0].json,
             "_id": self.json['_uuid'],
             "tools":{},
@@ -181,42 +269,7 @@ class FormhubSurvey(models.Model):
         self.converted_household_survey.json = converted_json
         self.converted_household_survey.save()
 
-        # Check whether other pieces of info are there as they should be.
-        if all (terms in self.json for terms in ('state', 'cluster', \
-            'cluster_name', 'lga')):
-            cluster_data = \
-                dashboard_models.Clusters.get_active()
-            if cluster_data != None:
-                cluster_number = str(self.json['cluster'])
-                # We make everything depend on the existence of the cluster number in the cluster db.
-                if not cluster_number in cluster_data.json:
-                    cluster_data.json[cluster_number] = {
-                        "cluster_name":self.json['cluster_name'],
-                        "lga_name":str(self.json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
-                        "state_name":str(self.json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
-                    }
-                    cluster_data.save()
-                    state_number = str(self.json['state'])
-                    cluster_state_data = dashboard_models.ClustersPerState.get_active()
-                    if not cluster_state_data == None:
-                        if not state_number in cluster_state_data.json:
-                            cluster_state_data.json[state_number] = {
-                                "standard": 10,
-                                "reserve": 5
-                            }
-                            cluster_state_data.save()
-                    states_data = dashboard_models.States.get_active()
-                    if not states_data == None:
-                        if not state_number in states_data.json:
-                            states_data.json.append(state_number)
-                            states_data.save()
-
-        team_number = str(self.json['team_num'])
-        team_data = dashboard_models.ClustersPerTeam.get_active()
-        if not team_data == None:
-            if not team_number in team_data.json:
-                team_data.json[team_number] = 0
-                team_data.save()
+        update_mapping_documents_from_new_survey(self.json)
 
         # Check for all relevant household alerts
         if self.converted_household_survey.json != None:

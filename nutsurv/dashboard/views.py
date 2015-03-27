@@ -5,12 +5,13 @@ import dateutil.parser
 import dateutil.relativedelta
 
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.conf import settings
 
 from rest_framework import viewsets
-from .serializers import AlertSerializer
+from .serializers import AlertSerializer, HouseholdSurveyJSONSerializer
 
 from models import Alert
 from models import HouseholdSurveyJSON
@@ -21,6 +22,15 @@ from models import ClustersPerState
 from models import States
 from models import StatesWithReserveClusters
 from models import ClustersPerTeam
+
+from rest_framework import viewsets
+
+
+class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
+
+    queryset = HouseholdSurveyJSON.objects.all()
+    serializer_class = HouseholdSurveyJSONSerializer
+
 
 @login_required
 def home(request):
@@ -353,69 +363,11 @@ class SurveyedClustersPerTeamJSONView(LoginRequiredView):
 class AggregateSurveyDataJSONView(LoginRequiredView):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
-        information from all surveys in the format requested by Johannes:
+        information from all surveys:
         {
             "survey_data": dictionary_containing_survey_data
         }
-        (the data format of the dictionary_containing_survey_data is described
-         in _find_all_surveys()).
-        """
-        surveys = {'survey_data': self._find_all_surveys()}
-        return HttpResponse(json.dumps(surveys),
-                            content_type='application/json')
-
-
-    @classmethod
-    def _musa_to_johannes(cls, musa_json):
-        """Converts JSON document given as musa_json and containing data from a
-        single survey from Musa's format into Johannes's format.  Returns a
-        dictionary in the format specified by Johannes.
-        The conversion may change either or both the name and type of an
-        attribute.
-        Only the information required by Johannes's code is converted.  Unused
-        information is not included to decrease the amount of data sent to the
-        client.
-        """
-        output = {}
-
-        # map the top-level attributes
-        output['location'] = musa_json['location']
-        output['cluster'] = musa_json['cluster']
-        output['startTime'] = musa_json['startTime']
-        output['endTime'] = musa_json['endTime']
-        output['team'] = musa_json['team']['teamID']
-
-        # map household members
-        output['members'] = []
-        output['child_surveys'] = []
-        output['women_surveys'] = []
-        for member in musa_json['members']:
-            gender = member['gender']
-            age = member['age']
-            output['members'].append({'gender': gender,
-                                      'age': age})
-            if 'surveyType' in member:
-                if member['surveyType'] == 'child':
-                    child = member['survey']
-                    child['gender'] = member['gender']
-                    output['child_surveys'].append(child)
-                elif member['surveyType'] == 'women':
-                    woman = member['survey']
-                    woman['age'] = age
-                    output['women_surveys'].append(woman)
-
-        # get rid of empty child_/women_surveys
-        if not len(output['child_surveys']):
-            del output['child_surveys']
-        if not len(output['women_surveys']):
-            del output['women_surveys']
-        return output
-
-    @classmethod
-    def _find_all_surveys(cls):
-        """Computes and returns a dictionary containing all available survey
-        data in the format requested by Johannes and shown in the following
-        example:
+        The data format being described through the following example:
         {
             '1': {
                 'location': [6.9249100685,
@@ -430,51 +382,80 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                         'gender': 'M',
                         'age': 40
                     },
-                    ...
-                ],
-                'women_surveys': [
                     {
-                        'breastfeeding': 'Y',
-                        'muac': 25.3,
-                        'height': 165.9,
-                        'weight': 56.0,
-                        'age': 30,
-                        'pregnant': 'N',
-                        'ante-natal_care': 'Y',
-                        'ever_pregnant': 'Y'
+                        'gender': 'M',
+                        'age': 4,
+                        'surveyType': 'child',
+                        'survey': {
+                            'weight': 45.0,
+                            'heightType': 'Child Standing (height)',
+                            'edema': 'N',
+                            'birthDate': '2011-01-18',
+                            'height': 35.2,
+                            'diarrhoea': 'N',
+                            'zscores': {
+                                'WAZ': 3.1,
+                                'HAZ': -1.7,
+                                'WHZ': -1.3
+                            }
+                        }
+
                     },
-                    ...
-                ],
-                'child_surveys': [
                     {
-                        'weight': 45.0,
-                        'heightType': 'Child Standing (height)',
-                        'edema': 'N',
-                        'birthDate': '2009-10-18',
-                        'height': 35.2,
-                        'diarrhoea': 'N',
-                        'zscores': {
-                            'WAZ': 3.1,
-                            'HAZ': -1.7,
-                            'WHZ': -1.3
+                        'gender': 'F',
+                        'age': 25,
+                        'surveyType': 'women',
+                        'survey': {
+                            'breastfeeding': 'Y',
+                            'muac': 25.3,
+                            'height': 165.9,
+                            'weight': 56.0,
+                            'pregnant': 'N',
+                            'ante-natal_care': 'Y',
+                            'ever_pregnant': 'Y'
                         }
                     },
                     ...
-                ]
+                ],
             },
         }
-        """
-        # get all JSON documents
-        docs = HouseholdSurveyJSON.objects.all()
-        survey_data = {}
-        # convert all documents
-        i = 0
-        for doc in docs:
-            i += 1
-            converted = cls._musa_to_johannes(doc.json)
-            survey_data[str(i)] = converted
 
-        return survey_data
+        """
+        docs = HouseholdSurveyJSON.objects.all().only('json')
+        survey_data = []
+        for doc in docs:
+            survey_data.append(self._clean_json(doc.json))
+        return JsonResponse({'survey_data': survey_data})
+
+
+    @classmethod
+    def _clean_json(cls, i_json):
+        """Clean JSON document given as i_json and containing data from a
+        single survey to decrease the amount of data sent to the
+        client.
+        """
+        output = {}
+
+        # map the top-level attributes
+        output['location'] = i_json['location']
+        output['cluster'] = i_json['cluster']
+        output['startTime'] = i_json['startTime']
+        output['endTime'] = i_json['endTime']
+        output['team'] = i_json['team']['teamID']
+
+
+        output['members'] = []
+        # map household members
+        for i_member in i_json['members']:
+            o_member = {}
+            o_member['gender'] = i_member['gender']
+            o_member['age'] = i_member['age']
+            if 'surveyType' in i_member:
+                o_member['surveyType'] = i_member['surveyType']
+                o_member['survey'] = i_member['survey']
+            output['members'].append(o_member)
+        return output
+
 
 class ActiveQuestionnaireSpecificationView(View):
     def get(self, request, *args, **kwargs):
@@ -639,13 +620,17 @@ class ClustersJSONView(View):
         return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-
-
 class AlertViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Alerts to be viewed.
     """
 
     template_name = 'dashboard/alert.html'
-    queryset = Alert.objects.filter(archived=False).order_by('-created')
+
+    queryset = Alert.objects.filter(
+        archived=False,
+        completed=False,
+    ).order_by('-created')
+
     serializer_class = AlertSerializer
+

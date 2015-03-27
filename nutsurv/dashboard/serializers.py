@@ -1,6 +1,10 @@
 from rest_framework import serializers
 
-from .models import Alert
+from .models import Alert, HouseholdSurveyJSON
+
+class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = HouseholdSurveyJSON
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -9,11 +13,14 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
 
             'url',
 
+            'id',
+
             # fields
             'category',
             'text',
             'archived',
             'created',
+            'completed',
 
             # TODO fields still in json
             'team_id',
