@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +49,12 @@ INSTALLED_APPS = (
     'corsheaders',
     'rest_framework',
     'raven.contrib.django.raven_compat',
-)
+]
+
+if DEBUG:
+    INSTALLED_APPS.append(
+        'django_extensions',
+    )
 
 CORS_ORIGIN_ALLOW_ALL = True
 
