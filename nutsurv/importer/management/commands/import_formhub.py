@@ -145,8 +145,6 @@ class Command(BaseCommand):
                             phone=anthro['mobile'],
                             email=anthro['email'])
                     household_survey.team_anthropometrist = tm_anthro
-                    import ipdb
-                    ipdb.set_trace()
                     household_survey.save()
                 except KeyError as e:
                     logging.error('%r', parsed)
