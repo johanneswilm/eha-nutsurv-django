@@ -12,11 +12,11 @@
 	        <div class="panel-body">
 	            <div id="home_alerts_list">
                     <div class="row">
-                        <div class="col-md-5 form-group">
-                            <input type="text" class="search form-control" placeholder="Search title or team">
+                        <div class="col-md-6 form-group">
+                            <input type="text" class="search form-control" placeholder="Search title or team name">
                         </div>
-                        <div class="col-md-5 text-right">
-                            <select id="home_alerts_filter_type"></select>
+                        <div class="col-md-6">
+                            <select id="home_alerts_filter_type" class="pull-right"></select>
                         </div>
                     </div>
                     <hr class="alert-line">
@@ -63,7 +63,9 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <i class="fa fa-exclamation-circle"></i> Not Contacted
                 </button>
-                <button type="button" class="btn btn-success pull-right" data-dismiss="modal">
+                <button type="button" class="btn btn-success pull-right" id="btn-contact-team-contacted"
+                        data-dismiss="modal"
+                        href="">
                     <i class="fa fa-check"></i> Mark as Contacted
                 </button>
             </div>
@@ -72,7 +74,7 @@
 </div>
 
 <script id="home-alert-item" type="text/template">
-    <div class="row alert-item">
+    <div class="row alert-item" id="alert-item-<%= id %>">
         <span class="alert_type" style="display:none;"><%= type %></span>
         <div class="col-sm-1 text-right">
             <i class="alert-icon fa <%= icon %>"></i>
@@ -94,7 +96,8 @@
                     data-toggle="modal"
                     data-target="#contact-team-modal"
                     data-team="<%= team_name %>"
-                    data-team_id="<%= team_id %>">
+                    data-team_id="<%= team_id %>"
+                    data-url="<%= url %>">
                 Contact Team
             </button>
         </div>

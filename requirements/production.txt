@@ -14,3 +14,4 @@ libsass
 supervisor
 uwsgi
 raven
+django-phonenumber-field

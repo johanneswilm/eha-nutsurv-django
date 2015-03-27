@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from dashboard.models import HouseholdSurveyJSON, Alert
+from dashboard.models import HouseholdSurveyJSON, Alert, TeamMember
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
@@ -169,7 +169,6 @@ class Command(BaseCommand):
 
         last_10_seconds = None
         imported_last_10_seconds = 0
-
         with open(filename) as csvfile:
 
             headers = None
@@ -216,6 +215,7 @@ class Command(BaseCommand):
                             "history":[]
                         }
                     )
+                    household_survey.parse_and_set_team_members()
                     household_survey.save()
                 except KeyError as e:
                     logging.error('%r', parsed)
