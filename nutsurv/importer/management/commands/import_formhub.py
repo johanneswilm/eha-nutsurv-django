@@ -128,25 +128,7 @@ class Command(BaseCommand):
                             "history":[]
                         }
                     )
-                    # Parse and assign the proper team members
-                    lead = household_survey.parse_team_lead()
-                    tm_lead ,created = TeamMember.objects.get_or_create(name=lead['firstName'] + ' ' + lead['lastName'],
-                            phone=lead['mobile'],
-                            email=lead['email'])
-                    household_survey.team_lead = tm_lead
-
-                    assistant = household_survey.parse_team_assistant()
-                    tm_assistant ,created = TeamMember.objects.get_or_create(name=assistant['firstName'] + ' ' + assistant['lastName'],
-                            phone=assistant['mobile'],
-                            email=assistant['email'])
-                    household_survey.team_assistant = tm_assistant
-
-                    anthro = household_survey.parse_team_anthropometrist()
-                    tm_anthro ,created = TeamMember.objects.get_or_create(name=anthro['firstName'] + ' ' + anthro['lastName'],
-                            phone=anthro['mobile'],
-                            email=anthro['email'])
-                    household_survey.team_anthropometrist = tm_anthro
-
+                    household_survey.parse_and_set_team_members()
                     household_survey.save()
                 except KeyError as e:
                     logging.error('%r', parsed)

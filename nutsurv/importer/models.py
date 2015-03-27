@@ -267,6 +267,7 @@ class FormhubSurvey(models.Model):
             "history":[]
         }
         self.converted_household_survey.json = converted_json
+        self.converted_household_survey.parse_and_set_team_members()
         self.converted_household_survey.save()
 
         update_mapping_documents_from_new_survey(self.json)

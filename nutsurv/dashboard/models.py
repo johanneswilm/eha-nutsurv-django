@@ -71,9 +71,26 @@ class HouseholdSurveyJSON(models.Model):
     def parse_team_anthropometrist(self):
         return self.parse_team('Anthropometrist')
 
-    def save(self, *args, **kwargs):
+    def parse_and_set_team_members(self):
+        # Parse and assign the proper team members
+        lead = self.parse_team_lead()
+        tm_lead ,created = TeamMember.objects.get_or_create(name=lead['firstName'] + ' ' + lead['lastName'],
+                phone=lead['mobile'],
+                email=lead['email'])
+        self.team_lead = tm_lead
 
-        return super(HouseholdSurveyJSON, self).save( *args, **kwargs)
+        assistant = self.parse_team_assistant()
+        tm_assistant ,created = TeamMember.objects.get_or_create(name=assistant['firstName'] + ' ' + assistant['lastName'],
+                phone=assistant['mobile'],
+                email=assistant['email'])
+        self.team_assistant = tm_assistant
+
+        anthro = self.parse_team_anthropometrist()
+        tm_anthro ,created = TeamMember.objects.get_or_create(name=anthro['firstName'] + ' ' + anthro['lastName'],
+                phone=anthro['mobile'],
+                email=anthro['email'])
+        self.team_anthropometrist = tm_anthro
+
 
     def __unicode__(self):
         # Try to build a name describing a survey.
