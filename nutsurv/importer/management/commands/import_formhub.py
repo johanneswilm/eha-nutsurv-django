@@ -152,5 +152,5 @@ class Command(BaseCommand):
                 else:
                     imported_last_10_seconds += 1
 
-                print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid']
+                print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'
 
