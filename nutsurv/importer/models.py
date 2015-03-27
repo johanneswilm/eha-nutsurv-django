@@ -128,9 +128,14 @@ class FormhubSurvey(models.Model):
             'consent/hh_roster')):
             return # Basic info not there, we give up. TODO: log error
         if not self.converted_household_survey:
-            self.converted_household_survey, created = \
-                dashboard_models.HouseholdSurveyJSON.objects.get_or_create( \
-                    uuid=self.uuid)
+            household_survey_list = dashboard_models.HouseholdSurveyJSON.objects.filter(uuid=self.uuid)
+            if household_survey_list:
+                self.converted_household_survey = household_survey_list[0]
+            else:
+                self.converted_household_survey = dashboard_models.HouseholdSurveyJSON(uuid=self.uuid)
+
+
+
         members = []
         for fh_member in self.json['consent/hh_roster']:
             member = {
