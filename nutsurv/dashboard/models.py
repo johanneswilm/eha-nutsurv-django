@@ -144,7 +144,7 @@ class HouseholdSurveyJSON(models.Model):
         'team_id' (useful to find filter out documents non conforming with the
         survey data structure specification).
         """
-        docs = cls.objects.filter(team_id=team_id)
+        docs = cls.objects.filter(team_lead__id=team_id)
         return docs
 
     def find_all_surveys_by_this_team(self):
