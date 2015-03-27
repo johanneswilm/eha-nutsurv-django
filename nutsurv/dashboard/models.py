@@ -329,6 +329,7 @@ class Alert(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
+    completed = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
 
     def team_id(self):
