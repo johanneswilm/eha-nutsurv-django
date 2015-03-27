@@ -6,9 +6,13 @@ from dashboard.models import HouseholdSurveyJSON, Alert
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
+from ... import anthrocomputation
+
 import csv
 import re
 import logging
+import math
+
 from textwrap import dedent
 
 from datetime import datetime
@@ -18,19 +22,94 @@ from pprint import pprint
 SPLIT_SEGMENT_RE = re.compile("([^\[]*)(?:\[(\d+)\])?")
 
 def find_household_members(data):
-    members = []
-    if 'consent' in data and 'hh_roster' in data['consent']:
-        for fh_member in data['consent']['hh_roster']:
-            member = {
-                "firstName": fh_member['listing']['name'],
-                "age": fh_member['listing']['age_years'],
-            }
-            if fh_member['listing']['sex'] == 1:
-                member["gender"] = "M"
-            else:
-                member["gender"] = "F"
 
-            members.append(member)
+    if not 'consent' in data:
+        return []
+
+    members = []
+
+    for fh_member in data['consent'].get('hh_roster', []):
+        member = {
+            "firstName": fh_member['listing']['name'],
+            "age": fh_member['listing']['age_years'],
+        }
+        if fh_member['listing']['sex'] == 1:
+            member["gender"] = "M"
+        else:
+            member["gender"] = "F"
+
+        members.append(member)
+
+    for fh_woman in data['consent'].get('note_7', []):
+
+        if not 'womanname1' in fh_woman:
+            logging.warning('Unnamed woman found, unable to find details..')
+            continue
+
+        name = fh_woman["womanname1"]
+        member = next((item for item in members if item["firstName"] == name), None)
+
+        if not member:
+            logging.warning('Did not find woman named "%s" in this.', name)
+            continue
+
+        member["surveyType"] = "women"
+        member["survey"] = {}
+
+        if 'wom_muac' in fh_woman:
+            member["survey"]["muac"] = fh_woman["wom_muac"]
+
+    for fh_child in data['consent'].get('child', []):
+
+        if not 'child_name' in fh_child:
+            logging.warning('Unnamed child found, unable to find details..')
+            continue
+
+        name = fh_child["child_name"]
+
+        member = next((item for item in members if item["firstName"] == name), None)
+
+        if not member:
+            logging.warning('Did not find details about child named "%s" in this.', name)
+            continue
+
+        if 'child_60' not in fh_child:
+            logging.warning('No details available on child named "%s".', name)
+            continue
+
+        child_details = fh_child['child_60']
+
+        member["surveyType"] = "child"
+
+        if fh_child['date_known'] is 0:
+            fh_child['age_months'] = None
+
+        survey = {
+            'muac': child_details.get('muac'),
+            'height': child_details.get('height', None),
+            'weight': child_details.get('weight', None),
+            'ageInMonth': fh_child['age_months'],
+            'edema': 'N' if child_details.get('edema', 0) == 0 else 'Y',
+            'zscores': {},
+        }
+
+        zscores = anthrocomputation.getAnthroResult(
+            ageInDays=(fh_child['age_months'] or 0) * anthrocomputation.DAYSINMONTH,
+            sex=member["gender"],
+            weight=survey["weight"],
+            height=survey["height"],
+            isRecumbent=child_details.get('measure', None) == 2,
+            hasOedema=survey["edema"] is 'Y',
+            hc=None,
+            muac=survey["muac"],
+            tsf=None,
+            ssf=None,
+        )
+
+        for zscore_name in ('ZLH4A', 'ZW4A', 'ZW4LH',):
+            survey["zscores"][zscore_name] = zscores[zscore_name]
+
+        member["survey"] = survey
 
     return members
 
