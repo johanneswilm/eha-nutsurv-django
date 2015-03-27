@@ -248,14 +248,13 @@ var home = {
       		$.ajax({
       			url: $(event.target).attr('href'),
       			type: 'PATCH',
-                data: {archived: true}, // FIXME: this needs to be changed to 'completed' value at some point
+                data: {completed: true},
       			dataType: 'json',
       		  	success: function(result) {
                     // Hide Alert Item
-                    console.log(result);
-                    alert('This will hide the alert from the UI once Issue #215 is completed')
-                    
-
+                    $('#alert-item-' + result.id).fadeOut(function() {
+                        $(this).remove();
+                    });
                 }
             });
         });
