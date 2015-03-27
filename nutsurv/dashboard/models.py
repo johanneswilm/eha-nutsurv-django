@@ -137,12 +137,8 @@ class HouseholdSurveyJSON(models.Model):
 
     @classmethod
     def find_all_surveys_by_team(cls, team_id):
-        """This method finds all instances of HouseholdSurveyJSON which can be
-        associated with team given by team_id.  If team_id is None, the method
-        finds those where team_id is None (unlikely) or where the JSON document
-        does not contain an object named 'team' containing another object named
-        'team_id' (useful to find filter out documents non conforming with the
-        survey data structure specification).
+        """This method finds all teams buy the team leader id. This is after
+        clarification that the team_id is based on the id of th team leader.
         """
         docs = cls.objects.filter(team_lead__id=team_id)
         return docs
