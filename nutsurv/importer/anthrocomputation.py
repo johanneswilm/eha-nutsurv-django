@@ -442,3 +442,16 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
         ar['ZW4LH'] = NaN
         ar['PW4LH'] = NaN
     return ar
+
+def keys_who_to_unicef(zscore_dict):
+    mapping = (
+        ('ZLH4A', 'HAZ'),
+        ('ZW4A', 'WAZ'),
+        ('ZW4LH', 'WHZ'),
+    )
+
+    for who_key, unicef_key in mapping:
+        if who_key in zscore_dict:
+            zscore_dict[unicef_key] = zscore_dict.pop(who_key)
+
+    return zscore_dict
