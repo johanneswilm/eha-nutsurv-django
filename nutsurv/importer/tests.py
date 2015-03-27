@@ -37,3 +37,24 @@ class ImporterTests(TestCase):
               'survey': {'muac': 276},
               'surveyType': 'women'}]
         )
+
+    def test_smoke_find_household_members_zscores(self):
+        rawdata = get_rawdata(self.headers, self.data[2])
+        parsed = parse_flat_formhub_csv(rawdata)
+        members = find_household_members(parsed)
+
+        self.assertEqual(
+            members[6],
+            {'age': 1,
+             'firstName': 'Umaru',
+             'gender': 'M',
+             'survey': {'ageInMonth': 12,
+                        'edema': 'N',
+                        'height': 71.8,
+                        'muac': 158,
+                        'weight': 9.4,
+                        'zscores': {u'HAZ': -1.6579153301592868,
+                                    u'WAZ': -0.23626655767549753,
+                                    u'WHZ': 0.85}},
+             'surveyType': 'child'}
+        )

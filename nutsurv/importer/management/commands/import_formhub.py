@@ -93,7 +93,7 @@ def find_household_members(data):
             'zscores': {},
         }
 
-        zscores = anthrocomputation.getAnthroResult(
+        zscores = anthrocomputation.keys_who_to_unicef(anthrocomputation.getAnthroResult(
             ageInDays=(fh_child['age_months'] or 0) * anthrocomputation.DAYSINMONTH,
             sex=member["gender"],
             weight=survey["weight"],
@@ -104,9 +104,9 @@ def find_household_members(data):
             muac=survey["muac"],
             tsf=None,
             ssf=None,
-        )
+        ))
 
-        for zscore_name in ('ZLH4A', 'ZW4A', 'ZW4LH',):
+        for zscore_name in ('HAZ', 'WAZ', 'WHZ',):
             survey["zscores"][zscore_name] = zscores[zscore_name]
 
         member["survey"] = survey
