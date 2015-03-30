@@ -6,6 +6,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg m
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y gfortran libopenblas-dev liblapack-dev python-numpy python-scipy nodejs-legacy libgeos-dev npm git postgresql-9.3 postgresql-9.3-postgis-2.1 python-virtualenv python-dev libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev
 
+RUN pip install libsass psycopg2
 ADD . /opt/nutsurv
 RUN pip install -r /opt/nutsurv/requirements/development.txt
 RUN npm install -g bower
