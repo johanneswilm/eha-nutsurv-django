@@ -62,35 +62,28 @@ class HouseholdSurveyJSON(models.Model):
             if designation == position:
                 return m
 
-    def parse_team_lead(self):
-        return self.parse_team('Team Leader')
-
-    def parse_team_assistant(self):
-        return self.parse_team('Assistant')
-
-    def parse_team_anthropometrist(self):
-        return self.parse_team('Anthropometrist')
 
     def parse_and_set_team_members(self):
-        # Parse and assign the proper team members
-        lead = self.parse_team_lead()
-        tm_lead ,created = TeamMember.objects.get_or_create(name=lead['firstName'] + ' ' + lead['lastName'],
-                phone=lead['mobile'],
-                email=lead['email'])
-        self.team_lead = tm_lead
 
-        assistant = self.parse_team_assistant()
-        tm_assistant ,created = TeamMember.objects.get_or_create(name=assistant['firstName'] + ' ' + assistant['lastName'],
-                phone=assistant['mobile'],
-                email=assistant['email'])
-        self.team_assistant = tm_assistant
+        def make_team_member(parsed):
+            tm ,created = TeamMember.objects.get_or_create(
+                    id=parsed['memberID'],
+                    defaults = {
+                        'name':parsed['firstName'] + ' ' + parsed['lastName'],
+                        'phone':parsed['mobile'],
+                        'email':parsed['email']
+                        }
+                    )
+            return tm
 
-        anthro = self.parse_team_anthropometrist()
-        tm_anthro ,created = TeamMember.objects.get_or_create(name=anthro['firstName'] + ' ' + anthro['lastName'],
-                phone=anthro['mobile'],
-                email=anthro['email'])
-        self.team_anthropometrist = tm_anthro
+        lead = self.parse_team('Team Leader')
+        self.team_lead = make_team_member(lead)
 
+        assistant =  self.parse_team('Assistant')
+        self.team_assistant = make_team_member(assistant)
+
+        anthro = self.parse_team('Anthropometrist')
+        self.team_anthropometrist = make_team_member(anthro)
 
     def __unicode__(self):
         # Try to build a name describing a survey.
