@@ -217,7 +217,7 @@ class Command(BaseCommand):
                     )
                     household_survey.parse_and_set_team_members()
                     household_survey.save()
-                except KeyError as e:
+                except (KeyError, IntegrityError) as e:
                     logging.error('%r', parsed)
                     logging.exception(e)
 
@@ -238,4 +238,3 @@ class Command(BaseCommand):
                     imported_last_10_seconds += 1
 
                 print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'
-
