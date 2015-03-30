@@ -19,12 +19,16 @@ from jsonfield import JSONField
 from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
 from phonenumber_field.modelfields import PhoneNumberField
+from django_extensions.db.fields import AutoSlugField
 
 
 class TeamMember(models.Model):
+    member_id = AutoSlugField(blank=False, unique=True, populate_from="id")
     name = models.CharField(blank=False, max_length=50)
     phone = PhoneNumberField(blank=True)
     email = models.EmailField(blank=True)
+
+
 
     def __unicode__(self):
         return u'%s-%s' % (self.id, self.name)
