@@ -86,7 +86,7 @@ var home = {
             }
         });
         home.latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
-        _.each(home.latestTeamContacts, function(contact) {
+        _.each(home.latestTeamContacts, function(contact) { console.log(contact);
             jQuery('#home_last_contact_list').append(home.contactTmp({
                 teamNo: contact.team,
                 teamName: teamData[contact.team],
@@ -120,7 +120,7 @@ var home = {
         );
 
     },
-    contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
+    contactTmp: _.template($('#home-last-contacted-item').html()),
     drawAlerts: function(data) {
 
         var alert_list = $('#home_alerts_list').find('div.list');
