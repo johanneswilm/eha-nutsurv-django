@@ -33,6 +33,7 @@ from rest_framework import viewsets
 class TeamMemberViewset(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all()
     serializer_class = TeamMemberSerializer
+    lookup_field = 'member_id'
 
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):

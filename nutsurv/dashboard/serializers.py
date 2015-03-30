@@ -18,6 +18,8 @@ class SimpleUserSerializer(UserSerializer):
 
 
 class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
+                                               lookup_field="member_id")
 
     class Meta:
         model = TeamMember
