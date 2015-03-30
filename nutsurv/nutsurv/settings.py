@@ -134,7 +134,7 @@ BOWER_INSTALLED_APPS = (
     'leaflet.markercluster#0.4.0',
     'lodash#3.0.0',
     'parse-python-indentation#0.1.0',
-    'git@github.com:eHealthAfrica/ehealth-bootstrap.git#0.0.5',
+    'eHealthAfrica/ehealth-bootstrap#0.0.5',
     'font-awesome#4.2.0',
     'moment#2.9.0',
     'moment-timezone#0.3.0',
