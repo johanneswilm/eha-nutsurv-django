@@ -34,6 +34,7 @@ class TeamMemberViewset(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all()
     serializer_class = TeamMemberSerializer
     lookup_field = 'member_id'
+    template_name = 'dashboard/teammember.html'
 
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
