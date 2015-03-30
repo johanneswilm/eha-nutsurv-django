@@ -27,6 +27,12 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
+    team_lead = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
+                                               lookup_field="member_id")
+    team_assistant = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
+                                               lookup_field="member_id")
+    team_anthropometrist = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
+                                               lookup_field="member_id")
     class Meta:
         model = HouseholdSurveyJSON
 
