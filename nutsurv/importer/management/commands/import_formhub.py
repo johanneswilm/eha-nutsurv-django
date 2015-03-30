@@ -108,6 +108,9 @@ def find_household_members(data):
 
         for zscore_name in ('HAZ', 'WAZ', 'WHZ',):
             survey["zscores"][zscore_name] = zscores[zscore_name]
+            if math.isnan(survey["zscores"][zscore_name]):
+                logging.warn("'%s' calculation returned NaN, not calculating this", zscore_name)
+                del survey["zscores"][zscore_name]
 
         member["survey"] = survey
 
