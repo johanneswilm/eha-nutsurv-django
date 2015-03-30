@@ -148,7 +148,7 @@ var home = {
             title: 'Child Age Months Ratio',
             icon: 'fa-child'
         },
-        womange_age_14_15_displacement: {
+        woman_age_14_15_displacement: {
             title: 'Women Aged 14 - 15 Displacement',
             icon: 'fa-female'
         },
