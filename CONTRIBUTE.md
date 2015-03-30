@@ -24,3 +24,12 @@ Outlined here is our workflow for Github on thus project
 Wait for your pull request to be accepted.
 
 *Note: if you need to keep working on this feature, bug another dev to merge in your work, otherwise things can get funky*
+
+## Migrating DB Schema
+
+1. ./manage.py reset_db
+2. psql -f enable_postgis.sql -h localhost -U postgres
+3. psql -f make_nutsurv_dev.sql -h localhost -U postgres
+4. ./manage.py migrate
+5. ./manage.py createsuperuser
+6. ./manage.py import_formhub path/to/file.csv
