@@ -20,15 +20,21 @@ from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
 from phonenumber_field.modelfields import PhoneNumberField
 from django_extensions.db.fields import AutoSlugField
+import random
 
 
 class TeamMember(models.Model):
-    member_id = AutoSlugField(blank=False, unique=True, populate_from="id")
+    member_id = AutoSlugField(blank=False,
+                              unique=True,
+                              populate_from="random_id",
+                              separator='')
     name = models.CharField(blank=False, max_length=50)
     phone = PhoneNumberField(blank=True)
     email = models.EmailField(blank=True)
 
-
+    @property
+    def random_id(self):
+        return random.randint(10000,100000)
 
     def __unicode__(self):
         return u'%s-%s' % (self.id, self.name)

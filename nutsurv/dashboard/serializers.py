@@ -21,7 +21,7 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = TeamMember
-        fields = [ 'url', 'id', 'member_id', 'name', 'phone', 'email']
+        fields = [ 'url',  'member_id', 'name', 'phone', 'email']
 
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
