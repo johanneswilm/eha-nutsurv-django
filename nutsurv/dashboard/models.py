@@ -28,7 +28,8 @@ class TeamMember(models.Model):
                               unique=True,
                               populate_from="random_id",
                               separator='')
-    name = models.CharField(blank=False, max_length=50)
+    first_name = models.CharField(blank=False, max_length=50)
+    last_name = models.CharField(blank=False, max_length=50)
     phone = PhoneNumberField(blank=True)
     email = models.EmailField(blank=True)
 
