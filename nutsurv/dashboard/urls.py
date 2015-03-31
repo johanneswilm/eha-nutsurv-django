@@ -37,9 +37,9 @@ urlpatterns = patterns('',
 
                        url(r'^home$', 'dashboard.views.home', name='home'),
 
-                       url(r'^mapping_checks$',
-                           'dashboard.views.mapping_checks',
-                           name='mapping_checks'),
+                       url(r'^fieldwork$',
+                           'dashboard.views.fieldwork',
+                           name='fieldwork'),
                        url(r'^age_distribution$',
                            'dashboard.views.age_distribution',
                            name='age_distribution'),

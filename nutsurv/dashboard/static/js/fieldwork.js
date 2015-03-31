@@ -3,7 +3,7 @@ var mappingChecks = {
         alerts: '/dashboard/alerts/'
     },
     initiate: function () {
-        jQuery('#mapping_checks_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
+        jQuery('#fieldwork_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
 
         mappingChecks.createMap();
         dataGetter.addNew(mappingChecks.urls.alerts, mappingChecks.updateMap, true);
@@ -14,7 +14,7 @@ var mappingChecks = {
           maxZoom: 18,
           attribution: false
       });
-        mappingChecks.map = L.map('mapping_checks_map', {
+        mappingChecks.map = L.map('fieldwork_map', {
             minZoom: 1,
             maxZoom: 18,
             layers: [osm],
@@ -74,9 +74,9 @@ var mappingChecks = {
         );
     },
     drawAlerts: function (incorrectSurveys) {
-        jQuery('#mapping_checks_alerts_list').empty();
+        jQuery('#fieldwork_alerts_list').empty();
         _.each(incorrectSurveys,function(survey){
-            jQuery('#mapping_checks_alerts_list').append(mappingChecks.alertTmp[survey.type](survey));
+            jQuery('#fieldwork_alerts_list').append(mappingChecks.alertTmp[survey.type](survey));
         });
     },
     alertTmp: {

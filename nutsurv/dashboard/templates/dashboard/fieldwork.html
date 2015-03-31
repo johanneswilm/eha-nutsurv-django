@@ -1,27 +1,27 @@
 {% extends "dashboard/base.html" %}
-{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='mapping_checks' %}{% endblock %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='fieldwork' %}{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h1><i class="fa fa-map-marker"></i> Mapping Checks</h1>
+    <h1><i class="fa fa-map-marker"></i> Fieldwork</h1>
 </div>
 <div class="row">
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Survey Map</div>
             <div class="panel-body">
-                <div id="mapping_checks_map" class="map"></div>
+                <div id="fieldwork_map" class="map"></div>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> Alerts</div>
-            <div class="panel-body" id="mapping_checks_alerts">
-                <ul id="mapping_checks_alerts_list"></ul>
-                <button id="mapping_checks_alerts_download" class="btn btn-primary pull-right">Download</button>
+            <div class="panel-body" id="fieldwork_alerts">
+                <ul id="fieldwork_alerts_list"></ul>
+                <button id="fieldwork_alerts_download" class="btn btn-primary pull-right">Download</button>
             </div>
         </div>
     </div>
 </div>
-<script src="/static/js/mapping_checks.js"></script>
+<script src="/static/js/fieldwork.js"></script>
 {% endblock content %}
