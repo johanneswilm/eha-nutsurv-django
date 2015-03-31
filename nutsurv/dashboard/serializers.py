@@ -20,10 +20,18 @@ class SimpleUserSerializer(UserSerializer):
 class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
                                                lookup_field="member_id")
-    phone = serializers.CharField()
+    mobile = serializers.CharField()
     class Meta:
         model = TeamMember
-        fields = [ 'url',  'member_id', 'first_name', 'last_name', 'phone', 'email']
+        fields = ['url',
+                  'member_id',
+                  'first_name',
+                  'last_name',
+                  'gender',
+                  'age',
+                  'date_of_birth',
+                  'mobile',
+                  'email']
 
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):

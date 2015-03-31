@@ -1,37 +1,64 @@
+# Python
 import datetime
 import dateutil.parser
 import dateutil.relativedelta
-
 import uuid
+import random
 
+# 3rd party
 import numpy
 import scipy.stats
 
-from django.db import models
-from rest_framework.reverse import reverse
-
+# django core
+from django.utils.translation import ugettext as _
 import django.contrib.gis.db.models as gismodels
+from django.db import models
 from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
 
-from jsonfield import JSONField
 
+# django 3rd party
+from rest_framework.reverse import reverse
+from phonenumber_field.modelfields import PhoneNumberField
+from jsonfield import JSONField
+from django_extensions.db.fields import (
+        AutoSlugField, CreationDateTimeField, ModificationDateTimeField,
+        )
+
+# Internal
 from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
-from phonenumber_field.modelfields import PhoneNumberField
-from django_extensions.db.fields import AutoSlugField
-import random
 
 
 class TeamMember(models.Model):
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDER_CHOICES = (
+        (MALE, _('Male')),
+        (FEMALE, _('Female')),
+    )
+
     member_id = AutoSlugField(blank=False,
                               unique=True,
                               populate_from="random_id",
                               separator='')
     first_name = models.CharField(blank=False, max_length=50)
     last_name = models.CharField(blank=False, max_length=50)
-    phone = PhoneNumberField(blank=True)
+    mobile = PhoneNumberField(blank=True)
     email = models.EmailField(blank=True)
+    age = models.CharField(blank=True, max_length=50)
+    date_of_birth = models.DateField(blank=False)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=3, blank=True)
+
+    created = CreationDateTimeField()
+    modified = ModificationDateTimeField()
+
+    class Meta:
+        get_latest_by = 'modified'
+        ordering = ('-modified', '-created',)
+
+
+
 
     @property
     def random_id(self):
