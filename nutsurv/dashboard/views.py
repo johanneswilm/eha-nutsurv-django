@@ -49,9 +49,9 @@ def home(request):
 
 
 @login_required
-def mapping_checks(request):
+def fieldwork(request):
     response = {}
-    return render(request, 'dashboard/mapping_checks.html', response)
+    return render(request, 'dashboard/fieldwork.html', response)
 
 
 @login_required
@@ -643,4 +643,3 @@ class AlertViewSet(viewsets.ModelViewSet):
     ).order_by('-created')
 
     serializer_class = AlertSerializer
-

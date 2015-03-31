@@ -10,14 +10,14 @@
         <div class="panel panel-default">
             <div class="panel-heading"><span class="fa fa-map-marker" aria-hidden="true"></span> Map</div>
             <div class="panel-body">
-                <div id="mapping_checks_map" class="map"></div>
+                <div id="fieldwork_map" class="map"></div>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading"><span class="fa fa-bell" aria-hidden="true"></span> Details</div>
-            <div class="panel-body" id="mapping_checks_alerts">
+            <div class="panel-body" id="fieldwork_alerts">
               <dl>
                 <dt>Category</dt><dd>{{ category }}</dd>
                 <dt>Type</dt><dd>{{ type }}</dd>
@@ -45,7 +45,7 @@ function createMap() {
         maxZoom: 18,
         attribution: false
     });
-    mapObj = L.map('mapping_checks_map', {
+    mapObj = L.map('fieldwork_map', {
         minZoom: 1,
         maxZoom: 18,
         layers: [osm],
