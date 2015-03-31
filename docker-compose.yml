@@ -7,4 +7,5 @@ web:
   build: .
   volumes:
    - .:/opt/nutsurv/
+   - ~/.ssh/:/root/.ssh
   net: "host"
