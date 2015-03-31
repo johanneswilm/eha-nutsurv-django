@@ -141,7 +141,7 @@ BOWER_INSTALLED_APPS = (
     'list.js#1.1.1',
     'list.pagination.js',
     'jquery.cookie#1.4.1'
-)
+    )
 
 
 
@@ -152,13 +152,19 @@ COMPRESS_PRECOMPILERS = (
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.TemplateHTMLRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ),
-}
+        'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+        'DEFAULT_RENDERER_CLASSES': (
+            'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+            'rest_framework.renderers.TemplateHTMLRenderer',
+            'rest_framework.renderers.BrowsableAPIRenderer',
+            ),
+        'DEFAULT_PARSER_CLASSES': (
+            'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+            'rest_framework.parsers.FormParser',
+            'rest_framework.parsers.MultiPartParser',
+
+            ),
+        }
 
 
 
