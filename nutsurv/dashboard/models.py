@@ -1595,24 +1595,3 @@ class StatesWithReserveClusters(UniqueActiveNamedDocument):
                   u'reserve clusters enabled.',
         default=[]
     )
-
-
-class ClustersPerTeam(UniqueActiveNamedDocument):
-    """
-        For example:
-
-        {
-            "1": 5,
-            "2": 15,
-            "3": 17
-        }
-    """
-    class Meta:
-        verbose_name_plural = 'The "Clusters per Team" documents'
-
-    json = JSONField(
-        null=True, blank=True,
-        help_text=u'Please enter the JSON structure defining the (planned) '
-                  u'number of clusters per each team.',
-        default={}
-    )

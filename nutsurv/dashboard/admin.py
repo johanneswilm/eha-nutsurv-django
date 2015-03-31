@@ -8,8 +8,6 @@ from models import QuestionnaireSpecification
 from models import ClustersPerState
 from models import States
 from models import StatesWithReserveClusters
-from models import ClustersPerTeam
-
 
 class AlertAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
@@ -35,17 +33,12 @@ class StatesWithReserveClustersAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
-class ClustersPerTeamAdmin(admin.ModelAdmin):
-    readonly_fields = ('created', 'last_modified')
-
-
 admin.site.register(Alert, AlertAdmin)
 admin.site.register(Clusters, ClustersAdmin)
 admin.site.register(QuestionnaireSpecification, QuestionnaireSpecificationAdmin)
 admin.site.register(ClustersPerState, ClustersPerStateAdmin)
 admin.site.register(States, StatesAdmin)
 admin.site.register(StatesWithReserveClusters, StatesWithReserveClustersAdmin)
-admin.site.register(ClustersPerTeam, ClustersPerTeamAdmin)
 
 
 admin.site.register(

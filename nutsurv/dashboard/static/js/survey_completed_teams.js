@@ -1,13 +1,11 @@
 var surveyCompletedTeams = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        clustersPerTeam: '/dashboard/clustersperteamjsonview/',
         teams: '/dashboard/teamsjsonview/'
     },
     initiate: function () {
         dataGetter.addNew(surveyCompletedTeams.urls.teams, surveyCompletedTeams.setupTablePerTeam, false);
         dataGetter.addNew(surveyCompletedTeams.urls.survey, surveyCompletedTeams.setupTablePerTeam, true);
-        dataGetter.addNew(surveyCompletedTeams.urls.clustersPerTeam, surveyCompletedTeams.setupTablePerTeam, false);
     },
     downloadData: function () {
         if (!surveyCompletedTeams.table) {
@@ -30,29 +28,26 @@ var surveyCompletedTeams = {
     },
     table: false,
     setupTablePerTeam: function (data) {
-        if (!dataGetter.checkAll([surveyCompletedTeams.urls.survey,surveyCompletedTeams.urls.clustersPerTeam,surveyCompletedTeams.urls.teams])) {
+        if (!dataGetter.checkAll([surveyCompletedTeams.urls.survey,surveyCompletedTeams.urls.teams])) {
             /* Check that all the relative data has been downloaded, else cancel.
             See home.js. */
             return false;
         }
 
         var surveyData = dataGetter.downloads[surveyCompletedTeams.urls.survey].data.survey_data,
-            clustersPerTeamData = dataGetter.downloads[surveyCompletedTeams.urls.clustersPerTeam].data.teams,
             teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data.teams,
             perTeamData = [];
 
-        _.each(clustersPerTeamData, function(clustersAssigned, team) {
+        _.each(teamData, function(teamNames, team) {
             var teamObject = {
                     team: parseInt(team),
-                    teamNames: teamData[team],
+                    teamID: team,
                     households: 0,
                     women: 0,
                     children: 0,
                     members: 0,
                     clusterCodes: {},
-                    clustersAssigned: clustersAssigned,
                     clusters: 0,
-                    clustersComplete: 0,
                     minWomen: -1,
                     maxWomen: 0,
                     minChildren: -1,
@@ -63,10 +58,6 @@ var surveyCompletedTeams = {
                     minHouseholdsPerCluster: -1,
                     meanHouseholdsPerCluster: 0,
                 };
-
-                if (!teamObject.teamNames) {
-                    teamObject.teamNames = '';
-                }
 
             perTeamData.push(teamObject);
         });
@@ -83,10 +74,6 @@ var surveyCompletedTeams = {
                     teamObject.clusters++;
                 } else {
                     teamObject.clusterCodes[survey.cluster]++;
-                    if (teamObject.clusterCodes[survey.cluster]===20) {
-                        // When there are exactly 20 surveyed households in a given cluster, it is counted as complete.
-                        teamObject.clustersComplete++;
-                    }
                 }
 
                 teamObject.members += survey.members.length;
@@ -187,11 +174,9 @@ var surveyCompletedTeams = {
 
             columns: [
                 { "searchable": false, data: function(){return '';}, orderable: false },
-                { name: 'team', data: 'teamNames' },
+                { name: 'team', data: 'teamID' },
+                { name: 'clusters', data: 'clusters' },
                 { name: 'households', data: 'households' },
-                { name: 'clusters_assigned', data: 'clustersAssigned' },
-                { name: 'clusters_workedon', data: 'clusters' },
-                { name: 'clusters_complete', data: 'clustersComplete' },
                 { name: 'households_per_cluster_min', data: 'minHouseholdsPerCluster' },
                 { name: 'households_per_cluster_max', data: 'maxHouseholdsPerCluster' },
                 { name: 'households_per_cluster_mean', data: 'meanHouseholdsPerCluster' },

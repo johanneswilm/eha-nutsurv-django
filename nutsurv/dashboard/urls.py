@@ -14,7 +14,6 @@ from dashboard.views import ActiveQuestionnaireSpecificationView
 from dashboard.views import ClustersPerStateJSONView
 from dashboard.views import StatesJSONView
 from dashboard.views import StatesWithReserveClustersJSONView
-from dashboard.views import ClustersPerTeamJSONView
 from dashboard.views import ClustersJSONView
 from dashboard.views import AlertViewSet
 from dashboard.views import HouseholdSurveyJSONViewset
@@ -84,9 +83,6 @@ urlpatterns = patterns('',
                        url(r'^stateswithreserveclustersjsonview/$',
                            StatesWithReserveClustersJSONView.as_view(),
                            name='states-with-reserve-clusters-json-view'),
-                       url(r'^clustersperteamjsonview/$',
-                           ClustersPerTeamJSONView.as_view(),
-                           name='clusters-per-team-json-view'),
                        url(r'^clustersjsonview/$',
                            ClustersJSONView.as_view(),
                            name='clusters-json-view'),

@@ -24,13 +24,6 @@ def reset_data():
     cluster_data.active = True
     cluster_data.save()
 
-    dashboard_models.ClustersPerTeam.objects.all().delete()
-    team_data = dashboard_models.ClustersPerTeam()
-    team_data.json = {}
-    team_data.name_or_id = 'default_clusters_per_team'
-    team_data.active = True
-    team_data.save()
-
     dashboard_models.StatesWithReserveClusters.objects.all().delete()
     state_reserve_data = dashboard_models.StatesWithReserveClusters()
     state_reserve_data.json = []
@@ -60,13 +53,6 @@ def convert_to_utc_js_datestring(date_string):
 
 def update_mapping_documents_from_new_survey(json):
     # Check whether other pieces of info are there as they should be.
-
-    team_number = str(json['team_num'])
-    team_data = dashboard_models.ClustersPerTeam.get_active()
-
-    if not team_number in team_data.json:
-        team_data.json[team_number] = 0
-        team_data.save()
 
     for key in ('state', 'cluster', 'cluster_name', 'lga',):
         if key not in json:
