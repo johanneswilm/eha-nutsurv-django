@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='training' %}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1><i class="fa fa-map-marker"></i> List of training rooms</h1>
+</div>
+
+<div>
+    <p>
+    <form method="POST" action=".">{% csrf_token %}
+      <input name="creator" type="hidden" value="{{user.id}}">
+      <button type="submit" class="btn btn-primary btn-sm">
+        <i class="fa fa-plus"></i> Create Training Room
+      </button>
+    </form>
+    <p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th data-column-name="household_number">Training room number</th>
+                <th data-column-name="created">Created</th>
+                <th data-column-name="url"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+$.get(window.location.pathname, function (data) {
+  $('table').dataTable({
+    data: data,
+    paging: false,
+    searching: false,
+    ordering:  false,
+    columns: [
+     {data: 'id'},
+     {data: 'created'},
+     {data: 'url',
+      render: function (data, type, full, meta ) {
+        return '<a class="btn btn-sm btn-primary" href="'+data+'"><i class="fa fa-eye"></i> Room details</a>';
+      }},
+    ],
+  });
+});
+</script>
+{% endblock content %}

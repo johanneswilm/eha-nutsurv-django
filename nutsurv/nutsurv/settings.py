@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'tastypie',
     'accounts',
     'importer',
+    'training',
     'djangobower',
     'compressor',
     'corsheaders',

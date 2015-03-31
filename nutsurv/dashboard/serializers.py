@@ -48,8 +48,6 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
 
-    members = HouseholdMemberSerializer(many=True, read_only=True)
-
     class Meta:
         extra_kwargs = {
                 'team_lead': {'lookup_field': 'member_id'},
