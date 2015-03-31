@@ -1,7 +1,24 @@
 language: python
 
+addons:
+  postgresql: "9.3"
+
 install:
   - pip install pylint
+  - npm install -g bower
+  - sudo apt-get update && sudo apt-get install -y python-numpy python-scipy
 
 script:
   - pylint nutsurv --disable=all --enable=E0602
+  - virtualenv --system-site-packages nutsurv-venv
+  - source nutsurv-venv/bin/activate
+  - pip install -r requirements/production.txt
+  - pip install -r requirements/development.txt
+  - psql -f enable_postgis.sql -U postgres
+  - psql -f make_nutsurv_dev.sql -U postgres
+  - cd nutsurv
+  - cat configuration.py-default | sed s/postgres/nutsurv_dev/ > configuration.py
+  - echo 'POSTGIS_VERSION = (2, 1)' >> configuration.py
+  - ./manage.py bower install
+  - ./manage.py test
+
