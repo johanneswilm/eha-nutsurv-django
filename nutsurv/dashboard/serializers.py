@@ -43,7 +43,11 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
                 'team_anthropometrist': {'lookup_field': 'member_id'},
                 }
         model = HouseholdSurveyJSON
-
+        extra_kwargs = {
+            'team_lead': {'lookup_field': 'member_id'},
+            'team_assistant': {'lookup_field': 'member_id'},
+            'team_anthropometrist': {'lookup_field': 'member_id'},
+        }
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
