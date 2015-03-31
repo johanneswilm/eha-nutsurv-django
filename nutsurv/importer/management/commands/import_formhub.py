@@ -202,7 +202,7 @@ class Command(BaseCommand):
                             "householdID": parsed['hh_number'],
                             "cluster": parsed['cluster'],
                             "cluster_name": parsed['cluster_name'],
-                            "state": parsed['state'],
+                            "first_admin_level": parsed['first_admin_level'],
                             "second_admin_level": parsed['second_admin_level'],
                             "location": [
                                 parsed['_gps_latitude'],

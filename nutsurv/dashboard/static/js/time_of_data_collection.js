@@ -2,15 +2,15 @@ var timeOfDataCollection = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/dashboard/statesjsonview/'
+        firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
-        var selectors = jQuery('#time_of_data_collection_teams,#time_of_data_collection_states');
+        var selectors = jQuery('#time_of_data_collection_teams,#time_of_data_collection_strata');
         selectors.selectpicker();
-        selectors.on('change', timeOfDataCollection.changeStateOrTeam);
+        selectors.on('change', timeOfDataCollection.changeStratumOrTeam);
 
         dataGetter.addNew(timeOfDataCollection.urls.teams, timeOfDataCollection.fillTeamsList, false);
-        dataGetter.addNew(timeOfDataCollection.urls.states, timeOfDataCollection.fillStatesList, false);
+        dataGetter.addNew(timeOfDataCollection.urls.firstAdminLevels, timeOfDataCollection.fillStrataList, false);
         dataGetter.addNew(timeOfDataCollection.urls.survey, timeOfDataCollection.drawTable, true);
     },
     fillTeamsList: function(data) {
@@ -24,24 +24,24 @@ var timeOfDataCollection = {
         selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
-    fillStatesList: function(data) {
-        var selector = jQuery('#time_of_data_collection_states');
-        _.each(data.states.sort(), function(state) {
-            selector.append(timeOfDataCollection.stateOptionTmp({
-                state: state
+    fillStrataList: function(data) {
+        var selector = jQuery('#time_of_data_collection_strata');
+        _.each(data.first_admin_levels.sort(), function(stratum) {
+            selector.append(timeOfDataCollection.stratumOptionTmp({
+                stratum: stratum
             }));
         });
         selector.selectpicker('refresh');
     },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
-    changeStateOrTeam: function () {
+    stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
+    changeStratumOrTeam: function () {
         var data = dataGetter.downloads[timeOfDataCollection.urls.survey].data,
             team = jQuery('#time_of_data_collection_teams').val(),
-            state = jQuery('#time_of_data_collection_states').val();
-        timeOfDataCollection.drawTable(data,team,state);
+            stratum = jQuery('#time_of_data_collection_strata').val();
+        timeOfDataCollection.drawTable(data,team,stratum);
     },
     table: false,
-    drawTable: function (data, team, state) {
+    drawTable: function (data, team, stratum) {
         var datesTimes = {},
             totalSurveyTime = 0,
             averageSurveyTime,
@@ -72,7 +72,7 @@ var timeOfDataCollection = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
 

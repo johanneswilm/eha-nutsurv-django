@@ -11,9 +11,9 @@ from dashboard.views import AggregateSurveyDataJSONView
 from dashboard.views import SurveyedClustersPerTeamJSONView
 from dashboard.views import PersonnelJSONView
 from dashboard.views import ActiveQuestionnaireSpecificationView
-from dashboard.views import ClustersPerStateJSONView
-from dashboard.views import StatesJSONView
-from dashboard.views import StatesWithReserveClustersJSONView
+from dashboard.views import ClustersPerFirstAdminLevelJSONView
+from dashboard.views import FirstAdminLevelJSONView
+from dashboard.views import FirstAdminLevelsReserveClustersJSONView
 from dashboard.views import ClustersJSONView
 from dashboard.views import AlertViewSet
 from dashboard.views import HouseholdSurveyJSONViewset
@@ -46,9 +46,9 @@ urlpatterns = patterns('',
                        url(r'^survey_completed_teams$',
                            'dashboard.views.survey_completed_teams',
                            name='survey_completed_teams'),
-                       url(r'^survey_completed_states$',
-                           'dashboard.views.survey_completed_states',
-                           name='survey_completed_states'),
+                       url(r'^survey_completed_strata$',
+                           'dashboard.views.survey_completed_strata',
+                           name='survey_completed_strata'),
                        url(r'^missing_data$',
                            'dashboard.views.missing_data',
                            name='missing_data'),
@@ -74,15 +74,15 @@ urlpatterns = patterns('',
                        url(r'^activequestionnairespecificationview/$',
                            ActiveQuestionnaireSpecificationView.as_view(),
                            name='active-questionnaire-specification-view'),
-                       url(r'^clustersperstatejsonview/$',
-                           ClustersPerStateJSONView.as_view(),
-                           name='clusters-per-state-json-view'),
-                       url(r'^statesjsonview/$',
-                           StatesJSONView.as_view(),
-                           name='states-json-view'),
-                       url(r'^stateswithreserveclustersjsonview/$',
-                           StatesWithReserveClustersJSONView.as_view(),
-                           name='states-with-reserve-clusters-json-view'),
+                       url(r'^clustersperfirstadminlevelsjsonview/$',
+                           ClustersPerFirstAdminLevelJSONView.as_view(),
+                           name='clusters-per-first-admin-level-json-view'),
+                       url(r'^firstadminleveljsonview/$',
+                           FirstAdminLevelJSONView.as_view(),
+                           name='first-admin-levels-json-view'),
+                       url(r'^firstadminlevelswithreserveclustersjsonview/$',
+                           FirstAdminLevelsReserveClustersJSONView.as_view(),
+                           name='first-admin-levels-with-reserve-clusters-json-view'),
                        url(r'^clustersjsonview/$',
                            ClustersJSONView.as_view(),
                            name='clusters-json-view'),

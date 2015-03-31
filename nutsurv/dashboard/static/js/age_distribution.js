@@ -2,23 +2,22 @@ var ageDistribution = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/dashboard/statesjsonview/'
+        firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
-        var selectors = jQuery('#age_distribution_teams,#age_distribution_states');
+        var selectors = jQuery('#age_distribution_teams,#age_distribution_strata');
         selectors.selectpicker();
-        selectors.on('change', ageDistribution.changeStateOrTeam);
-        //jQuery('#age_distribution_teams,#age_distribution_states').selectmenu({
-        //    change: ageDistribution.changeStateOrTeam
-        //});
-
+        selectors.on('change', ageDistribution.changeStratumOrTeam);
+        //jQuery('#age_distribution_teams,#age_distribution_strata').selectmenu({
+        //    change: ageDistribution.changeStratumOrTeam
+        //})
         jQuery('#age_distribution_households_download').on('click', ageDistribution.downloadHouseholdAgeListCSV);
         jQuery('#age_distribution_children_download').on('click', ageDistribution.downloadChildrenAgeListCSV);
 
         ageDistribution.drawHouseholdAgeDistribution();
         ageDistribution.drawChildrenAgeDistribution();
         dataGetter.addNew(ageDistribution.urls.teams, ageDistribution.fillTeamsList, false);
-        dataGetter.addNew(ageDistribution.urls.states, ageDistribution.fillStatesList, false);
+        dataGetter.addNew(ageDistribution.urls.firstAdminLevels, ageDistribution.fillStrataList, false);
         dataGetter.addNew(ageDistribution.urls.survey, ageDistribution.updateHouseholdAgeDistribution, true);
         dataGetter.addNew(ageDistribution.urls.survey, ageDistribution.updateChildrenAgeDistribution, true);
     },
@@ -33,22 +32,22 @@ var ageDistribution = {
         selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
-    fillStatesList: function(data) {
-        var selector = jQuery('#age_distribution_states');
-        _.each(data.states.sort(), function(state) {
-            selector.append(ageDistribution.stateOptionTmp({
-                state: state
+    fillStrataList: function(data) {
+        var selector = jQuery('#age_distribution_strata');
+        _.each(data.first_admin_levels.sort(), function(stratum) {
+            selector.append(ageDistribution.stratumOptionTmp({
+                stratum: stratum
             }));
         });
         selector.selectpicker('refresh');
     },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
-    changeStateOrTeam: function () {
+    stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
+    changeStratumOrTeam: function () {
         var data = dataGetter.downloads[ageDistribution.urls.survey].data,
             team = jQuery('#age_distribution_teams').val(),
-            state = jQuery('#age_distribution_states').val();
-        ageDistribution.updateHouseholdAgeDistribution(data,team,state);
-        ageDistribution.updateChildrenAgeDistribution(data,team,state);
+            stratum = jQuery('#age_distribution_strata').val();
+        ageDistribution.updateHouseholdAgeDistribution(data,team,stratum);
+        ageDistribution.updateChildrenAgeDistribution(data,team,stratum);
     },
     householdAgeDistributionPlot: false,
     drawHouseholdAgeDistribution: function() {
@@ -91,14 +90,14 @@ var ageDistribution = {
         });
     },
     householdAgeList: false,
-    updateHouseholdAgeDistribution: function(data, team, state) {
+    updateHouseholdAgeDistribution: function(data, team, stratum) {
         var ages = {};
 
         _.each(data.survey_data, function(survey) {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
             _.each(survey.members, function(member) {
@@ -141,7 +140,7 @@ var ageDistribution = {
         );
     },
     childrenAgeList: false,
-    updateChildrenAgeDistribution: function(data, team, state) {
+    updateChildrenAgeDistribution: function(data, team, stratum) {
         var ages = {};
 
         _.each(data.survey_data, function(survey) {
@@ -150,7 +149,7 @@ var ageDistribution = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && strata != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
 

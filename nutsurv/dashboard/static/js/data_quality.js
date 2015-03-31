@@ -2,18 +2,18 @@ var dataQuality = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/dashboard/statesjsonview/'
+        firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
-        var selectors = jQuery('#data_quality_teams,#data_quality_states');
+        var selectors = jQuery('#data_quality_teams,#data_quality_strata');
         selectors.selectpicker();
-        selectors.on('change', dataQuality.changeStateOrTeam);
+        selectors.on('change', dataQuality.changeStratumOrTeam);
 
         dataQuality.drawCharts();
         dataQuality.drawTable();
 
         dataGetter.addNew(dataQuality.urls.teams, dataQuality.fillTeamsList, false);
-        dataGetter.addNew(dataQuality.urls.states, dataQuality.fillStatesList, false);
+        dataGetter.addNew(dataQuality.urls.firstAdminLevels, dataQuality.fillStrataList, false);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateCharts, true);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateTable, true);
         dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateList, true);
@@ -29,23 +29,23 @@ var dataQuality = {
         selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
-    fillStatesList: function(data) {
-        var selector = jQuery('#data_quality_states');
-        _.each(data.states.sort(), function(state) {
-            selector.append(dataQuality.stateOptionTmp({
-                state: state
+    fillStrataList: function(data) {
+        var selector = jQuery('#data_quality_strata');
+        _.each(data.first_admin_levels.sort(), function(stratum) {
+            selector.append(dataQuality.stratumOptionTmp({
+                stratum: stratum
             }));
         });
         selector.selectpicker('refresh');
     },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
-    changeStateOrTeam: function () {
+    stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
+    changeStratumOrTeam: function () {
         var data = dataGetter.downloads[dataQuality.urls.survey].data,
             team = jQuery('#data_quality_teams').val(),
-            state = jQuery('#data_quality_states').val();
-        dataQuality.updateCharts(data,team,state);
-        dataQuality.updateTable(data,team,state);
-        dataQuality.updateList(data,team,state);
+            stratum = jQuery('#data_quality_strata').val();
+        dataQuality.updateCharts(data,team,stratum);
+        dataQuality.updateTable(data,team,stratum);
+        dataQuality.updateList(data,team,stratum);
     },
     drawCharts: function() {
         var options = {
@@ -91,7 +91,7 @@ var dataQuality = {
             0
         );
     },
-    updateCharts: function(data, team, state) {
+    updateCharts: function(data, team, stratum) {
 
         var WHZs = [],
             HAZs = [],
@@ -117,7 +117,7 @@ var dataQuality = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
 
@@ -199,7 +199,7 @@ var dataQuality = {
             info: false
         });
     },
-    updateTable: function (data, team, state) {
+    updateTable: function (data, team, stratum) {
         var muacMissing = 0, muacFlagged = 0, muacPresent = 0, muacN,
             whzMissing = 0, whzFlagged = 0, whzPresent = 0, whzN,
             wazMissing = 0, wazFlagged = 0, wazPresent = 0, wazN,
@@ -211,7 +211,7 @@ var dataQuality = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
             /* This assumes that one child survey is sent in for each child < 60 months,
@@ -289,7 +289,7 @@ var dataQuality = {
             dataQuality.drawTable();
         }
     },
-    updateList: function (data, team, state) {
+    updateList: function (data, team, stratum) {
         var femaleChildren = 0,
             maleChildren = 0,
             oldChildren = 0,
@@ -308,7 +308,7 @@ var dataQuality = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
 

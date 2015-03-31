@@ -7,17 +7,17 @@
 
 <div id="tabs" role="tabpanel">
   <ul id="survey_completed_tabs" class="nav nav-tabs">
-    <li class="active"><a href="/dashboard/survey_completed_states">States</a></li>
+    <li class="active"><a href="/dashboard/survey_completed_strata">Strata</a></li>
     <li><a href="/dashboard/survey_completed_teams">Teams</a></li>
   </ul>
 </div>
 
-<div id="survey_completed_states_main" class="alone_block">
-    <table id="survey_completed_states_table" class="table">
+<div id="survey_completed_strata_main" class="alone_block">
+    <table id="survey_completed_strata_table" class="table">
         <thead>
             <tr>
                 <th rowspan="2"></th>
-                <th rowspan="2" data-column-name="state">State</th>
+                <th rowspan="2" data-column-name="stratum">Stratum</th>
                 <th rowspan="2" data-column-name="households">HHs</th>
                 <th colspan="3" class="border_left">Clusters</th>
                 <th colspan="3" class="border_left">HHs per cluster</th>
@@ -48,5 +48,5 @@
     </table>
 </div>
 <script src="/static/js/cluster_info.js"></script>
-<script src="/static/js/survey_completed_states.js"></script>
+<script src="/static/js/survey_completed_strata.js"></script>
 {% endblock content %}
