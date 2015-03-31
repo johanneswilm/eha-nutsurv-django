@@ -48,6 +48,13 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
             'team_assistant': {'lookup_field': 'member_id'},
             'team_anthropometrist': {'lookup_field': 'member_id'},
         }
+        fields = (
+            'url',
+            'uuid',
+            'team_lead',
+            'team_assistant',
+            'team_anthropometrist',
+        )
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
