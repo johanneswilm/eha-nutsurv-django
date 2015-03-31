@@ -86,7 +86,7 @@ var home = {
             }
         });
         home.latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
-        _.each(home.latestTeamContacts, function(contact) { console.log(contact);
+        _.each(home.latestTeamContacts, function(contact) {
             jQuery('#home_last_contact_list').append(home.contactTmp({
                 teamNo: contact.team,
                 teamName: teamData[contact.team],
