@@ -320,55 +320,6 @@ class PersonnelJSONView(LoginRequiredView):
         return output
 
 
-class SurveyedClustersPerTeamJSONView(LoginRequiredView):
-    def get(self, request, *args, **kwargs):
-        """Generates an HTTP response with a JSON document containing
-        information about clusters per team in the format requested by Johannes
-        and shown in the example below:
-        {
-            "teams": {
-                "1": 5,
-                "2": 15,
-                "3": 17
-            }
-        }
-        WARNING: This is currently not needed to fulfil the client's
-        requirements.
-        """
-        clusters_per_team = {'teams': self._compute_clusters_per_team()}
-        return HttpResponse(json.dumps(clusters_per_team),
-                            content_type='application/json')
-
-    @staticmethod
-    def _compute_clusters_per_team():
-        """Computes and returns a dictionary containing information about
-        distinct clusters per team in the format requested by Johannes and
-        shown in the example below:
-        {
-            "teams": {
-                "1": 5,
-                "2": 15,
-                "3": 17
-            }
-        }
-        """
-        # get all JSON documents
-        docs = HouseholdSurveyJSON.objects.all()
-        clusters_per_team_dict = {}
-        # parse all documents and gather the data
-        for doc in docs:
-            team_id = doc.json['team']['teamID']
-            cluster = doc.json['cluster']
-            if team_id not in clusters_per_team_dict:
-                clusters_per_team_dict[team_id] = set()
-            clusters_per_team_dict[team_id].add(cluster)
-        # count distinct clusters for each team
-        for team_id in clusters_per_team_dict:
-            clusters = len(clusters_per_team_dict[team_id])
-            clusters_per_team_dict[team_id] = clusters
-        return clusters_per_team_dict
-
-
 class AggregateSurveyDataJSONView(LoginRequiredView):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing

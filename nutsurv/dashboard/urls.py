@@ -8,7 +8,6 @@ from api.resources import HouseholdSurveyJSONResource
 
 from dashboard.views import TeamsJSONView
 from dashboard.views import AggregateSurveyDataJSONView
-from dashboard.views import SurveyedClustersPerTeamJSONView
 from dashboard.views import PersonnelJSONView
 from dashboard.views import ActiveQuestionnaireSpecificationView
 from dashboard.views import ClustersPerFirstAdminLevelJSONView
@@ -68,9 +67,6 @@ urlpatterns = patterns('',
                        url(r'^aggregatesurveydatajsonview/$',
                            AggregateSurveyDataJSONView.as_view(),
                            name='aggregate-survey-data-json-view'),
-                       url(r'^surveyedclustersperteamjsonview/$',
-                           SurveyedClustersPerTeamJSONView.as_view(),
-                           name='surveyed-clusters-per-team-json-view'),
                        url(r'^activequestionnairespecificationview/$',
                            ActiveQuestionnaireSpecificationView.as_view(),
                            name='active-questionnaire-specification-view'),
