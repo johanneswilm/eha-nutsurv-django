@@ -28,8 +28,7 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                   'first_name',
                   'last_name',
                   'gender',
-                  'age',
-                  'date_of_birth',
+                  'year_of_birth',
                   'mobile',
                   'email']
 

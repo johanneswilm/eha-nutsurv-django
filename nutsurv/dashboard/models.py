@@ -46,8 +46,7 @@ class TeamMember(models.Model):
     last_name = models.CharField(blank=False, max_length=50)
     mobile = PhoneNumberField(blank=True)
     email = models.EmailField(blank=True)
-    age = models.CharField(blank=True, max_length=50)
-    date_of_birth = models.DateField(blank=False)
+    year_of_birth = models.IntegerField(blank=False)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=3, blank=True)
 
     created = CreationDateTimeField()
