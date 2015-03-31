@@ -24,7 +24,6 @@ from models import QuestionnaireSpecification
 from models import ClustersPerState
 from models import States
 from models import StatesWithReserveClusters
-from models import ClustersPerTeam
 from models import TeamMember
 
 from rest_framework import viewsets
@@ -578,28 +577,6 @@ class StatesWithReserveClustersJSONView(View):
                             content_type='application/json')
 
 
-class ClustersPerTeamJSONView(View):
-    def get(self, request, *args, **kwargs):
-        """Generates an HTTP response with a JSON document containing
-        information about the planned number of clusters per team in the format
-        requested by Johannes and shown below:
-        {
-            "teams": {
-                "1": 5,
-                "2": 15,
-                "3": 17
-            }
-        }
-        """
-        doc = ClustersPerTeam.get_active()
-        if doc:
-            data = doc.json
-        else:
-            data = {}
-        return HttpResponse(json.dumps({'teams': data}),
-                            content_type='application/json')
-
-
 class ClustersJSONView(View):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
@@ -643,4 +620,3 @@ class AlertViewSet(viewsets.ModelViewSet):
     ).order_by('-created')
 
     serializer_class = AlertSerializer
-
