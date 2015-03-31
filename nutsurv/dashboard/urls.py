@@ -6,18 +6,17 @@ from tastypie.api import Api
 
 from api.resources import HouseholdSurveyJSONResource
 
-from dashboard.views import TeamsJSONView
-from dashboard.views import AggregateSurveyDataJSONView
-from dashboard.views import PersonnelJSONView
-from dashboard.views import ActiveQuestionnaireSpecificationView
-from dashboard.views import ClustersPerFirstAdminLevelJSONView
-from dashboard.views import FirstAdminLevelJSONView
-from dashboard.views import FirstAdminLevelsReserveClustersJSONView
-from dashboard.views import ClustersJSONView
-from dashboard.views import AlertViewSet
-from dashboard.views import HouseholdSurveyJSONViewset
-from dashboard.views import TeamMemberViewset
-
+from .views import TeamsJSONView
+from .views import AggregateSurveyDataJSONView
+from .views import PersonnelJSONView
+from .views import ActiveQuestionnaireSpecificationView
+from .views import ClustersPerFirstAdminLevelJSONView
+from .views import FirstAdminLevelJSONView
+from .views import FirstAdminLevelsReserveClustersJSONView
+from .views import ClustersJSONView
+from .views import AlertViewSet
+from .views import HouseholdSurveyJSONViewset
+from .views import TeamMemberViewset
 
 
 v1_api = Api(api_name='v1')
