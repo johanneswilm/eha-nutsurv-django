@@ -16,15 +16,15 @@ from rest_framework import viewsets
 from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
                           UserSerializer, TeamMemberSerializer)
 
-from models import Alert
-from models import HouseholdSurveyJSON
-from models import Clusters
-from models import SecondAdminLevel
-from models import QuestionnaireSpecification
-from models import ClustersPerFirstAdminLevel
-from models import FirstAdminLevels
-from models import FirstAdminLevelsReserveClusters
-from models import TeamMember
+from .models import Alert
+from .models import HouseholdSurveyJSON
+from .models import Clusters
+from .models import SecondAdminLevel
+from .models import QuestionnaireSpecification
+from .models import ClustersPerFirstAdminLevel
+from .models import FirstAdminLevels
+from .models import FirstAdminLevelsReserveClusters
+from .models import TeamMember
 
 from rest_framework import viewsets
 
