@@ -19,7 +19,7 @@ from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
 from models import Alert
 from models import HouseholdSurveyJSON
 from models import Clusters
-from models import LGA
+from models import SecondAdminLevel
 from models import QuestionnaireSpecification
 from models import ClustersPerState
 from models import States
@@ -586,12 +586,12 @@ class ClustersJSONView(View):
             "clusters": {
                 "723": {
                     "cluster_name": "Share",
-                    "lga_name": "Ifelodun",
+                    "second_admin_level_name": "Ifelodun",
                     "state_name": "Kwara"
                 },
                 "318": {
                     "cluster_name": "Emadadja",
-                    "lga_name": "Udu",
+                    "second_admin_level_name": "Udu",
                     "state_name": "Delta"
                 }
                 ...

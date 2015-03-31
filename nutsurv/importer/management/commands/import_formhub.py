@@ -203,7 +203,7 @@ class Command(BaseCommand):
                             "cluster": parsed['cluster'],
                             "cluster_name": parsed['cluster_name'],
                             "state": parsed['state'],
-                            "lga": parsed['lga'],
+                            "second_admin_level": parsed['second_admin_level'],
                             "location": [
                                 parsed['_gps_latitude'],
                                 parsed['_gps_longitude']

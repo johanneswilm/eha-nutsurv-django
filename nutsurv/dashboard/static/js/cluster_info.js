@@ -20,7 +20,7 @@ if (!window.clusterInfo) { // This file may be included by various tabs, so only
             }
             return clusterData.clusters[cluster].state_name;
         },
-        findLGA: function (cluster) {
+        findSecondAdminLevel: function (cluster) {
             if (!clusterInfo.dataAvailable) {
                 return false;
             }
@@ -28,7 +28,7 @@ if (!window.clusterInfo) { // This file may be included by various tabs, so only
             if (!clusterData.clusters.hasOwnProperty(cluster)) {
                 return false;
             }
-            return clusterData.clusters[cluster].lga_name;
+            return clusterData.clusters[cluster].second_admin_level_name;
         },
         findName: function (cluster) {
             if (!clusterInfo.dataAvailable) {

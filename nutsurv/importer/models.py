@@ -54,7 +54,7 @@ def convert_to_utc_js_datestring(date_string):
 def update_mapping_documents_from_new_survey(json):
     # Check whether other pieces of info are there as they should be.
 
-    for key in ('state', 'cluster', 'cluster_name', 'lga',):
+    for key in ('state', 'cluster', 'cluster_name', 'second_admin_level',):
         if key not in json:
             logging.warning('{!r} not in {!r}'.format(key, json)) # just to make sure it's there
             return
@@ -70,7 +70,7 @@ def update_mapping_documents_from_new_survey(json):
 
     cluster_data.json[cluster_number] = {
         "cluster_name": json['cluster_name'],
-        "lga_name": str(json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
+        "second_admin_level_name": str(json['second_admin_level']), # These are numbers we turn into strings. We don't have names. Better than nothing.
         "state_name": str(json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
     }
     cluster_data.save()
