@@ -368,7 +368,7 @@ class FakeTeams(models.Model):
                         "mobile":"0" + \
                             str(random.randint(10000000000,99999999999)),
                         "lastName": team_leader[1],
-                        "age": random.randint(30, 58),
+                        "birthYear": random.randint(1900, 2015),
                         "memberID": self.team_id * 3,
                         "gender": team_leader[0][1],
                         "email": team_leader[0][0] + '.' + team_leader[1] + \
@@ -380,7 +380,7 @@ class FakeTeams(models.Model):
                         "mobile":"0" + \
                             str(random.randint(10000000000,99999999999)),
                         "lastName": anthropometrist[1],
-                        "age": random.randint(24, 42),
+                        "birthYear": random.randint(1900, 2015),
                         "memberID": self.team_id * 3 + 1,
                         "gender": anthropometrist[0][1],
                         "email": anthropometrist[0][0] + '.' + \
@@ -393,7 +393,7 @@ class FakeTeams(models.Model):
                         "mobile":"0" + \
                             str(random.randint(10000000000,99999999999)),
                         "lastName": assistant[1],
-                        "age": random.randint(17, 35),
+                        "birthYear": random.randint(1900, 2015),
                         "memberID": self.team_id * 3 + 2,
                         "gender": assistant[0][1],
                         "email": assistant[0][0] + '.' + assistant[1] + \

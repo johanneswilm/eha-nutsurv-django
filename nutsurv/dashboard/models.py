@@ -97,9 +97,6 @@ class HouseholdSurveyJSON(models.Model):
         for m in team_members:
             designation = m['designation']
             if designation == position:
-                # we get some old style of data from the importor
-                if 'age' in m:
-                    m['birth_year'] = datetime.datetime.now().year - m['age']
                 return m
 
 
@@ -114,7 +111,7 @@ class HouseholdSurveyJSON(models.Model):
                         'last_name': parsed['lastName'],
                         'mobile' :parsed['mobile'],
                         'email':parsed['email'],
-                        'birth_year': parsed['birth_year']
+                        'birth_year': parsed['birthYear']
                         }
                     )
             return tm
