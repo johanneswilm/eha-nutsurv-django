@@ -64,7 +64,7 @@ class TeamMember(models.Model):
         return random.randint(10000,100000)
 
     def __unicode__(self):
-        return u'%s-%s' % (self.id, self.name)
+        return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
 
 class HouseholdSurveyJSON(models.Model):
@@ -97,18 +97,24 @@ class HouseholdSurveyJSON(models.Model):
         for m in team_members:
             designation = m['designation']
             if designation == position:
+                # we get some old style of data from the importor
+                if 'age' in m:
+                    m['birth_year'] = datetime.datetime.now().year - m['age']
                 return m
 
 
     def parse_and_set_team_members(self):
 
         def make_team_member(parsed):
+            this_year = datetime.datetime.now().year
             tm ,created = TeamMember.objects.get_or_create(
                     id=parsed['memberID'],
                     defaults = {
-                        'name':parsed['firstName'] + ' ' + parsed['lastName'],
-                        'phone':parsed['mobile'],
-                        'email':parsed['email']
+                        'first_name':parsed['firstName'],
+                        'last_name': parsed['lastName'],
+                        'mobile' :parsed['mobile'],
+                        'email':parsed['email'],
+                        'birth_year': parsed['birth_year']
                         }
                     )
             return tm
