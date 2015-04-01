@@ -21,10 +21,11 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
                                                lookup_field="member_id")
     mobile = serializers.CharField()
+    memberID = serializers.CharField(source='member_id', read_only=True)
     class Meta:
         model = TeamMember
         fields = ['url',
-                  'member_id',
+                  'memberID',
                   'first_name',
                   'last_name',
                   'gender',
