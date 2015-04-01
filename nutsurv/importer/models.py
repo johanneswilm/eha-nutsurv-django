@@ -54,7 +54,7 @@ def convert_to_utc_js_datestring(date_string):
 def update_mapping_documents_from_new_survey(json):
     # Check whether other pieces of info are there as they should be.
 
-    for key in ('first_admin_level', 'cluster', 'cluster_name', 'second_admin_level',):
+    for key in ('state', 'cluster', 'cluster_name', 'lga',):
         if key not in json:
             logging.warning('{!r} not in {!r}'.format(key, json)) # just to make sure it's there
             return
@@ -70,12 +70,12 @@ def update_mapping_documents_from_new_survey(json):
 
     cluster_data.json[cluster_number] = {
         "cluster_name": json['cluster_name'],
-        "second_admin_level_name": str(json['second_admin_level']), # These are numbers we turn into strings. We don't have names. Better than nothing.
-        "first_admin_level_name": str(json['first_admin_level']) # These are numbers we turn into strings. We don't have names. Better than nothing.
+        "second_admin_level_name": str(json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
+        "first_admin_level_name": str(json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
     }
     cluster_data.save()
 
-    first_admin_level_number = str(json['first_admin_level'])
+    first_admin_level_number = str(json['state'])
     cluster_first_admin_level_data = dashboard_models.ClustersPerFirstAdminLevel.get_active()
     if first_admin_level_number not in cluster_first_admin_level_data.json:
         cluster_first_admin_level_data.json[first_admin_level_number] = {
