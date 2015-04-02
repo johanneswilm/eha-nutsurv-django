@@ -27,7 +27,7 @@ var mappingChecks = {
     },
     mapMarkers: [],
     incorrectSurveys: false,
-    popupTmp: _.template('ERROR!<br>Team <%- team_name %>(<%- team_id%>)<% if (cluster_id) { %><br>Cluster #: <%- cluster_id %><% } %>'),
+    popupTmp: _.template('ERROR!<br>Team <%- teamName %>(<%- teamId %>)<% if (clusterId) { %><br>Cluster #: <%- clusterId %><% } %>'),
     updateMap: function (data) {
 
       var group, incorrectSurveys = [],
@@ -65,7 +65,7 @@ var mappingChecks = {
         var output = 'team_id,cluster_id\n';
 
         _.each(mappingChecks.incorrectSurveys, function (survey) {
-            output += survey.team_id + ',' + survey.cluster_id + '\n';
+            output += survey.teamId + ',' + survey.clusterId + '\n';
         });
 
         saveAs(
@@ -80,10 +80,10 @@ var mappingChecks = {
         });
     },
     alertTmp: {
-        'mapping_check_wrong_location': _.template('<li>Wrong location! Team <%- team_name %> (<%- team_id %>)</li>'),
-        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team <%- team_name %> (<%- team_id %>)</li>'),
-        'mapping_check_missing_location': _.template('<li>Missing location! Team <%- team_name %> (<%- team_id %>)</li>'),
-        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team <%- team_name %> (<%- team_id %>)</li>'),
+        'mapping_check_wrong_location': _.template('<li>Wrong location! Team <%- teamName %> (<%- teamId %>)</li>'),
+        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team <%- teamName %> (<%- teamId %>)</li>'),
+        'mapping_check_missing_location': _.template('<li>Missing location! Team <%- teamName %> (<%- teamId %>)</li>'),
+        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team <%- teamName %> (<%- teamId %>)</li>'),
         'no_alerts': _.template('<li>Currently there are no map alerts</li>')
     }
 
