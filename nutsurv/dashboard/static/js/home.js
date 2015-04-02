@@ -120,7 +120,7 @@ var home = {
         );
 
     },
-    contactTmp: _.template('<li>Team <%- teamNo %> (<%- teamName %>):<br> <%- new Date(time) %></li>'),
+    contactTmp: _.template($('#home-last-contacted-item').html()),
     drawAlerts: function(data) {
 
         var alert_list = $('#home_alerts_list').find('div.list');

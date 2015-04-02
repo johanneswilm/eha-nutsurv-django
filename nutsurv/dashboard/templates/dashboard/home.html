@@ -40,7 +40,7 @@
 	    <div  id="home_last_contact" class="panel panel-default">
 	        <div class="panel-heading"><i class="fa fa-comment"></i> Last Contacted Teams</div>
 	        <div class="panel-body">
-	            <ul id="home_last_contact_list"></ul>
+	            <ul id="home_last_contact_list" class="list-unstyled"></ul>
               <button id="home_lastcontact_download" class="btn btn-primary pull-right">Download</button>
 	        </div>
 	    </div>
@@ -82,7 +82,7 @@
         <div class="alert-name col-sm-7">
             <h3 class="alert_title"><%= title %></h3>
             <span class="alert-details">
-                <strong class="alert_team_name"><%= team_name %></strong>
+                <strong class="alert_team_name"><%= teamName %></strong>
                 on <%= created %>
             </span>
         </div>
@@ -95,8 +95,8 @@
             <button type="button" class="btn btn-primary btn-sm"
                     data-toggle="modal"
                     data-target="#contact-team-modal"
-                    data-team="<%= team_name %>"
-                    data-team_id="<%= team_id %>"
+                    data-team="<%= teamName %>"
+                    data-team_id="<%= teamId %>"
                     data-url="<%= url %>">
                 Contact Team
             </button>
@@ -115,6 +115,13 @@
         <%= gender %>, <%= age %> yrs<br>
         <% if (mobile) { %>Mobile: <%= mobile %><br><% } %>
         <% if (email) { %>Email: <a href="mailto:<%= email %>"><%= email %></a><% } %>
+    </li>
+</script>
+
+<script id="home-last-contacted-item" type="text/template">
+    <li>
+        <h4 class="remove-bottom">Team <%- teamNo %> on <%= moment(time).format('MMM Do YYYY') %></h4>
+        <span class="last-contacted-details"> <%- teamName %></span>
     </li>
 </script>
 

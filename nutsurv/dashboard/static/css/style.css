@@ -31,8 +31,13 @@ hr.alert-line {
   margin-left: 15px;
 }
 
-.alert-details {
+.alert-details,
+.last-contacted-details {
 	color: #b9b9b9;
+}
+
+#home_last_contact_list li {
+    margin-bottom: 15px;
 }
 
 
