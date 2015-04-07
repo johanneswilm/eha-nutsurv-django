@@ -6,64 +6,34 @@ NutSurv - Data collection and quality assurance tools for Nutrition Surveys on m
 
 # Install with Docker
 
-Install [Docker](https://docs.docker.com/installation/#installation) and [Docker Compose](https://docs.docker.com/compose/install/)
+Install [Docker](https://docs.docker.com/installation/#installation)
 
-## Get the code
+## Tab 1
 
-    git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
-
-### Build the container
-
-    sudo docker-compose build
-
-Make your local settings set the DATABASE settings in `./nutsurv/configuration.py`
-
-### Install bower components
-
-    sudo docker-compose run web /opt/nutsurv/nutsurv/manage.py bower_install -- --allow-root
-
-### For a NEW database ONLY
-
-For development start the database with docker or skip this line if you are using a different or existing database server
-
-    sudo docker-compose run db
-
-Open a NEW terminal or tab and connect to the database with a new container
-
-    sudo docker-compose run web bash
-
-Now set up the db within the docker bash shell
-
-    psql -f /opt/nutsurv/enable_postgis.sql -h localhost -U postgres
-    psql -f /opt/nutsurv/make_nutsurv_dev.sql -h localhost -U postgres
-    python /opt/nutsurv/nutsurv/manage.py migrate
-    python /opt/nutsurv/nutsurv/manage.py createsuperuser
-    python /opt/nutsurv/nutsurv/manage.py loaddata testdata
-
-# Run the server
-
-### As prodcution-ish
-
-    sudo docker-compose up --no-recreate
-
-### For development
-
-Start the database
-
-    sudo docker-compose run db
-
-Open a terminal or tab and connect to the database with a new container
-
-    sudo docker-compose run web bash
-
-Now start the develpment server within the docker shell
-
-    # cd /opt/nutsurv/nutsurv/
-    /opt/nutsurv/nutsurv# ./manage.py runserver 0.0.0.0:8001
+    $ git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
+    $ sudo apt-get install python-pip
+    $ sudo pip install -U docker-compose
+    $ cd eha-nutsurv-django/
+    $ sudo docker-compose build
 
 
+## Tab 2
 
-### Good job!
+    $ sudo docker-compose run db
+
+## Tab 1 again
+
+    $ sudo docker-compose run web bash
+
+Now in the shell within the container:
+
+    # python /opt/nutsurv/nutsurv/manage.py migrate
+    # python /opt/nutsurv/nutsurv/manage.py createsuperuser
+    # python /opt/nutsurv/nutsurv/manage.py bower_install -- --allow-root
+    # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
+
+
+## Good job!
 The website should be available at http://HOST:8001
 
 
