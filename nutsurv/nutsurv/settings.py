@@ -79,13 +79,13 @@ WSGI_APPLICATION = 'nutsurv.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'nutsurv_dev',
-        'USER': 'nutsurv_dev',
-        'PASSWORD': 'nutsurv_dev_password',
+        'NAME': 'template_postgis',
+        'USER': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
