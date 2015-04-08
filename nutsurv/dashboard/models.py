@@ -4,6 +4,7 @@ import dateutil.parser
 import dateutil.relativedelta
 import uuid
 import random
+from functools import wraps
 
 # 3rd party
 import numpy
@@ -67,6 +68,7 @@ class TeamMember(models.Model):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
 
+
 def validate_json(spec_file):
     survey_schema = None
     try:
@@ -76,6 +78,7 @@ def validate_json(spec_file):
         # if the validator is never called
         print "Could not load the json spec %s" % (spec_file,)
 
+    @wraps(validate_json)
     def wrapped(value):
         assert survey_schema, "Trying to validate a non existant JSON schema"
         # It really should exist by now.
