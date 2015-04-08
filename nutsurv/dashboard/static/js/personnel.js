@@ -49,8 +49,8 @@ var personnel = {
                     phone: person.phone,
                     email: person.email,
                     position: person.position,
-                    state: '',
-                    lga: '',
+                    first_admin_level: '',
+                    second_admin_level: '',
                     cluster: '',
                     cluster_number: '',
                     date: '',
@@ -70,8 +70,8 @@ var personnel = {
                     teamMember.date = surveyDate;
                     teamMember.cluster_number = survey.cluster;
                     teamMember.cluster = clusterInfo.findName(survey.cluster);
-                    teamMember.state = clusterInfo.findState(survey.cluster);
-                    teamMember.lga = clusterInfo.findLGA(survey.cluster);
+                    teamMember.first_admin_level = clusterInfo.findFirstAdminLevel(survey.cluster);
+                    teamMember.second_admin_level = clusterInfo.findSecondAdminLevel(survey.cluster);
                 });
             }
         });
@@ -116,8 +116,8 @@ var personnel = {
                 { name: 'phone', data: 'phone' },
                 { name: 'email', data: 'email' },
                 { name: 'date', data: 'date' },
-                { name: 'state', data: 'state' },
-                { name: 'lga', data: 'lga' },
+                { name: 'first_admin_level', data: 'first_admin_level' },
+                { name: 'second_admin_level', data: 'second_admin_level' },
                 { name: 'cluster', data: 'cluster' },
                 { name: 'cluster_number', data: 'cluster_number' }
             ],

@@ -67,7 +67,7 @@ The default mapping dictionary defined in the load module assumes that the shape
 
 * NAME_0 - which stores the name of the top-level area (e.g. a country)
 * NAME_1 - which stores the name of the mid-level area (e.g. a state)
-* NAME_2 - which stores the name of the area of interest (e.g. an LGA) - i.e. the area contained by the mid-level area (which in turns is contained by the top-level area)
+* NAME_2 - which stores the name of the area of interest (e.g. a county) - i.e. the area contained by the mid-level area (which in turns is contained by the top-level area)
 * VARNAME_2 - an alternative name of the area of interest (optional, can be NULL)
 
 Since the LGA model defines the following fields: name_0, name_1, name_2, varname_2, mpoly, the attribute fields of the shapefile have to be mapped to the fields of the LGA model by defining the following dictionary (do not worry about the mpoly mapping, just remember to always have it in your mapping dictionary):

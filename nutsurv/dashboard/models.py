@@ -538,19 +538,19 @@ class Alert(models.Model):
             if not Alert.objects.filter(text=alert_text, archived=False, category='map'):
                 Alert.objects.create(text=alert_text,json=alert_json,category='map')
             return
-        # if cluster data found, get state and LGA
-        lga_name = cluster.get('lga_name', None)
-        state_name = cluster.get('state_name', None)
-        # if LGA and state names not found, assume database inconsistencies and abort
-        if not (lga_name and state_name):
+        # if cluster data found, get first and second admin level
+        second_admin_level_name = cluster.get('second_admin_level_name', None)
+        first_admin_level_name = cluster.get('first_admin_level_name', None)
+        # if first and second admin level names not found, assume database inconsistencies and abort
+        if not (first_admin_level_name and second_admin_level_name):
             return False
-        # if state and LGA found, check the location
-        lga = LGA.find_lga(name=lga_name, state_name=state_name)
-        if lga is None:
-            # if no LGA found, assume database inconsistencies and abort
+        # if first and second admin level found, check the location
+        second_admin_level = SecondAdminLevel.find_second_admin_level(name=second_admin_level_name, first_admin_level_name=first_admin_level_name)
+        if second_admin_level is None:
+            # if no second admin level found, assume database inconsistencies and abort
             return False
 
-        if not lga.contains_location(location):
+        if not second_admin_level.contains_location(location):
             alert_text = 'Wrong location for team {} (survey {})'.format(team_id,
                     household_survey.uuid)
             alert_json = {
@@ -558,8 +558,8 @@ class Alert(models.Model):
                 'team_name': team_name,
                 'team_id': team_id,
                 'cluster_id': cluster_id,
-                'lga_name': lga_name,
-                'state_name': state_name,
+                'second_admin_level_name': second_admin_level_name,
+                'first_admin_level_name': first_admin_level_name,
                 'survey_id': household_survey.uuid,
                 'location': location
             }
@@ -1193,11 +1193,6 @@ class Alert(models.Model):
         cls.objects.filter(text=text, archived=archived).delete()
 
 class UniqueActiveDocument(models.Model):
-#    active_id = models.CharField(
-#        max_length=255, unique=True, blank=False, default=uuid.uuid1,
-#        primary_key=True,
-#        help_text=u'Please enter a unique id of your new document.')
-    #id = models.IntegerField(default=0)
     active = UniqueActiveField(
         default=False,
         help_text=u'Activate this document.  Only one document of this type '
@@ -1239,7 +1234,6 @@ class UniqueActiveDocument(models.Model):
 
 
 class UniqueActiveNamedDocument(UniqueActiveDocument):
-#    named_id = models.AutoField(primary_key=True)
     name_or_id = models.CharField(
         max_length=255, unique=True, blank=False, default=uuid.uuid1,
         help_text=u'Please enter a unique name or id of your new document.')
@@ -1257,13 +1251,13 @@ class Clusters(UniqueActiveNamedDocument):
     {
             "723": {
                 "cluster_name": "Share",
-                "lga_name": "Ifelodun",
-                "state_name": "Kwara"
+                "second_admin_level_name": "Ifelodun",
+                "first_admin_level_name": "Kwara"
             },
             "318": {
                 "cluster_name": "Emadadja",
-                "lga_name": "Udu",
-                "state_name": "Delta"
+                "second_admin_level_name": "Udu",
+                "first_admin_level_name": "Delta"
             }
             ...
     }
@@ -1271,9 +1265,6 @@ class Clusters(UniqueActiveNamedDocument):
 
     def __unicode__(self):
         return self.name_or_id
-
-    class Meta:
-        verbose_name_plural = 'The "Clusters" documents'
 
     json = JSONField(
         null=True, blank=True,
@@ -1353,39 +1344,37 @@ class Area(gismodels.Model):
         return u'{}/{}/{}{}'.format(self.name_0, self.name_1, self.name_2, aka)
 
 
-class LGA(Area):
-    class Meta:
-        verbose_name = '2nd Admin'
+class SecondAdminLevel(Area):
 
-    def get_lga_name(self):
+    def get_second_admin_level_name(self):
         return self.name_2
 
-    def get_lga_alternative_name(self):
+    def get_second_admin_level_alternative_name(self):
         return self.varname_2
 
-    def get_lga_names(self):
-        return [self.get_lga_name(), self.get_lga_alternative_name()]
+    def get_second_admin_level_names(self):
+        return [self.get_second_admin_level_name(), self.get_second_admin_level_alternative_name()]
 
-    def get_state_name(self):
+    def get_first_admin_level_name(self):
         return self.name_1
 
     def get_country_name(self):
         return self.name_0
 
     @classmethod
-    def find_lga(cls, name, state_name, country_name=None):
+    def find_second_admin_level(cls, name, first_admin_level_name, country_name=None):
         if country_name:
-            query = {'name_0': country_name, 'name_1': state_name}
+            query = {'name_0': country_name, 'name_1': first_admin_level_name}
         else:
-            query = {'name_1': state_name}
+            query = {'name_1': first_admin_level_name}
         found = 0
         query_result = []
-        for lga_name_field in ('name_2', 'varname_2'):
-            query[lga_name_field] = name
+        for second_admin_level_name_field in ('name_2', 'varname_2'):
+            query[second_admin_level_name_field] = name
             query_result = cls.objects.filter(**query)
             found = query_result.count()
             if found == 0:
-                del query[lga_name_field]
+                del query[second_admin_level_name_field]
             else:
                 break
         if found == 0:
@@ -1398,12 +1387,10 @@ class LGA(Area):
             else:
                 country_part = u''
             raise RuntimeError(u'More than one 2nd Admin named "{}" in 1st Admin "{}"{} '
-                               u'found!'.format(name, state_name, country_part))
+                               u'found!'.format(name, first_admin_level_name, country_part))
 
 
 class QuestionnaireSpecification(UniqueActiveNamedDocument):
-    class Meta:
-        verbose_name_plural = 'The "Questionnaire Specification" documents'
 
 
     specification = models.TextField(
@@ -1423,7 +1410,7 @@ class QuestionnaireSpecification(UniqueActiveNamedDocument):
         return self.name_or_id
 
 
-class ClustersPerState(UniqueActiveNamedDocument):
+class ClustersPerFirstAdminLevel(UniqueActiveNamedDocument):
     """
     For example:
 
@@ -1578,20 +1565,18 @@ class ClustersPerState(UniqueActiveNamedDocument):
                 }
     }
     """
-    class Meta:
-        verbose_name_plural = 'The "Clusters per 1st Admin" documents'
 
     json = JSONField(
         null=True, blank=True,
         help_text=u'Please enter the JSON structure defining the number of '
-                  u'standard and reserve clusters per 1st Admin.  E.g.: { "states":'
+                  u'standard and reserve clusters per 1st Admin.  E.g.: { "first_admin_levels":'
                   u' { "Kano": { "standard": 5, "reserve": 3 }, "Lagos": { '
                   u'"standard": 7, "reserve": 3 } } }',
         default={}
     )
 
 
-class States(UniqueActiveNamedDocument):
+class FirstAdminLevels(UniqueActiveNamedDocument):
     """
         For example:
 
@@ -1612,8 +1597,6 @@ class States(UniqueActiveNamedDocument):
             "Abuja Federal Capital Territory"
         ]
     """
-    class Meta:
-        verbose_name_plural = 'The "1st Admin" documents'
 
     json = JSONField(
         null=True, blank=True,
@@ -1622,7 +1605,7 @@ class States(UniqueActiveNamedDocument):
     )
 
 
-class StatesWithReserveClusters(UniqueActiveNamedDocument):
+class FirstAdminLevelsReserveClusters(UniqueActiveNamedDocument):
     """
         For example:
 
@@ -1633,9 +1616,6 @@ class StatesWithReserveClusters(UniqueActiveNamedDocument):
             "Abuja Federal Capital Territory"
         ]
     """
-
-    class Meta:
-        verbose_name_plural = 'The "1st Admin with Reserve Clusters" documents'
 
     json = JSONField(
         null=True, blank=True,

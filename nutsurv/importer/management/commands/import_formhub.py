@@ -188,7 +188,6 @@ class Command(BaseCommand):
                 parsed = parse_flat_formhub_csv(rawdata)
 
                 members = find_household_members(parsed)
-
                 try:
                     household_survey = HouseholdSurveyJSON(
                         uuid=parsed['_uuid'],
@@ -202,8 +201,8 @@ class Command(BaseCommand):
                             "householdID": parsed['hh_number'],
                             "cluster": parsed['cluster'],
                             "cluster_name": parsed['cluster_name'],
-                            "state": parsed['state'],
-                            "lga": parsed['lga'],
+                            "first_admin_level": parsed['state'],
+                            "second_admin_level": parsed['lga'],
                             "location": [
                                 parsed['_gps_latitude'],
                                 parsed['_gps_longitude']
@@ -224,8 +223,7 @@ class Command(BaseCommand):
                     logging.error('%r', parsed)
                     logging.exception(e)
 
-
-                update_mapping_documents_from_new_survey(household_survey.json)
+                update_mapping_documents_from_new_survey(parsed)
                 Alert.run_alert_checks_on_document(household_survey)
 
                 if datetime.now().second/10 != last_10_seconds:

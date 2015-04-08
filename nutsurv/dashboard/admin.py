@@ -3,11 +3,11 @@ from django.contrib import admin
 from models import HouseholdSurveyJSON
 from models import Alert
 from models import Clusters
-from models import LGA
+from models import SecondAdminLevel
 from models import QuestionnaireSpecification
-from models import ClustersPerState
-from models import States
-from models import StatesWithReserveClusters
+from models import ClustersPerFirstAdminLevel
+from models import FirstAdminLevels
+from models import FirstAdminLevelsReserveClusters
 
 class AlertAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
@@ -21,29 +21,29 @@ class ClustersAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
-class ClustersPerStateAdmin(admin.ModelAdmin):
+class ClustersPerFirstAdminLevelAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
-class StatesAdmin(admin.ModelAdmin):
+class FirstAdminLevelsAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
-class StatesWithReserveClustersAdmin(admin.ModelAdmin):
+class FirstAdminLevelsReserveClustersAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 
 
 admin.site.register(Alert, AlertAdmin)
 admin.site.register(Clusters, ClustersAdmin)
 admin.site.register(QuestionnaireSpecification, QuestionnaireSpecificationAdmin)
-admin.site.register(ClustersPerState, ClustersPerStateAdmin)
-admin.site.register(States, StatesAdmin)
-admin.site.register(StatesWithReserveClusters, StatesWithReserveClustersAdmin)
+admin.site.register(ClustersPerFirstAdminLevel, ClustersPerFirstAdminLevelAdmin)
+admin.site.register(FirstAdminLevels, FirstAdminLevelsAdmin)
+admin.site.register(FirstAdminLevelsReserveClusters, FirstAdminLevelsReserveClustersAdmin)
 
 
 admin.site.register(
     (
         HouseholdSurveyJSON,
-        LGA,
+        SecondAdminLevel,
     )
 )

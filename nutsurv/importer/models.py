@@ -24,27 +24,27 @@ def reset_data():
     cluster_data.active = True
     cluster_data.save()
 
-    dashboard_models.StatesWithReserveClusters.objects.all().delete()
-    state_reserve_data = dashboard_models.StatesWithReserveClusters()
-    state_reserve_data.json = []
-    state_reserve_data.name_or_id = 'default_state_reserve_data'
-    state_reserve_data.active = True
-    state_reserve_data.save()
+    dashboard_models.FirstAdminLevelsReserveClusters.objects.all().delete()
+    first_admin_level_reserve_data = dashboard_models.FirstAdminLevelsReserveClusters()
+    first_admin_level_reserve_data.json = []
+    first_admin_level_reserve_data.name_or_id = 'default_first_admin_level_reserve_data'
+    first_admin_level_reserve_data.active = True
+    first_admin_level_reserve_data.save()
 
-    dashboard_models.ClustersPerState.objects.all().delete()
-    cluster_state_data = dashboard_models.ClustersPerState()
-    cluster_state_data.json = {}
-    cluster_state_data.name_or_id = 'default_clusters_per_state'
-    cluster_state_data.active = True
-    cluster_state_data.save()
+    dashboard_models.ClustersPerFirstAdminLevel.objects.all().delete()
+    cluster_first_admin_level_data = dashboard_models.ClustersPerFirstAdminLevel()
+    cluster_first_admin_level_data.json = {}
+    cluster_first_admin_level_data.name_or_id = 'default_clusters_per_first_admin_level'
+    cluster_first_admin_level_data.active = True
+    cluster_first_admin_level_data.save()
 
-    dashboard_models.States.objects.all().delete()
-    states_data = dashboard_models.States()
-    states_data.json = []
-    states_data.name_or_id = 'default_states'
-    states_data.active = True
+    dashboard_models.FirstAdminLevels.objects.all().delete()
+    first_admin_level_data = dashboard_models.FirstAdminLevels()
+    first_admin_level_data.json = []
+    first_admin_level_data.name_or_id = 'default_first_admin_levels'
+    first_admin_level_data.active = True
 
-    states_data.save()
+    first_admin_level_data.save()
 
 def convert_to_utc_js_datestring(date_string):
     """Turn '2014-05-05T17:26:37.401+01' into '2014-05-05T16:26:37.401Z'"""
@@ -70,24 +70,24 @@ def update_mapping_documents_from_new_survey(json):
 
     cluster_data.json[cluster_number] = {
         "cluster_name": json['cluster_name'],
-        "lga_name": str(json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
-        "state_name": str(json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
+        "second_admin_level_name": str(json['lga']), # These are numbers we turn into strings. We don't have names. Better than nothing.
+        "first_admin_level_name": str(json['state']) # These are numbers we turn into strings. We don't have names. Better than nothing.
     }
     cluster_data.save()
 
-    state_number = str(json['state'])
-    cluster_state_data = dashboard_models.ClustersPerState.get_active()
-    if state_number not in cluster_state_data.json:
-        cluster_state_data.json[state_number] = {
+    first_admin_level_number = str(json['state'])
+    cluster_first_admin_level_data = dashboard_models.ClustersPerFirstAdminLevel.get_active()
+    if first_admin_level_number not in cluster_first_admin_level_data.json:
+        cluster_first_admin_level_data.json[first_admin_level_number] = {
             "standard": 10,
             "reserve": 5
         }
-        cluster_state_data.save()
+        cluster_first_admin_level_data.save()
 
-    states_data = dashboard_models.States.get_active()
-    if state_number not in states_data.json:
-        states_data.json.append(state_number)
-        states_data.save()
+    first_admin_level_data = dashboard_models.FirstAdminLevels.get_active()
+    if first_admin_level_number not in first_admin_level_data.json:
+        first_admin_level_data.json.append(first_admin_level_number)
+        first_admin_level_data.save()
 
 
 class FormhubSurvey(models.Model):

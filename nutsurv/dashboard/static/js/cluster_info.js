@@ -10,7 +10,7 @@ if (!window.clusterInfo) { // This file may be included by various tabs, so only
         receivedClusterData: function (data) {
             clusterInfo.dataAvailable = true;
         },
-        findState: function (cluster) {
+        findFirstAdminLevel: function (cluster) {
             if (!clusterInfo.dataAvailable) {
                 return false;
             }
@@ -18,9 +18,9 @@ if (!window.clusterInfo) { // This file may be included by various tabs, so only
             if (!clusterData.clusters.hasOwnProperty(cluster)) {
                 return false;
             }
-            return clusterData.clusters[cluster].state_name;
+            return clusterData.clusters[cluster].first_admin_level_name;
         },
-        findLGA: function (cluster) {
+        findSecondAdminLevel: function (cluster) {
             if (!clusterInfo.dataAvailable) {
                 return false;
             }
@@ -28,7 +28,7 @@ if (!window.clusterInfo) { // This file may be included by various tabs, so only
             if (!clusterData.clusters.hasOwnProperty(cluster)) {
                 return false;
             }
-            return clusterData.clusters[cluster].lga_name;
+            return clusterData.clusters[cluster].second_admin_level_name;
         },
         findName: function (cluster) {
             if (!clusterInfo.dataAvailable) {

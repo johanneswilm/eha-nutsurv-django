@@ -19,11 +19,11 @@ from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
 from models import Alert
 from models import HouseholdSurveyJSON
 from models import Clusters
-from models import LGA
+from models import SecondAdminLevel
 from models import QuestionnaireSpecification
-from models import ClustersPerState
-from models import States
-from models import StatesWithReserveClusters
+from models import ClustersPerFirstAdminLevel
+from models import FirstAdminLevels
+from models import FirstAdminLevelsReserveClusters
 from models import TeamMember
 
 from rest_framework import viewsets
@@ -66,9 +66,9 @@ def survey_completed_teams(request):
 
 
 @login_required
-def survey_completed_states(request):
+def survey_completed_strata(request):
     response = {}
-    return render(request, 'dashboard/survey_completed_states.html', response)
+    return render(request, 'dashboard/survey_completed_strata.html', response)
 
 
 @login_required
@@ -445,13 +445,13 @@ class ActiveQuestionnaireSpecificationView(View):
         return QuestionnaireSpecification.get_active()
 
 
-class ClustersPerStateJSONView(View):
+class ClustersPerFirstAdminLevelJSONView(View):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
-        information about clusters per state in the format requested by
+        information about clusters per first admin level in the format requested by
         Johannes and shown below:
             {
-                "states": {
+                "first_admin_levels": {
                     "Kano": {
                         "standard": 5,
                         "reserve": 3
@@ -463,22 +463,22 @@ class ClustersPerStateJSONView(View):
                     ...
             }
         """
-        doc = ClustersPerState.get_active()
+        doc = ClustersPerFirstAdminLevel.get_active()
         if doc:
             data = doc.json
         else:
             data = {}
-        return HttpResponse(json.dumps({'states': data}),
+        return HttpResponse(json.dumps({'first_admin_levels': data}),
                             content_type='application/json')
 
 
-class StatesJSONView(View):
+class FirstAdminLevelJSONView(View):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
-        information about states in the format requested by Johannes
+        information about first admin levels in the format requested by Johannes
         and shown below:
             {
-                "states": ["Kano", "Lagos", "Kaduna",
+                "first_admin_levels": ["Kano", "Lagos", "Kaduna",
                     "Katsina", "Oyo", "Rivers",
                     "Bauchi", "Jigawa", "Benue",
                     "Anambra", "Borno", "Delta",
@@ -496,22 +496,22 @@ class StatesJSONView(View):
             }
 
         """
-        doc = States.get_active()
+        doc = FirstAdminLevels.get_active()
         if doc:
             data = doc.json
         else:
             data = []
-        return HttpResponse(json.dumps({'states': data}),
+        return HttpResponse(json.dumps({'first_admin_levels': data}),
                             content_type='application/json')
 
 
-class StatesWithReserveClustersJSONView(View):
+class FirstAdminLevelsReserveClustersJSONView(View):
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
-        information about states with reserved clusters in the format requested
+        information about first admin levels with reserved clusters in the format requested
         by Johannes and shown below:
         {
-            "states": [
+            "first_admin_levels": [
                     "Kano",
                     "Gombe",
                     "Yobe",
@@ -519,12 +519,12 @@ class StatesWithReserveClustersJSONView(View):
             ]
         }
         """
-        doc = StatesWithReserveClusters.get_active()
+        doc = FirstAdminLevelsReserveClusters.get_active()
         if doc:
             data = doc.json
         else:
             data = []
-        return HttpResponse(json.dumps({'states': data}),
+        return HttpResponse(json.dumps({'first_admin_levels': data}),
                             content_type='application/json')
 
 
@@ -537,13 +537,13 @@ class ClustersJSONView(View):
             "clusters": {
                 "723": {
                     "cluster_name": "Share",
-                    "lga_name": "Ifelodun",
-                    "state_name": "Kwara"
+                    "second_admin_level_name": "Ifelodun",
+                    "first_admin_level_name": "Kwara"
                 },
                 "318": {
                     "cluster_name": "Emadadja",
-                    "lga_name": "Udu",
-                    "state_name": "Delta"
+                    "second_admin_level_name": "Udu",
+                    "first_admin_level_name": "Delta"
                 }
                 ...
 

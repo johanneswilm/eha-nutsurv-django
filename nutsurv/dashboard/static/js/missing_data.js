@@ -2,16 +2,16 @@ var missingData = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
-        states: '/dashboard/statesjsonview/',
+        firstAdminLevels: '/dashboard/firstadminleveljsonview/',
         qsl: '/dashboard/activequestionnairespecificationview/',
     },
     initiate: function() {
-        var selectors = jQuery('#missing_data_teams,#missing_data_states');
+        var selectors = jQuery('#missing_data_teams,#missing_data_strata');
         selectors.selectpicker();
-        selectors.on('change', missingData.changeStateOrTeam);
+        selectors.on('change', missingData.changeStratumOrTeam);
 
         dataGetter.addNew(missingData.urls.teams, missingData.fillTeamsList, false);
-        dataGetter.addNew(missingData.urls.states, missingData.fillStatesList, false);
+        dataGetter.addNew(missingData.urls.firstAdminLevels, missingData.fillStrataList, false);
         dataGetter.addNew(missingData.urls.survey, missingData.listChildren, true);
         dataGetter.addNew(missingData.urls.survey, missingData.listWomen, true);
         dataGetter.addNew(missingData.urls.survey, missingData.listHouseholdMembers, false);
@@ -31,27 +31,27 @@ var missingData = {
         selector.selectpicker('refresh');
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
-    fillStatesList: function(data) {
-        var selector = jQuery('#missing_data_states');
-        _.each(data.states.sort(), function(state) {
-            selector.append(missingData.stateOptionTmp({
-                state: state
+    fillStrataList: function(data) {
+        var selector = jQuery('#missing_data_strata');
+        _.each(data.first_admin_levels.sort(), function(stratum) {
+            selector.append(missingData.stratumOptionTmp({
+                stratum: stratum
             }));
         });
         selector.selectpicker('refresh');
     },
-    stateOptionTmp: _.template('<option value="<%- state %>" ><%- state %></option>'),
-    changeStateOrTeam: function() {
+    stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
+    changeStratumOrTeam: function() {
         var data = dataGetter.downloads[missingData.urls.survey].data,
             team = jQuery('#missing_data_teams').val(),
-            state = jQuery('#missing_data_states').val();
-        missingData.listChildren(data, team, state);
-        missingData.listWomen(data, team, state);
-        missingData.listHouseholdMembers(data, team, state);
+            stratum = jQuery('#missing_data_strata').val();
+        missingData.listChildren(data, team, stratum);
+        missingData.listWomen(data, team, stratum);
+        missingData.listHouseholdMembers(data, team, stratum);
     },
     listTmp: _.template('<li><span class="item"><%- detail.replace(/([A-Z])/g, \' $1\').replace(/^./, function(str){ return str.toUpperCase(); }).replace("_"," ") %>:</span><span class="description"><%= percentage %>%</span></li>'),
     qsl: false,
-    listWomen: function(data, team, state) {
+    listWomen: function(data, team, stratum) {
         if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.qsl])) {
             /* Check that all the relative data has been downloaded, else cancel.
             See home.js. */
@@ -95,7 +95,7 @@ var missingData = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
 
@@ -132,7 +132,7 @@ var missingData = {
             jQuery('#missing_data_women_list').append(missingData.listTmp(percentage));
         });
     },
-    listChildren: function(data, team, state) {
+    listChildren: function(data, team, stratum) {
         if (!dataGetter.checkAll([missingData.urls.survey, missingData.urls.qsl])) {
             /* Check that all the relative data has been downloaded, else cancel.
             See home.js. */
@@ -177,7 +177,7 @@ var missingData = {
             if (team && team > 0 && team != survey.team) {
                 return true;
             }
-            if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
+            if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
                 return true;
             }
 
