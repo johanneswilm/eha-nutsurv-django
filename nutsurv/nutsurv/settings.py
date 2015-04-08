@@ -140,7 +140,8 @@ BOWER_INSTALLED_APPS = (
     'moment-timezone#0.3.0',
     'list.js#1.1.1',
     'list.pagination.js',
-    'jquery.cookie#1.4.1'
+    'jquery.cookie#1.4.1',
+    'eHealthAfrica/data-models#1.12.1',
     )
 
 

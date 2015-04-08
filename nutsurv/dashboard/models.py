@@ -8,6 +8,8 @@ import random
 # 3rd party
 import numpy
 import scipy.stats
+import validictory
+import json
 
 # django core
 from django.utils.translation import ugettext as _
@@ -15,7 +17,8 @@ import django.contrib.gis.db.models as gismodels
 from django.db import models
 from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
+from django.conf import settings
 
 # django 3rd party
 from rest_framework.reverse import reverse
@@ -56,15 +59,28 @@ class TeamMember(models.Model):
         get_latest_by = 'modified'
         ordering = ('-modified', '-created',)
 
-
-
-
     @property
     def random_id(self):
         return random.randint(10000,100000)
 
     def __unicode__(self):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
+
+
+def validate_json(spec_file):
+    survey_schema = None
+    try:
+        survey_schema = json.load(open(spec_file))
+    except IOError as e:
+        # log the error but it's ok if the spec is missing
+        # if the validator is never called
+        print "Could not load the json spec %s" % (spec_file,)
+
+    def wrapped(value):
+        assert survey_schema, "Trying to validate a non existant JSON schema"
+        # It really should exist by now.
+        validictory.validate(value, survey_schema, required_by_default=False)
+    return wrapped
 
 
 class HouseholdSurveyJSON(models.Model):
@@ -77,6 +93,8 @@ class HouseholdSurveyJSON(models.Model):
 
 
     json = JSONField(
+        validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
+            + '/bower_components/data-models/schemas/NutritionSurvey.json')],
         null=False,
         blank=False,
         help_text='A JSON document containing data acquired from one '
