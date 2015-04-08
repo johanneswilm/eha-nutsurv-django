@@ -118,7 +118,10 @@ class FormhubSurvey(models.Model):
             if household_survey_list:
                 self.converted_household_survey = household_survey_list[0]
             else:
-                self.converted_household_survey = dashboard_models.HouseholdSurveyJSON(uuid=self.uuid)
+                self.converted_household_survey = dashboard_models.HouseholdSurveyJSON(
+                    uuid=self.uuid,
+                    household_number=self.json['hh_number'],
+                )
 
 
 

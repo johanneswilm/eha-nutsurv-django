@@ -51,6 +51,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'url',
             'uuid',
+            'household_number',
             'team_lead',
             'team_assistant',
             'team_anthropometrist',

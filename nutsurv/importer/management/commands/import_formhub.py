@@ -191,6 +191,7 @@ class Command(BaseCommand):
                 try:
                     household_survey = HouseholdSurveyJSON(
                         uuid=parsed['_uuid'],
+                        household_number=parsed['hh_number'],
                         json={
                             "uuid": parsed['_uuid'],
                             "syncDate": parsed['_submission_time'] + ".000Z",

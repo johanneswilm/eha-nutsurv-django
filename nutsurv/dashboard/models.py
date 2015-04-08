@@ -92,6 +92,8 @@ class HouseholdSurveyJSON(models.Model):
     team_anthropometrist = models.ForeignKey('TeamMember', related_name='surveys_as_team_anthropometrist')
 
 
+    household_number = models.SmallIntegerField()
+
     json = JSONField(
         validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
             + '/bower_components/data-models/schemas/NutritionSurvey.json')],
