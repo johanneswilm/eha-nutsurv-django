@@ -111,6 +111,9 @@ class HouseholdSurveyJSON(models.Model):
     )
 
     def parse_team(self, position):
+
+        # TODO this still depends on self.json, while aiming to replace it.
+
         team_members = self.json['team']['members']
         for m in team_members:
             designation = m['designation']
