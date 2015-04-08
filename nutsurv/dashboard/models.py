@@ -83,9 +83,11 @@ def validate_json(spec_file):
     return wrapped
 
 
-class HouseholdSurveyJSON(models.Model):
+class BaseHouseholdSurveyJSON(models.Model):
+
     class Meta:
         verbose_name = 'household survey'
+        abstract = True
 
     team_lead = models.ForeignKey('TeamMember', related_name='surveys_as_team_lead')
     team_assistant = models.ForeignKey('TeamMember', related_name='surveys_as_team_assistant')
@@ -408,6 +410,8 @@ class HouseholdSurveyJSON(models.Model):
         else:
             return uuid
 
+class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
+    pass
 
 class Alert(models.Model):
     """
