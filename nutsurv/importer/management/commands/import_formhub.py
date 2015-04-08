@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from dashboard.models import HouseholdSurveyJSON, Alert, TeamMember
+from dashboard.models import HouseholdSurveyJSON, HouseholdMember, Alert, TeamMember
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
@@ -12,6 +12,7 @@ import csv
 import re
 import logging
 import math
+import dateutil
 
 from textwrap import dedent
 
@@ -115,6 +116,44 @@ def find_household_members(data):
         member["survey"] = survey
 
     return members
+
+def create_household_member_models(household_survey, household_members, reference_date):
+
+    for index, hhm in enumerate(household_members):
+
+        record = {
+            'household_survey': household_survey,
+            'index': index,
+        }
+        record.update(hhm)
+        record.update(hhm.get('survey', {}))
+
+        if 'edema' in record:
+            record['edema'] = {'Y': True, 'N': 'False'}[record['edema']]
+
+        assert not all([
+            # yes, the following two might be conflicting, but that's what
+            # happens if you save data twice
+            'age' in record,
+            'ageInMonths' in record,
+        ])
+
+        if 'age' in record:
+            if record['age'] != None:
+                record['birthdate'] = reference_date - dateutil.relativedelta.relativedelta(years=record['age'])
+            del record['age']
+
+        if 'ageInMonth' in record:
+            if record['ageInMonth'] != None:
+                record['birthdate'] = reference_date - dateutil.relativedelta.relativedelta(months=record['ageInMonth'])
+            del record['ageInMonth']
+
+        for irrelevant in ('survey', 'surveyType', 'zscores'):
+            if irrelevant in record:
+                del record[irrelevant]
+
+        hhm_model, created = HouseholdMember.objects.get_or_create(**record)
+        assert created
 
 def parse_flat_formhub_csv(rawdata):
 
@@ -220,6 +259,10 @@ class Command(BaseCommand):
                     )
                     household_survey.parse_and_set_team_members()
                     household_survey.save()
+
+                    startTime = datetime.strptime(parsed['starttime'].split('.')[0], '%Y-%m-%dT%H:%M:%S')
+                    create_household_member_models(household_survey, members, startTime)
+
                 except (KeyError, IntegrityError) as e:
                     logging.error('%r', parsed)
                     logging.exception(e)

@@ -17,6 +17,7 @@ from .views import ClustersJSONView
 from .views import AlertViewSet
 from .views import HouseholdSurveyJSONViewset
 from .views import TeamMemberViewset
+from .views import HouseholdMemberViewset
 
 
 v1_api = Api(api_name='v1')
@@ -26,6 +27,7 @@ router = routers.DefaultRouter()
 router.register(r'alerts', AlertViewSet)
 router.register(r'surveys', HouseholdSurveyJSONViewset)
 router.register(r'teammembers', TeamMemberViewset)
+router.register(r'householdmember', HouseholdMemberViewset)
 
 urlpatterns = patterns('',
                        url(r'^api/', include(v1_api.urls)),

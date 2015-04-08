@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Alert, HouseholdSurveyJSON, TeamMember
+from .models import Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -33,8 +33,22 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                 'mobile',
                 'email']
 
+class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = HouseholdMember
+        fields = [
+            'firstName',
+            'gender',
+            'muac',
+            'birthdate',
+            'weight',
+            'height',
+        ]
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
+
+    members = HouseholdMemberSerializer(many=True, read_only=True)
 
     class Meta:
         extra_kwargs = {

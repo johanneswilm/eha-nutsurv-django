@@ -83,15 +83,34 @@ def validate_json(spec_file):
     return wrapped
 
 
+class HouseholdMember(models.Model):
+
+    household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
+
+    GENDER = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    )
+    gender = models.CharField(max_length=1, choices=GENDER)
+
+    firstName = models.TextField()
+    index = models.SmallIntegerField()
+    muac = models.SmallIntegerField(null=True) # in millimeter ?
+    birthdate = models.DateField()
+    weight = models.FloatField(null=True) # probably in kilograms ?
+    height = models.FloatField(null=True) # probably in centimeters ?
+    edema = models.NullBooleanField()
+
 class BaseHouseholdSurveyJSON(models.Model):
 
     class Meta:
         verbose_name = 'household survey'
         abstract = True
 
-    team_lead = models.ForeignKey('TeamMember', related_name='surveys_as_team_lead')
-    team_assistant = models.ForeignKey('TeamMember', related_name='surveys_as_team_assistant')
-    team_anthropometrist = models.ForeignKey('TeamMember', related_name='surveys_as_team_anthropometrist')
+    team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
+    team_assistant = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_assistant')
+    team_anthropometrist = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_anthropometrist')
 
 
     household_number = models.SmallIntegerField()
