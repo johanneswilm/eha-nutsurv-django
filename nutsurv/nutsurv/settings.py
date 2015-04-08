@@ -52,9 +52,10 @@ INSTALLED_APPS = [
 ]
 
 if DEBUG:
-    INSTALLED_APPS.append(
+    INSTALLED_APPS += [
         'django_extensions',
-    )
+        'debug_toolbar',
+    ]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
