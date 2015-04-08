@@ -32,6 +32,10 @@ Now in the shell within the container:
     # python /opt/nutsurv/nutsurv/manage.py bower_install -- --allow-root
     # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
 
+You probably also want to import some test data. Do that by typing:
+
+    # python /opt/nutsurv/nutsurv/manage.py import_formhub path/test-data.csv
+
 
 ## Good job!
 The website should be available at http://HOST:8001
