@@ -122,7 +122,7 @@ class HouseholdSurveyJSON(models.Model):
 
         def make_team_member(parsed):
             this_year = datetime.datetime.now().year
-            tm ,created = TeamMember.objects.get_or_create(
+            tm, created = TeamMember.objects.get_or_create(
                     id=parsed['memberID'],
                     defaults = {
                         'first_name':parsed['firstName'],
