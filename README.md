@@ -19,7 +19,7 @@ Install [Docker](https://docs.docker.com/installation/#installation)
 
 ## Tab 2
 
-    $ sudo docker-compose run db
+    $ sudo docker-compose up db
 
 ## Tab 1 again
 

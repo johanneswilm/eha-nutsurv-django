@@ -24,9 +24,12 @@ SECRET_KEY = '1n=d-2s$)lm44_3logg)&1qh$5i^0j8j1gx3%g!v&9@e56rlv)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = [
+    '.eocng.org',
+]
+
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
 
 #LOGIN_URL = '/admin'
 
@@ -168,11 +171,34 @@ REST_FRAMEWORK = {
         }
 
 
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'standard': {
+                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+                },
+            },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter':'standard',
+                },
+            },
+        'loggers': {
+            '': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': True,
+                },
+            },
+        }
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
 except IOError as e:
-    print "Did not load local configuration:", e
-    print "That's ok, but you may want to copy the configurations.py-default"
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info("Did not load local configuration. That's ok, but you may want to copy the configurations.py-default")
 else:
     exec f in globals()
