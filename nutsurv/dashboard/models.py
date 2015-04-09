@@ -4,6 +4,7 @@ import dateutil.parser
 import dateutil.relativedelta
 import uuid
 import random
+import logging
 
 # 3rd party
 import numpy
@@ -31,6 +32,9 @@ from django_extensions.db.fields import (
 # Internal
 from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
+
+
+logger = logging.getLogger(__name__)
 
 
 class TeamMember(models.Model):
@@ -74,7 +78,7 @@ def validate_json(spec_file):
     except IOError as e:
         # log the error but it's ok if the spec is missing
         # if the validator is never called
-        print "Could not load the json spec %s" % (spec_file,)
+        logger.exception("Could not load the json spec %s. \nThis is ok if you are just setting up." % (spec_file,))
 
     def wrapped(value):
         assert survey_schema, "Trying to validate a non existant JSON schema"
