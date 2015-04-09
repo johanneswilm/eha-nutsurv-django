@@ -418,6 +418,7 @@ class Alert(models.Model):
     using the admin interface.
     """
 
+    team_lead = models.ForeignKey('dashboard.TeamMember', null=True)
     text = models.TextField()
 
     json = JSONField(
