@@ -47,7 +47,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Alert
+        model= Alert
         fields = (
                 'url',
                 'id',
@@ -58,12 +58,18 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
                 'archived',
                 'created',
                 'completed',
+                'team_lead',
+                'survey',
 
                 # TODO fields still in json
-                'team_id',
-                'team_name',
                 'cluster_id',
                 'location',
                 'type',
                 'survey_id',
                 )
+
+        extra_kwargs = {
+                'team_lead': {
+                    'lookup_field': 'member_id'
+                    },
+                }
