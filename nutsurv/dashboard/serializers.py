@@ -54,7 +54,6 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
 
                 # fields
                 'category',
-                'text',
                 'archived',
                 'created',
                 'completed',
