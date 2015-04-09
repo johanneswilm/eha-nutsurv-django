@@ -15,11 +15,11 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
   npm \
   postgresql-9.3 \
   postgresql-9.3-postgis-2.1 \ 
-  postgresql-server-dev-all 
+  postgresql-server-dev-all \
   python-dev \
   python-numpy \
   python-scipy \
-  python-virtualenv \
+  python-virtualenv
 
 RUN pip install libsass psycopg2
 ADD . /opt/nutsurv
