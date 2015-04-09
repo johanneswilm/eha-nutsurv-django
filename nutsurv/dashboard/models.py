@@ -4,7 +4,6 @@ import dateutil.parser
 import dateutil.relativedelta
 import uuid
 import random
-<<<<<<< HEAD
 from functools import wraps
 import logging
 
