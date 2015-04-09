@@ -30,7 +30,6 @@ ALLOWED_HOSTS = [
 
 TEMPLATE_DEBUG = True
 
-
 #LOGIN_URL = '/admin'
 
 # Application definition
