@@ -57,7 +57,7 @@ var home = {
         home.map.fitBounds(home.mapMarkers.getBounds());
 
     },
-    latestTeamContacts: false,
+    latestTeamContacts: [],
     drawLatestContacts: function(data) {
         if (!dataGetter.checkAll([home.urls.survey, home.urls.teams])) {
             /* Check that all the relative data has been downloaded, else cancel.
@@ -67,25 +67,31 @@ var home = {
             the arrival of several pieces of data. */
             return false;
         }
-        var latestTeamContacts = [],
-            surveyData = dataGetter.downloads[home.urls.survey].data.survey_data,
-            teamData = dataGetter.downloads[home.urls.teams].data.teams;
+        var latestTeamContacts = [];
+        var surveyData = dataGetter.downloads[home.urls.survey].data.survey_data;
+        var teamData = dataGetter.downloads[home.urls.teams].data.teams;
 
         jQuery('#home_last_contact_list').empty();
+
         _.each(surveyData, function(survey) {
-            var latestContact = _.find(latestTeamContacts, {
-                team: survey.team
-            });
-            if (!latestContact) {
-                latestTeamContacts.push({
-                    team: survey.team,
-                    time: survey.endTime
-                });
-            } else if (latestContact.time < survey.endTime) {
-                latestContact.time = survey.endTime;
+            // Limit to only 7 entries
+            if (latestTeamContacts.length < 7) {
+              var latestContact = _.find(latestTeamContacts, {
+                  team: survey.team
+              });
+              if (!latestContact) {
+                  latestTeamContacts.push({ 
+                      team: survey.team,
+                      time: survey.endTime
+                  });
+              } else if (latestContact.time < survey.endTime) {
+                  latestContact.time = survey.endTime;
+              }
             }
         });
+
         home.latestTeamContacts = _.sortBy(latestTeamContacts, 'time').reverse();
+
         _.each(home.latestTeamContacts, function(contact) {
             jQuery('#home_last_contact_list').append(home.contactTmp({
                 teamNo: contact.team,
