@@ -132,6 +132,7 @@ class HouseholdSurveyJSON(models.Model):
             tm ,created = TeamMember.objects.get_or_create(
                     id=parsed['memberID'],
                     defaults = {
+                        'gender':parsed['gender'],
                         'first_name':parsed['firstName'],
                         'last_name': parsed['lastName'],
                         'mobile' :parsed['mobile'],
