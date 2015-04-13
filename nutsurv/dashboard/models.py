@@ -487,6 +487,7 @@ class Alert(models.Model):
         cluster_id = household_survey.get_cluster_id()
         location = household_survey.get_location()
         team_lead = household_survey.team_lead
+        team_id = household_survey.get_team_id()
 
         if cluster_id is None:
             alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
