@@ -80,7 +80,7 @@ def validate_json(spec_file):
         # log the error but it's ok if the spec is missing
         # if the validator is never called
         logger.exception(
-            "Could not load the json spec %s. \nThis is ok if you are just setting up.\ne" % (spec_file, e.message))
+            "Could not load the json spec %s. \nThis is ok if you are just setting up.\n%s" % (spec_file, e.message))
 
     @wraps(validate_json)
     def wrapped(value):
