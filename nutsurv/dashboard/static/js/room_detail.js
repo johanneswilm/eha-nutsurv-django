@@ -36,7 +36,7 @@ function render_from_view_as(view_as) {
 var render_methods = {
   'checkmark': function(obj) {
      if (obj == undefined) { return '—'; }
-     return '<i class="fa fa-check"></i>';
+     return '<i class="fa fa-check" style="color: greenyellow;"></i>';
    },
   'json': function(obj) {
      if (obj == undefined) { return '—'; }
