@@ -6,7 +6,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.reverse import reverse
 
 from .models import TrainingSurvey, TrainingRoom
-from .serializers import TrainingSurveySerializer, TrainingRoomSerializer
+from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithMemberDetails, TrainingRoomSerializer
 
 
 class TrainingSurveyViewset(viewsets.ModelViewSet):
@@ -20,6 +20,7 @@ class TrainingRoomViewset(viewsets.ModelViewSet):
     template_name = 'training/room_list.html'
 
     def retrieve(self, request, pk=None, format=None):
+
         queryset = TrainingRoom.objects.all()
         instance = get_object_or_404(queryset, pk=pk)
         instance_serializer = TrainingRoomSerializer(
@@ -29,8 +30,12 @@ class TrainingRoomViewset(viewsets.ModelViewSet):
             },
         )
 
+        SurveySerializer = TrainingSurveySerializer
+        if 'member_detail' in request.GET:
+            SurveySerializer = TrainingSurveySerializerWithMemberDetails
+
         surveys = TrainingSurvey.objects.filter(household_number=pk)
-        survey_serializer = TrainingSurveySerializer(
+        survey_serializer = SurveySerializer(
             surveys,
             many=True,
             context={

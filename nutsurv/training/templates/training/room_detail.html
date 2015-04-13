@@ -196,7 +196,7 @@ var survey_data;
 
 $(document).ready(function() {
 
-  $.get(window.location.pathname, function (data) {
+  $.get(window.location.pathname + '?member_detail', function (data) {
 
     survey_data = data.surveys;
 

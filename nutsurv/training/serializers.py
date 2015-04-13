@@ -15,10 +15,6 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
     members = TrainingRoomMemberSerializer(many=True, read_only=False)
 
-#    team_lead = TeamMemberSerializer()
-#    team_assistant = TeamMemberSerializer()
-#    team_anthropometrist = TeamMemberSerializer()
-
     def create(self, validated_data):
 
         family_members = validated_data.pop('members')
@@ -44,6 +40,11 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
         model = TrainingSurvey
         extra_kwargs = HouseholdSurveyJSONSerializer.Meta.extra_kwargs
         fields = HouseholdSurveyJSONSerializer.Meta.fields + ('members',)
+
+class TrainingSurveySerializerWithMemberDetails(TrainingSurveySerializer):
+    team_lead = TeamMemberSerializer()
+    team_assistant = TeamMemberSerializer()
+    team_anthropometrist = TeamMemberSerializer()
 
 class TrainingRoomSerializer(serializers.ModelSerializer):
 
