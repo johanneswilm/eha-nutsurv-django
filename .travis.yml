@@ -4,12 +4,12 @@ addons:
   postgresql: "9.3"
 
 install:
-  - pip install pylint
+  - pip install flake8
   - npm install -g bower
   - sudo apt-get update && sudo apt-get install -y python-numpy python-scipy
 
 script:
-  - pylint nutsurv --disable=all --enable=E0602
+  - flake8 --exclude migrations --ignore E501,C901 .
   - virtualenv --system-site-packages nutsurv-venv
   - source nutsurv-venv/bin/activate
   - pip install -r requirements/production.txt

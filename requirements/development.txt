@@ -7,3 +7,5 @@ behave
 django-extensions
 Werkzeug
 django-debug-toolbar
+flake8
+autopep8
