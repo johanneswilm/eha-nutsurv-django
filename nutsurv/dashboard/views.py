@@ -32,6 +32,7 @@ from rest_framework import viewsets
 
 class TeamMemberViewset(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all()
+    permission_classes = ()  # Allow Any
     serializer_class = TeamMemberSerializer
     lookup_field = 'member_id'
     template_name = 'dashboard/teammember.html'

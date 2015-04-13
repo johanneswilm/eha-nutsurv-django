@@ -19,7 +19,7 @@ Install [Docker](https://docs.docker.com/installation/#installation)
 
 ## Tab 2
 
-    $ sudo docker-compose run db
+    $ sudo docker-compose up db
 
 ## Tab 1 again
 
@@ -31,6 +31,10 @@ Now in the shell within the container:
     # python /opt/nutsurv/nutsurv/manage.py createsuperuser
     # python /opt/nutsurv/nutsurv/manage.py bower_install -- --allow-root
     # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
+
+You probably also want to import some test data. Do that by typing:
+
+    # python /opt/nutsurv/nutsurv/manage.py import_formhub path/test-data.csv
 
 
 ## Good job!
