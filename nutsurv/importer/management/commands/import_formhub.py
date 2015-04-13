@@ -209,81 +209,86 @@ class Command(BaseCommand):
     args = '<filename ...>'
     help = 'Imports the csv file'
 
+    def import_csvfile(self, csvfile):
+
+        last_10_seconds = None
+        imported_last_10_seconds = 0
+
+        headers = None
+
+        for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
+
+            if not headers:
+                # first row is the headers
+                headers = row
+                continue
+
+            rawdata = get_rawdata(headers, row)
+
+            parsed = parse_flat_formhub_csv(rawdata)
+
+            members = find_household_members(parsed)
+            try:
+                household_survey = HouseholdSurveyJSON(
+                    uuid=parsed['_uuid'],
+                    household_number=parsed['hh_number'],
+                    json={
+                        "uuid": parsed['_uuid'],
+                        "syncDate": parsed['_submission_time'] + ".000Z",
+                        "startTime": parsed['starttime'],
+                        "endTime": parsed['endtime'],
+                        "created": parsed['_submission_time']  + ".000Z",
+                        "modified": parsed['_submission_time'],
+                        "householdID": parsed['hh_number'],
+                        "cluster": parsed['cluster'],
+                        "cluster_name": parsed['cluster_name'],
+                        "first_admin_level": parsed['state'],
+                        "second_admin_level": parsed['lga'],
+                        "location": [
+                            parsed['_gps_latitude'],
+                            parsed['_gps_longitude']
+                        ],
+                        "members": (household_member_to_legacy_format(dict(member.items())) for member in members),
+                        "team_num": parsed['team_num'],
+                        "team": FakeTeams.objects.get_or_create(
+                            team_id=parsed['team_num']
+                        )[0].json,
+                        "_id": parsed['_uuid'],
+                        "tools":{},
+                        "history":[]
+                    }
+                )
+                household_survey.parse_and_set_team_members()
+                household_survey.save()
+
+                startTime = datetime.strptime(parsed['starttime'].split('.')[0], '%Y-%m-%dT%H:%M:%S')
+                create_household_member_models(household_survey, members, startTime)
+
+            except (KeyError, IntegrityError) as e:
+                logging.error('%r', parsed)
+                logging.exception(e)
+
+            update_mapping_documents_from_new_survey(parsed)
+            Alert.run_alert_checks_on_document(household_survey)
+
+            if datetime.now().second/10 != last_10_seconds:
+                print dedent("""
+
+                ===> imported {} records in the last 10 seconds, that is {} records/s
+
+                """).format(imported_last_10_seconds, imported_last_10_seconds/10.0)
+
+                last_10_seconds = datetime.now().second/10
+                imported_last_10_seconds = 0
+            else:
+                imported_last_10_seconds += 1
+
+            print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'
+
     def handle(self, filename, **options):
 
         reset_data()
 
-        last_10_seconds = None
-        imported_last_10_seconds = 0
         with open(filename) as csvfile:
+            self.import_csvfile(csvfile)
 
-            headers = None
-
-            for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
-
-                if not headers:
-                    # first row is the headers
-                    headers = row
-                    continue
-
-                rawdata = get_rawdata(headers, row)
-
-                parsed = parse_flat_formhub_csv(rawdata)
-
-                members = find_household_members(parsed)
-                try:
-                    household_survey = HouseholdSurveyJSON(
-                        uuid=parsed['_uuid'],
-                        household_number=parsed['hh_number'],
-                        json={
-                            "uuid": parsed['_uuid'],
-                            "syncDate": parsed['_submission_time'] + ".000Z",
-                            "startTime": parsed['starttime'],
-                            "endTime": parsed['endtime'],
-                            "created": parsed['_submission_time']  + ".000Z",
-                            "modified": parsed['_submission_time'],
-                            "householdID": parsed['hh_number'],
-                            "cluster": parsed['cluster'],
-                            "cluster_name": parsed['cluster_name'],
-                            "first_admin_level": parsed['state'],
-                            "second_admin_level": parsed['lga'],
-                            "location": [
-                                parsed['_gps_latitude'],
-                                parsed['_gps_longitude']
-                            ],
-                            "members": (household_member_to_legacy_format(dict(member.items())) for member in members),
-                            "team_num": parsed['team_num'],
-                            "team": FakeTeams.objects.get_or_create(
-                                team_id=parsed['team_num']
-                            )[0].json,
-                            "_id": parsed['_uuid'],
-                            "tools":{},
-                            "history":[]
-                        }
-                    )
-                    household_survey.parse_and_set_team_members()
-                    household_survey.save()
-
-                    startTime = datetime.strptime(parsed['starttime'].split('.')[0], '%Y-%m-%dT%H:%M:%S')
-                    create_household_member_models(household_survey, members, startTime)
-
-                except (KeyError, IntegrityError) as e:
-                    logging.error('%r', parsed)
-                    logging.exception(e)
-
-                update_mapping_documents_from_new_survey(parsed)
-                Alert.run_alert_checks_on_document(household_survey)
-
-                if datetime.now().second/10 != last_10_seconds:
-                    print dedent("""
-
-                    ===> imported {} records in the last 10 seconds, that is {} records/s
-
-                    """).format(imported_last_10_seconds, imported_last_10_seconds/10.0)
-
-                    last_10_seconds = datetime.now().second/10
-                    imported_last_10_seconds = 0
-                else:
-                    imported_last_10_seconds += 1
-
-                print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'
