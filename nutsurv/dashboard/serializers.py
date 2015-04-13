@@ -38,7 +38,7 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = HouseholdMember
         fields = [
-            'firstName',
+            'first_name',
             'gender',
             'muac',
             'birthdate',

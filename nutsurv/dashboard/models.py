@@ -101,7 +101,7 @@ class HouseholdMember(models.Model):
     )
     gender = models.CharField(max_length=1, choices=GENDER)
 
-    firstName = models.TextField()
+    first_name = models.TextField()
     index = models.SmallIntegerField()
     muac = models.SmallIntegerField(null=True) # in millimeter ?
     birthdate = models.DateField()
