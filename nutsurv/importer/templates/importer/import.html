@@ -1,0 +1,25 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-header">
+    <h1><i class="fa fa-upload"></i> Import CSV </h1>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        {% if message %}
+        <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">Upload file</div>
+            <div class="panel-body main">
+              <p><b>WARNING! This will delete all existing data in the database!</b></p>
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="csv_file">
+                <button class="btn btn-lg btn-primary pull-right" type="submit" name="submit">Upload file</button>
+              </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
