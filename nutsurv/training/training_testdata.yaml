@@ -128,25 +128,11 @@
       index: 9
       birthdate: 2015-04-09
       edema: false
-      first_name: Sonny
-      gender: M
+      first_name: Janet
+      gender: F
       height: 100
       household_survey: 2
       muac: 19
       weight: 200
     model: training.trainingroommember
     pk: 13
--   fields:
-      index: 10
-      birthdate: 2015-04-09
-      edema: false
-      first_name: Sonny
-      gender: M
-      height: 110
-      household_survey: 2
-      muac: 20
-      weight: 220
-    model: training.trainingroommember
-    pk: 14
-
-
