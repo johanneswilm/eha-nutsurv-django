@@ -31,7 +31,7 @@ def find_household_members(data):
 
     for fh_member in data['consent'].get('hh_roster', []):
         member = {
-            "firstName": fh_member['listing']['name'],
+            "first_name": fh_member['listing']['name'],
             "age": fh_member['listing']['age_years'],
         }
         if fh_member['listing']['sex'] == 1:
@@ -48,7 +48,7 @@ def find_household_members(data):
             continue
 
         name = fh_woman["womanname1"]
-        member = next((item for item in members if item["firstName"] == name), None)
+        member = next((item for item in members if item["first_name"] == name), None)
 
         if not member:
             logging.warning('Did not find woman named "%s" in this.', name)
@@ -68,7 +68,7 @@ def find_household_members(data):
 
         name = fh_child["child_name"]
 
-        member = next((item for item in members if item["firstName"] == name), None)
+        member = next((item for item in members if item["first_name"] == name), None)
 
         if not member:
             logging.warning('Did not find details about child named "%s" in this.', name)
@@ -201,6 +201,10 @@ def parse_flat_formhub_csv(rawdata):
 def get_rawdata(headers, row):
     return dict(((k, v) for k, v in zip(headers, row) if v != 'n/a'))
 
+def household_member_to_legacy_format(member):
+    member['firstName'] = member.pop('first_name')
+    return member
+
 class Command(BaseCommand):
     args = '<filename ...>'
     help = 'Imports the csv file'
@@ -247,7 +251,7 @@ class Command(BaseCommand):
                                 parsed['_gps_latitude'],
                                 parsed['_gps_longitude']
                             ],
-                            "members": members,
+                            "members": (household_member_to_legacy_format(dict(member.items())) for member in members),
                             "team_num": parsed['team_num'],
                             "team": FakeTeams.objects.get_or_create(
                                 team_id=parsed['team_num']

@@ -30,9 +30,9 @@ class ImporterTests(TestCase):
         members = find_household_members(parsed)
         self.assertEqual(
             members,
-            [{'age': 30, 'firstName': 'Ismail', 'gender': 'M'},
+            [{'age': 30, 'first_name': 'Ismail', 'gender': 'M'},
              {'age': 22,
-              'firstName': 'Lubabatu',
+              'first_name': 'Lubabatu',
               'gender': 'F',
               'survey': {'muac': 276},
               'surveyType': 'women'}]
@@ -46,7 +46,7 @@ class ImporterTests(TestCase):
         self.assertEqual(
             members[6],
             {'age': 1,
-             'firstName': 'Umaru',
+             'first_name': 'Umaru',
              'gender': 'M',
              'survey': {'ageInMonth': 12,
                         'edema': 'N',

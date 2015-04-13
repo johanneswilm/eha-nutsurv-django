@@ -38,7 +38,7 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = HouseholdMember
         fields = [
-            'firstName',
+            'first_name',
             'gender',
             'muac',
             'birthdate',
@@ -47,8 +47,6 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
-
-    members = HouseholdMemberSerializer(many=True, read_only=True)
 
     class Meta:
         extra_kwargs = {

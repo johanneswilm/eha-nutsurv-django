@@ -71,6 +71,9 @@ class TeamMember(models.Model):
     def __unicode__(self):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
+    def get_absolute_url(self):
+        return reverse('teammember-detail', args=[str(self.member_id)])
+
 
 
 def validate_json(spec_file):
@@ -90,9 +93,7 @@ def validate_json(spec_file):
     return wrapped
 
 
-class HouseholdMember(models.Model):
-
-    household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
+class BaseHouseholdMember(models.Model):
 
     GENDER = (
         ('M', 'Male'),
@@ -101,13 +102,19 @@ class HouseholdMember(models.Model):
     )
     gender = models.CharField(max_length=1, choices=GENDER)
 
-    firstName = models.TextField()
+    first_name = models.TextField()
     index = models.SmallIntegerField()
     muac = models.SmallIntegerField(null=True) # in millimeter ?
     birthdate = models.DateField()
     weight = models.FloatField(null=True) # probably in kilograms ?
     height = models.FloatField(null=True) # probably in centimeters ?
     edema = models.NullBooleanField()
+
+    class Meta:
+        abstract = True
+
+class HouseholdMember(BaseHouseholdMember):
+    household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
 
 class BaseHouseholdSurveyJSON(models.Model):
 
