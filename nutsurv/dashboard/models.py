@@ -18,8 +18,6 @@ from django.utils.translation import ugettext as _
 import django.contrib.gis.db.models as gismodels
 from django.db import models
 from django.contrib.gis.geos import Point
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.conf import settings
 
 # django 3rd party
@@ -27,11 +25,10 @@ from rest_framework.reverse import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from jsonfield import JSONField
 from django_extensions.db.fields import (
-        AutoSlugField, CreationDateTimeField, ModificationDateTimeField,
-        )
+    AutoSlugField, CreationDateTimeField, ModificationDateTimeField,
+)
 
 # Internal
-from fields import MaxOneActiveQuestionnaireField
 from fields import UniqueActiveField
 
 
@@ -66,14 +63,13 @@ class TeamMember(models.Model):
 
     @property
     def random_id(self):
-        return random.randint(10000,100000)
+        return random.randint(10000, 100000)
 
     def __unicode__(self):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
     def get_absolute_url(self):
         return reverse('teammember-detail', args=[str(self.member_id)])
-
 
 
 def validate_json(spec_file):
@@ -83,7 +79,8 @@ def validate_json(spec_file):
     except IOError as e:
         # log the error but it's ok if the spec is missing
         # if the validator is never called
-        logger.exception("Could not load the json spec %s. \nThis is ok if you are just setting up." % (spec_file,))
+        logger.exception(
+            "Could not load the json spec %s. \nThis is ok if you are just setting up.\ne" % (spec_file, e.message))
 
     @wraps(validate_json)
     def wrapped(value):
@@ -104,17 +101,19 @@ class BaseHouseholdMember(models.Model):
 
     first_name = models.TextField()
     index = models.SmallIntegerField()
-    muac = models.SmallIntegerField(null=True) # in millimeter ?
+    muac = models.SmallIntegerField(null=True)  # in millimeter ?
     birthdate = models.DateField()
-    weight = models.FloatField(null=True) # probably in kilograms ?
-    height = models.FloatField(null=True) # probably in centimeters ?
+    weight = models.FloatField(null=True)  # probably in kilograms ?
+    height = models.FloatField(null=True)  # probably in centimeters ?
     edema = models.NullBooleanField()
 
     class Meta:
         abstract = True
 
+
 class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
+
 
 class BaseHouseholdSurveyJSON(models.Model):
 
@@ -125,13 +124,11 @@ class BaseHouseholdSurveyJSON(models.Model):
     team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
     team_assistant = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_assistant')
     team_anthropometrist = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_anthropometrist')
-
-
     household_number = models.SmallIntegerField()
 
     json = JSONField(
         validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
-            + '/bower_components/data-models/schemas/NutritionSurvey.json')],
+                                  + '/bower_components/data-models/schemas/NutritionSurvey.json')],
         null=False,
         blank=False,
         help_text='A JSON document containing data acquired from one '
@@ -157,28 +154,26 @@ class BaseHouseholdSurveyJSON(models.Model):
             if designation == position:
                 return m
 
-
     def parse_and_set_team_members(self):
 
         def make_team_member(parsed):
-            this_year = datetime.datetime.now().year
             tm, created = TeamMember.objects.get_or_create(
-                    id=parsed['memberID'],
-                    defaults = {
-                        'gender':parsed['gender'],
-                        'first_name':parsed['firstName'],
-                        'last_name': parsed['lastName'],
-                        'mobile' :parsed['mobile'],
-                        'email':parsed['email'],
-                        'birth_year': parsed['birthYear']
-                        }
-                    )
+                id=parsed['memberID'],
+                defaults={
+                    'gender': parsed['gender'],
+                    'first_name': parsed['firstName'],
+                    'last_name': parsed['lastName'],
+                    'mobile': parsed['mobile'],
+                    'email': parsed['email'],
+                    'birth_year': parsed['birthYear']
+                }
+            )
             return tm
 
         lead = self.parse_team('Team Leader')
         self.team_lead = make_team_member(lead)
 
-        assistant =  self.parse_team('Assistant')
+        assistant = self.parse_team('Assistant')
         self.team_assistant = make_team_member(assistant)
 
         anthro = self.parse_team('Anthropometrist')
@@ -384,7 +379,7 @@ class BaseHouseholdSurveyJSON(models.Model):
         months.
         On failure, it returns None.
         """
-        if not 'survey' in child:
+        if 'survey' not in child:
             return None
         # Start by trying to calculate the child's age based on their date of
         # birth, if it has been recorder, as it has higher priority than the
@@ -426,7 +421,7 @@ class BaseHouseholdSurveyJSON(models.Model):
         # The following lines should be executed only if the attempt to
         # calculate the child's age based on their date of birth (above) was
         # unsuccessful.
-        if not 'ageInMonths' in child['survey']:
+        if 'ageInMonths' not in child['survey']:
             return None
 
         try:
@@ -444,10 +439,13 @@ class BaseHouseholdSurveyJSON(models.Model):
         else:
             return uuid
 
+
 class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
     pass
 
+
 class Alert(models.Model):
+
     """
     New alerts are only created if there is no unarchived alert having the
     same content of the json field.  The user may still create alerts manually
@@ -463,7 +461,7 @@ class Alert(models.Model):
         help_text='A JSON document containing data for one alert.'
     )
 
-    category = models.CharField(max_length=255,default='general')
+    category = models.CharField(max_length=255, default='general')
 
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
@@ -527,8 +525,8 @@ class Alert(models.Model):
 
         if cluster_id is None:
             alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
-                    team_id,
-                    household_survey.uuid)
+                team_id,
+                household_survey.uuid)
             alert_json = {
                 'type': 'mapping_check_missing_cluster_id',
                 'survey_id': household_survey.id,
@@ -537,11 +535,12 @@ class Alert(models.Model):
                 alert_json['location'] = location
             # Only add if there is no same alert among unarchived.
             if not Alert.objects.filter(team_lead=team_lead, survey=household_survey, text=alert_text, archived=False, category='map'):
-                Alert.objects.create(team_lead=team_lead, survey=household_survey,text=alert_text,json=alert_json,category='map')
+                Alert.objects.create(
+                    team_lead=team_lead, survey=household_survey, text=alert_text, json=alert_json, category='map')
         if location is None:
             alert_text = 'No location for survey of team {} (survey {})'.format(
-                    team_id,
-                    household_survey.id)
+                team_id,
+                household_survey.id)
             alert_json = {
                 'type': 'mapping_check_missing_location',
                 'team_name': team_name,
@@ -551,8 +550,9 @@ class Alert(models.Model):
             if cluster_id:
                 alert_json['cluster_id'] = cluster_id
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='map'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='map')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='map'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='map')
         if not (cluster_id and location):
             return
         # get cluster data
@@ -561,9 +561,9 @@ class Alert(models.Model):
         # if cluster data not found, assume location incorrect
         if cluster is None:
             alert_text = 'Unknown cluster ID {} for team {} (survey {})'.format(
-                    cluster_id,
-                    team_id,
-                    household_survey.id)
+                cluster_id,
+                team_id,
+                household_survey.id)
             alert_json = {
                 'type': 'mapping_check_unknown_cluster',
                 'team_name': team_name,
@@ -573,8 +573,9 @@ class Alert(models.Model):
                 'location': location
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='map'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='map')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='map'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='map')
             return
         # if cluster data found, get first and second admin level
         second_admin_level_name = cluster.get('second_admin_level_name', None)
@@ -583,14 +584,15 @@ class Alert(models.Model):
         if not (first_admin_level_name and second_admin_level_name):
             return False
         # if first and second admin level found, check the location
-        second_admin_level = SecondAdminLevel.find_second_admin_level(name=second_admin_level_name, first_admin_level_name=first_admin_level_name)
+        second_admin_level = SecondAdminLevel.find_second_admin_level(
+            name=second_admin_level_name, first_admin_level_name=first_admin_level_name)
         if second_admin_level is None:
             # if no second admin level found, assume database inconsistencies and abort
             return False
 
         if not second_admin_level.contains_location(location):
             alert_text = 'Wrong location for team {} (survey {})'.format(team_id,
-                    household_survey.id)
+                                                                         household_survey.id)
             alert_json = {
                 'type': 'mapping_check_wrong_location',
                 'team_name': team_name,
@@ -602,8 +604,9 @@ class Alert(models.Model):
                 'location': location
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='map'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='map')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='map'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='map')
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):
@@ -650,8 +653,9 @@ class Alert(models.Model):
                 'team_id': team_id
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='sex'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='sex')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='sex'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='sex')
 
     @classmethod
     def child_age_in_months_ratio_alert(cls, household_survey,
@@ -711,8 +715,9 @@ class Alert(models.Model):
                 'team_id': team_id
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='age_distribution'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='age_distribution')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='age_distribution')
 
     @classmethod
     def child_age_displacement_alert(cls, household_survey, test='chi-squared'):
@@ -759,8 +764,9 @@ class Alert(models.Model):
                 'team_id': team_id
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='age_distribution'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='age_distribution')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='age_distribution')
 
     @classmethod
     def woman_age_14_15_displacement_alert(
@@ -810,8 +816,9 @@ class Alert(models.Model):
                 'team_id': team_id
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='age_distribution'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='age_distribution')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='age_distribution')
 
     @classmethod
     def woman_age_4549_5054_displacement_alert(cls, household_survey,
@@ -861,8 +868,9 @@ class Alert(models.Model):
                 'team_name': team_name
             }
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False, category='age_distribution'):
-                Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='age_distribution')
+            if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='age_distribution'):
+                Alert.objects.create(
+                    team_lead=team_lead, text=alert_text, json=alert_json, category='age_distribution')
 
     @classmethod
     def digit_preference_alert(cls, household_survey):
@@ -935,8 +943,9 @@ class Alert(models.Model):
                     'team_name': team_name
                 }
                 # Only add if there is no same alert among unarchived.
-                if not Alert.objects.filter(team_lead=team_lead,text=alert_text, archived=False,category='number_distribution'):
-                    Alert.objects.create(team_lead=team_lead,text=alert_text,json=alert_json,category='number_distribution')
+                if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='number_distribution'):
+                    Alert.objects.create(
+                        team_lead=team_lead, text=alert_text, json=alert_json, category='number_distribution')
                 # Only one alert should be emitted so no need to finish the
                 # loop.
                 break
@@ -980,8 +989,9 @@ class Alert(models.Model):
             if location:
                 alert_json['location'] = location
             # Only add if there is no same alert among unarchived.
-            if not Alert.objects.filter(survey=household_survey,team_lead=team_lead,text=alert_text, archived=False, category='timing'):
-                Alert.objects.create(survey=household_survey,team_lead=team_lead,text=alert_text,json=alert_json,category='timing')
+            if not Alert.objects.filter(survey=household_survey, team_lead=team_lead, text=alert_text, archived=False, category='timing'):
+                Alert.objects.create(
+                    survey=household_survey, team_lead=team_lead, text=alert_text, json=alert_json, category='timing')
 
     @classmethod
     def time_to_complete_single_survey_alerts(cls):
@@ -1028,7 +1038,7 @@ class Alert(models.Model):
             team_lead = survey.team_lead
             # If no valid team id, the duration can only be used to calculate
             # the median.
-            if team_id == None:
+            if team_id is None:
                 continue
             # At this point we know that the survey contained a valid end time
             # so no need to check that.  Get the date.
@@ -1045,7 +1055,7 @@ class Alert(models.Model):
                     by_team[team_id][collection_date] = {
                         'average': duration,
                         'n': 1,
-                        }
+                    }
                 else:
                     n = by_team[team_id][collection_date]['n'] + 1.0
                     old = by_team[team_id][collection_date]['average']
@@ -1071,16 +1081,15 @@ class Alert(models.Model):
                     }
                     # Only add if there is no same alert among unarchived.
                     if not Alert.objects.filter(
-                            team_lead = by_team[team_id]['team_lead'],
+                            team_lead=by_team[team_id]['team_lead'],
                             text=alert_text,
                             archived=False,
                             category='timing'):
                         Alert.objects.create(
-                                team_lead = by_team[team_id]['team_lead'],
-                                text=alert_text,
-                                json=alert_json,
-                                category='timing')
-
+                            team_lead=by_team[team_id]['team_lead'],
+                            text=alert_text,
+                            json=alert_json,
+                            category='timing')
 
     @classmethod
     def daily_data_collection_duration_alerts(cls):
@@ -1115,7 +1124,7 @@ class Alert(models.Model):
             team_id = survey.get_team_id()
             team_name = survey.get_team_name()
             # If no valid team id then this data point cannot be used.
-            if team_id == None:
+            if team_id is None:
                 continue
             start = survey.get_start_time()
             end = survey.get_end_time()
@@ -1153,7 +1162,7 @@ class Alert(models.Model):
                 by_team[team_id][day] = {
                     'start': start,
                     'end': end,
-                    }
+                }
             # A different survey for the same day has been previously processed.
             else:
                 # Detect the earliest start time for a given day.
@@ -1226,10 +1235,10 @@ class Alert(models.Model):
                         archived=False,
                         category='timing'):
                     Alert.objects.create(
-                            team_lead=by_team[team_id]['team_name'],
-                            text=alert_text,
-                            json=alert_json,
-                            category='timing')
+                        team_lead=by_team[team_id]['team_name'],
+                        text=alert_text,
+                        json=alert_json,
+                        category='timing')
 
     @classmethod
     def archive_all_alerts(cls):
@@ -1244,12 +1253,13 @@ class Alert(models.Model):
         """
         cls.objects.filter(text=text, archived=archived).delete()
 
+
 class UniqueActiveDocument(models.Model):
     active = UniqueActiveField(
         default=False,
         help_text=u'Activate this document.  Only one document of this type '
                   u'may be active at any given time.')
-    created = models.DateTimeField(auto_now_add=True,null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
     last_modified = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
@@ -1298,6 +1308,7 @@ class UniqueActiveNamedDocument(UniqueActiveDocument):
 
 
 class Clusters(UniqueActiveNamedDocument):
+
     """A JSON document containing information about clusters in the format
     shown below:
     {
@@ -1323,7 +1334,7 @@ class Clusters(UniqueActiveNamedDocument):
         help_text=u'Please enter the JSON structure describing all the '
                   u'clusters for the planned survey.',
         default={}
-        )
+    )
 
     @classmethod
     def get_cluster_from_active(cls, cluster_id):
@@ -1344,6 +1355,7 @@ class Clusters(UniqueActiveNamedDocument):
 
 
 class Area(gismodels.Model):
+
     """Written for a geospatial data set containing the following fields:
     name_0 - country (top level)
     name_1 - 1st Admin (middle level, contained in area name_0)
@@ -1444,7 +1456,6 @@ class SecondAdminLevel(Area):
 
 class QuestionnaireSpecification(UniqueActiveNamedDocument):
 
-
     specification = models.TextField(
         blank=False,
         help_text=u'Please enter or copy & paste your new questionnaire '
@@ -1463,6 +1474,7 @@ class QuestionnaireSpecification(UniqueActiveNamedDocument):
 
 
 class ClustersPerFirstAdminLevel(UniqueActiveNamedDocument):
+
     """
     For example:
 
@@ -1629,6 +1641,7 @@ class ClustersPerFirstAdminLevel(UniqueActiveNamedDocument):
 
 
 class FirstAdminLevels(UniqueActiveNamedDocument):
+
     """
         For example:
 
@@ -1658,6 +1671,7 @@ class FirstAdminLevels(UniqueActiveNamedDocument):
 
 
 class FirstAdminLevelsReserveClusters(UniqueActiveNamedDocument):
+
     """
         For example:
 

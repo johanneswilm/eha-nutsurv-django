@@ -11,7 +11,6 @@ from . import models
 
 from .management.commands.import_formhub import Command
 
-from dashboard import models as dashboard_models
 
 @login_required
 def import_csvfile(request):
@@ -23,8 +22,9 @@ def import_csvfile(request):
         message = "Import successful."
 
     return render(request, 'importer/import.html', dictionary={
-      "message": message
+        "message": message
     })
+
 
 @login_required
 def importer(request):
@@ -61,10 +61,10 @@ def register_formhub_survey(request):
     if post_key:
         if "key" in request.GET:
             if request.GET["key"] != post_key:
-                #The request has a key but it doesn't match
+                # The request has a key but it doesn't match
                 return HttpResponseForbidden()
         else:
-            #The post key is specified in the settings but not in the URL
+            # The post key is specified in the settings but not in the URL
             return HttpResponseBadRequest()
 
     try:
@@ -72,7 +72,7 @@ def register_formhub_survey(request):
     except ValueError:
         return HttpResponseBadRequest()
 
-    response={}
+    response = {}
     status = 200
 
     formhub_survey, created = models.FormhubSurvey.objects.get_or_create(uuid=json_object['_uuid'])

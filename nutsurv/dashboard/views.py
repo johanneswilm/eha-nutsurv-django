@@ -9,17 +9,13 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.conf import settings
-from django.contrib.auth.models import User
 
-
-from rest_framework import viewsets
 from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
-                          UserSerializer, TeamMemberSerializer, HouseholdMemberSerializer)
+                          TeamMemberSerializer, HouseholdMemberSerializer)
 
 from .models import Alert
 from .models import HouseholdSurveyJSON
 from .models import Clusters
-from .models import SecondAdminLevel
 from .models import QuestionnaireSpecification
 from .models import ClustersPerFirstAdminLevel
 from .models import FirstAdminLevels
@@ -37,10 +33,12 @@ class TeamMemberViewset(viewsets.ModelViewSet):
     lookup_field = 'member_id'
     template_name = 'dashboard/teammember.html'
 
+
 class HouseholdMemberViewset(viewsets.ModelViewSet):
     queryset = HouseholdMember.objects.all()
     serializer_class = HouseholdMemberSerializer
     lookup_field = 'householdsurveyjson_id'
+
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
     queryset = HouseholdSurveyJSON.objects.all()
@@ -102,6 +100,7 @@ def time_of_data_collection(request):
 
 
 class LoginRequiredView(View):
+
     @classmethod
     def as_view(cls, **kwargs):
         view = super(LoginRequiredView, cls).as_view(**kwargs)
@@ -109,6 +108,7 @@ class LoginRequiredView(View):
 
 
 class TeamsJSONView(LoginRequiredView):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about all teams in the format requested by Johannes and
@@ -150,6 +150,7 @@ class TeamsJSONView(LoginRequiredView):
 
 
 class PersonnelJSONView(LoginRequiredView):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about personnel in the format requested by Johannes and
@@ -327,6 +328,7 @@ class PersonnelJSONView(LoginRequiredView):
 
 
 class AggregateSurveyDataJSONView(LoginRequiredView):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information from all surveys:
@@ -393,7 +395,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
             survey_data.append(self._clean_json(doc.json))
         return JsonResponse({'survey_data': survey_data})
 
-
     @classmethod
     def _clean_json(cls, i_json):
         """Clean JSON document given as i_json and containing data from a
@@ -409,7 +410,6 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         output['endTime'] = i_json['endTime']
         output['team'] = i_json['team']['teamID']
 
-
         output['members'] = []
         # map household members
         for i_member in i_json['members']:
@@ -424,6 +424,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
 
 
 class ActiveQuestionnaireSpecificationView(View):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a text document containing the
         current active questionnaire specification (or an empty text file if
@@ -452,6 +453,7 @@ class ActiveQuestionnaireSpecificationView(View):
 
 
 class ClustersPerFirstAdminLevelJSONView(View):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about clusters per first admin level in the format requested by
@@ -479,6 +481,7 @@ class ClustersPerFirstAdminLevelJSONView(View):
 
 
 class FirstAdminLevelJSONView(View):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about first admin levels in the format requested by Johannes
@@ -512,6 +515,7 @@ class FirstAdminLevelJSONView(View):
 
 
 class FirstAdminLevelsReserveClustersJSONView(View):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about first admin levels with reserved clusters in the format requested
@@ -535,6 +539,7 @@ class FirstAdminLevelsReserveClustersJSONView(View):
 
 
 class ClustersJSONView(View):
+
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information about clusters in the format requested by Johannes and
@@ -565,6 +570,7 @@ class ClustersJSONView(View):
 
 
 class AlertViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows Alerts to be viewed.
     """

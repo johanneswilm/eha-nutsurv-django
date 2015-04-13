@@ -1,15 +1,16 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 
 from .models import TrainingSurvey, TrainingRoom, TrainingRoomMember
 
 from dashboard.serializers import HouseholdSurveyJSONSerializer, HouseholdMemberSerializer, TeamMemberSerializer
+
 
 class TrainingRoomMemberSerializer(HouseholdMemberSerializer):
 
     class Meta:
         model = TrainingRoomMember
         fields = HouseholdMemberSerializer.Meta.fields
+
 
 class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
@@ -29,22 +30,24 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
         family_members = validated_data.pop('members')
         super(HouseholdSurveyJSONSerializer, self).update(instance, validated_data)
         instance.members.all().delete()
-        new_family = [TrainingRoomMember(index=index, household_survey=instance, **family_member) for index, family_member in enumerate(family_members)]
+        new_family = [TrainingRoomMember(index=index, household_survey=instance, **family_member)
+                      for index, family_member in enumerate(family_members)]
 
         TrainingRoomMember.objects.bulk_create(new_family)
 
         return instance
-
 
     class Meta:
         model = TrainingSurvey
         extra_kwargs = HouseholdSurveyJSONSerializer.Meta.extra_kwargs
         fields = HouseholdSurveyJSONSerializer.Meta.fields + ('members',)
 
+
 class TrainingSurveySerializerWithMemberDetails(TrainingSurveySerializer):
     team_lead = TeamMemberSerializer()
     team_assistant = TeamMemberSerializer()
     team_anthropometrist = TeamMemberSerializer()
+
 
 class TrainingRoomSerializer(serializers.ModelSerializer):
 
