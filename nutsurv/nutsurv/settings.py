@@ -139,7 +139,7 @@ BOWER_INSTALLED_APPS = (
     'lodash#3.0.0',
     'parse-python-indentation#0.1.0',
     'eHealthAfrica/ehealth-bootstrap#0.0.5',
-    'font-awesome#4.2.0',
+    'font-awesome#4.3.0',
     'moment#2.9.0',
     'moment-timezone#0.3.0',
     'list.js#1.1.1',
