@@ -69,7 +69,7 @@ var timeOfDataCollection = {
         _.each(data.survey_data, function(survey) {
             var surveyStartDate, surveyEndDate, startTime, endTime, surveyTime, surveyTimeString,
               surveyStart, endHours;
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
