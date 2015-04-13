@@ -201,6 +201,10 @@ def parse_flat_formhub_csv(rawdata):
 def get_rawdata(headers, row):
     return dict(((k, v) for k, v in zip(headers, row) if v != 'n/a'))
 
+def household_member_to_legacy_format(member):
+    member['firstName'] = member.pop('first_name')
+    return member
+
 class Command(BaseCommand):
     args = '<filename ...>'
     help = 'Imports the csv file'
@@ -247,7 +251,7 @@ class Command(BaseCommand):
                                 parsed['_gps_latitude'],
                                 parsed['_gps_longitude']
                             ],
-                            "members": members,
+                            "members": (household_member_to_legacy_format(dict(member.items())) for member in members),
                             "team_num": parsed['team_num'],
                             "team": FakeTeams.objects.get_or_create(
                                 team_id=parsed['team_num']
