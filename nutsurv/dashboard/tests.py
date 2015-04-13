@@ -12,16 +12,22 @@ class EmptySmokeTest(TestCase):
         login = self.client.login(username=self.username, password=self.password)
         self.assertEqual(login, True)
 
-    def test_aggregatesurveydatajsonview(self):
-        response = self.client.get('/dashboard/aggregatesurveydatajsonview/')
+    def _test_empty_200(self, url):
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_teamsjsonview(self):
-        response = self.client.get('/dashboard/teamsjsonview/')
-        self.assertEqual(response.status_code, 200)
+    def test_empty_200_aggregatesurveydatajsonview(self):
+        self._test_empty_200('/dashboard/aggregatesurveydatajsonview/')
 
-    def test_alerts(self):
-        response = self.client.get('/dashboard/alerts/')
-        self.assertEqual(response.status_code, 200)
+    def test_empty_200_teamsjsonview(self):
+        self._test_empty_200('/dashboard/teamsjsonview/')
 
+    def test_empty_200_alerts(self):
+        self._test_empty_200('/dashboard/alerts/')
+
+    def test_empty_200_surveys(self):
+        self._test_empty_200('/dashboard/surveys/')
+
+    def test_empty_200_teammembers(self):
+        self._test_empty_200('/dashboard/teammembers/')
 

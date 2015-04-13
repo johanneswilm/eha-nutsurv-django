@@ -90,14 +90,37 @@ def validate_json(spec_file):
     return wrapped
 
 
-class HouseholdSurveyJSON(models.Model):
+class HouseholdMember(models.Model):
+
+    household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
+
+    GENDER = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    )
+    gender = models.CharField(max_length=1, choices=GENDER)
+
+    firstName = models.TextField()
+    index = models.SmallIntegerField()
+    muac = models.SmallIntegerField(null=True) # in millimeter ?
+    birthdate = models.DateField()
+    weight = models.FloatField(null=True) # probably in kilograms ?
+    height = models.FloatField(null=True) # probably in centimeters ?
+    edema = models.NullBooleanField()
+
+class BaseHouseholdSurveyJSON(models.Model):
+
     class Meta:
         verbose_name = 'household survey'
+        abstract = True
 
-    team_lead = models.ForeignKey('TeamMember', related_name='surveys_as_team_lead')
-    team_assistant = models.ForeignKey('TeamMember', related_name='surveys_as_team_assistant')
-    team_anthropometrist = models.ForeignKey('TeamMember', related_name='surveys_as_team_anthropometrist')
+    team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
+    team_assistant = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_assistant')
+    team_anthropometrist = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_anthropometrist')
 
+
+    household_number = models.SmallIntegerField()
 
     json = JSONField(
         validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
@@ -118,6 +141,9 @@ class HouseholdSurveyJSON(models.Model):
     )
 
     def parse_team(self, position):
+
+        # TODO this still depends on self.json, while aiming to replace it.
+
         team_members = self.json['team']['members']
         for m in team_members:
             designation = m['designation']
@@ -129,7 +155,7 @@ class HouseholdSurveyJSON(models.Model):
 
         def make_team_member(parsed):
             this_year = datetime.datetime.now().year
-            tm ,created = TeamMember.objects.get_or_create(
+            tm, created = TeamMember.objects.get_or_create(
                     id=parsed['memberID'],
                     defaults = {
                         'gender':parsed['gender'],
@@ -411,6 +437,8 @@ class HouseholdSurveyJSON(models.Model):
         else:
             return uuid
 
+class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
+    pass
 
 class Alert(models.Model):
     """
