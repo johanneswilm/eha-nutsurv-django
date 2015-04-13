@@ -35,7 +35,7 @@ function render_from_view_as(view_as) {
 
 var render_methods = {
   'checkmark': function(obj) {
-     if (obj == undefined) { return '—'; }
+     if (!obj) { return '—'; }
      return '<i class="fa fa-check" style="color: greenyellow;"></i>';
    },
   'json': function(obj) {
@@ -120,7 +120,7 @@ function set_table(survey_data, view_as) {
 
   var result = _.map(survey_data, function(su, survey_index) {
 
-    var all_data_present = true;
+    var all_data_present = su.members.length > 0;
     var data = {
       'team': [su.teamLead, su.teamAssistant, su.teamAnthropometrist],
       'total_members': su.members.length,
