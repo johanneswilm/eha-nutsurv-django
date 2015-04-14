@@ -19,5 +19,6 @@ script:
   - mv bower_components nutsurv/components
   - cat configuration.py-default | sed s/postgres/nutsurv_dev/ > configuration.py
   - echo 'POSTGIS_VERSION = (2, 1)' >> configuration.py
+  - cd nutsurv
   - ./manage.py test
 
