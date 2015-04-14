@@ -21,6 +21,8 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field="member_id")
     mobile = serializers.CharField()
     memberID = serializers.CharField(source='member_id', read_only=True)
+
+
     class Meta:
 
         model = TeamMember
@@ -31,7 +33,13 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                 'gender',
                 'birth_year',
                 'mobile',
-                'email']
+                'last_survey_position',
+                'last_survey_created',
+                'last_survey_cluster',
+                'last_survey_cluster_name',
+                'email',
+                ]
+
 
 class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -46,14 +54,11 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
             'height',
         ]
 
+
+
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        extra_kwargs = {
-                'team_lead': {'lookup_field': 'member_id'},
-                'team_assistant': {'lookup_field': 'member_id'},
-                'team_anthropometrist': {'lookup_field': 'member_id'},
-                }
         model = HouseholdSurveyJSON
         extra_kwargs = {
             'team_lead': {'lookup_field': 'member_id'},
@@ -68,6 +73,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
             'team_assistant',
             'team_anthropometrist',
         )
+
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
