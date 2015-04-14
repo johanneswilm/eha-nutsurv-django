@@ -6,7 +6,7 @@ addons:
 install:
   - pip install pylint
   - npm install -g bower
-  - sudo apt-get update && sudo apt-get install -y python-numpy python-scipy python-psycopg2
+  - sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get install -y python-numpy python-scipy python-psycopg2
 
 script:
   - pylint nutsurv --disable=all --enable=E0602
@@ -21,5 +21,7 @@ script:
   - echo 'POSTGIS_VERSION = (2, 1)' >> configuration.py
   - cd nutsurv
   - ln -s /usr/lib/python2.7/dist-packages/psycopg2 ~/virtualenv/python2.7/lib/python2.7/site-packages
+  - ln -s /usr/lib/python2.7/dist-packages/scipy  ~/virtualenv/python2.7/lib/python2.7/site-packages
+  - ln -s /usr/lib/python2.7/dist-packages/numpy  ~/virtualenv/python2.7/lib/python2.7/site-packages
   - ./manage.py test
 
