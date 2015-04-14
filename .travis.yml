@@ -6,7 +6,7 @@ addons:
 install:
   - pip install pylint
   - npm install -g bower
-  - sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get install -y python-numpy python-scipy python-psycopg2
+  - sudo apt-get update && sudo apt-get install -y python-numpy python-scipy python-psycopg2
 
 script:
   - pylint nutsurv --disable=all --enable=E0602
