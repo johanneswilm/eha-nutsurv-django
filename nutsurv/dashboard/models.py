@@ -9,6 +9,7 @@ import logging
 
 # 3rd party
 import numpy
+import scipy
 import scipy.stats
 import validictory
 import json
