@@ -17,9 +17,9 @@ script:
   - bower install
   - mkdir nutsurv/components
   - mv bower_components nutsurv/components
+  - cd nutsurv
   - cat configuration.py-default | sed s/postgres/nutsurv_dev/ > configuration.py
   - echo 'POSTGIS_VERSION = (2, 1)' >> configuration.py
-  - cd nutsurv
   - ln -s /usr/lib/python2.7/dist-packages/psycopg2 ~/virtualenv/python2.7/lib/python2.7/site-packages
   - ln -s /usr/lib/python2.7/dist-packages/scipy  ~/virtualenv/python2.7/lib/python2.7/site-packages
   - ./manage.py test
