@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+{% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='training' %}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="selection_choices">
+      <select id="view_as" title="View ...">
+        <option value="checkmark" selected="selected">Data completeness</option>
+        <option value="height">Height in cm</option>
+        <option value="weight">Weight in kg</option>
+        <option value="muac">MUAC in ⌀ cm</option>
+        <option value="all">ALL THE DATA</option>
+      </select>
+      <select id="show_data" multiple title="Show ..." data-selected-text-format="count">
+        <option value="multiple_rounds">multiple rounds per household</option>
+        <option value="aggregation_columns">aggregation columns</option>
+        <option value="multiple_children">multiple children</option>
+      </select>
+    </div>
+    <h1><i class="fa fa-train"></i> Training Room {{ id }}</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Details</div>
+            <div class="panel-body main">
+              <p>This room was created at: {{ created }}.
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th data-column-name="team">Team</th>
+                    <th data-column-name="total_members">Total</th>
+                    <th data-column-name="all_data_present">Complete</th>
+                    <th data-column-name="mean">Mean</th>
+                    <th data-column-name="max"><abbr title="Maximum">Max</abbr></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<script src="/static/js/room_detail.js"></script>
+{% endblock content %}

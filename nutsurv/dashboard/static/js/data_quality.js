@@ -114,7 +114,7 @@ var dataQuality = {
         _.each(data.survey_data, function(survey) {
             var childSurveys;
 
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
@@ -208,7 +208,7 @@ var dataQuality = {
         _.each(data.survey_data, function(survey) {
             var childSurveys;
 
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
@@ -305,7 +305,7 @@ var dataQuality = {
 
             var childMembers;
 
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {

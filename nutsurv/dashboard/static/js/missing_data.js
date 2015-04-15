@@ -92,7 +92,7 @@ var missingData = {
 
             var womenMembers;
 
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
@@ -174,7 +174,7 @@ var missingData = {
 
             var childMembers;
 
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (stratum && stratum != 'All strata' && stratum != clusterInfo.findFirstAdminLevel(survey.cluster)) {
@@ -252,7 +252,7 @@ var missingData = {
 
             var householdMembers;
 
-            if (team && team > 0 && team != survey.team) {
+            if (team && team > -1 && team != survey.team) {
                 return true;
             }
             if (state && state != 'All states' && state != clusterInfo.findState(survey.cluster)) {
