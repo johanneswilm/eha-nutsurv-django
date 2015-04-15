@@ -82,7 +82,7 @@
         <div class="alert-name col-sm-7">
             <h3 class="alert_title"><%= title %></h3>
             <span class="alert-details">
-                <strong class="alert_team_name"><%= teamName %></strong>
+                <strong class="alert_team_name"><%= teamLead.firstName %> <%= teamLead.lastName %></strong>
                 on <%= created %>
             </span>
         </div>
@@ -95,8 +95,8 @@
             <button type="button" class="btn btn-primary btn-sm"
                     data-toggle="modal"
                     data-target="#contact-team-modal"
-                    data-team="<%= teamName %>"
-                    data-team_id="<%= teamId %>"
+                    data-team="<%= teamLead.firstName %> <%= teamLead.lastName %>"
+                    data-team_id="<%= teamLead.memberID %>"
                     data-url="<%= url %>">
                 Contact Team
             </button>
