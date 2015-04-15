@@ -117,38 +117,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-## This has been moved to bower.json and building is done with bower directly
-
-# BOWER_INSTALLED_APPS = (
-#     'bootstrap#3.3.2',
-#     'bootstrap-select#1.6.3',
-#     'datatables#1.10.4',
-#     'datatables-bootstrap3-plugin#0.2.0',
-#     'datatables-responsive#1.0.3',
-#     'datatables-tabletools#2.2.3',
-#     'file-saver',
-#     'jquery#1.10.2',
-#     'jquery-flot#0.8.3',
-#     'leaflet#0.7.3',
-#     'leaflet.markercluster#0.4.0',
-#     'lodash#3.0.0',
-#     'parse-python-indentation#0.1.0',
-#     'eHealthAfrica/ehealth-bootstrap#0.0.5',
-#     'font-awesome#4.2.0',
-#     'moment#2.9.0',
-#     'moment-timezone#0.3.0',
-#     'list.js#1.1.1',
-#     'list.pagination.js',
-#     'jquery.cookie#1.4.1',
-#     'eHealthAfrica/data-models#1.12.1',
-#     )
-
-
-# setting the POSTGIS version explicetly here avoids the need
-# to have a database connection for collectstatic
-POSTGIS_VERSION = (2, 1, 0)
-
-
 COMPRESS_PRECOMPILERS = (
         ('text/sass', 'sassc "{infile}" "{outfile}"'),
         ('text/scss', 'lib.scssabsolutefilter.SCSSFilter'),
