@@ -503,8 +503,8 @@ class Alert(models.Model):
     using the admin interface.
     """
 
-    team_lead = models.ForeignKey('dashboard.TeamMember', null=True)
-    survey = models.ForeignKey('dashboard.HouseholdSurveyJSON', null=True)
+    team_lead = models.ForeignKey('dashboard.TeamMember', null=True, on_delete=models.CASCADE)
+    survey = models.ForeignKey('dashboard.HouseholdSurveyJSON', null=True, on_delete=models.CASCADE)
     text = models.TextField()
 
     json = JSONField(
