@@ -50,6 +50,7 @@
     <script src="/static/js/lib/Leaflet.fullscreen.min.js"></script>
     <script src="/static/js/lib/tab.js"></script>
     <script src="/static/js/data_getter.js"></script>
+    <script src="/static/js/reload_timer.js"></script>
     <script src="/static/js/map.js"></script>
     <script src="/static/js/index.js"></script>
 </head>
@@ -74,7 +75,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           {% block tabs %}{% include 'dashboard/_tabs.html' %}{% endblock %}
           <ul class="nav navbar-nav navbar-right">
-            <li id="last_update_li"> <a id="last_update" href="#"> <i class="fa fa-refresh"></i> <span class="button_label"></span> </a> </li>
+            <li id="last_update_li"> <a id="last_update" href="javascript:window.location.reload()"> <i class="fa fa-refresh"></i> <span class="button_label"></span> </a> </li>
             <li> <a href="/accounts/logout/"> <i class="fa fa-power-off"></i> Logout </a> </li>
           </ul>
         </div><!--/.nav-collapse -->
