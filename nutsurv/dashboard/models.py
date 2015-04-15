@@ -19,6 +19,8 @@ import django.contrib.gis.db.models as gismodels
 from django.db import models
 from django.contrib.gis.geos import Point
 from django.conf import settings
+from django.db.models import Q
+
 
 # django 3rd party
 from rest_framework.reverse import reverse
@@ -45,7 +47,7 @@ class TeamMember(models.Model):
 
     member_id = AutoSlugField(blank=False,
                               unique=True,
-                              populate_from="random_id",
+                              populate_from="id",
                               separator='')
     first_name = models.CharField(blank=False, max_length=50)
     last_name = models.CharField(blank=False, max_length=50)
@@ -56,6 +58,53 @@ class TeamMember(models.Model):
 
     created = CreationDateTimeField()
     modified = ModificationDateTimeField()
+
+    _last_survey = None
+
+    def last_survey(self):
+        # TODO: maybe get the reverse relationship instead
+
+        # Poor mans cache
+        if self._last_survey:
+            return self._last_survey
+
+        survey = (HouseholdSurveyJSON.objects.filter(
+            Q(team_lead=self)
+            | Q(team_assistant=self)
+            | Q(team_anthropometrist=self)
+            ).order_by('-id') or [None])[0]
+
+        self._last_survey = survey
+        return survey
+
+
+    def last_survey_position(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            for position in ['team_lead', 'team_assistant', 'team_anthropometrist']:
+                if self.id == getattr(last_survey, position).id:
+                    return position
+
+            raise "TeamMember has last_survey but no position, this shouldn't happen."
+
+
+    def last_survey_created(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            return last_survey.get_start_time()
+
+
+    def last_survey_cluster_name(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            return last_survey.json['cluster_name']
+
+
+    def last_survey_cluster(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            return last_survey.json['cluster']
+
 
     class Meta:
         get_latest_by = 'modified'

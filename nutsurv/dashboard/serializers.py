@@ -34,7 +34,12 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                   'gender',
                   'birth_year',
                   'mobile',
-                  'email']
+                  'last_survey_position',
+                  'last_survey_created',
+                  'last_survey_cluster',
+                  'last_survey_cluster_name',
+                  'email',
+                  ]
 
 
 class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
