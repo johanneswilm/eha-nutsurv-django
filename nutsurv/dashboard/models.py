@@ -72,11 +72,10 @@ class TeamMember(models.Model):
             Q(team_lead=self)
             | Q(team_assistant=self)
             | Q(team_anthropometrist=self)
-            ).order_by('-id') or [None])[0]
+        ).order_by('-id') or [None])[0]
 
         self._last_survey = survey
         return survey
-
 
     def last_survey_position(self):
         last_survey = self.last_survey()
@@ -87,24 +86,20 @@ class TeamMember(models.Model):
 
             raise "TeamMember has last_survey but no position, this shouldn't happen."
 
-
     def last_survey_created(self):
         last_survey = self.last_survey()
         if last_survey:
             return last_survey.get_start_time()
-
 
     def last_survey_cluster_name(self):
         last_survey = self.last_survey()
         if last_survey:
             return last_survey.json['cluster_name']
 
-
     def last_survey_cluster(self):
         last_survey = self.last_survey()
         if last_survey:
             return last_survey.json['cluster']
-
 
     class Meta:
         get_latest_by = 'modified'
@@ -207,17 +202,17 @@ class BaseHouseholdSurveyJSON(models.Model):
 
         def make_team_member(parsed):
             tm, created = TeamMember.objects.get_or_create(
-                    member_id=parsed['memberID'],
-                    defaults = {
-                        'member_id':parsed['memberID'],
-                        'gender':parsed['gender'],
-                        'first_name':parsed['firstName'],
-                        'last_name': parsed['lastName'],
-                        'mobile' :parsed['mobile'],
-                        'email':parsed['email'],
-                        'birth_year': parsed['birthYear']
-                        }
-                    )
+                member_id=parsed['memberID'],
+                defaults={
+                    'member_id': parsed['memberID'],
+                    'gender': parsed['gender'],
+                    'first_name': parsed['firstName'],
+                    'last_name': parsed['lastName'],
+                    'mobile': parsed['mobile'],
+                    'email': parsed['email'],
+                    'birth_year': parsed['birthYear']
+                }
+            )
             return tm
 
         lead = self.parse_team('Team Leader')

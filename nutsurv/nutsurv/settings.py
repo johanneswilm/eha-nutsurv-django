@@ -20,7 +20,6 @@ BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, '../bower_components')
 STATICFILES_DIRS = ('/opt/nutsurv/bower_components',)
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 

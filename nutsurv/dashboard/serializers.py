@@ -78,6 +78,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
     team_lead = TeamMemberSerializer(many=False)
+
     class Meta:
         model = Alert
         fields = (
