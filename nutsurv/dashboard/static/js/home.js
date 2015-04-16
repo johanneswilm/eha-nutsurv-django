@@ -227,26 +227,29 @@ var home = {
       	});
 
     },
-    contacModalAlerts: function () {
+    contacModalAlerts: function(data) {
 
         // Show Modal
         $('#contact-team-modal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget)
-            var modal = $(this)
-            modal.find('#btn-contact-team-contacted').attr('href', button.data('url'))
 
-            $.getJSON('/static/testing/team.json', function(team) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
 
-                var team_html = '';
-                var personTemplate = _.template($('#contact-team-item').html());
-                var personGender = { F: "Female", M: "Male" };
-                _.each(team, function(person, id) {
-                    person.gender = personGender[person.gender];
-                    team_html += personTemplate(person);
-                });
+            modal.find('#btn-contact-team-contacted').attr('href', button.data('url'));
 
-                modal.find('ul.contact-team-list').html(team_html);
-            });
+            // Get "id" of alert and lookup in loaded data
+            var id = button.data('id');
+            var alert = _.findWhere(dataGetter.downloads['/dashboard/alerts/'].data, {id: id});
+
+            // Prep data
+            var personTemplate = _.template($('#contact-team-item').html());
+            var personGender = { F: "Female", M: "Male" };
+            alert.teamLead.gender = personGender[alert.teamLead.gender];
+
+            // Inject HTML into modal
+            var team_html = personTemplate(alert.teamLead);
+            modal.find('ul.contact-team-list').html(team_html);
+
         });
 
         // Mark As Completed

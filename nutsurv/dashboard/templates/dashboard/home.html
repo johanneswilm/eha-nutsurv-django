@@ -82,7 +82,7 @@
         <div class="alert-name col-sm-7">
             <h3 class="alert_title"><%= title %></h3>
             <span class="alert-details">
-                <strong class="alert_team_name"><%= teamLead.firstName %> <%= teamLead.lastName %></strong>
+                <strong class="alert_team_name"><%  if (teamLead) { %><%= teamLead.firstName %><% } %></strong>
                 on <%= created %>
             </span>
         </div>
@@ -95,9 +95,7 @@
             <button type="button" class="btn btn-primary btn-sm"
                     data-toggle="modal"
                     data-target="#contact-team-modal"
-                    data-team="<%= teamLead.firstName %> <%= teamLead.lastName %>"
-                    data-team_id="<%= teamLead.memberID %>"
-                    data-url="<%= url %>">
+                    data-id="<%= id %>">
                 Contact Team
             </button>
         </div>
@@ -109,10 +107,10 @@
 <script id="contact-team-item" type="text/template">
     <li class="list-group-item">
         <div class="clearfix">
-            <strong class="remove-top remove-bottom pull-left"><%= firstName %> <%= lastName %></strong>
-            <em class="pull-right"><%= designation %></em>
+            <strong class="remove-top remove-bottom pull-left"><%= firstName + ' ' + lastName %></strong>
+            <em class="pull-right">Team Leader</em>
         </div>
-        <%= gender %>, <%= age %> yrs<br>
+        <%= gender %>, <%= (moment().format('YYYY') - birthYear) %> yrs<br>
         <% if (mobile) { %>Mobile: <%= mobile %><br><% } %>
         <% if (email) { %>Email: <a href="mailto:<%= email %>"><%= email %></a><% } %>
     </li>
