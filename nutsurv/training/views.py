@@ -1,10 +1,13 @@
-from django.shortcuts import get_object_or_404
-
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from .models import TrainingSurvey, TrainingRoom
-from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithMemberDetails, TrainingRoomSerializer
+from .models import TrainingSurvey, TrainingRoom, TrainingRoomMember
+from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithMemberDetails, TrainingRoomSerializer, TrainingRoomMemberSerializer
+
+
+class TrainingRoomMemberViewset(viewsets.ModelViewSet):
+    queryset = TrainingRoomMember.objects.all()
+    serializer_class = TrainingRoomMemberSerializer
 
 
 class TrainingSurveyViewset(viewsets.ModelViewSet):
@@ -20,8 +23,7 @@ class TrainingRoomViewset(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None, format=None):
 
-        queryset = TrainingRoom.objects.all()
-        instance = get_object_or_404(queryset, pk=pk)
+        instance = TrainingRoom.objects.get(pk=pk)
         instance_serializer = TrainingRoomSerializer(
             instance,
             context={
