@@ -212,8 +212,9 @@ class BaseHouseholdSurveyJSON(models.Model):
         def make_team_member(parsed):
             this_year = datetime.datetime.now().year
             tm, created = TeamMember.objects.get_or_create(
-                    id=parsed['memberID'],
+                    member_id=parsed['memberID'],
                     defaults = {
+                        'member_id':parsed['memberID'],
                         'gender':parsed['gender'],
                         'first_name':parsed['firstName'],
                         'last_name': parsed['lastName'],
