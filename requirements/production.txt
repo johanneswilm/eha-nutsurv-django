@@ -1,12 +1,10 @@
 Django==1.7.6
-psycopg2
 jsonfield
 jsonschema
 django-tastypie
 djangorestframework
 python-dateutil
 python-mimeparse
-django-bower
 pytz
 django-cors-headers
 django_compressor

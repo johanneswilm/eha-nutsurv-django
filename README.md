@@ -3,6 +3,9 @@ eha-nutsurv-django
 
 NutSurv - Data collection and quality assurance tools for Nutrition Surveys on mobile devices
 
+# Install Bower
+
+    $ npm install -g bower
 
 # Install with Docker
 
@@ -14,6 +17,9 @@ Install [Docker](https://docs.docker.com/installation/#installation)
     $ sudo apt-get install python-pip
     $ sudo pip install -U docker-compose
     $ cd eha-nutsurv-django/
+    $ bower install
+    $ mkdir nutsurv/components
+    $ mv bower_components nutsurv/components
     $ sudo docker-compose build
 
 
@@ -29,7 +35,6 @@ Now in the shell within the container:
 
     # python /opt/nutsurv/nutsurv/manage.py migrate
     # python /opt/nutsurv/nutsurv/manage.py createsuperuser
-    # python /opt/nutsurv/nutsurv/manage.py bower_install -- --allow-root
     # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
 
 You probably also want to import some test data. Do that by typing:

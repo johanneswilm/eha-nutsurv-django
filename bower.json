@@ -1,0 +1,38 @@
+{
+  "name": "NutSurv",
+  "version": "0.9.0",
+  "homepage": "https://nutsurv.eocng.org",
+  "description": "NutSurv - Data collection and quality assurance tools for Nutrition Surveys on mobile devices",
+  "keywords": [
+    "nutsurv",
+    "ehealth"
+  ],
+  "authors": [
+    "eHealth Africa <http://ehealthafrica.org>"
+  ],
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "bootstrap-select": "~1.6.4",
+    "datatables": "~1.10.6",
+    "datatables-bootstrap3-plugin": "~0.4.0",
+    "datatables-responsive": "~1.0.5",
+    "datatables-tabletools": "~2.2.4",
+    "data-models": "eHealthAfrica/data-models#~1.12.1",
+    "ehealth-bootstrap": "eHealthAfrica/ehealth-bootstrap#~0.0.5",
+    "font-awesome": "~4.3.0",
+    "jquery": "~1.10.2",
+    "jquery-flot": "~0.8.3",
+    "jquery.cookie": "~1.4.1",
+    "leaflet": "~0.7.3",
+    "leaflet.markercluster": "~0.4.0",
+    "list.js": "~1.1.1",
+    "lodash": "~3.6.0",
+    "moment": "~2.10.2",
+    "moment-timezone": "~0.3.1",
+    "parse-python-indentation": "~0.1.0",
+    "file-saver": "*",
+    "list.pagination.js": "~0.1.1"
+  }
+}
