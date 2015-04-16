@@ -207,16 +207,17 @@ class BaseHouseholdSurveyJSON(models.Model):
 
         def make_team_member(parsed):
             tm, created = TeamMember.objects.get_or_create(
-                id=parsed['memberID'],
-                defaults={
-                    'gender': parsed['gender'],
-                    'first_name': parsed['firstName'],
-                    'last_name': parsed['lastName'],
-                    'mobile': parsed['mobile'],
-                    'email': parsed['email'],
-                    'birth_year': parsed['birthYear']
-                }
-            )
+                    member_id=parsed['memberID'],
+                    defaults = {
+                        'member_id':parsed['memberID'],
+                        'gender':parsed['gender'],
+                        'first_name':parsed['firstName'],
+                        'last_name': parsed['lastName'],
+                        'mobile' :parsed['mobile'],
+                        'email':parsed['email'],
+                        'birth_year': parsed['birthYear']
+                        }
+                    )
             return tm
 
         lead = self.parse_team('Team Leader')
@@ -501,8 +502,8 @@ class Alert(models.Model):
     using the admin interface.
     """
 
-    team_lead = models.ForeignKey('dashboard.TeamMember', null=True)
-    survey = models.ForeignKey('dashboard.HouseholdSurveyJSON', null=True)
+    team_lead = models.ForeignKey('dashboard.TeamMember', null=True, on_delete=models.CASCADE)
+    survey = models.ForeignKey('dashboard.HouseholdSurveyJSON', null=True, on_delete=models.CASCADE)
     text = models.TextField()
 
     json = JSONField(

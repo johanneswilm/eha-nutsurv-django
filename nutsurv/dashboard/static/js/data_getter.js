@@ -38,7 +38,6 @@ var dataGetter = {
             // If this was the last data to be made current, update the timer.
             if (_.where(dataGetter.downloads, {current: false}).length===0) {
                 dataGetter.lastUpdate = new Date();
-                dataGetter.setTimer();
             }
         });
     },
@@ -68,27 +67,7 @@ var dataGetter = {
         }
         return true;
     },
-    lastUpdate: false,
-    drawTimer : function () {
-        if (dataGetter.lastUpdate) {
-          var totalSeconds = parseInt((new Date()-dataGetter.lastUpdate)/1000),
-            minutes = Math.floor(totalSeconds / 60),
-            seconds = totalSeconds - minutes * 60;
-          if (seconds<10) {
-            seconds = '0'+seconds;
-          }
-          jQuery('#last_update .button_label').html(minutes+':'+seconds);
-       }
-    },
-    getterInterval: false,
-    timerInterval: false,
-    setTimer: function () {// Set the timer to get data from URLs every X minutes;
-        clearInterval(dataGetter.getterInterval);
-        dataGetter.getterInterval = setInterval(dataGetter.getAll,5*60000); // Timer set to X*60000 milliseconds (X is minutes)
-        clearInterval(dataGetter.timerInterval);
-        dataGetter.timerInterval = setInterval(dataGetter.drawTimer,1000); // Redraw timer every second
-    }
-
+    lastUpdate: false
 };
 
 dataGetter.getAll();

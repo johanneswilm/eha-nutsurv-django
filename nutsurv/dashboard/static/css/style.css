@@ -59,25 +59,26 @@ div.alone_block {
 }
 
 
+/*** DataTable Styles ***/
 
 table.dataTable thead th {
     padding-left: 2px !important;
 }
 
+table.dataTable tbody td {
+    padding-right: 10px !important;
+}
+
 table.dataTable tr td {
-    padding-left: 20px !important;
+    padding-right: 10px !important;
 }
 
 table.dataTable[style] {
    width: 100% !important; /* Overrides weirdness of datatables responsive plugin. */
 }
 
-.border_left {
-    border-left: 1px solid black;
-}
-
-.border_right {
-    border-right: 1px solid black;
+table.dataTable tr td i.fa {
+  font-size: 30px;
 }
 
 .bottom_link {
@@ -104,9 +105,9 @@ ul.description_list {
     margin-left: 5px;
 }
 
-
 .panel-heading .btn {
     float: right;
     font-size: 70%;
     margin-top: -5px;
 }
+

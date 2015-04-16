@@ -14,6 +14,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 PROJECT_ROOT = PROJECT_PATH
 
+# This is where bower is installing things
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, '../bower_components')
+
+STATICFILES_DIRS = ('/opt/nutsurv/bower_components',)
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -46,18 +52,13 @@ INSTALLED_APPS = [
     'accounts',
     'importer',
     'training',
-    'djangobower',
     'compressor',
     'corsheaders',
     'rest_framework',
     'raven.contrib.django.raven_compat',
+    'django_extensions',
 ]
 
-if DEBUG:
-    INSTALLED_APPS += [
-        'django_extensions',
-        'debug_toolbar',
-    ]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -113,38 +114,10 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, '../media')
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '../static')
 
-# Bower http://django-bower.readthedocs.org/en/latest/index.html
-BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
-
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'djangobower.finders.BowerFinder',
     'compressor.finders.CompressorFinder',
-)
-
-BOWER_INSTALLED_APPS = (
-    'bootstrap#3.3.2',
-    'bootstrap-select#1.6.3',
-    'datatables#1.10.4',
-    'datatables-bootstrap3-plugin#0.2.0',
-    'datatables-responsive#1.0.3',
-    'datatables-tabletools#2.2.3',
-    'file-saver',
-    'jquery#1.10.2',
-    'jquery-flot#0.8.3',
-    'leaflet#0.7.3',
-    'leaflet.markercluster#0.4.0',
-    'lodash#3.0.0',
-    'parse-python-indentation#0.1.0',
-    'eHealthAfrica/ehealth-bootstrap#0.0.5',
-    'font-awesome#4.3.0',
-    'moment#2.9.0',
-    'moment-timezone#0.3.0',
-    'list.js#1.1.1',
-    'list.pagination.js',
-    'jquery.cookie#1.4.1',
-    'eHealthAfrica/data-models#1.12.1',
 )
 
 
@@ -201,3 +174,9 @@ except IOError as e:
     logger.info("Did not load local configuration. That's ok, but you may want to copy the configurations.py-default")
 else:
     exec f in globals()
+
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
