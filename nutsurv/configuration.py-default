@@ -1,15 +1,5 @@
 CORS_ORIGIN_ALLOW_ALL = True
 
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': 'postgres',
-            'USER': 'postgres',
-            'HOST': 'localhost',
-            'PORT': '5432',
-            }
-        }
-
 # Sentry for develoment
 # https://app.getsentry.com/ehealthnigeriaorg/nutsurv-dev/?newinstall=1
 RAVEN_CONFIG = {
