@@ -17,8 +17,7 @@ PROJECT_ROOT = PROJECT_PATH
 # This is where bower is installing things
 BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, '../bower_components')
 
-STATICFILES_DIRS = ('/opt/nutsurv/bower_components',)
-
+STATICFILES_DIRS = (BOWER_COMPONENTS_ROOT, )
 
 
 # Quick-start development settings - unsuitable for production
