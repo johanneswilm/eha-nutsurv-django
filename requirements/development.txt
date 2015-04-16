@@ -6,3 +6,4 @@ model_mommy
 behave
 django-extensions
 Werkzeug
+django-debug-toolbar

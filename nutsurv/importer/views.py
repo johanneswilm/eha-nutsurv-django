@@ -9,7 +9,22 @@ from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonRespo
 
 from . import models
 
+from .management.commands.import_formhub import Command
+
 from dashboard import models as dashboard_models
+
+@login_required
+def import_csvfile(request):
+    models.reset_data()
+
+    message = None
+    if request.method == 'POST' and 'csv_file' in request.FILES:
+        Command().import_csvfile(request.FILES['csv_file'])
+        message = "Import successful."
+
+    return render(request, 'importer/import.html', dictionary={
+      "message": message
+    })
 
 @login_required
 def importer(request):

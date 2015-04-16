@@ -21,6 +21,8 @@ from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.db.models import Q
+
 
 # django 3rd party
 from rest_framework.reverse import reverse
@@ -48,7 +50,7 @@ class TeamMember(models.Model):
 
     member_id = AutoSlugField(blank=False,
                               unique=True,
-                              populate_from="random_id",
+                              populate_from="id",
                               separator='')
     first_name = models.CharField(blank=False, max_length=50)
     last_name = models.CharField(blank=False, max_length=50)
@@ -60,6 +62,53 @@ class TeamMember(models.Model):
     created = CreationDateTimeField()
     modified = ModificationDateTimeField()
 
+    _last_survey = None
+
+    def last_survey(self):
+        # TODO: maybe get the reverse relationship instead
+
+        # Poor mans cache
+        if self._last_survey:
+            return self._last_survey
+
+        survey = (HouseholdSurveyJSON.objects.filter(
+            Q(team_lead=self)
+            | Q(team_assistant=self)
+            | Q(team_anthropometrist=self)
+            ).order_by('-id') or [None])[0]
+
+        self._last_survey = survey
+        return survey
+
+
+    def last_survey_position(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            for position in ['team_lead', 'team_assistant', 'team_anthropometrist']:
+                if self.id == getattr(last_survey, position).id:
+                    return position
+
+            raise "TeamMember has last_survey but no position, this shouldn't happen."
+
+
+    def last_survey_created(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            return last_survey.get_start_time()
+
+
+    def last_survey_cluster_name(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            return last_survey.json['cluster_name']
+
+
+    def last_survey_cluster(self):
+        last_survey = self.last_survey()
+        if last_survey:
+            return last_survey.json['cluster']
+
+
     class Meta:
         get_latest_by = 'modified'
         ordering = ('-modified', '-created',)
@@ -70,6 +119,9 @@ class TeamMember(models.Model):
 
     def __unicode__(self):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse('teammember-detail', args=[str(self.member_id)])
 
 
 
@@ -90,14 +142,41 @@ def validate_json(spec_file):
     return wrapped
 
 
-class HouseholdSurveyJSON(models.Model):
+class BaseHouseholdMember(models.Model):
+
+    GENDER = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    )
+    gender = models.CharField(max_length=1, choices=GENDER)
+
+    first_name = models.TextField()
+    index = models.SmallIntegerField()
+    muac = models.SmallIntegerField(null=True) # in millimeter ?
+    birthdate = models.DateField()
+    weight = models.FloatField(null=True) # probably in kilograms ?
+    height = models.FloatField(null=True) # probably in centimeters ?
+    edema = models.NullBooleanField()
+
+    class Meta:
+        abstract = True
+
+class HouseholdMember(BaseHouseholdMember):
+    household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
+
+class BaseHouseholdSurveyJSON(models.Model):
+
     class Meta:
         verbose_name = 'household survey'
+        abstract = True
 
-    team_lead = models.ForeignKey('TeamMember', related_name='surveys_as_team_lead')
-    team_assistant = models.ForeignKey('TeamMember', related_name='surveys_as_team_assistant')
-    team_anthropometrist = models.ForeignKey('TeamMember', related_name='surveys_as_team_anthropometrist')
+    team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
+    team_assistant = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_assistant')
+    team_anthropometrist = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_anthropometrist')
 
+
+    household_number = models.SmallIntegerField()
 
     json = JSONField(
         validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
@@ -118,6 +197,9 @@ class HouseholdSurveyJSON(models.Model):
     )
 
     def parse_team(self, position):
+
+        # TODO this still depends on self.json, while aiming to replace it.
+
         team_members = self.json['team']['members']
         for m in team_members:
             designation = m['designation']
@@ -129,7 +211,7 @@ class HouseholdSurveyJSON(models.Model):
 
         def make_team_member(parsed):
             this_year = datetime.datetime.now().year
-            tm ,created = TeamMember.objects.get_or_create(
+            tm, created = TeamMember.objects.get_or_create(
                     id=parsed['memberID'],
                     defaults = {
                         'gender':parsed['gender'],
@@ -411,6 +493,8 @@ class HouseholdSurveyJSON(models.Model):
         else:
             return uuid
 
+class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
+    pass
 
 class Alert(models.Model):
     """
@@ -419,8 +503,8 @@ class Alert(models.Model):
     using the admin interface.
     """
 
-    team_lead = models.ForeignKey('dashboard.TeamMember', null=True)
-    survey = models.ForeignKey('dashboard.HouseholdSurveyJSON', null=True)
+    team_lead = models.ForeignKey('dashboard.TeamMember', null=True, on_delete=models.CASCADE)
+    survey = models.ForeignKey('dashboard.HouseholdSurveyJSON', null=True, on_delete=models.CASCADE)
     text = models.TextField()
 
     json = JSONField(

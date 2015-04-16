@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Alert, HouseholdSurveyJSON, TeamMember
+from .models import Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,6 +21,8 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field="member_id")
     mobile = serializers.CharField()
     memberID = serializers.CharField(source='member_id', read_only=True)
+
+
     class Meta:
 
         model = TeamMember
@@ -31,21 +33,50 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                 'gender',
                 'birth_year',
                 'mobile',
-                'email']
+                'last_survey_position',
+                'last_survey_created',
+                'last_survey_cluster',
+                'last_survey_cluster_name',
+                'email',
+                ]
+
+
+class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = HouseholdMember
+        fields = [
+            'first_name',
+            'gender',
+            'muac',
+            'birthdate',
+            'weight',
+            'height',
+        ]
+
 
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        extra_kwargs = {
-                'team_lead': {'lookup_field': 'member_id'},
-                'team_assistant': {'lookup_field': 'member_id'},
-                'team_anthropometrist': {'lookup_field': 'member_id'},
-                }
         model = HouseholdSurveyJSON
+        extra_kwargs = {
+            'team_lead': {'lookup_field': 'member_id'},
+            'team_assistant': {'lookup_field': 'member_id'},
+            'team_anthropometrist': {'lookup_field': 'member_id'},
+        }
+        fields = (
+            'url',
+            'uuid',
+            'household_number',
+            'team_lead',
+            'team_assistant',
+            'team_anthropometrist',
+        )
 
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
+    team_lead = TeamMemberSerializer(many=False)
     class Meta:
         model= Alert
         fields = (

@@ -14,17 +14,18 @@ from django.contrib.auth.models import User
 
 from rest_framework import viewsets
 from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
-                          UserSerializer, TeamMemberSerializer)
+                          UserSerializer, TeamMemberSerializer, HouseholdMemberSerializer)
 
-from models import Alert
-from models import HouseholdSurveyJSON
-from models import Clusters
-from models import SecondAdminLevel
-from models import QuestionnaireSpecification
-from models import ClustersPerFirstAdminLevel
-from models import FirstAdminLevels
-from models import FirstAdminLevelsReserveClusters
-from models import TeamMember
+from .models import Alert
+from .models import HouseholdSurveyJSON
+from .models import Clusters
+from .models import SecondAdminLevel
+from .models import QuestionnaireSpecification
+from .models import ClustersPerFirstAdminLevel
+from .models import FirstAdminLevels
+from .models import FirstAdminLevelsReserveClusters
+from .models import TeamMember
+from .models import HouseholdMember
 
 from rest_framework import viewsets
 
@@ -36,6 +37,10 @@ class TeamMemberViewset(viewsets.ModelViewSet):
     lookup_field = 'member_id'
     template_name = 'dashboard/teammember.html'
 
+class HouseholdMemberViewset(viewsets.ModelViewSet):
+    queryset = HouseholdMember.objects.all()
+    serializer_class = HouseholdMemberSerializer
+    lookup_field = 'householdsurveyjson_id'
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
     queryset = HouseholdSurveyJSON.objects.all()

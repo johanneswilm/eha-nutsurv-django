@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from dashboard.models import HouseholdSurveyJSON, Alert, TeamMember
+from dashboard.models import HouseholdSurveyJSON, HouseholdMember, Alert, TeamMember
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
@@ -12,6 +12,7 @@ import csv
 import re
 import logging
 import math
+import dateutil
 
 from textwrap import dedent
 
@@ -30,7 +31,7 @@ def find_household_members(data):
 
     for fh_member in data['consent'].get('hh_roster', []):
         member = {
-            "firstName": fh_member['listing']['name'],
+            "first_name": fh_member['listing']['name'],
             "age": fh_member['listing']['age_years'],
         }
         if fh_member['listing']['sex'] == 1:
@@ -47,7 +48,7 @@ def find_household_members(data):
             continue
 
         name = fh_woman["womanname1"]
-        member = next((item for item in members if item["firstName"] == name), None)
+        member = next((item for item in members if item["first_name"] == name), None)
 
         if not member:
             logging.warning('Did not find woman named "%s" in this.', name)
@@ -67,7 +68,7 @@ def find_household_members(data):
 
         name = fh_child["child_name"]
 
-        member = next((item for item in members if item["firstName"] == name), None)
+        member = next((item for item in members if item["first_name"] == name), None)
 
         if not member:
             logging.warning('Did not find details about child named "%s" in this.', name)
@@ -116,6 +117,44 @@ def find_household_members(data):
 
     return members
 
+def create_household_member_models(household_survey, household_members, reference_date):
+
+    for index, hhm in enumerate(household_members):
+
+        record = {
+            'household_survey': household_survey,
+            'index': index,
+        }
+        record.update(hhm)
+        record.update(hhm.get('survey', {}))
+
+        if 'edema' in record:
+            record['edema'] = {'Y': True, 'N': 'False'}[record['edema']]
+
+        assert not all([
+            # yes, the following two might be conflicting, but that's what
+            # happens if you save data twice
+            'age' in record,
+            'ageInMonths' in record,
+        ])
+
+        if 'age' in record:
+            if record['age'] != None:
+                record['birthdate'] = reference_date - dateutil.relativedelta.relativedelta(years=record['age'])
+            del record['age']
+
+        if 'ageInMonth' in record:
+            if record['ageInMonth'] != None:
+                record['birthdate'] = reference_date - dateutil.relativedelta.relativedelta(months=record['ageInMonth'])
+            del record['ageInMonth']
+
+        for irrelevant in ('survey', 'surveyType', 'zscores'):
+            if irrelevant in record:
+                del record[irrelevant]
+
+        hhm_model, created = HouseholdMember.objects.get_or_create(**record)
+        assert created
+
 def parse_flat_formhub_csv(rawdata):
 
     parsed = {}
@@ -162,80 +201,94 @@ def parse_flat_formhub_csv(rawdata):
 def get_rawdata(headers, row):
     return dict(((k, v) for k, v in zip(headers, row) if v != 'n/a'))
 
+def household_member_to_legacy_format(member):
+    member['firstName'] = member.pop('first_name')
+    return member
+
 class Command(BaseCommand):
     args = '<filename ...>'
     help = 'Imports the csv file'
+
+    def import_csvfile(self, csvfile):
+
+        last_10_seconds = None
+        imported_last_10_seconds = 0
+
+        headers = None
+
+        for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
+
+            if not headers:
+                # first row is the headers
+                headers = row
+                continue
+
+            rawdata = get_rawdata(headers, row)
+
+            parsed = parse_flat_formhub_csv(rawdata)
+
+            members = find_household_members(parsed)
+            try:
+                household_survey = HouseholdSurveyJSON(
+                    uuid=parsed['_uuid'],
+                    household_number=parsed['hh_number'],
+                    json={
+                        "uuid": parsed['_uuid'],
+                        "syncDate": parsed['_submission_time'] + ".000Z",
+                        "startTime": parsed['starttime'],
+                        "endTime": parsed['endtime'],
+                        "created": parsed['_submission_time']  + ".000Z",
+                        "modified": parsed['_submission_time'],
+                        "householdID": parsed['hh_number'],
+                        "cluster": parsed['cluster'],
+                        "cluster_name": parsed['cluster_name'],
+                        "first_admin_level": parsed['state'],
+                        "second_admin_level": parsed['lga'],
+                        "location": [
+                            parsed['_gps_latitude'],
+                            parsed['_gps_longitude']
+                        ],
+                        "members": (household_member_to_legacy_format(dict(member.items())) for member in members),
+                        "team_num": parsed['team_num'],
+                        "team": FakeTeams.objects.get_or_create(
+                            team_id=parsed['team_num']
+                        )[0].json,
+                        "_id": parsed['_uuid'],
+                        "tools":{},
+                        "history":[]
+                    }
+                )
+                household_survey.parse_and_set_team_members()
+                household_survey.save()
+
+                startTime = datetime.strptime(parsed['starttime'].split('.')[0], '%Y-%m-%dT%H:%M:%S')
+                create_household_member_models(household_survey, members, startTime)
+
+            except (KeyError, IntegrityError) as e:
+                logging.error('%r', parsed)
+                logging.exception(e)
+
+            update_mapping_documents_from_new_survey(parsed)
+            Alert.run_alert_checks_on_document(household_survey)
+
+            if datetime.now().second/10 != last_10_seconds:
+                print dedent("""
+
+                ===> imported {} records in the last 10 seconds, that is {} records/s
+
+                """).format(imported_last_10_seconds, imported_last_10_seconds/10.0)
+
+                last_10_seconds = datetime.now().second/10
+                imported_last_10_seconds = 0
+            else:
+                imported_last_10_seconds += 1
+
+            print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'
 
     def handle(self, filename, **options):
 
         reset_data()
 
-        last_10_seconds = None
-        imported_last_10_seconds = 0
         with open(filename) as csvfile:
+            self.import_csvfile(csvfile)
 
-            headers = None
-
-            for row_no, row in enumerate(csv.reader(csvfile, delimiter=',')):
-
-                if not headers:
-                    # first row is the headers
-                    headers = row
-                    continue
-
-                rawdata = get_rawdata(headers, row)
-
-                parsed = parse_flat_formhub_csv(rawdata)
-
-                members = find_household_members(parsed)
-                try:
-                    household_survey = HouseholdSurveyJSON(
-                        uuid=parsed['_uuid'],
-                        json={
-                            "uuid": parsed['_uuid'],
-                            "syncDate": parsed['_submission_time'] + ".000Z",
-                            "startTime": parsed['starttime'],
-                            "endTime": parsed['endtime'],
-                            "created": parsed['_submission_time']  + ".000Z",
-                            "modified": parsed['_submission_time'],
-                            "householdID": parsed['hh_number'],
-                            "cluster": parsed['cluster'],
-                            "cluster_name": parsed['cluster_name'],
-                            "first_admin_level": parsed['state'],
-                            "second_admin_level": parsed['lga'],
-                            "location": [
-                                parsed['_gps_latitude'],
-                                parsed['_gps_longitude']
-                            ],
-                            "members": members,
-                            "team_num": parsed['team_num'],
-                            "team": FakeTeams.objects.get_or_create(
-                                team_id=parsed['team_num']
-                            )[0].json,
-                            "_id": parsed['_uuid'],
-                            "tools":{},
-                            "history":[]
-                        }
-                    )
-                    household_survey.parse_and_set_team_members()
-                    household_survey.save()
-                except (KeyError, IntegrityError) as e:
-                    logging.error('%r', parsed)
-                    logging.exception(e)
-
-                update_mapping_documents_from_new_survey(parsed)
-                Alert.run_alert_checks_on_document(household_survey)
-
-                if datetime.now().second/10 != last_10_seconds:
-                    print dedent("""
-
-                    ===> imported {} records in the last 10 seconds, that is {} records/s
-
-                    """).format(imported_last_10_seconds, imported_last_10_seconds/10.0)
-
-                    last_10_seconds = datetime.now().second/10
-                    imported_last_10_seconds = 0
-                else:
-                    imported_last_10_seconds += 1
-
-                print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'

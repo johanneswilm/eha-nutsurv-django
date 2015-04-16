@@ -1,0 +1,138 @@
+-   fields: {created: ! '2015-04-08 13:13:35.232272+00:00', creator: 1}
+    model: training.trainingroom
+    pk: 1
+-   fields: {created: ! '2015-04-10 08:31:14.805383+00:00', creator: 1}
+    model: training.trainingroom
+    pk: 2
+-   fields: {household_number: 1, json: '""', team_anthropometrist: 12, team_assistant: 3,
+        team_lead: 4, uuid: '123'}
+    model: training.trainingsurvey
+    pk: 1
+-   fields: {household_number: 1, json: '""', team_anthropometrist: 12, team_assistant: 4,
+        team_lead: 3, uuid: '1312'}
+    model: training.trainingsurvey
+    pk: 2
+-   fields: {household_number: 2, json: '""', team_anthropometrist: 3, team_assistant: 4,
+        team_lead: 4, uuid: '4343'}
+    model: training.trainingsurvey
+    pk: 3
+-   fields:
+      index: 0
+      birthdate: 2015-04-09
+      edema: true
+      first_name: Lassie Lou
+      gender: F
+      height: 10
+      household_survey: 2
+      muac: 10
+      weight: 20
+    model: training.trainingroommember
+    pk: 4
+-   fields:
+      index: 1
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Peggy
+      gender: M
+      height: 20
+      household_survey: 2
+      muac: 11
+      weight: 40
+    model: training.trainingroommember
+    pk: 5
+-   fields:
+      index: 2
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Sherwood "Spud"
+      gender: M
+      height: 30
+      household_survey: 2
+      muac: 12
+      weight: 60
+    model: training.trainingroommember
+    pk: 6
+-   fields:
+      index: 3
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Carlena
+      gender: M
+      height: 40
+      household_survey: 2
+      muac: 13
+      weight: 80
+    model: training.trainingroommember
+    pk: 7
+-   fields:
+      index: 4
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Carlena
+      gender: M
+      height: 50
+      household_survey: 2
+      muac: 14
+      weight: 100
+    model: training.trainingroommember
+    pk: 8
+-   fields:
+      index: 5
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Matthew "Stymie"
+      gender: M
+      height: 60
+      household_survey: 2
+      muac: 15
+      weight: 120
+    model: training.trainingroommember
+    pk: 9
+-   fields:
+      index: 6
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Scotty
+      gender: M
+      height: 70
+      household_survey: 2
+      muac: 16
+      weight: 140
+    model: training.trainingroommember
+    pk: 10
+-   fields:
+      index: 7
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Tommy "Butch"
+      gender: M
+      height: 80
+      household_survey: 2
+      muac: 17
+      weight: 160
+    model: training.trainingroommember
+    pk: 11
+-   fields:
+      index: 8
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Sonny
+      gender: M
+      height: 90
+      household_survey: 2
+      muac: 18
+      weight: 180
+    model: training.trainingroommember
+    pk: 12
+-   fields:
+      index: 9
+      birthdate: 2015-04-09
+      edema: false
+      first_name: Janet
+      gender: F
+      height: 100
+      household_survey: 2
+      muac: 19
+      weight: 200
+    model: training.trainingroommember
+    pk: 13
