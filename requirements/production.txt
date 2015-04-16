@@ -5,7 +5,6 @@ django-tastypie
 djangorestframework
 python-dateutil
 python-mimeparse
-django-bower
 pytz
 django-cors-headers
 django_compressor
