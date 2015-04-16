@@ -19,7 +19,6 @@ from .views import HouseholdSurveyJSONViewset
 from .views import TeamMemberViewset
 from .views import HouseholdMemberViewset
 
-
 v1_api = Api(api_name='v1')
 v1_api.register(HouseholdSurveyJSONResource())
 
@@ -33,7 +32,8 @@ urlpatterns = patterns('',
                        url(r'^api/', include(v1_api.urls)),
 
                        url(r'^', include(router.urls)),
-                       url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                       url(r'^api-auth/',
+                           include('rest_framework.urls', namespace='rest_framework')),
 
                        url(r'^home$', 'dashboard.views.home', name='home'),
 
@@ -56,11 +56,11 @@ urlpatterns = patterns('',
                            'dashboard.views.data_quality',
                            name='data_quality'),
                        url(r'^personnel$',
-                        'dashboard.views.personnel',
-                        name='personnel'),
+                           'dashboard.views.personnel',
+                           name='personnel'),
                        url(r'^time_of_data_collection$',
-                        'dashboard.views.time_of_data_collection',
-                        name='time_of_data_collection'),
+                           'dashboard.views.time_of_data_collection',
+                           name='time_of_data_collection'),
                        url(r'^teamsjsonview/$', TeamsJSONView.as_view(),
                            name='teams-json-view'),
                        url(r'^personneljsonview/$', PersonnelJSONView.as_view(),

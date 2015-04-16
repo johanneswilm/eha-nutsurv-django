@@ -40,6 +40,13 @@ You probably also want to import some test data. Do that by typing:
     # python /opt/nutsurv/nutsurv/manage.py import_formhub path/test-data.csv
 
 
+## Contributing
+
+Please run flake8 on your code before making a PR
+
+    flake8 --exclude migrations --ignore E501,C901 .
+
+
 ## Good job!
 The website should be available at http://HOST:8001
 

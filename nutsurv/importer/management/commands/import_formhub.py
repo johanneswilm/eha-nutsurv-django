@@ -1,8 +1,7 @@
-
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 
-from dashboard.models import HouseholdSurveyJSON, HouseholdMember, Alert, TeamMember
+from dashboard.models import HouseholdSurveyJSON, HouseholdMember, Alert
 
 from ...models import FakeTeams, update_mapping_documents_from_new_survey, reset_data
 
@@ -15,16 +14,15 @@ import math
 import dateutil
 
 from textwrap import dedent
-
 from datetime import datetime
 
-from pprint import pprint
 
 SPLIT_SEGMENT_RE = re.compile("([^\[]*)(?:\[(\d+)\])?")
 
+
 def find_household_members(data):
 
-    if not 'consent' in data:
+    if 'consent' not in data:
         return []
 
     members = []
@@ -43,7 +41,7 @@ def find_household_members(data):
 
     for fh_woman in data['consent'].get('note_7', []):
 
-        if not 'womanname1' in fh_woman:
+        if 'womanname1' not in fh_woman:
             logging.warning('Unnamed woman found, unable to find details..')
             continue
 
@@ -62,7 +60,7 @@ def find_household_members(data):
 
     for fh_child in data['consent'].get('child', []):
 
-        if not 'child_name' in fh_child:
+        if 'child_name' not in fh_child:
             logging.warning('Unnamed child found, unable to find details..')
             continue
 
@@ -117,6 +115,7 @@ def find_household_members(data):
 
     return members
 
+
 def create_household_member_models(household_survey, household_members, reference_date):
 
     for index, hhm in enumerate(household_members):
@@ -139,12 +138,12 @@ def create_household_member_models(household_survey, household_members, referenc
         ])
 
         if 'age' in record:
-            if record['age'] != None:
+            if record['age'] is not None:
                 record['birthdate'] = reference_date - dateutil.relativedelta.relativedelta(years=record['age'])
             del record['age']
 
         if 'ageInMonth' in record:
-            if record['ageInMonth'] != None:
+            if record['ageInMonth'] is not None:
                 record['birthdate'] = reference_date - dateutil.relativedelta.relativedelta(months=record['ageInMonth'])
             del record['ageInMonth']
 
@@ -154,6 +153,7 @@ def create_household_member_models(household_survey, household_members, referenc
 
         hhm_model, created = HouseholdMember.objects.get_or_create(**record)
         assert created
+
 
 def parse_flat_formhub_csv(rawdata):
 
@@ -168,11 +168,11 @@ def parse_flat_formhub_csv(rawdata):
 
             segment_name, in_array_pos = SPLIT_SEGMENT_RE.match(segment).groups()
 
-            if in_array_pos != None:
+            if in_array_pos is not None:
                 in_array_pos = int(in_array_pos)
 
-            if not segment_name in put_here:
-                if in_array_pos != None:
+            if segment_name not in put_here:
+                if in_array_pos is not None:
                     put_here[segment_name] = []
                 else:
                     put_here[segment_name] = {}
@@ -180,12 +180,12 @@ def parse_flat_formhub_csv(rawdata):
             previous_put_here = put_here
             put_here = put_here[segment_name]
 
-            if in_array_pos != None:
+            if in_array_pos is not None:
                 while len(put_here) < in_array_pos:
                     put_here.append({})
-                put_here = put_here[in_array_pos-1]
+                put_here = put_here[in_array_pos - 1]
 
-            if segment_no+1 == len(path):
+            if segment_no + 1 == len(path):
                 try:
                     v = float(v)
                     if v % 1 == 0.0:
@@ -201,9 +201,11 @@ def parse_flat_formhub_csv(rawdata):
 def get_rawdata(headers, row):
     return dict(((k, v) for k, v in zip(headers, row) if v != 'n/a'))
 
+
 def household_member_to_legacy_format(member):
     member['firstName'] = member.pop('first_name')
     return member
+
 
 class Command(BaseCommand):
     args = '<filename ...>'
@@ -237,7 +239,7 @@ class Command(BaseCommand):
                         "syncDate": parsed['_submission_time'] + ".000Z",
                         "startTime": parsed['starttime'],
                         "endTime": parsed['endtime'],
-                        "created": parsed['_submission_time']  + ".000Z",
+                        "created": parsed['_submission_time'] + ".000Z",
                         "modified": parsed['_submission_time'],
                         "householdID": parsed['hh_number'],
                         "cluster": parsed['cluster'],
@@ -254,8 +256,8 @@ class Command(BaseCommand):
                             team_id=parsed['team_num']
                         )[0].json,
                         "_id": parsed['_uuid'],
-                        "tools":{},
-                        "history":[]
+                        "tools": {},
+                        "history": []
                     }
                 )
                 household_survey.parse_and_set_team_members()
@@ -271,19 +273,19 @@ class Command(BaseCommand):
             update_mapping_documents_from_new_survey(parsed)
             Alert.run_alert_checks_on_document(household_survey)
 
-            if datetime.now().second/10 != last_10_seconds:
+            if datetime.now().second / 10 != last_10_seconds:
                 print dedent("""
 
                 ===> imported {} records in the last 10 seconds, that is {} records/s
 
-                """).format(imported_last_10_seconds, imported_last_10_seconds/10.0)
+                """).format(imported_last_10_seconds, imported_last_10_seconds / 10.0)
 
-                last_10_seconds = datetime.now().second/10
+                last_10_seconds = datetime.now().second / 10
                 imported_last_10_seconds = 0
             else:
                 imported_last_10_seconds += 1
 
-            print '[{}]'.format(datetime.now()), row_no, 'created' , parsed['_uuid'], len(members), 'household members'
+            print '[{}]'.format(datetime.now()), row_no, 'created', parsed['_uuid'], len(members), 'household members'
 
     def handle(self, filename, **options):
 
@@ -291,4 +293,3 @@ class Command(BaseCommand):
 
         with open(filename) as csvfile:
             self.import_csvfile(csvfile)
-
