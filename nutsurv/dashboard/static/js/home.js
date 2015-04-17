@@ -250,10 +250,12 @@ var home = {
             var team_html = personTemplate(alert.teamLead);
             modal.find('ul.contact-team-list').html(team_html);
 
+            $('#btn-contact-team-contacted').attr('href', alert.url)
         });
 
         // Mark As Completed
         $('#btn-contact-team-contacted').on('click', function(event) {
+        console.log($(event.target).attr('href'));
       		$.ajax({
       			url: $(event.target).attr('href'),
       			type: 'PATCH',
