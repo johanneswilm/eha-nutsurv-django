@@ -1,5 +1,6 @@
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
+
 
 class EmptySmokeTest(TestCase):
 
@@ -30,4 +31,3 @@ class EmptySmokeTest(TestCase):
 
     def test_empty_200_teammembers(self):
         self._test_empty_200('/dashboard/teammembers/')
-

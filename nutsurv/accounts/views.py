@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
 
+
 def user_login(request):
     response = {}
     response['state'] = ""
@@ -26,7 +27,8 @@ def user_login(request):
         else:
             response['state'] = "Your username and/or password were incorrect."
     response['username'] = username
-    return render_to_response('accounts/login.html',response)
+    return render_to_response('accounts/login.html', response)
+
 
 def user_logout(request):
     logout(request)

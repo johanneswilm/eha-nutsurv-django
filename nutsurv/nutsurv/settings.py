@@ -17,9 +17,7 @@ PROJECT_ROOT = PROJECT_PATH
 # This is where bower is installing things
 BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, '../bower_components')
 
-STATICFILES_DIRS = ('/opt/nutsurv/bower_components',)
-
-
+STATICFILES_DIRS = (BOWER_COMPONENTS_ROOT, )
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -36,7 +34,6 @@ ALLOWED_HOSTS = [
 
 TEMPLATE_DEBUG = True
 
-#LOGIN_URL = '/admin'
 
 # Application definition
 
@@ -64,15 +61,15 @@ INSTALLED_APPS = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE_CLASSES = (
-        'corsheaders.middleware.CorsMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        )
+    'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
 
 ROOT_URLCONF = 'nutsurv.urls'
 
@@ -123,49 +120,49 @@ STATICFILES_FINDERS = (
 
 
 COMPRESS_PRECOMPILERS = (
-        ('text/sass', 'sassc "{infile}" "{outfile}"'),
-        ('text/scss', 'lib.scssabsolutefilter.SCSSFilter'),
-        )
+    ('text/sass', 'sassc "{infile}" "{outfile}"'),
+    ('text/scss', 'lib.scssabsolutefilter.SCSSFilter'),
+)
 
 
 REST_FRAMEWORK = {
-        'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
-        'DEFAULT_RENDERER_CLASSES': (
-            'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
-            'rest_framework.renderers.TemplateHTMLRenderer',
-            'rest_framework.renderers.BrowsableAPIRenderer',
-            ),
-        'DEFAULT_PARSER_CLASSES': (
-            'djangorestframework_camel_case.parser.CamelCaseJSONParser',
-            'rest_framework.parsers.FormParser',
-            'rest_framework.parsers.MultiPartParser',
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
 
-            ),
-        }
+    ),
+}
 
 
 LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'standard': {
-                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-                },
-            },
-        'handlers': {
-            'console': {
-                'class': 'logging.StreamHandler',
-                'formatter':'standard',
-                },
-            },
-        'loggers': {
-            '': {
-                'handlers': ['console'],
-                'level': 'INFO',
-                'propagate': True,
-                },
-            },
-        }
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))

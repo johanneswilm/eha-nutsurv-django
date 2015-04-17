@@ -1,9 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route
-from rest_framework.reverse import reverse
 
 from .models import TrainingSurvey, TrainingRoom
 from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithMemberDetails, TrainingRoomSerializer
@@ -12,6 +10,7 @@ from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithM
 class TrainingSurveyViewset(viewsets.ModelViewSet):
     queryset = TrainingSurvey.objects.all()
     serializer_class = TrainingSurveySerializer
+
 
 class TrainingRoomViewset(viewsets.ModelViewSet):
     queryset = TrainingRoom.objects.all().order_by('-created')
@@ -26,7 +25,7 @@ class TrainingRoomViewset(viewsets.ModelViewSet):
         instance_serializer = TrainingRoomSerializer(
             instance,
             context={
-              'request':request
+                'request': request
             },
         )
 
@@ -39,7 +38,7 @@ class TrainingRoomViewset(viewsets.ModelViewSet):
             surveys,
             many=True,
             context={
-                'request':request
+                'request': request
             },
         )
 

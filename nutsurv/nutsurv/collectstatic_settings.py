@@ -1,4 +1,4 @@
-from .settings import *
+from .settings import *  # NOQA
 
 # setting the POSTGIS version explicetly here avoids the need
 # to have a database connection for collectstatic

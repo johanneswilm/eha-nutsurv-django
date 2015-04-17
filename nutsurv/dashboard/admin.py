@@ -9,6 +9,7 @@ from models import ClustersPerFirstAdminLevel
 from models import FirstAdminLevels
 from models import FirstAdminLevelsReserveClusters
 
+
 class AlertAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'last_modified')
 

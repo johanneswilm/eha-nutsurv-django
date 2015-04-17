@@ -11,6 +11,7 @@ from dashboard.models import HouseholdSurveyJSON
 
 
 class HouseholdSurveyValidation(Validation):
+
     def is_valid(self, bundle, request=None):
         if not bundle.data:
             return {'__all__': 'The input is empty.'}
@@ -26,6 +27,7 @@ class HouseholdSurveyValidation(Validation):
 
 
 class HouseholdSurveyJSONResource(ModelResource):
+
     class Meta:
         queryset = HouseholdSurveyJSON.objects.all()
         allowed_methods = ['post']

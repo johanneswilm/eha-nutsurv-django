@@ -9,5 +9,5 @@ router.register(r'surveys', TrainingSurveyViewset)
 router.register(r'rooms', TrainingRoomViewset)
 
 urlpatterns = patterns('',
-    url(r'^', include(router.urls)),
-)
+                       url(r'^', include(router.urls)),
+                       )

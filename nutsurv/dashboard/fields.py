@@ -3,6 +3,7 @@ from django.core import exceptions
 
 
 class MaxOneActiveQuestionnaireField(BooleanField):
+
     def validate(self, value, model_instance):
         """Validates value and throws ValidationError.
         """
@@ -26,6 +27,7 @@ class MaxOneActiveQuestionnaireField(BooleanField):
 
 
 class UniqueActiveField(BooleanField):
+
     """This boolean field can be checked for maximum one instance of a model
     class at a time.
     It is useful if you need to define a model with a boolean field which may
@@ -33,6 +35,7 @@ class UniqueActiveField(BooleanField):
     exist many objects of that class but only one of them can be checked using
     this field).
     """
+
     def validate(self, value, model_instance):
         """Validates value and throws ValidationError in case there is another
         instance of a model with its UniqueActiveField set to true.
@@ -54,4 +57,3 @@ class UniqueActiveField(BooleanField):
                         u'activating this one.'.format(model_name, model_name)
                     )
         super(UniqueActiveField, self).validate(value, model_instance)
-

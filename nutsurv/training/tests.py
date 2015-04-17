@@ -1,13 +1,11 @@
 import json
 
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-
-from rest_framework.reverse import reverse
 
 from .models import TrainingSurvey
 from dashboard.models import HouseholdSurveyJSON, TeamMember
+
 
 class TrainingSurveyTests(TestCase):
 
@@ -25,7 +23,6 @@ class TrainingSurveyTests(TestCase):
 
         login = self.client.login(username=self.username, password=self.password)
         self.assertEqual(login, True)
-
 
     def test_training_survey_does_not_show_in_regular_surveys(self):
 
@@ -55,40 +52,38 @@ class TrainingSurveyTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, '[]')
 
-
     def test_post_training_survey(self):
 
         response = self.client.post('/training/surveys/', data={
-          'uuid': '123',
-          'household_number': '22',
-          'team_lead': self.team_member.get_absolute_url(),
-          'team_assistant': self.team_member.get_absolute_url(),
-          'team_anthropometrist': self.team_member.get_absolute_url(),
+            'uuid': '123',
+            'household_number': '22',
+            'team_lead': self.team_member.get_absolute_url(),
+            'team_assistant': self.team_member.get_absolute_url(),
+            'team_anthropometrist': self.team_member.get_absolute_url(),
         })
 
         self.assertEqual(response.status_code, 201, response.content)
         self.assertEqual(HouseholdSurveyJSON.objects.all().count(), 0)
         self.assertEqual(TrainingSurvey.objects.all().count(), 1)
 
-
     def test_post_training_with_1_person_family(self):
 
         person = {
-          u'muac': 232,
-          u'birthdate': u'2012-01-01',
-          u'weight': 89.0,
-          u'height': 18.0,
-          u'firstName': u'Jusuf',
-          u'gender': u'F',
+            u'muac': 232,
+            u'birthdate': u'2012-01-01',
+            u'weight': 89.0,
+            u'height': 18.0,
+            u'firstName': u'Jusuf',
+            u'gender': u'F',
         }
 
         data = {
-          'uuid': '123',
-          'household_number': '22',
-          'team_lead': self.team_member.get_absolute_url(),
-          'team_assistant': self.team_member.get_absolute_url(),
-          'team_anthropometrist': self.team_member.get_absolute_url(),
-          'members': [person],
+            'uuid': '123',
+            'household_number': '22',
+            'team_lead': self.team_member.get_absolute_url(),
+            'team_assistant': self.team_member.get_absolute_url(),
+            'team_anthropometrist': self.team_member.get_absolute_url(),
+            'members': [person],
         }
 
         # test create
@@ -103,4 +98,3 @@ class TrainingSurveyTests(TestCase):
 
         self.assertEqual(response.status_code, 200, response.content)
         self.assertEqual(result['members'], [person])
-

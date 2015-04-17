@@ -11,6 +11,7 @@ import math
 import os
 import json
 
+
 def roundFloat(number, decimal_places):
     if not decimal_places:
         decimal_places = 2
@@ -21,21 +22,22 @@ def roundFloat(number, decimal_places):
     p = math.pow(10, decimal_places)
     return round(number * p) / p
 
+
 def isFinite(value):
-  try:
-    float(value)
-    if not math.isinf(value) and not math.isnan(value):
-        return True
-    else:
+    try:
+        float(value)
+        if not math.isinf(value) and not math.isnan(value):
+            return True
+        else:
+            return False
+    except ValueError:
         return False
-  except ValueError:
-    return False
 
 
 NaN = float('NaN')  # the floating point value "Not A Number"
 undefined = None
 
-#Boundaries for input values, checked on the UI and data import sides
+# Boundaries for input values, checked on the UI and data import sides
 # The min weight for a child, in kg.
 INPUT_MINWEIGHT = 0.9
 
@@ -149,17 +151,22 @@ _useReferenceTablesCache = False  # [Vernon] WHO did not use cache on mobiles, w
 # Used to not load the same json file several times within a session
 INDICATOR_TABLES = {}
 
+
 def get4AgeIndicatorRefData(ind, sex, ageInDays):
-    if not ind in INDICATOR_TABLES:
-        indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
+    if ind not in INDICATOR_TABLES:
+        indicator_file = os.path.dirname(
+            os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
         json_data = open(indicator_file).read()
         INDICATOR_TABLES[ind] = json.loads(json_data)
-    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
+    find_first = next(
+        (item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(float(item["age"])) == round(ageInDays)), False)
     return find_first
 
+
 def get4LengthOrHeightRefData(ind, sex, lengthOrHeight):
-    if not ind in INDICATOR_TABLES:
-        indicator_file = os.path.dirname(os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
+    if ind not in INDICATOR_TABLES:
+        indicator_file = os.path.dirname(
+            os.path.realpath(__file__)) + '/anthrocomputation_ref_data/AnthroRef_' + ind + '.json'
         json_data = open(indicator_file).read()
         INDICATOR_TABLES[ind] = json.loads(json_data)
     # In all of the files there is only either height or length, so choose based on which one is available
@@ -167,10 +174,13 @@ def get4LengthOrHeightRefData(ind, sex, lengthOrHeight):
         key_name = 'length'
     else:
         key_name = 'height'
-    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(float(item[key_name])) == round(lengthOrHeight)), False)
+    find_first = next((item for item in INDICATOR_TABLES[ind] if item["Sex"] == sex and round(
+        float(item[key_name])) == round(lengthOrHeight)), False)
     return find_first
 
 # Used for storing data points from the indicator reference tables.
+
+
 class ReferenceData(object):
 
     def __init__(self, x=NaN, y=NaN, el=NaN, m=NaN, s=NaN):
@@ -188,11 +198,13 @@ class ReferenceData(object):
 #        this.M = undefined
 #        this.S = undefined
 
+
 class IndicatorValue(object):
 
     def __init__(self, p=NaN, z=NaN):
         self.P = p
         self.Z = z
+
 
 def centile(z_score_value):
     if (z_score_value < -3 or z_score_value > 3):
@@ -217,6 +229,7 @@ def centile(z_score_value):
     else:
         return NaN
 
+
 def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
 
     output = {
@@ -238,7 +251,7 @@ def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
         else:
             output['isLength'] = False
             if isRecumbent:
-                 output['lengthOrHeight'] = lengthOrHeight - HEIGHTCORRECTION
+                output['lengthOrHeight'] = lengthOrHeight - HEIGHTCORRECTION
             else:
                 output['lengthOrHeight'] = lengthOrHeight
     return output
@@ -251,6 +264,7 @@ def getAdjustedLengthOrHeight(ageInDays, lengthOrHeight, isRecumbent):
 # get (i.e. a table with the values of interest in row 0 and columns
 # addressable by their name (i.e. 'L', 'M' or 'S')).
 
+
 def get4AgeIndicatorReference(ind, sex, ageInDays):
     if not _useReferenceTablesCache:
         data = get4AgeIndicatorRefData(ind, sex, ageInDays)
@@ -261,8 +275,6 @@ def get4AgeIndicatorReference(ind, sex, ageInDays):
             return ReferenceData()
     else:
         raise NotImplementedError()
-
-
 
 
 # Crops a value to a defined precision.
@@ -297,7 +309,6 @@ def symetricCrop(value, precision):
         return step
 
 
-
 # This function assumes access to function get4LengthOrHeightRefData(ind, sex,
 #   lengthOrHeight, interpolate) which provides L, M, S for a given sex,
 #   'lengthOrHeight' and 'interpolate' from whatever database they are stored in.
@@ -319,6 +330,8 @@ def get4LengthOrHeightIndicatorReference(ind, sex, lengthOrHeight):
         raise NotImplementedError()
 
 # Given a ReferenceData structure, this method returns a result with the correct P and Z.
+
+
 def calculateZandP(refDat, computeFinalZScore):
     if refDat.Y is NaN:
         return IndicatorValue(True)  # returns an "invalid" value (NaN, NaN)
@@ -349,19 +362,22 @@ def calculateZandP(refDat, computeFinalZScore):
 
 # Computes the weight-for-age indicator result.
 def computeWeight4Age(ageInDays, weight, sex, hasOedema):
-    if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight  < INPUT_MINWEIGHT:
+    if hasOedema or ageInDays < 0 or ageInDays > MAXDAYS or weight < INPUT_MINWEIGHT:
         return IndicatorValue(True)
     rd = get4AgeIndicatorReference('Weight4Age', sex, round(ageInDays))
     rd.Y = weight
     return calculateZandP(rd, True)
 
 # Computes the length/height-for-age indicator result.
+
+
 def computeLengthOrHeight4Age(ageInDays, lengthOrHeight, sex):
     if ageInDays < 0 or ageInDays > MAXDAYS or lengthOrHeight < 1:
         return IndicatorValue(True)
     rd = get4AgeIndicatorReference('LengthOrHeight4Age', sex, round(ageInDays))
     rd.Y = lengthOrHeight
     return calculateZandP(rd, False)
+
 
 def computeWeight4LengthOrHeight(weight, lengthOrHeight, sex, useLength, hasOedema):
     if hasOedema or not weight >= INPUT_MINWEIGHT:
@@ -402,7 +418,7 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
 
         # first: check & adjust length/height
         if height is not None:
-            adjusted =  getAdjustedLengthOrHeight(int(ar['ageInDays']), height, isRecumbent)
+            adjusted = getAdjustedLengthOrHeight(int(ar['ageInDays']), height, isRecumbent)
 
             ar['lengthOrHeightAdjusted'] = adjusted['lengthOrHeight']
             ar['isLength'] = adjusted['isLength']
@@ -428,11 +444,13 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
                 adjusted_height_mindays = HEIGHT_MINDAYS - 1
             else:
                 adjusted_height_mindays = HEIGHT_MINDAYS
-            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent) # TODO: Figure out if we really want this. This returns an object
+            # TODO: Figure out if we really want this. This returns an object
+            ar['lengthOrHeight'] = getAdjustedLengthOrHeight(adjusted_height_mindays, height, isRecumbent)
             ar['lengthOrHeightAdjusted'] = ar['lengthOrHeight']
 
         # weight-for-length/height aka WHZ
-        ivwhz = computeWeight4LengthOrHeight(ar['weight'], ar['lengthOrHeightAdjusted'], ar['sex'], ar['isLength'], hasOedema)
+        ivwhz = computeWeight4LengthOrHeight(
+            ar['weight'], ar['lengthOrHeightAdjusted'], ar['sex'], ar['isLength'], hasOedema)
 
         ar['ZW4LH'] = roundFloat(ivwhz.Z, DEFAULTPRECISION_ZSCORE)
         ar['PW4LH'] = roundFloat(ivwhz.P, DEFAULTPRECISION_PERCENTILE)
@@ -442,6 +460,7 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
         ar['ZW4LH'] = NaN
         ar['PW4LH'] = NaN
     return ar
+
 
 def keys_who_to_unicef(zscore_dict):
     mapping = (
