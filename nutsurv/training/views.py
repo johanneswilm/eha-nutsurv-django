@@ -10,6 +10,7 @@ from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithM
 class TrainingSurveyViewset(viewsets.ModelViewSet):
     queryset = TrainingSurvey.objects.all()
     serializer_class = TrainingSurveySerializer
+    permission_classes = ()  # Allow Any
 
 
 class TrainingRoomViewset(viewsets.ModelViewSet):
