@@ -139,7 +139,7 @@ var home = {
 
         home.drawAlertFilter();
         home.paginateAlerts();
-        home.contacModalAlerts();
+        home.contactModalAlerts();
     },
     alertType: {
         data_collection_time: {
@@ -227,7 +227,7 @@ var home = {
       	});
 
     },
-    contacModalAlerts: function(data) {
+    contactModalAlerts: function() {
 
         // Show Modal
         $('#contact-team-modal').on('show.bs.modal', function(event) {
@@ -255,7 +255,6 @@ var home = {
 
         // Mark As Completed
         $('#btn-contact-team-contacted').on('click', function(event) {
-        console.log($(event.target).attr('href'));
       		$.ajax({
       			url: $(event.target).attr('href'),
       			type: 'PATCH',
