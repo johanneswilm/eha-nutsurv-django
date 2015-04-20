@@ -10,7 +10,7 @@ import jsonfield.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dashboard', '0012_auto_20150420_1223'),
+        ('dashboard', '0010_auto_20150420_1222'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
