@@ -53,7 +53,6 @@ class TeamMemberTest(TestCase):
 
     def test_new_teammember(self):
         team_member_data = {
-            "url": "http://tim-watts-dev.eocng.org:8004/dashboard/teammembers/2/.api",
             "memberID": "2",
             "first_name": "Bob",
             "last_name": "Smitty",
@@ -67,7 +66,6 @@ class TeamMemberTest(TestCase):
 
     def test_cannot_delete(self):
         team_member_data = {
-            "url": "http://tim-watts-dev.eocng.org:8004/dashboard/teammembers/2/.api",
             "memberID": "2",
             "first_name": "Bob",
             "last_name": "Smitty",
