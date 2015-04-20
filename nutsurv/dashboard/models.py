@@ -142,14 +142,15 @@ class BaseHouseholdMember(models.Model):
         ('F', 'Female'),
         ('O', 'Other'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER)
+    gender = models.CharField(max_length=1, choices=GENDER, blank=True)
 
-    first_name = models.TextField()
-    index = models.SmallIntegerField()
+    first_name = models.TextField(blank=True)
+    index = models.SmallIntegerField(blank=True)
+    birthdate = models.DateField(blank=True, null=True)
+
     muac = models.SmallIntegerField(null=True)  # in millimeter ?
-    birthdate = models.DateField()
-    weight = models.FloatField(null=True)  # probably in kilograms ?
-    height = models.FloatField(null=True)  # probably in centimeters ?
+    weight = models.FloatField(null=True)       # probably in kilograms ?
+    height = models.FloatField(null=True)       # probably in centimeters ?
     edema = models.NullBooleanField()
 
     class Meta:

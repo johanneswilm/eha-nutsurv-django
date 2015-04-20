@@ -23,12 +23,15 @@ from .models import FirstAdminLevelsReserveClusters
 from .models import TeamMember
 from .models import HouseholdMember
 
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 
-class TeamMemberViewset(viewsets.ModelViewSet):
+class TeamMemberViewset(mixins.CreateModelMixin,
+                        mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin,
+                        viewsets.GenericViewSet):
     queryset = TeamMember.objects.all()
-    permission_classes = ()  # Allow Any
+    permission_classes = ()
     serializer_class = TeamMemberSerializer
     lookup_field = 'member_id'
     template_name = 'dashboard/teammember.html'
@@ -37,7 +40,6 @@ class TeamMemberViewset(viewsets.ModelViewSet):
 class HouseholdMemberViewset(viewsets.ModelViewSet):
     queryset = HouseholdMember.objects.all()
     serializer_class = HouseholdMemberSerializer
-    lookup_field = 'householdsurveyjson_id'
 
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):

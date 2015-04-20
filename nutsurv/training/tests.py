@@ -98,3 +98,25 @@ class TrainingSurveyTests(TestCase):
 
         self.assertEqual(response.status_code, 200, response.content)
         self.assertEqual(result['members'], [person])
+
+    def test_post_training_with_incomplete_data(self):
+
+        person = {
+            u'muac': 1,
+            u'weight': 1.50,
+            u'height': 1.3,
+        }
+
+        data = {
+            'uuid': '124',
+            'household_number': '23',
+            'team_lead': self.team_member.get_absolute_url(),
+            'team_assistant': self.team_member.get_absolute_url(),
+            'team_anthropometrist': self.team_member.get_absolute_url(),
+            'members': [person],
+        }
+
+        # test create
+        response = self.client.post('/training/surveys/', json.dumps(data), content_type="application/json")
+        json.loads(response.content)
+        self.assertEqual(response.status_code, 201, response.content)
