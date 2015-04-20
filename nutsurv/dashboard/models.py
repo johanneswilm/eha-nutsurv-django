@@ -182,6 +182,8 @@ class BaseHouseholdSurveyJSON(models.Model):
                   'field.  If in doubt, do not edit.'
     )
 
+    second_admin_level = models.CharField(max_length=20, blank=True)
+    first_admin_level = models.CharField(max_length=20, blank=True)
     uuid = models.CharField(
         max_length=255, unique=True,
         help_text='A unique identifier of an individual household survey.  '
