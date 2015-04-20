@@ -670,6 +670,7 @@ class Alert(models.Model):
         95% of cases. If a field has been left blank for more than 5% of women,
         children or household members, an alert is created.
         """
+        team_lead = household_survey.team_lead
         survey_fields = {
             'women': [
                 "breastfeeding",
@@ -728,23 +729,24 @@ class Alert(models.Model):
                         survey_fields_count[member_type][field] += 1
 
         for member_type in survey_fields.keys():
-            for field in survey_fields[member_type]:
-                percent_missing = 100 - (survey_field_count[member_type][field]*100/len(surveys_ordered[member_type]))
-                if percent_missing > 5:
-                    team_name = household_survey.get_team_name()
-                    team_id = household_survey.get_team_id()
-                    alert_text = 'Missing data issue on field {} for {} in team {}'.format(field, member_type, team_id)
-                    alert_json = {
-                        'type': 'missing_data',
-                        'team_name': team_name,
-                        'team_id': team_id,
-                        'member_type': member_type,
-                        'field': field
-                    }
-                    # Only add if there is no same alert among unarchived.
-                    if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='missing_data'):
-                        Alert.objects.create(
-                            team_lead=team_lead, text=alert_text, json=alert_json, category='missing_data')
+            if len(surveys_ordered[member_type]) > 0:
+                for field in survey_fields[member_type]:
+                    percent_missing = 100 - (survey_fields_count[member_type][field]*100/len(surveys_ordered[member_type]))
+                    if percent_missing > 5:
+                        team_name = household_survey.get_team_name()
+                        team_id = household_survey.get_team_id()
+                        alert_text = 'Missing data issue on field {} for {} in team {}'.format(field, member_type, team_id)
+                        alert_json = {
+                            'type': 'missing_data',
+                            'team_name': team_name,
+                            'team_id': team_id,
+                            'member_type': member_type,
+                            'field': field
+                        }
+                        # Only add if there is no same alert among unarchived.
+                        if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='missing_data'):
+                            Alert.objects.create(
+                                team_lead=team_lead, text=alert_text, json=alert_json, category='missing_data')
 
 
     @classmethod
