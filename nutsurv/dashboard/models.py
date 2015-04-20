@@ -33,6 +33,7 @@ from django_extensions.db.fields import (
 # Internal
 from fields import UniqueActiveField
 
+from parse_python_indentation import parse_python_indentation
 
 logger = logging.getLogger(__name__)
 
@@ -383,6 +384,13 @@ class BaseHouseholdSurveyJSON(models.Model):
     def get_women_records(self):
         return self._get_records_for_survey_types(survey_types='women')
 
+    def get_household_member_records(self):
+        if 'members' in self.json:
+            output = self.json['members']
+        else:
+            output = []
+        return output
+
     def get_women_and_child_records(self):
         return self._get_records_for_survey_types(
             survey_types=('child', 'women')
@@ -543,6 +551,7 @@ class Alert(models.Model):
         in household_survey.
         """
         cls.mapping_check_alert(household_survey)
+        cls.missing_data_alert(household_survey)
         cls.sex_ratio_alert(household_survey)
         cls.child_age_in_months_ratio_alert(household_survey)
         cls.child_age_displacement_alert(household_survey)
@@ -652,6 +661,90 @@ class Alert(models.Model):
             if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='map'):
                 Alert.objects.create(
                     team_lead=team_lead, text=alert_text, json=alert_json, category='map')
+
+
+    @classmethod
+    def missing_data_alert(cls, household_survey, test='missing-data'):
+        """In the data we expect that any piece of data is entered in at least
+        95% of cases. If a field has been left blank for more than 5% of women,
+        children or household members, an alert is created.
+        """
+        survey_fields = {
+            'women': [
+                "breastfeeding",
+                "muac",
+                "height",
+                "weight",
+                "age",
+                "pregnant",
+                "edema",
+            ],
+            'children': [
+                "muac",
+                "weight",
+                "heightType",
+                "edema",
+                "birthDate",
+                "ageInMonths",
+                "height",
+            ],
+            'household_members': [
+                "age",
+                "gender",
+            ]
+        }
+        qsl = QuestionnaireSpecification.get_active()
+        if qsl:
+            parsed_qsl = parse_python_indentation(qsl)
+            extra_women_fields = next((item for item in parsed_qsl if item["key"] == "women:"), False)
+            if extra_women_fields:
+                for field in extra_women_fields['children']:
+                    survey_fields['women'].append(field['key'])
+            extra_children_fields = next((item for item in parsed_qsl if item["key"] == "children:"), False)
+            if extra_children_fields:
+                for field in extra_children_fields['children']:
+                    survey_fields['children'].append(field['key'])
+            extra_household_member_fields = next((item for item in parsed_qsl if item["key"] == "household members:"), False)
+            if extra_household_member_fields:
+                for field in extra_household_member_fields['children']:
+                    survey_fields['household_members'].append(field['key'])
+        survey_fields_count = {}
+        for member_type in survey_fields.keys():
+            survey_fields_count[member_type] = {field:0 for field in survey_fields[member_type]}
+        surveys = household_survey.find_all_surveys_by_this_team()
+        surveys_ordered = {field:[] for field in survey_fields.keys()}
+
+        for survey in surveys:
+            surveys_ordered['women'].extend(survey.get_women_records())
+            surveys_ordered['children'].extend(survey.get_child_records())
+            surveys_ordered['household_members'].extend(survey.get_household_member_records())
+
+        for member_type in survey_fields.keys():
+            for member in surveys_ordered[member_type]:
+                for field in survey_fields[member_type]:
+                    if field in member or ('survey' in member \
+                            and field in member['survey']):
+                        survey_fields_count[member_type][field] += 1
+
+        for member_type in survey_fields.keys():
+            for field in survey_fields[member_type]:
+                percent_missing = 100 - (survey_field_count[member_type][field]*100/len(surveys_ordered[member_type]))
+                if percent_missing > 5:
+                    team_name = household_survey.get_team_name()
+                    team_id = household_survey.get_team_id()
+                    alert_text = 'Missing data issue on field {} for {} in team {}'.format(field, member_type, team_id)
+                    alert_json = {
+                        'type': 'missing_data',
+                        'team_name': team_name,
+                        'team_id': team_id,
+                        'member_type': member_type,
+                        'field': field
+                    }
+                    # Only add if there is no same alert among unarchived.
+                    if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='missing_data'):
+                        Alert.objects.create(
+                            team_lead=team_lead, text=alert_text, json=alert_json, category='missing_data')
+
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):

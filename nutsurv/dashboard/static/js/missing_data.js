@@ -69,7 +69,7 @@ var missingData = {
                 "weight",
                 "age",
                 "pregnant",
-                "edema",
+                "edema"
             ], womenQSL;
 
         if (!missingData.qsl) {
