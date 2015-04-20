@@ -75,8 +75,8 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                   'gender',
                   'birth_year',
                   'mobile',
-                  'last_survey',
                   'email',
+                  'last_survey',
                   ]
 
 
