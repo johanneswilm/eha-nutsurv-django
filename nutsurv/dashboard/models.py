@@ -663,7 +663,6 @@ class Alert(models.Model):
                 Alert.objects.create(
                     team_lead=team_lead, text=alert_text, json=alert_json, category='map')
 
-
     @classmethod
     def missing_data_alert(cls, household_survey, test='missing-data'):
         """In the data we expect that any piece of data is entered in at least
@@ -712,9 +711,9 @@ class Alert(models.Model):
                     survey_fields['household_members'].append(field['key'])
         survey_fields_count = {}
         for member_type in survey_fields.keys():
-            survey_fields_count[member_type] = {field:0 for field in survey_fields[member_type]}
+            survey_fields_count[member_type] = {field: 0 for field in survey_fields[member_type]}
         surveys = household_survey.find_all_surveys_by_this_team()
-        surveys_ordered = {field:[] for field in survey_fields.keys()}
+        surveys_ordered = {field: [] for field in survey_fields.keys()}
 
         for survey in surveys:
             surveys_ordered['women'].extend(survey.get_women_records())
@@ -724,14 +723,13 @@ class Alert(models.Model):
         for member_type in survey_fields.keys():
             for member in surveys_ordered[member_type]:
                 for field in survey_fields[member_type]:
-                    if field in member or ('survey' in member \
-                            and field in member['survey']):
+                    if field in member or ('survey' in member and field in member['survey']):
                         survey_fields_count[member_type][field] += 1
 
         for member_type in survey_fields.keys():
             if len(surveys_ordered[member_type]) > 0:
                 for field in survey_fields[member_type]:
-                    percent_missing = 100 - (survey_fields_count[member_type][field]*100/len(surveys_ordered[member_type]))
+                    percent_missing = 100 - (survey_fields_count[member_type][field] * 100 / len(surveys_ordered[member_type]))
                     if percent_missing > 5:
                         team_name = household_survey.get_team_name()
                         team_id = household_survey.get_team_id()
@@ -747,7 +745,6 @@ class Alert(models.Model):
                         if not Alert.objects.filter(team_lead=team_lead, text=alert_text, archived=False, category='missing_data'):
                             Alert.objects.create(
                                 team_lead=team_lead, text=alert_text, json=alert_json, category='missing_data')
-
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):
