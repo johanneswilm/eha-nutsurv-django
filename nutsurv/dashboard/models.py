@@ -147,9 +147,9 @@ class BaseHouseholdMember(models.Model):
     index = models.SmallIntegerField(blank=True)
     birthdate = models.DateField(blank=True, null=True)
 
-    muac = models.SmallIntegerField()  # in millimeter ?
-    weight = models.FloatField()       # probably in kilograms ?
-    height = models.FloatField()       # probably in centimeters ?
+    muac = models.SmallIntegerField(null=True)  # in millimeter ?
+    weight = models.FloatField(null=True)       # probably in kilograms ?
+    height = models.FloatField(null=True)       # probably in centimeters ?
     edema = models.NullBooleanField()
 
     class Meta:
