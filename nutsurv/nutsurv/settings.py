@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'raven.contrib.django.raven_compat',
     'django_extensions',
-    'django_nose',
 ]
 
 
