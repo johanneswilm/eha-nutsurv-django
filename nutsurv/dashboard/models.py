@@ -182,6 +182,12 @@ class BaseHouseholdSurveyJSON(models.Model):
                   'field.  If in doubt, do not edit.'
     )
 
+    second_admin_level = models.CharField(max_length=20, blank=True)
+    first_admin_level = models.CharField(max_length=20, blank=True)
+    cluster = models.IntegerField(blank=True, null=True)
+    cluster_name = models.CharField(max_length=30, blank=True)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
     uuid = models.CharField(
         max_length=255, unique=True,
         help_text='A unique identifier of an individual household survey.  '

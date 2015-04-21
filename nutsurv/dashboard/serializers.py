@@ -18,30 +18,6 @@ class SimpleUserSerializer(UserSerializer):
         fields = ['username', 'email']
 
 
-class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
-                                               lookup_field="member_id")
-    mobile = serializers.CharField()
-    memberID = serializers.CharField(source='member_id', read_only=True)
-
-    class Meta:
-
-        model = TeamMember
-        fields = ['url',
-                  'memberID',
-                  'first_name',
-                  'last_name',
-                  'gender',
-                  'birth_year',
-                  'mobile',
-                  'last_survey_position',
-                  'last_survey_created',
-                  'last_survey_cluster',
-                  'last_survey_cluster_name',
-                  'email',
-                  ]
-
-
 class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -73,7 +49,35 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
             'team_lead',
             'team_assistant',
             'team_anthropometrist',
+            'first_admin_level',
+            'second_admin_level',
+            'cluster',
+            'cluster_name',
+            'start_time',
+            'end_time',
         )
+
+
+class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
+                                               lookup_field="member_id")
+    mobile = serializers.CharField()
+    memberID = serializers.CharField(source='member_id', read_only=True)
+    last_survey = HouseholdSurveyJSONSerializer(many=False, read_only=True)
+
+    class Meta:
+
+        model = TeamMember
+        fields = ['url',
+                  'memberID',
+                  'first_name',
+                  'last_name',
+                  'gender',
+                  'birth_year',
+                  'mobile',
+                  'email',
+                  'last_survey',
+                  ]
 
 
 class AlertSerializer(serializers.HyperlinkedModelSerializer):

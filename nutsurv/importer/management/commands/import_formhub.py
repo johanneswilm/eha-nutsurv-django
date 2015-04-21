@@ -234,6 +234,12 @@ class Command(BaseCommand):
                 household_survey = HouseholdSurveyJSON(
                     uuid=parsed['_uuid'],
                     household_number=parsed['hh_number'],
+                    first_admin_level=parsed['state'],
+                    second_admin_level=parsed['lga'],
+                    cluster=parsed['cluster'],
+                    cluster_name=parsed['cluster_name'],
+                    start_time=parsed['starttime'],
+                    end_time=parsed['endtime'],
                     json={
                         "uuid": parsed['_uuid'],
                         "syncDate": parsed['_submission_time'] + ".000Z",
