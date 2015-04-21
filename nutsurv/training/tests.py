@@ -116,4 +116,3 @@ class TrainingSurveyTests(TestCase):
         response = self.client.post('/training/surveys/', json.dumps(data), content_type="application/json")
         json.loads(response.content)
         self.assertEqual(response.status_code, 201, response.content)
-
