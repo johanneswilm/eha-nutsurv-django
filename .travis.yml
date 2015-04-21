@@ -23,5 +23,5 @@ script:
   - echo 'POSTGIS_VERSION = (2, 1)' >> configuration.py
   - ln -s /usr/lib/python2.7/dist-packages/psycopg2 ~/virtualenv/python2.7/lib/python2.7/site-packages
   - ln -s /usr/lib/python2.7/dist-packages/scipy  ~/virtualenv/python2.7/lib/python2.7/site-packages
-  - py.test nutsurv/*/tests.py
+  - py.test */tests.py
 
