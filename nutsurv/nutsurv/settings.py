@@ -159,10 +159,11 @@ LOGGING = {
         '': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
         },
     },
 }
+
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
