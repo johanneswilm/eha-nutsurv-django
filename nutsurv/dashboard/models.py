@@ -166,7 +166,6 @@ class BaseHouseholdSurveyJSON(models.Model):
         verbose_name = 'household survey'
         abstract = True
 
-    team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
     team_assistant = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_assistant')
     team_anthropometrist = models.ForeignKey('TeamMember', related_name='%(class)s_surveys_as_team_anthropometrist')
     household_number = models.SmallIntegerField()
@@ -493,7 +492,7 @@ class BaseHouseholdSurveyJSON(models.Model):
 
 
 class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
-    pass
+    team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
 
 
 class Alert(models.Model):
