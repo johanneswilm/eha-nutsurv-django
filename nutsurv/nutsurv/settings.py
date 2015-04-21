@@ -118,6 +118,9 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates'),
+)
 
 COMPRESS_PRECOMPILERS = (
     ('text/sass', 'sassc "{infile}" "{outfile}"'),
