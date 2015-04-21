@@ -83,7 +83,6 @@ class TeamMemberTest(TestCase):
         tm_url = response['Location']
 
         response = self.client.patch(tm_url, {'first_name': 'Robert'})
-        print json.loads(response.content)
         self.assertEqual(json.loads(response.content)['firstName'], 'Robert')
 
     def test_can_delete(self):

@@ -165,7 +165,6 @@ LOGGING = {
     },
 }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
