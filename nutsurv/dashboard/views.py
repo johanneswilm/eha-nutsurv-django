@@ -23,13 +23,10 @@ from .models import FirstAdminLevelsReserveClusters
 from .models import TeamMember
 from .models import HouseholdMember
 
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 
 
-class TeamMemberViewset(mixins.CreateModelMixin,
-                        mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin,
-                        viewsets.GenericViewSet):
+class TeamMemberViewset(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all()
     permission_classes = ()
     serializer_class = TeamMemberSerializer

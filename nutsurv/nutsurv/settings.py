@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'raven.contrib.django.raven_compat',
     'django_extensions',
+    'django_nose',
 ]
 
 
@@ -159,10 +160,12 @@ LOGGING = {
         '': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
         },
     },
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
