@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework_gis.serializers import GeoModelSerializer
 
 from .models import Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember
 
@@ -32,7 +33,7 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
+class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoModelSerializer):
 
     class Meta:
         model = HouseholdSurveyJSON
@@ -41,6 +42,8 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
             'team_assistant': {'lookup_field': 'member_id'},
             'team_anthropometrist': {'lookup_field': 'member_id'},
         }
+        geo_field = "point"
+
         fields = (
             'url',
             'uuid',
@@ -55,6 +58,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer):
             'cluster_name',
             'start_time',
             'end_time',
+            'point',
         )
 
 

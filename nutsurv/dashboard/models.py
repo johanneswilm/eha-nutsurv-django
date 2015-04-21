@@ -44,7 +44,6 @@ class TeamMember(models.Model):
         (MALE, _('Male')),
         (FEMALE, _('Female')),
     )
-
     member_id = AutoSlugField(blank=False,
                               unique=True,
                               populate_from="id",
@@ -128,7 +127,7 @@ def validate_json(spec_file):
 
     @wraps(validate_json)
     def wrapped(value):
-        assert survey_schema, "Trying to validate a non existant JSON schema"
+        assert survey_schema, "Trying to validate a non existant JSON schema file %s" % spec_file
         # It really should exist by now.
         validictory.validate(value, survey_schema, required_by_default=False)
     return wrapped
@@ -160,7 +159,7 @@ class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
 
 
-class BaseHouseholdSurveyJSON(models.Model):
+class BaseHouseholdSurveyJSON(gismodels.Model):
 
     class Meta:
         verbose_name = 'household survey'
@@ -171,8 +170,8 @@ class BaseHouseholdSurveyJSON(models.Model):
     household_number = models.SmallIntegerField()
 
     json = JSONField(
-        validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
-                                  + '/bower_components/data-models/schemas/NutritionSurvey.json')],
+        # validators=[validate_json(settings.BOWER_COMPONENTS_ROOT
+        #                          + '/data-models/schemas/NutritionSurvey.json')],
         null=False,
         blank=False,
         help_text='A JSON document containing data acquired from one '
@@ -493,6 +492,7 @@ class BaseHouseholdSurveyJSON(models.Model):
 
 class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
     team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
+    point = gismodels.PointField()
 
 
 class Alert(models.Model):
