@@ -18,7 +18,6 @@ from django.utils.translation import ugettext as _
 import django.contrib.gis.db.models as gismodels
 from django.db import models
 from django.contrib.gis.geos import Point
-from django.conf import settings
 from django.db.models import Q
 
 
