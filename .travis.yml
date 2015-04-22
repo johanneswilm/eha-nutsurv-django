@@ -17,6 +17,7 @@ script:
   - psql -f enable_postgis.sql -U postgres
   - psql -f make_nutsurv_dev.sql -U postgres
   - bower install
+  - cd ./bower_components/nut-surv/ && npm install && bower install && cd ../..
   - cd nutsurv
   - sed -iorig s/postgres/nutsurv_dev/ nutsurv/settings.py
   - echo 'POSTGIS_VERSION = (2, 1)' >> configuration.py
