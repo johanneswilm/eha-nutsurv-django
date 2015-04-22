@@ -587,16 +587,10 @@ class Alert(models.Model):
             to the server, but the location is not inside the boundaries of the
             cluster that the data supposedly comes from.
         """
-        cluster_id = household_survey.get_cluster_id()
-        location = household_survey.get_location()
-        team_lead = household_survey.team_lead
-        team_id = household_survey.get_team_id()
-        team_name = household_survey.get_team_name()
-
-        if cluster_id is None:
+        if household_survey.get_cluster_id() is None:
 
             alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
-                team_id,
+                household_survey.get_team_id(),
                 household_survey.uuid)
 
             alert_json = {
@@ -604,65 +598,64 @@ class Alert(models.Model):
                 'survey_id': household_survey.id,
             }
 
-            if location:
-                alert_json['location'] = location
+            if household_survey.get_location():
+                alert_json['location'] = household_survey.get_location()
 
             yield dict(
-                team_lead=team_lead,
+                team_lead=(household_survey.team_lead),
                 survey=household_survey,
                 text=alert_text,
                 json=alert_json,
                 category='map'
             )
 
-        if location is None:
+        if household_survey.get_location() is None:
 
             alert_text = 'No location for survey of team {} (survey {})'.format(
-                team_id,
+                household_survey.get_team_id(),
                 household_survey.id)
 
             alert_json = {
                 'type': 'mapping_check_missing_location',
-                'team_name': team_name,
-                'team_id': team_id,
+                'team_name': (household_survey.get_team_name()),
+                'team_id': (household_survey.get_team_id()),
                 'survey_id': household_survey.id,
             }
 
-            if cluster_id:
-                alert_json['cluster_id'] = cluster_id
+            if household_survey.get_cluster_id():
+                alert_json['cluster_id'] = household_survey.get_cluster_id()
 
             yield dict(
-                team_lead=team_lead,
+                team_lead=(household_survey.team_lead),
                 text=alert_text,
                 json=alert_json,
                 category='map'
             )
 
-        if not (cluster_id and location):
+        if not (household_survey.get_cluster_id() and household_survey.get_location()):
             return
 
         # get cluster data
-        cluster = Clusters.get_cluster_from_active(cluster_id)
+        cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
 
         # if cluster data not found, assume location incorrect
         if cluster is None:
-
             alert_text = 'Unknown cluster ID {} for team {} (survey {})'.format(
-                cluster_id,
-                team_id,
+                household_survey.get_cluster_id(),
+                household_survey.get_team_id(),
                 household_survey.id)
 
             alert_json = {
                 'type': 'mapping_check_unknown_cluster',
-                'team_name': team_name,
-                'team_id': team_id,
-                'cluster_id': cluster_id,
+                'team_name': (household_survey.get_team_name()),
+                'team_id': (household_survey.get_team_id()),
+                'cluster_id': (household_survey.get_cluster_id()),
                 'survey_id': household_survey.id,
-                'location': location
+                'location': (household_survey.get_location())
             }
 
             yield dict(
-                team_lead=team_lead,
+                team_lead=(household_survey.team_lead),
                 text=alert_text,
                 json=alert_json,
                 category='map'
@@ -686,22 +679,22 @@ class Alert(models.Model):
             # if no second admin level found, assume database inconsistencies and abort
             return
 
-        if not second_admin_level.contains_location(location):
-            alert_text = 'Wrong location for team {} (survey {})'.format(team_id,
-                                                                         household_survey.id)
+        if not second_admin_level.contains_location(household_survey.get_location()):
+            alert_text = 'Wrong location for team {} (survey {})'.format(household_survey.get_team_id(),
+                household_survey.id)
             alert_json = {
                 'type': 'mapping_check_wrong_location',
-                'team_name': team_name,
-                'team_id': team_id,
-                'cluster_id': cluster_id,
+                'team_name': (household_survey.get_team_name()),
+                'team_id': (household_survey.get_team_id()),
+                'cluster_id': (household_survey.get_cluster_id()),
                 'second_admin_level_name': second_admin_level_name,
                 'first_admin_level_name': first_admin_level_name,
                 'survey_id': household_survey.id,
-                'location': location
+                'location': (household_survey.get_location())
             }
 
             yield dict(
-                team_lead=team_lead,
+                team_lead=(household_survey.team_lead),
                 text=alert_text,
                 json=alert_json,
                 category='map'
