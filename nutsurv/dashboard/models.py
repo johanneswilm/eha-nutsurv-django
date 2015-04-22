@@ -1045,6 +1045,15 @@ class Alert(models.Model):
                     survey=household_survey, team_lead=team_lead, text=alert_text, json=alert_json, category='timing')
 
     @classmethod
+    def median_children_under_five_alerts(cls):
+        """This method is meant to be run once a day (or every few days),
+        typically after midnight.  It processes all household surveys and
+        performs the following check (and emits the following alert if
+        appropriate) for each detected team:
+        
+        """
+
+    @classmethod
     def time_to_complete_single_survey_alerts(cls):
         """This method is meant to be run once a day (or every few days),
         typically after midnight.  It processes all household surveys and
