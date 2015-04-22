@@ -40,7 +40,22 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
     class Meta:
         model = TrainingSurvey
         extra_kwargs = HouseholdSurveyJSONSerializer.Meta.extra_kwargs
-        fields = [f for f in HouseholdSurveyJSONSerializer.Meta.fields if f != 'team_lead'] + ['members', ]
+
+        fields = (
+            'url',
+            'uuid',
+            'household_number',
+            'members',
+            'team_assistant',
+            'team_anthropometrist',
+            'first_admin_level',
+            'second_admin_level',
+            'cluster',
+            'cluster_name',
+            'start_time',
+            'end_time',
+            'members',
+        )
 
 
 class TrainingSurveySerializerWithMemberDetails(TrainingSurveySerializer):
