@@ -511,7 +511,21 @@ class Alert(models.Model):
         help_text='A JSON document containing data for one alert.'
     )
 
-    category = models.CharField(max_length=255, default='general')
+    ALERT_CATEGORIES = (
+        'general',
+        'map',
+        'sex',
+        'age_distribution',
+        'number_distribution',
+        'timing',
+    )
+
+    category = models.CharField(
+        max_length=255,
+        default='general',
+        choices=ALERT_CATEGORIES,
+    )
+
 
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
