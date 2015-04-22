@@ -1045,13 +1045,51 @@ class Alert(models.Model):
                     survey=household_survey, team_lead=team_lead, text=alert_text, json=alert_json, category='timing')
 
     @classmethod
-    def median_children_under_five_alerts(cls):
+    def children_under_five_alerts(cls):
         """This method is meant to be run once a day (or every few days),
         typically after midnight.  It processes all household surveys and
         performs the following check (and emits the following alert if
         appropriate) for each detected team:
-        
+
+        If the mean number of children under age five for a team are 50% under
+        the median median number of children under age five.
         """
+        # Process all household surveys.
+        number_children = []
+        by_team = {}
+        surveys = HouseholdSurveyJSON.objects.all()
+        for survey in surveys:
+            children_in_survey = len(survey.get_child_records())
+            number_children.append(children_in_survey)
+            team_id = survey.get_team_id()
+            if team_id is None:
+                continue
+            if team_id not in by_team:
+                by_team[team_id] = {
+                    'team_lead': survey.team_lead,
+                    'team_name': survey.get_team_name(),
+                    'number_children': []
+                }
+            by_team[team_id]['number_children'].append(children_in_survey)
+
+        median_children = numpy.median(number_children)
+
+        for team_id, team_info in by_team.iteritems():
+            mean_children = numpy.mean(team_info['number_children'])
+            if mean_children < median_children/2:
+                alert_text = u'Child under 5 number issue in team {}'.\
+                    format(team_id)
+                alert_json = {
+                    'type': 'children_under_five',
+                    'team_id': team_id,
+                    'team_name': team_info['team_name']
+                }
+                # Only add if there is no same alert among unarchived.
+                if not Alert.objects.filter(team_lead=team_info['team_lead'], text=alert_text, archived=False, category='number_interviews'):
+                    Alert.objects.create(
+                        team_lead=team_info['team_lead'], text=alert_text, json=alert_json, category='number_interviews')
+
+
 
     @classmethod
     def time_to_complete_single_survey_alerts(cls):
