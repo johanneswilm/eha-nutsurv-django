@@ -2,6 +2,56 @@ import warnings
 
 
 def parse_python_indentation(raw_python_file_contents):
+    """Parse the contents of a file with python style indentation.
+    >>> clean_file_contents = '''
+    ... # ignored line
+    ... level 1 # comments are ignored
+    ...     level 2
+    ...         level 3
+    ... level 1
+    ... level 1
+    ...     level 2'''
+    >>> out = parse_python_indentation(clean_file_contents)
+    >>> result = [{
+    ...     'key': 'level 1',
+    ...     'children': [{
+    ...         'key': 'level 2',
+    ...         'children': [{
+    ...             'key': 'level 3',
+    ...             'children': []
+    ...         }]
+    ...     }]
+    ... }, {
+    ...     'key': 'level 1',
+    ...     'children': []
+    ... }, {
+    ...     'key': 'level 1',
+    ...     'children': [{
+    ...         'key': 'level 2',
+    ...         'children': []
+    ...     }]
+    ... }]
+    >>> cmp(out, result)
+    0
+    >>> unclean_file_contents = '''
+    ... # ignored line
+    ... level 1 # comments are ignored
+    ...     level 2
+    ...       level 3 # The indentation level is too low here.
+    ... level 1
+    ... level 1
+    ...     level 2'''
+    >>> with warnings.catch_warnings(record=True) as w:
+    ...     warnings.simplefilter("always")
+    ...     a = parse_python_indentation(unclean_file_contents)
+    >>> len(w)
+    1
+    >>> w[0].category
+    <type 'exceptions.UserWarning'>
+    >>> str(w[0].message)
+    'Python formatting with errors!'
+    """
+
     raw_lines = raw_python_file_contents.split('\n')
     cleaned_lines = []
     python_output = []
@@ -27,12 +77,14 @@ def parse_python_indentation(raw_python_file_contents):
 
     # Turn Python into a construct of Lists and Objects
     for cleaned_line in cleaned_lines:
-        indentations = (len(cleaned_line) - len(cleaned_line.lstrip())) / indentation_length
+        indentations = float(len(cleaned_line) - len(cleaned_line.lstrip())) / indentation_length
         current_list = python_output
 
         if indentations % 1 != 0:
             # indentation characters do not correspond to a known indentation level.
             error = True
+
+        indentations = int(indentations)
 
         for j in range(0, indentations):
             if len(current_list) == 0:
@@ -50,3 +102,7 @@ def parse_python_indentation(raw_python_file_contents):
         warnings.warn('Python formatting with errors!', UserWarning)
 
     return python_output
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
