@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'nutsurv.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'template_postgis',
+        'NAME': 'nutsurv_dev',
         'USER': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -118,6 +118,9 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates'),
+)
 
 COMPRESS_PRECOMPILERS = (
     ('text/sass', 'sassc "{infile}" "{outfile}"'),
@@ -159,10 +162,11 @@ LOGGING = {
         '': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
         },
     },
 }
+
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))

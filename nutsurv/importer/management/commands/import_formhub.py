@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.contrib.gis.geos import Point
 from django.db.utils import IntegrityError
 
 from dashboard.models import HouseholdSurveyJSON, HouseholdMember, Alert
@@ -234,6 +235,13 @@ class Command(BaseCommand):
                 household_survey = HouseholdSurveyJSON(
                     uuid=parsed['_uuid'],
                     household_number=parsed['hh_number'],
+                    first_admin_level=parsed['state'],
+                    second_admin_level=parsed['lga'],
+                    cluster=parsed['cluster'],
+                    cluster_name=parsed['cluster_name'],
+                    start_time=parsed['starttime'],
+                    end_time=parsed['endtime'],
+                    point=Point(parsed['_gps_latitude'], parsed['_gps_longitude']),
                     json={
                         "uuid": parsed['_uuid'],
                         "syncDate": parsed['_submission_time'] + ".000Z",

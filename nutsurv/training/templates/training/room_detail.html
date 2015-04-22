@@ -2,34 +2,22 @@
 {% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='training' %}{% endblock %}
 {% block content %}
 <div class="page-header">
-    <div class="selection_choices">
-      <select id="view_as" title="View ...">
-        <option value="checkmark" selected="selected">Data completeness</option>
-        <option value="height">Height in cm</option>
-        <option value="weight">Weight in kg</option>
-        <option value="muac">MUAC in ⌀ cm</option>
-        <option value="all">ALL THE DATA</option>
-      </select>
-      <select id="show_data" multiple title="Show ..." data-selected-text-format="count">
-        <option value="multiple_rounds">multiple rounds per household</option>
-        <option value="aggregation_columns">aggregation columns</option>
-        <option value="multiple_children">multiple children</option>
-      </select>
-    </div>
-    <h1><i class="fa fa-train"></i> Training Room {{ id }}</h1>
+    <h1><i class="fa fa-university"></i> Training Room {{ id }}</h1>
 </div>
-
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">Details</div>
-            <div class="panel-body main">
-              <p>This room was created at: {{ created }}.
-            </div>
+        <div id="tabs" role="tabpanel">
+          <ul id="survey_completed_tabs" class="nav nav-tabs">
+            <li id="tool_standardization"><a href="?tool_standardization">Tool standardization</a></li>
+            <li id="all_data_present"><a href="?all_data_present">Data completeness</a></li>
+            <li id="height" class="disabled"><a href="?height">Height</a></li>
+            <li id="weight" class="disabled"><a href="?weight">Weight</a></li>
+            <li id="muac" class="disabled"><a href="?muac">MUAC</a></li>
+          </ul>
         </div>
         <table class="table">
             <thead>
-                <tr>
+                <tr id="tableheaders">
                     <th data-column-name="team">Team</th>
                     <th data-column-name="total_members">Total</th>
                     <th data-column-name="all_data_present">Complete</th>

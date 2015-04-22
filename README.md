@@ -31,6 +31,7 @@ Install [Docker](https://docs.docker.com/installation/#installation)
 
 Now in the shell within the container:
 
+    # createdb -h localhost -U postgres -T template_postgis nutsurv_dev
     # python /opt/nutsurv/nutsurv/manage.py migrate
     # python /opt/nutsurv/nutsurv/manage.py createsuperuser
     # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001

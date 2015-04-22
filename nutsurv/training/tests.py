@@ -27,7 +27,6 @@ class TrainingSurveyTests(TestCase):
     def test_training_survey_does_not_show_in_regular_surveys(self):
 
         x = TrainingSurvey(
-            team_lead=self.team_member,
             team_assistant=self.team_member,
             team_anthropometrist=self.team_member,
             household_number=22,
@@ -57,7 +56,6 @@ class TrainingSurveyTests(TestCase):
         response = self.client.post('/training/surveys/', data={
             'uuid': '123',
             'household_number': '22',
-            'team_lead': self.team_member.get_absolute_url(),
             'team_assistant': self.team_member.get_absolute_url(),
             'team_anthropometrist': self.team_member.get_absolute_url(),
         })
@@ -80,7 +78,6 @@ class TrainingSurveyTests(TestCase):
         data = {
             'uuid': '123',
             'household_number': '22',
-            'team_lead': self.team_member.get_absolute_url(),
             'team_assistant': self.team_member.get_absolute_url(),
             'team_anthropometrist': self.team_member.get_absolute_url(),
             'members': [person],
@@ -98,3 +95,24 @@ class TrainingSurveyTests(TestCase):
 
         self.assertEqual(response.status_code, 200, response.content)
         self.assertEqual(result['members'], [person])
+
+    def test_post_training_with_incomplete_data(self):
+
+        person = {
+            u'muac': 1,
+            u'weight': 1.50,
+            u'height': 1.3,
+        }
+
+        data = {
+            'uuid': '124',
+            'household_number': '23',
+            'team_assistant': self.team_member.get_absolute_url(),
+            'team_anthropometrist': self.team_member.get_absolute_url(),
+            'members': [person],
+        }
+
+        # test create
+        response = self.client.post('/training/surveys/', json.dumps(data), content_type="application/json")
+        json.loads(response.content)
+        self.assertEqual(response.status_code, 201, response.content)
