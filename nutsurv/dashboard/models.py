@@ -560,14 +560,21 @@ class Alert(models.Model):
         relevant alerts being created in case they are triggered by data stored
         in household_survey.
         """
-        cls.mapping_check_alert(household_survey)
-        cls.sex_ratio_alert(household_survey)
-        cls.child_age_in_months_ratio_alert(household_survey)
-        cls.child_age_displacement_alert(household_survey)
-        cls.woman_age_14_15_displacement_alert(household_survey)
-        cls.woman_age_4549_5054_displacement_alert(household_survey)
-        cls.digit_preference_alert(household_survey)
-        cls.data_collection_time_alert(household_survey)
+
+        alert_generators = [
+            cls.mapping_check_alert,
+            cls.sex_ratio_alert,
+            cls.child_age_in_months_ratio_alert,
+            cls.child_age_displacement_alert,
+            cls.woman_age_14_15_displacement_alert,
+            cls.woman_age_4549_5054_displacement_alert,
+            cls.digit_preference_alert,
+            cls.data_collection_time_alert,
+        ]
+
+        for fun in alert_generators:
+            for alert in fun(household_survey):
+                cls.get_or_create_alert(alert)
 
     @classmethod
     def mapping_check_alert(cls, household_survey):
@@ -600,7 +607,7 @@ class Alert(models.Model):
             if location:
                 alert_json['location'] = location
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 survey=household_survey,
                 text=alert_text,
@@ -624,7 +631,7 @@ class Alert(models.Model):
             if cluster_id:
                 alert_json['cluster_id'] = cluster_id
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -654,7 +661,7 @@ class Alert(models.Model):
                 'location': location
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -669,7 +676,7 @@ class Alert(models.Model):
 
         # if first and second admin level names not found, assume database inconsistencies and abort
         if not (first_admin_level_name and second_admin_level_name):
-            return False
+            return
 
         # if first and second admin level found, check the location
         second_admin_level = SecondAdminLevel.find_second_admin_level(
@@ -677,7 +684,7 @@ class Alert(models.Model):
 
         if second_admin_level is None:
             # if no second admin level found, assume database inconsistencies and abort
-            return False
+            return
 
         if not second_admin_level.contains_location(location):
             alert_text = 'Wrong location for team {} (survey {})'.format(team_id,
@@ -693,7 +700,7 @@ class Alert(models.Model):
                 'location': location
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -755,7 +762,7 @@ class Alert(models.Model):
                 'team_id': team_id
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -828,7 +835,7 @@ class Alert(models.Model):
                 'team_id': team_id
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -880,7 +887,7 @@ class Alert(models.Model):
                 'team_id': team_id
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -935,7 +942,7 @@ class Alert(models.Model):
                 'team_id': team_id
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -991,7 +998,7 @@ class Alert(models.Model):
                 'team_name': team_name
             }
 
-            cls.get_or_create_alert(
+            yield dict(
                 team_lead=team_lead,
                 text=alert_text,
                 json=alert_json,
@@ -1071,7 +1078,7 @@ class Alert(models.Model):
                     'team_name': team_name
                 }
 
-                cls.get_or_create_alert(
+                yield dict(
                     team_lead=team_lead,
                     text=alert_text,
                     json=alert_json,
@@ -1126,7 +1133,7 @@ class Alert(models.Model):
             if location:
                 alert_json['location'] = location
 
-            cls.get_or_create_alert(
+            yield dict(
                 survey=household_survey,
                 team_lead=team_lead,
                 text=alert_text,
@@ -1269,7 +1276,7 @@ class Alert(models.Model):
                         'day': day.isoformat()
                     }
 
-                    cls.get_or_create_alert(
+                    yield dict(
                         team_lead=by_team[team_id]['team_lead'],
                         text=alert_text,
                         json=alert_json,
@@ -1414,7 +1421,7 @@ class Alert(models.Model):
                     'team_name': by_team[team_id]['team_name']
                 }
 
-                cls.get_or_create_alert(
+                yield dict(
                     team_lead=by_team[team_id]['team_name'],
                     text=alert_text,
                     json=alert_json,
