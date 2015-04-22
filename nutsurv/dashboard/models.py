@@ -1174,10 +1174,13 @@ class Alert(models.Model):
                     'team_id': team_id,
                     'team_name': team_info['team_name']
                 }
-                # Only add if there is no same alert among unarchived.
-                if not Alert.objects.filter(team_lead=team_info['team_lead'], text=alert_text, archived=False, category='number_interviews'):
-                    Alert.objects.create(
-                        team_lead=team_info['team_lead'], text=alert_text, json=alert_json, category='number_interviews')
+
+                cls.get_or_create_alert(
+                    team_lead=by_team[team_id]['team_lead'],
+                    text=alert_text,
+                    json=alert_json,
+                    category='age_distribution'
+                )
 
 
 
