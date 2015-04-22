@@ -562,7 +562,10 @@ class Alert(models.Model):
         """
 
         alert_generators = [
-            cls.mapping_check_alert,
+            cls.mapping_check_missing_cluster,
+            cls.mapping_check_missing_location,
+            cls.mapping_check_unknown_cluster,
+            cls.mapping_check_wrong_location,
             cls.sex_ratio_alert,
             cls.child_age_in_months_ratio_alert,
             cls.child_age_displacement_alert,
@@ -577,16 +580,11 @@ class Alert(models.Model):
                 cls.get_or_create_alert(alert)
 
     @classmethod
-    def mapping_check_alert(cls, household_survey):
-        """These are four different alerts related to location and cluster id.
-        mapping_check_missing_cluster_id: Cluster ID is missing.
-        mapping_check_missing_location: Location is missing.
-        mapping_check_unknown_cluster: Cluster ID is given, but it's unknown to
-            the server
-        mapping_check_wrong_location: Cluster ID and location are given and known
-            to the server, but the location is not inside the boundaries of the
-            cluster that the data supposedly comes from.
+    def mapping_check_missing_cluster(cls, household_survey):
         """
+        Generates alert if cluster is missing
+        """
+
         if household_survey.get_cluster_id() is None:
 
             alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
@@ -608,6 +606,12 @@ class Alert(models.Model):
                 json=alert_json,
                 category='map'
             )
+
+    @classmethod
+    def mapping_check_missing_location(cls, household_survey):
+        """
+        Generates alert if location is missing
+        """
 
         if household_survey.get_location() is None:
 
@@ -631,6 +635,12 @@ class Alert(models.Model):
                 json=alert_json,
                 category='map'
             )
+
+    @classmethod
+    def mapping_check_unknown_cluster(cls, household_survey):
+        """
+        Generates alert if cluster is given, but it's unknown to the server
+        """
 
         if not (household_survey.get_cluster_id() and household_survey.get_location()):
             return
@@ -661,7 +671,15 @@ class Alert(models.Model):
                 category='map'
             )
 
-            return
+    @classmethod
+    def mapping_check_wrong_location(cls, household_survey):
+        """
+        cluster and location are given and known
+        to the server, but the location is not inside the boundaries of the
+        cluster that the data supposedly comes from.
+        """
+
+        cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
 
         # if cluster data found, get first and second admin level
         second_admin_level_name = cluster.get('second_admin_level_name', None)
