@@ -16,3 +16,4 @@ django-phonenumber-field
 djangorestframework-camel-case
 validictory
 ipython
+djangorestframework-gis
