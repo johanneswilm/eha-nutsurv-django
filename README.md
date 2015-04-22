@@ -18,7 +18,7 @@ Install [Docker](https://docs.docker.com/installation/#installation)
     $ sudo pip install -U docker-compose
     $ cd eha-nutsurv-django/
     $ bower install
-    $ cd ./bower_components/nut-surv/ ; npm install && bower install && cd ../..
+    $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
     $ sudo docker-compose build
 
 
