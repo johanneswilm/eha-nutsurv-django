@@ -19,7 +19,7 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
     def create(self, validated_data):
 
         family_members = validated_data.pop('members')
-        instance = super(HouseholdSurveyJSONSerializer, self).create(validated_data)
+        instance = super(TrainingSurveySerializer, self).create(validated_data)
         validated_data['members'] = family_members
         self.update(instance, validated_data)
 
@@ -28,7 +28,7 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
     def update(self, instance, validated_data):
 
         family_members = validated_data.pop('members')
-        super(HouseholdSurveyJSONSerializer, self).update(instance, validated_data)
+        super(TrainingSurveySerializer, self).update(instance, validated_data)
         instance.members.all().delete()
         new_family = [TrainingRoomMember(index=index, household_survey=instance, **family_member)
                       for index, family_member in enumerate(family_members)]
@@ -40,7 +40,22 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
     class Meta:
         model = TrainingSurvey
         extra_kwargs = HouseholdSurveyJSONSerializer.Meta.extra_kwargs
-        fields = HouseholdSurveyJSONSerializer.Meta.fields + ('members',)
+
+        fields = (
+            'url',
+            'uuid',
+            'household_number',
+            'members',
+            'team_assistant',
+            'team_anthropometrist',
+            'first_admin_level',
+            'second_admin_level',
+            'cluster',
+            'cluster_name',
+            'start_time',
+            'end_time',
+            'members',
+        )
 
 
 class TrainingSurveySerializerWithMemberDetails(TrainingSurveySerializer):
