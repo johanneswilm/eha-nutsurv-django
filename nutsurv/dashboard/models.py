@@ -585,27 +585,28 @@ class Alert(models.Model):
         Generates alert if cluster is missing
         """
 
-        if household_survey.get_cluster_id() is None:
+        if household_survey.get_cluster_id():
+            return
 
-            alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
-                household_survey.get_team_id(),
-                household_survey.uuid)
+        alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
+            household_survey.get_team_id(),
+            household_survey.uuid)
 
-            alert_json = {
-                'type': 'mapping_check_missing_cluster_id',
-                'survey_id': household_survey.id,
-            }
+        alert_json = {
+            'type': 'mapping_check_missing_cluster_id',
+            'survey_id': household_survey.id,
+        }
 
-            if household_survey.get_location():
-                alert_json['location'] = household_survey.get_location()
+        if household_survey.get_location():
+            alert_json['location'] = household_survey.get_location()
 
-            yield dict(
-                team_lead=(household_survey.team_lead),
-                survey=household_survey,
-                text=alert_text,
-                json=alert_json,
-                category='map'
-            )
+        yield dict(
+            team_lead=(household_survey.team_lead),
+            survey=household_survey,
+            text=alert_text,
+            json=alert_json,
+            category='map'
+        )
 
     @classmethod
     def mapping_check_missing_location(cls, household_survey):
@@ -613,28 +614,29 @@ class Alert(models.Model):
         Generates alert if location is missing
         """
 
-        if household_survey.get_location() is None:
+        if household_survey.get_location():
+            return
 
-            alert_text = 'No location for survey of team {} (survey {})'.format(
-                household_survey.get_team_id(),
-                household_survey.id)
+        alert_text = 'No location for survey of team {} (survey {})'.format(
+            household_survey.get_team_id(),
+            household_survey.id)
 
-            alert_json = {
-                'type': 'mapping_check_missing_location',
-                'team_name': (household_survey.get_team_name()),
-                'team_id': (household_survey.get_team_id()),
-                'survey_id': household_survey.id,
-            }
+        alert_json = {
+            'type': 'mapping_check_missing_location',
+            'team_name': (household_survey.get_team_name()),
+            'team_id': (household_survey.get_team_id()),
+            'survey_id': household_survey.id,
+        }
 
-            if household_survey.get_cluster_id():
-                alert_json['cluster_id'] = household_survey.get_cluster_id()
+        if household_survey.get_cluster_id():
+            alert_json['cluster_id'] = household_survey.get_cluster_id()
 
-            yield dict(
-                team_lead=(household_survey.team_lead),
-                text=alert_text,
-                json=alert_json,
-                category='map'
-            )
+        yield dict(
+            team_lead=(household_survey.team_lead),
+            text=alert_text,
+            json=alert_json,
+            category='map'
+        )
 
     @classmethod
     def mapping_check_unknown_cluster(cls, household_survey):
@@ -649,27 +651,29 @@ class Alert(models.Model):
         cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
 
         # if cluster data not found, assume location incorrect
-        if cluster is None:
-            alert_text = 'Unknown cluster ID {} for team {} (survey {})'.format(
-                household_survey.get_cluster_id(),
-                household_survey.get_team_id(),
-                household_survey.id)
+        if cluster:
+            return
 
-            alert_json = {
-                'type': 'mapping_check_unknown_cluster',
-                'team_name': (household_survey.get_team_name()),
-                'team_id': (household_survey.get_team_id()),
-                'cluster_id': (household_survey.get_cluster_id()),
-                'survey_id': household_survey.id,
-                'location': (household_survey.get_location())
-            }
+        alert_text = 'Unknown cluster ID {} for team {} (survey {})'.format(
+            household_survey.get_cluster_id(),
+            household_survey.get_team_id(),
+            household_survey.id)
 
-            yield dict(
-                team_lead=(household_survey.team_lead),
-                text=alert_text,
-                json=alert_json,
-                category='map'
-            )
+        alert_json = {
+            'type': 'mapping_check_unknown_cluster',
+            'team_name': (household_survey.get_team_name()),
+            'team_id': (household_survey.get_team_id()),
+            'cluster_id': (household_survey.get_cluster_id()),
+            'survey_id': household_survey.id,
+            'location': (household_survey.get_location())
+        }
+
+        yield dict(
+            team_lead=(household_survey.team_lead),
+            text=alert_text,
+            json=alert_json,
+            category='map'
+        )
 
     @classmethod
     def mapping_check_wrong_location(cls, household_survey):
@@ -697,26 +701,28 @@ class Alert(models.Model):
             # if no second admin level found, assume database inconsistencies and abort
             return
 
-        if not second_admin_level.contains_location(household_survey.get_location()):
-            alert_text = 'Wrong location for team {} (survey {})'.format(household_survey.get_team_id(),
-                household_survey.id)
-            alert_json = {
-                'type': 'mapping_check_wrong_location',
-                'team_name': (household_survey.get_team_name()),
-                'team_id': (household_survey.get_team_id()),
-                'cluster_id': (household_survey.get_cluster_id()),
-                'second_admin_level_name': second_admin_level_name,
-                'first_admin_level_name': first_admin_level_name,
-                'survey_id': household_survey.id,
-                'location': (household_survey.get_location())
-            }
+        if second_admin_level.contains_location(household_survey.get_location()):
+            return
 
-            yield dict(
-                team_lead=(household_survey.team_lead),
-                text=alert_text,
-                json=alert_json,
-                category='map'
-            )
+        alert_text = 'Wrong location for team {} (survey {})'.format(household_survey.get_team_id(),
+            household_survey.id)
+        alert_json = {
+            'type': 'mapping_check_wrong_location',
+            'team_name': (household_survey.get_team_name()),
+            'team_id': (household_survey.get_team_id()),
+            'cluster_id': (household_survey.get_cluster_id()),
+            'second_admin_level_name': second_admin_level_name,
+            'first_admin_level_name': first_admin_level_name,
+            'survey_id': household_survey.id,
+            'location': (household_survey.get_location())
+        }
+
+        yield dict(
+            team_lead=(household_survey.team_lead),
+            text=alert_text,
+            json=alert_json,
+            category='map'
+        )
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):
@@ -759,26 +765,27 @@ class Alert(models.Model):
             expected = (boys + girls) / 2.0
             chi2, p = scipy.stats.chisquare([boys, girls], [expected, expected])
 
-        if p < 0.001:
+        if p >= 0.001:
+            return
 
-            team_name = household_survey.get_team_name()
+        team_name = household_survey.get_team_name()
 
-            team_id = household_survey.get_team_id()
+        team_id = household_survey.get_team_id()
 
-            alert_text = 'Sex ratio issue in team {}'.format(team_id)
+        alert_text = 'Sex ratio issue in team {}'.format(team_id)
 
-            alert_json = {
-                'type': 'sex_ratio',
-                'team_name': team_name,
-                'team_id': team_id
-            }
+        alert_json = {
+            'type': 'sex_ratio',
+            'team_name': team_name,
+            'team_id': team_id
+        }
 
-            yield dict(
-                team_lead=team_lead,
-                text=alert_text,
-                json=alert_json,
-                category='sex',
-            )
+        yield dict(
+            team_lead=team_lead,
+            text=alert_text,
+            json=alert_json,
+            category='sex',
+        )
 
     @classmethod
     def child_age_in_months_ratio_alert(cls, household_survey,
@@ -832,26 +839,27 @@ class Alert(models.Model):
                 [expected6to29, expected30to59]
             )
 
-        if p < 0.001:
+        if p >= 0.001:
+            return
 
-            team_name = household_survey.get_team_name()
+        team_name = household_survey.get_team_name()
 
-            team_id = household_survey.get_team_id()
+        team_id = household_survey.get_team_id()
 
-            alert_text = 'Age ratio issue in team {}'.format(team_id)
+        alert_text = 'Age ratio issue in team {}'.format(team_id)
 
-            alert_json = {
-                'type': 'child_age_in_months_ratio',
-                'team_name': team_name,
-                'team_id': team_id
-            }
+        alert_json = {
+            'type': 'child_age_in_months_ratio',
+            'team_name': team_name,
+            'team_id': team_id
+        }
 
-            yield dict(
-                team_lead=team_lead,
-                text=alert_text,
-                json=alert_json,
-                category='age_distribution'
-            )
+        yield dict(
+            team_lead=team_lead,
+            text=alert_text,
+            json=alert_json,
+            category='age_distribution'
+        )
 
     @classmethod
     def child_age_displacement_alert(cls, household_survey, test='chi-squared'):
@@ -888,22 +896,25 @@ class Alert(models.Model):
         else:
             expected = (age4 + age5) / 2.0
             chi2, p = scipy.stats.chisquare([age4, age5], [expected, expected])
-        if p < 0.001:
-            team_name = household_survey.get_team_name()
-            team_id = household_survey.get_team_id()
-            alert_text = 'Child age displacement issue in team {}'.format(team_id)
-            alert_json = {
-                'type': 'child_age_displacement',
-                'team_name': team_name,
-                'team_id': team_id
-            }
 
-            yield dict(
-                team_lead=team_lead,
-                text=alert_text,
-                json=alert_json,
-                category='age_distribution'
-            )
+        if p >= 0.001:
+            return
+
+        team_name = household_survey.get_team_name()
+        team_id = household_survey.get_team_id()
+        alert_text = 'Child age displacement issue in team {}'.format(team_id)
+        alert_json = {
+            'type': 'child_age_displacement',
+            'team_name': team_name,
+            'team_id': team_id
+        }
+
+        yield dict(
+            team_lead=team_lead,
+            text=alert_text,
+            json=alert_json,
+            category='age_distribution'
+        )
 
     @classmethod
     def woman_age_14_15_displacement_alert(
@@ -942,23 +953,27 @@ class Alert(models.Model):
             expected = (age14 + age15) / 2.0
             chi2, p = scipy.stats.chisquare(
                 [age14, age15], [expected, expected])
-        if p < 0.001:
-            team_name = household_survey.get_team_name()
-            team_id = household_survey.get_team_id()
-            alert_text = \
-                'Woman age displacement issue (14/15) in team {}'.format(team_id)
-            alert_json = {
-                'type': 'woman_age_14_15_displacement',
-                'team_name': team_name,
-                'team_id': team_id
-            }
 
-            yield dict(
-                team_lead=team_lead,
-                text=alert_text,
-                json=alert_json,
-                category='age_distribution',
-            )
+
+        if p >= 0.001:
+            return
+
+        team_name = household_survey.get_team_name()
+        team_id = household_survey.get_team_id()
+        alert_text = \
+            'Woman age displacement issue (14/15) in team {}'.format(team_id)
+        alert_json = {
+            'type': 'woman_age_14_15_displacement',
+            'team_name': team_name,
+            'team_id': team_id
+        }
+
+        yield dict(
+            team_lead=team_lead,
+            text=alert_text,
+            json=alert_json,
+            category='age_distribution',
+        )
 
     @classmethod
     def woman_age_4549_5054_displacement_alert(cls, household_survey,
@@ -998,23 +1013,26 @@ class Alert(models.Model):
             expected = (age4549 + age5054) / 2.0
             chi2, p = scipy.stats.chisquare(
                 [age4549, age5054], [expected, expected])
-        if p < 0.001:
-            team_name = household_survey.get_team_name()
-            team_id = household_survey.get_team_id()
-            alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
-                         '{}'.format(team_id)
-            alert_json = {
-                'type': 'woman_age_4549_5054_displacement',
-                'team_id': team_id,
-                'team_name': team_name
-            }
 
-            yield dict(
-                team_lead=team_lead,
-                text=alert_text,
-                json=alert_json,
-                category='age_distribution',
-            )
+        if p >= 0.001:
+            return
+
+        team_name = household_survey.get_team_name()
+        team_id = household_survey.get_team_id()
+        alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
+                     '{}'.format(team_id)
+        alert_json = {
+            'type': 'woman_age_4549_5054_displacement',
+            'team_id': team_id,
+            'team_name': team_name
+        }
+
+        yield dict(
+            team_lead=team_lead,
+            text=alert_text,
+            json=alert_json,
+            category='age_distribution',
+        )
 
     @classmethod
     def digit_preference_alert(cls, household_survey):
@@ -1125,32 +1143,34 @@ class Alert(models.Model):
                 triggered = True
                 break
 
-        if triggered:
-            team_name = household_survey.get_team_name()
-            team_id = household_survey.get_team_id()
-            team_lead = household_survey.team_lead
-            alert_text = u'Data collection time issue in team {} (survey: {})'.\
-                format(team_id, household_survey.id)
+        if not triggered:
+            return
 
-            alert_json = {
-                'type': 'data_collection_time',
-                'team_name': team_name,
-                'team_id': team_id,
-                'survey': household_survey.id,
-            }
+        team_name = household_survey.get_team_name()
+        team_id = household_survey.get_team_id()
+        team_lead = household_survey.team_lead
+        alert_text = u'Data collection time issue in team {} (survey: {})'.\
+            format(team_id, household_survey.id)
 
-            location = household_survey.get_location()
+        alert_json = {
+            'type': 'data_collection_time',
+            'team_name': team_name,
+            'team_id': team_id,
+            'survey': household_survey.id,
+        }
 
-            if location:
-                alert_json['location'] = location
+        location = household_survey.get_location()
 
-            yield dict(
-                survey=household_survey,
-                team_lead=team_lead,
-                text=alert_text,
-                json=alert_json,
-                category='timing'
-            )
+        if location:
+            alert_json['location'] = location
+
+        yield dict(
+            survey=household_survey,
+            team_lead=team_lead,
+            text=alert_text,
+            json=alert_json,
+            category='timing'
+        )
 
     @classmethod
     def children_under_five_alerts(cls):
