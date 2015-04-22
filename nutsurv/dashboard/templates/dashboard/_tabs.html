@@ -2,7 +2,8 @@
   <li class="{% if active_tab == 'home' %}active{% endif %}"> <a href="/dashboard/home"> <i class="fa fa-home"></i> Home </a> </li>
   <li class="{% if active_tab == 'survey_completed' %}active{% endif %}"> <a href="/dashboard/survey_completed_strata"> <i class="fa fa-check"></i> Surveys Completed </a> </li>
   <li class="{% if active_tab == 'fieldwork' %}active{% endif %}"> <a href="/dashboard/fieldwork"> <i class="fa fa-map-marker"></i> Fieldwork </a> </li>
-  <li class="dropdown{% if active_tab == 'inspect_data' %} active{% endif %}"> <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
+  <li class="dropdown{% if active_tab == 'inspect_data' %} active{% endif %}">
+    <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
       <i class="fa fa-search"></i> Inspect Data <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
@@ -20,6 +21,19 @@
       </li>
     </ul>
   </li>
-  <li class="{% if active_tab == 'personnel' %}active{% endif %}"> <a href="/dashboard/personnel"> <i class="fa fa-user"></i> Personnel </a> </li>
-  <li class="{% if active_tab == 'training' %}active{% endif %}"> <a href="/training/rooms/"> <i class="fa fa-train"></i> Training </a> </li>
+  <li class="{% if active_tab == 'personnel' %}active{% endif %}">
+
+    <a href="#" class="dropdown-toggle" role="button" aria-expanded="false">
+      <i class="fa fa-user"></i> Personnel <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+      <li class="{% if active_tab == 'personnel' %}active{% endif %}">
+        <a href="/dashboard/personnel"> Directory</a>
+      </li>
+      <li class="{% if active_tab == 'training' %}active{% endif %}">
+        <a href="/training/rooms/">Training </a>
+      </li>
+    </ul>
+
+  </li>
 </ul>
