@@ -1166,7 +1166,7 @@ class Alert(models.Model):
 
         for team_id, team_info in by_team.iteritems():
             mean_children = numpy.mean(team_info['number_children'])
-            if mean_children < median_children/2:
+            if mean_children < (median_children / 2):
                 alert_text = u'Child under 5 number issue in team {}'.\
                     format(team_id)
                 alert_json = {
@@ -1181,8 +1181,6 @@ class Alert(models.Model):
                     json=alert_json,
                     category='age_distribution'
                 )
-
-
 
     @classmethod
     def time_to_complete_single_survey_alerts(cls):
