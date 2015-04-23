@@ -11,15 +11,25 @@ NutSurv - Data collection and quality assurance tools for Nutrition Surveys on m
 
 Install [Docker](https://docs.docker.com/installation/#installation)
 
+### On MacOS
+
+- Install [boot2docker](http://boot2docker.io)
+- Install [Homebrew](http://brew.sh)
+- Install Docker Compose `$ brew install docker-compose`
+
+### On Ubuntu
+
+- Install Pythons PIP `$ sudo apt-get install python-pip`
+- Install Docker Compose `$ sudo pip install -U docker-compose`
+
+After you have all the tool dependencies installed for your respective OS, move onto install the app.
+
 ## Tab 1
 
     $ git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
-    $ sudo apt-get install python-pip
-    $ sudo pip install -U docker-compose
     $ cd eha-nutsurv-django/
     $ bower install
     $ sudo docker-compose build
-
 
 ## Tab 2
 
