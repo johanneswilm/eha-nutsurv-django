@@ -12,6 +12,7 @@ import numpy
 import scipy.stats
 import validictory
 import json
+import parse_python_indentation
 
 # django core
 from django.utils.translation import ugettext as _
@@ -32,8 +33,6 @@ from django_extensions.db.fields import (
 
 # Internal
 from fields import UniqueActiveField
-
-from parse_python_indentation import parse_python_indentation
 
 logger = logging.getLogger(__name__)
 
@@ -696,18 +695,18 @@ class Alert(models.Model):
         }
         qsl = QuestionnaireSpecification.get_active()
         if qsl:
-            parsed_qsl = parse_python_indentation(qsl)
+            parsed_qsl = parse_python_indentation.parse_indentation(qsl)
             extra_women_fields = next((item for item in parsed_qsl if item["key"] == "women:"), False)
             if extra_women_fields:
-                for field in extra_women_fields['children']:
+                for field in extra_women_fields['offspring']:
                     survey_fields['women'].append(field['key'])
             extra_children_fields = next((item for item in parsed_qsl if item["key"] == "children:"), False)
             if extra_children_fields:
-                for field in extra_children_fields['children']:
+                for field in extra_children_fields['offspring']:
                     survey_fields['children'].append(field['key'])
             extra_household_member_fields = next((item for item in parsed_qsl if item["key"] == "household members:"), False)
             if extra_household_member_fields:
-                for field in extra_household_member_fields['children']:
+                for field in extra_household_member_fields['offspring']:
                     survey_fields['household_members'].append(field['key'])
         survey_fields_count = {}
         for member_type in survey_fields.keys():
