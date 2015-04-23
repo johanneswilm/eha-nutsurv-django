@@ -491,7 +491,7 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
 
 class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
     team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
-    point = gismodels.PointField()
+    location = gismodels.PointField(null=True)
 
 
 class Alert(models.Model):
