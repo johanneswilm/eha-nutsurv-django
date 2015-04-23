@@ -1084,8 +1084,8 @@ class Alert(models.Model):
 
     @classmethod
     def data_collection_time_alert(cls, household_survey):
-        """If timestamp for any data point in data collection is <07:00 hours
-        or >20:00 hours then report alert on dashboard "Data collection time
+        """If timestamp for any data point in data collection is < 06:00 AM
+        or > 8:00 PM then report alert on dashboard "Data collection time
         issue in team NAME (survey: UUID)".
         If any of the time stamps is not a valid date, the alert is triggered
         too.
@@ -1093,8 +1093,8 @@ class Alert(models.Model):
         the end time.  The alert is triggered if any of them satisfies the
         condition mentioned above.
         """
-        t700h = datetime.time(7)
-        t2000h = datetime.time(20)
+        minimum_time = datetime.time(6) # 6:00 AM
+        maximum_time = datetime.time(20) # 8:00 PM
         start = household_survey.get_start_time()
         end = household_survey.get_end_time()
         triggered = False
@@ -1103,7 +1103,7 @@ class Alert(models.Model):
             if t is None:
                 triggered = True
                 break
-            elif t.time() < t700h or t.time() > t2000h:
+            elif t.time() < minimum_time or t.time() > maximum_time:
                 triggered = True
                 break
 
