@@ -1093,8 +1093,8 @@ class Alert(models.Model):
         the end time.  The alert is triggered if any of them satisfies the
         condition mentioned above.
         """
-        minimum_time = datetime.time(6) # 6:00 AM
-        maximum_time = datetime.time(20) # 8:00 PM
+        minimum_time = datetime.time(6)  # 6:00 AM
+        maximum_time = datetime.time(20)  # 8:00 PM
         start = household_survey.get_start_time()
         end = household_survey.get_end_time()
         triggered = False
