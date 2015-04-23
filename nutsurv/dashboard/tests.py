@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 import json
 
+from .models import TeamMember, HouseholdSurveyJSON
+
 
 class EmptySmokeTest(TestCase):
 
@@ -46,6 +48,26 @@ class SimpleAccessTest(TestCase):
 
     def test_auth_dashboard(self):
         self._test_403('/dashboard/')
+
+
+class HouseholdSurveyTest(TestCase):
+
+    def setUp(self):
+        self.team_member, created = TeamMember.objects.get_or_create(
+            birth_year=2000,
+        )
+        assert created
+
+    def test_location_is_optional(self):
+
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=None,
+        )
+        survey.save()
 
 
 class TeamMemberTest(TestCase):
