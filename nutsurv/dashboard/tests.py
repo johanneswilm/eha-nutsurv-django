@@ -5,6 +5,7 @@ import json
 
 from .models import TeamMember, HouseholdSurveyJSON
 
+
 class EmptySmokeTest(TestCase):
 
     def setUp(self):
@@ -67,6 +68,7 @@ class HouseholdSurveyTest(TestCase):
             location=None,
         )
         survey.save()
+
 
 class TeamMemberTest(TestCase):
 
