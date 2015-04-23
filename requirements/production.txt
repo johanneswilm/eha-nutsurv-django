@@ -17,3 +17,4 @@ djangorestframework-camel-case
 validictory
 ipython
 parse-python-indentation
+djangorestframework-gis

@@ -15,3 +15,11 @@ urlpatterns = patterns('',
 
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
+    try:
+        import debug_toolbar
+    except ImportError:
+        pass
+    else:
+        urlpatterns += patterns('',
+                                url(r'^__debug__/', include(debug_toolbar.urls)),
+                                )
