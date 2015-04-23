@@ -50,8 +50,7 @@ var personnel = {
         _.each(personnelData, function(person, id) {
 
             var personnelObject = {
-                gender: genderIcon[person.gender],
-                name: '<strong>' + person.name + '</strong><br> 33 years',
+                name: genderIcon[person.gender] + '<div class="personnel-name"><strong>' + person.name + '</strong><br> 33 years</div>',
                 personnel_id: id,
                 contact: '<a href="mailto:' + person.email + '">' + person.email + '</a><br>' + person.phone,
                 position: person.position,
@@ -74,11 +73,14 @@ var personnel = {
 
             if (teamMembers.length > 0 && teamMembers[0].date < surveyDate) {
                 _.each(teamMembers, function(teamMember) {
-                    teamMember.position = teamMember.position + '<br>' + moment(surveyDate).format('MMM D YY');
-                    teamMember.date = 'Team Leader<br>' + moment(surveyDate).format('MMM D YY');
-                    teamMember.cluster = clusterInfo.findName(survey.cluster) + ' #' + survey.cluster;
-                    teamMember.first_admin_level = clusterInfo.findFirstAdminLevel(survey.cluster);
-                    teamMember.second_admin_level = clusterInfo.findSecondAdminLevel(survey.cluster);
+
+                    var cluster = clusterInfo.findName(survey.cluster) + ' #' + survey.cluster;
+                    var first_admin = clusterInfo.findFirstAdminLevel(survey.cluster);
+                    var second_admin = clusterInfo.findSecondAdminLevel(survey.cluster);       
+
+                    teamMember.position = teamMember.position + '<br>' + moment(surveyDate).format('MMM D, YYYY');
+                    teamMember.date = 'Team Leader<br>' + moment(surveyDate).format('MMM D YYYY');
+                    teamMember.location = cluster + '<br> Admin Levels: ' + first_admin + ' / ' + second_admin; 
                 });
             }
         });
@@ -99,28 +101,24 @@ var personnel = {
                 details: {
                     renderer: function(api, rowIdx) {
                         // Select hidden columns for the given row
-                        console.log(api);
                         var data = api.cells(rowIdx, ':hidden').eq(0).map( function(cell) {
                             var header = jQuery( api.column( cell.column ).header() );
-                            return '<tr>'+
+                            return '<tr class="was-ist-das">'+
                                     '<td>'+ header.attr('data-column-name')+':'+'</td> '+
                                     '<td>'+ api.cell(cell).data()+'</td>'+
                                 '</tr>';
                         }).toArray().join('');
 
-                        return data ? $('<table/>').append( data ) : false;
+                        return data ? $('<table/>').append(data) : false;
                     },
                 }
             },
             columns: [
-                { name: 'gender', data: 'gender' },
                 { name: 'name', data: 'name' },
                 { name: 'personnel_id', data: 'personnel_id' },
                 { name: 'contact', data: 'contact' },
                 { name: 'position', data: 'position' },
-                { name: 'cluster', data: 'cluster' },
-                { name: 'first_admin_level', data: 'first_admin_level' },
-                { name: 'second_admin_level', data: 'second_admin_level' },
+                { name: 'location', data: 'location' },
                 { "searchable": false, data: function() { return ''; }, orderable: false }
             ],
             "order": [[ 1, "asc" ]]
