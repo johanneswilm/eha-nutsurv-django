@@ -523,9 +523,29 @@ class Alert(models.Model):
     category = models.CharField(
         max_length=255,
         default='general',
-        choices=ALERT_CATEGORIES,
+        choices=zip(ALERT_CATEGORIES, ALERT_CATEGORIES),
     )
 
+    ALERT_TYPES = (
+      'mapping_check_missing_cluster_id',
+      'mapping_check_missing_location',
+      'mapping_check_unknown_cluster',
+      'mapping_check_wrong_location',
+      'sex_ratio',
+      'child_age_in_months_ratio',
+      'child_age_displacement',
+      'woman_age_14_15_displacement',
+      'woman_age_4549_5054_displacement',
+      'digit_preference',
+      'data_collection_time',
+      'time_to_complete_single_survey',
+      'daily_data_collection_duration',
+    )
+
+    alert_type = models.CharField(
+        max_length=255,
+        choices=zip(ALERT_TYPES, ALERT_TYPES),
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
@@ -606,8 +626,10 @@ class Alert(models.Model):
             household_survey.get_team_id(),
             household_survey.uuid)
 
+        alert_type = 'mapping_check_missing_cluster_id'
+
         alert_json = {
-            'type': 'mapping_check_missing_cluster_id',
+            'type': alert_type,
             'survey_id': household_survey.id,
         }
 
@@ -615,11 +637,12 @@ class Alert(models.Model):
             alert_json['location'] = household_survey.get_location()
 
         yield dict(
+            category='map',
+            alert_type=alert_type,
             team_lead=(household_survey.team_lead),
             survey=household_survey,
             text=alert_text,
             json=alert_json,
-            category='map'
         )
 
     @classmethod
@@ -635,8 +658,10 @@ class Alert(models.Model):
             household_survey.get_team_id(),
             household_survey.id)
 
+        alert_type = 'mapping_check_missing_location'
+
         alert_json = {
-            'type': 'mapping_check_missing_location',
+            'type': alert_type,
             'team_name': (household_survey.get_team_name()),
             'team_id': (household_survey.get_team_id()),
             'survey_id': household_survey.id,
@@ -646,10 +671,11 @@ class Alert(models.Model):
             alert_json['cluster_id'] = household_survey.get_cluster_id()
 
         yield dict(
+            category='map',
+            alert_type=alert_type,
             team_lead=(household_survey.team_lead),
             text=alert_text,
             json=alert_json,
-            category='map'
         )
 
     @classmethod
@@ -673,8 +699,9 @@ class Alert(models.Model):
             household_survey.get_team_id(),
             household_survey.id)
 
+        alert_type = 'mapping_check_unknown_cluster',
         alert_json = {
-            'type': 'mapping_check_unknown_cluster',
+            'type': alert_type,
             'team_name': (household_survey.get_team_name()),
             'team_id': (household_survey.get_team_id()),
             'cluster_id': (household_survey.get_cluster_id()),
@@ -683,10 +710,11 @@ class Alert(models.Model):
         }
 
         yield dict(
+            category='map',
+            alert_type=alert_type,
             team_lead=(household_survey.team_lead),
             text=alert_text,
             json=alert_json,
-            category='map'
         )
 
     @classmethod
@@ -720,8 +748,11 @@ class Alert(models.Model):
 
         alert_text = 'Wrong location for team {} (survey {})'.format(household_survey.get_team_id(),
             household_survey.id)
+
+        alert_type = 'mapping_check_wrong_location'
+
         alert_json = {
-            'type': 'mapping_check_wrong_location',
+            'type': alert_type,
             'team_name': (household_survey.get_team_name()),
             'team_id': (household_survey.get_team_id()),
             'cluster_id': (household_survey.get_cluster_id()),
@@ -732,10 +763,11 @@ class Alert(models.Model):
         }
 
         yield dict(
+            category='map',
+            alert_type=alert_type,
             team_lead=(household_survey.team_lead),
             text=alert_text,
             json=alert_json,
-            category='map'
         )
 
     @classmethod
@@ -787,18 +819,20 @@ class Alert(models.Model):
         team_id = household_survey.get_team_id()
 
         alert_text = 'Sex ratio issue in team {}'.format(team_id)
+        alert_type = 'sex_ratio'
 
         alert_json = {
-            'type': 'sex_ratio',
+            'type': alert_type,
             'team_name': team_name,
             'team_id': team_id
         }
 
         yield dict(
+            category='sex',
+            alert_type=alert_type,
             team_lead=team_lead,
             text=alert_text,
             json=alert_json,
-            category='sex',
         )
 
     @classmethod
@@ -861,18 +895,20 @@ class Alert(models.Model):
         team_id = household_survey.get_team_id()
 
         alert_text = 'Age ratio issue in team {}'.format(team_id)
+        alert_type = 'child_age_in_months_ratio'
 
         alert_json = {
-            'type': 'child_age_in_months_ratio',
+            'type': alert_type,
             'team_name': team_name,
             'team_id': team_id
         }
 
         yield dict(
+            category='age_distribution',
+            alert_type=alert_type,
             team_lead=team_lead,
             text=alert_text,
             json=alert_json,
-            category='age_distribution'
         )
 
     @classmethod
@@ -917,17 +953,21 @@ class Alert(models.Model):
         team_name = household_survey.get_team_name()
         team_id = household_survey.get_team_id()
         alert_text = 'Child age displacement issue in team {}'.format(team_id)
+
+        alert_type = 'child_age_displacement'
+
         alert_json = {
-            'type': 'child_age_displacement',
+            'type': alert_type,
             'team_name': team_name,
             'team_id': team_id
         }
 
         yield dict(
+            category='age_distribution',
+            alert_type=alert_type,
             team_lead=team_lead,
             text=alert_text,
             json=alert_json,
-            category='age_distribution'
         )
 
     @classmethod
@@ -976,17 +1016,21 @@ class Alert(models.Model):
         team_id = household_survey.get_team_id()
         alert_text = \
             'Woman age displacement issue (14/15) in team {}'.format(team_id)
+
+        alert_type = 'woman_age_14_15_displacement'
+
         alert_json = {
-            'type': 'woman_age_14_15_displacement',
+            'type': alert_type,
             'team_name': team_name,
             'team_id': team_id
         }
 
         yield dict(
+            category='age_distribution',
+            alert_type=alert_type,
             team_lead=team_lead,
             text=alert_text,
             json=alert_json,
-            category='age_distribution',
         )
 
     @classmethod
@@ -1035,17 +1079,20 @@ class Alert(models.Model):
         team_id = household_survey.get_team_id()
         alert_text = 'Woman age displacement issue (45-49/50-54) in team ' \
                      '{}'.format(team_id)
+
+        alert_type = 'woman_age_4549_5054_displacement'
         alert_json = {
-            'type': 'woman_age_4549_5054_displacement',
+            'alert': alert_type,
             'team_id': team_id,
             'team_name': team_name
         }
 
         yield dict(
+            category='age_distribution',
+            alert_type=alert_type,
             team_lead=team_lead,
             text=alert_text,
             json=alert_json,
-            category='age_distribution',
         )
 
     @classmethod
@@ -1115,17 +1162,21 @@ class Alert(models.Model):
                 team_name = household_survey.get_team_name()
                 team_id = household_survey.get_team_id()
                 alert_text = 'Digit preference issue in team {}'.format(team_id)
+
+                alert_type = 'digit_preference'
+
                 alert_json = {
-                    'type': 'digit_preference',
+                    'type': alert_type,
                     'team_id': team_id,
-                    'team_name': team_name
+                    'team_name': team_name,
                 }
 
                 yield dict(
+                    category='number_distribution',
+                    alert_type=alert_type,
                     team_lead=team_lead,
                     text=alert_text,
                     json=alert_json,
-                    category='number_distribution'
                 )
 
                 # Only one alert should be emitted so no need to finish the
@@ -1166,8 +1217,9 @@ class Alert(models.Model):
         alert_text = u'Data collection time issue in team {} (survey: {})'.\
             format(team_id, household_survey.id)
 
+        alert_type = 'data_collection_time'
         alert_json = {
-            'type': 'data_collection_time',
+            'type': alert_type,
             'team_name': team_name,
             'team_id': team_id,
             'survey': household_survey.id,
@@ -1179,11 +1231,12 @@ class Alert(models.Model):
             alert_json['location'] = location
 
         yield dict(
+            category='timing',
+            alert_type=alert_type,
             survey=household_survey,
             team_lead=team_lead,
             text=alert_text,
             json=alert_json,
-            category='timing'
         )
 
     @classmethod
@@ -1314,18 +1367,22 @@ class Alert(models.Model):
                     alert_text = u'Time to complete household survey issue ' \
                                  u'in team {} ' \
                                  u'on day {}'.format(team_id, day.isoformat())
+
+                    alert_type = 'time_to_complete_single_survey'
+
                     alert_json = {
-                        'type': 'time_to_complete_single_survey',
+                        'type': alert_type,
                         'team_id': team_id,
                         'team_name': by_team[team_id]['team_name'],
                         'day': day.isoformat()
                     }
 
                     yield dict(
+                        category='timing',
+                        alert_type=alert_type,
                         team_lead=by_team[team_id]['team_lead'],
                         text=alert_text,
                         json=alert_json,
-                        category='timing'
                     )
 
     @classmethod
@@ -1460,17 +1517,21 @@ class Alert(models.Model):
             if by_team[team_id]['daily average'] < half_median:
                 alert_text = u'Duration of data collection issue ' \
                              u'in team {}'.format(team_id)
+
+                alert_type = 'daily_data_collection_duration'
+
                 alert_json = {
-                    'type': 'daily_data_collection_duration',
+                    'type': alert_type,
                     'team_id': team_id,
                     'team_name': by_team[team_id]['team_name']
                 }
 
                 yield dict(
+                    category='timing',
+                    alert_type=alert_type,
                     team_lead=by_team[team_id]['team_name'],
                     text=alert_text,
                     json=alert_json,
-                    category='timing',
                 )
 
     @classmethod
