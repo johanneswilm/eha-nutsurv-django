@@ -639,7 +639,7 @@ class Alert(models.Model):
         yield dict(
             category='map',
             alert_type=alert_type,
-            team_lead=(household_survey.team_lead),
+            team_lead=household_survey.team_lead,
             survey=household_survey,
             text=alert_text,
             json=alert_json,
@@ -662,8 +662,8 @@ class Alert(models.Model):
 
         alert_json = {
             'type': alert_type,
-            'team_name': (household_survey.get_team_name()),
-            'team_id': (household_survey.get_team_id()),
+            'team_name': household_survey.get_team_name(),
+            'team_id': household_survey.get_team_id(),
             'survey_id': household_survey.id,
         }
 
