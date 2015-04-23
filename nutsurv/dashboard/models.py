@@ -310,7 +310,7 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
 
     def get_team_id(self):
         try:
-            team_id = self.json['team']['teamID']
+            team_id = self.team_lead.pk
         except TypeError:
             return None
         else:
@@ -560,7 +560,7 @@ class Alert(models.Model):
         return self.json.get('location')
 
     def type(self):
-        return self.json.get('type')
+        return self.alert_type
 
     def survey_id(self):
         return self.json.get('survey_id')
@@ -624,7 +624,7 @@ class Alert(models.Model):
 
         alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
             household_survey.get_team_id(),
-            household_survey.uuid)
+            household_survey.pk)
 
         alert_type = 'mapping_check_missing_cluster_id'
 
@@ -634,6 +634,8 @@ class Alert(models.Model):
         }
 
         if household_survey.get_location():
+            # TODO this should not be copied here, but referenced via the
+            # relation to the household_survey
             alert_json['location'] = household_survey.get_location()
 
         yield dict(
