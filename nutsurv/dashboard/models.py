@@ -542,7 +542,7 @@ class Alert(models.Model):
         return reverse('alert-detail', args=[str(self.id)])
 
     @classmethod
-    def get_or_create_alert(cls, values):
+    def get_or_create_alert(cls, **values):
 
         # TODO yes, this still contains a race condition, we should really
         # think about how we can use .get_or_create here.
