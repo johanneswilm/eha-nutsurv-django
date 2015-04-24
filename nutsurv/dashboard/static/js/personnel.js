@@ -6,13 +6,37 @@ var personnel = {
         dataGetter.addNew(personnel.urls.personnel, personnel.drawTable, false);
     },
     downloadData: function () {
+
+        // Fail if no data
         if (!dataGetter.downloads[personnel.urls.personnel].data) {
             return false;
         }
 
-        // FIXME: 
-        console.log(dataGetter.downloads[personnel.urls.personnel].data);
+        // Trim Keys
+        var trimSurvey = ['members', 'point', 'teamAnthropometrist', 'teamAssistant', 'teamLead', 'uuid', 'url'];
 
+        // Flatten & Get Keys
+        var lastSurvey = _.omit(dataGetter.downloads[personnel.urls.personnel].data[0].lastSurvey, trimSurvey);
+        var surveyKeys = _.keys(lastSurvey);
+        var personKeys = _.keys(dataGetter.downloads[personnel.urls.personnel].data[0]);
+        var allKeys = _.without(personKeys, 'url', 'lastSurvey').concat(surveyKeys);
+
+        // Start CSV Output
+        var output = allKeys.join(',') + '\n';
+
+        // Get Data
+        _.each(dataGetter.downloads[personnel.urls.personnel].data, function(person, id) {
+
+            var thisSurvey = _.omit(person.lastSurvey, trimSurvey);
+            var surveyValues = _.values(thisSurvey);  
+            var personValues = _.values(_.omit(person, ['url', 'lastSurvey']));
+            var allValues = personValues.concat(surveyValues);
+
+            // Add to CSV
+            output += allValues.join(',') + '\n';
+        });
+
+        // Save
         saveAs(
             new Blob( [output], {type : 'text/csv'}),
             'personnel.csv'
