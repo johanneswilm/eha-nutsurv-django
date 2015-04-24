@@ -68,7 +68,7 @@ table.dataTable thead th {
 table.dataTable tbody td {
     padding-right: 10px !important;
     padding-left: 0px !important;
-    word-wrap: break-word;
+    white-space: nowrap;
 }
 
 table.dataTable[style] {

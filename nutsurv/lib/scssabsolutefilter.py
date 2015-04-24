@@ -6,7 +6,7 @@
 from compressor.filters.base import CompilerFilter
 from compressor.filters.css_default import CssAbsoluteFilter
 
-SASSC_COMMAND = 'sassc -m -I /opt/nutsurv/nutsurv/components/bower_components/ehealth-bootstrap/ -I components/bower_components/ehealth-bootstrap "{infile}" "{outfile}"'
+SASSC_COMMAND = 'sassc -m -I /opt/nutsurv/bower_components/ehealth-bootstrap/ -I bower_components/ehealth-bootstrap/ "{infile}" "{outfile}"'
 
 
 class SCSSFilter(CompilerFilter):

@@ -23,4 +23,5 @@ configuration.py
 .sass-cache
 nutsurv/components/
 nutsurv/.sass-cache/
-bower_components
+/bower_components/
+/test-data/

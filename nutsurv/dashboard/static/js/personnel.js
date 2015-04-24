@@ -1,29 +1,42 @@
 var personnel = {
     urls : {
-        survey: '/dashboard/aggregatesurveydatajsonview/',
-        personnel: '/dashboard/personneljsonview/',
-        clusterData: '/dashboard/clustersjsonview/',
-        teams: '/dashboard/teamsjsonview/'
+        personnel: '/dashboard/teammembers/'
     },
     initiate: function () {
-        dataGetter.addNew(personnel.urls.survey, personnel.drawTable, true);
         dataGetter.addNew(personnel.urls.personnel, personnel.drawTable, false);
-        dataGetter.addNew(personnel.urls.clusterData, personnel.drawTable, false);
     },
     downloadData: function () {
-        if (!personnel.table) {
+
+        // Fail if no data
+        if (!dataGetter.downloads[personnel.urls.personnel].data) {
             return false;
         }
-        var data = personnel.table.fnGetData(), i, j, output='';
 
-        output += _.keys(data[0]).join(',');
-        output += '\n';
+        // Trim Keys
+        var trimSurvey = ['members', 'point', 'teamAnthropometrist', 'teamAssistant', 'teamLead', 'uuid', 'url'];
 
-        for (i=0;i<data.length;i++) {
-            output += _.values(data[i]).join(',');
-            output += '\n';
-        }
+        // Flatten & Get Keys
+        var lastSurvey = _.omit(dataGetter.downloads[personnel.urls.personnel].data[0].lastSurvey, trimSurvey);
+        var surveyKeys = _.keys(lastSurvey);
+        var personKeys = _.keys(dataGetter.downloads[personnel.urls.personnel].data[0]);
+        var allKeys = _.without(personKeys, 'url', 'lastSurvey').concat(surveyKeys);
 
+        // Start CSV Output
+        var output = allKeys.join(',') + '\n';
+
+        // Get Data
+        _.each(dataGetter.downloads[personnel.urls.personnel].data, function(person, id) {
+
+            var thisSurvey = _.omit(person.lastSurvey, trimSurvey);
+            var surveyValues = _.values(thisSurvey);  
+            var personValues = _.values(_.omit(person, ['url', 'lastSurvey']));
+            var allValues = personValues.concat(surveyValues);
+
+            // Add to CSV
+            output += allValues.join(',') + '\n';
+        });
+
+        // Save
         saveAs(
             new Blob( [output], {type : 'text/csv'}),
             'personnel.csv'
@@ -31,63 +44,65 @@ var personnel = {
     },
     table: false,
     drawTable: function (data) {
-        if (!dataGetter.checkAll([personnel.urls.survey, personnel.urls.personnel, personnel.urls.clusterData])) {
-            /* Check that all relevant data has been downloaded, else cancel.
-            See home.js. */
+
+        // Check that all relevant data has been downloaded, else cancel
+        if (!dataGetter.checkAll([personnel.urls.personnel])) {
             return false;
         }
 
-        var surveyData = dataGetter.downloads[personnel.urls.survey].data.survey_data,
-            personnelData = dataGetter.downloads[personnel.urls.personnel].data.personnel,
-            clusterData = dataGetter.downloads[personnel.urls.clusterData].data.clusters, // Cluster data not actually used directly in this function, but we need t make sure it is there for clusterInfo
-            perPersonnelData = [];
+        var perPersonnelData = [];
 
         var genderIcon = {
-          M: '<i class="fa fa-male"></i> ',
-          F: '<i class="fa fa-female"></i> '
+            M: '<i class="fa fa-male"></i> ',
+            F: '<i class="fa fa-female"></i> '
         }
 
-        _.each(personnelData, function(person, id) {
+        var positionNames = {
+            teamLead: "Team Lead",
+            teamAssistant: "Assistant",
+            teamAnthropometrist: "Anthropometrist"
+        }
+
+        var currentYear = moment().format('YYYY');
+
+        // Make Results for Output
+        _.each(dataGetter.downloads[personnel.urls.personnel].data, function(person, id) {
+
+            var name = person.firstName + person.lastName;
+            var age = currentYear - person.birthYear;
+            var surveyDate = moment().format('MMM D, YYYY');
+            var position = 'Unknown';
+            var location = 'Unknown';
+
+            // Has lastSurvey object
+            if (person.lastSurvey) {
+
+              _.each(person.lastSurvey, function(item, key) {
+                if (item == person.url) {
+                  position = positionNames[key];
+                }
+              });
+
+              surveyDate = person.lastSurvey.endTime.split('T')[0];
+
+              // Location
+              location = person.lastSurvey.clusterName + ' #' + person.lastSurvey.cluster + '<br> <a href="#" data-mermberID="' + person.memberID + '" class="personnel-last-survey">View Details</a>';
+            }
 
             var personnelObject = {
-                name: genderIcon[person.gender] + '<div class="personnel-name"><strong>' + person.name + '</strong><br> 33 years</div>',
-                personnel_id: id,
-                contact: '<a href="mailto:' + person.email + '">' + person.email + '</a><br>' + person.phone,
-                position: person.position,
-                first_admin_level: '',
-                second_admin_level: '',
-                cluster: '',
-                date: '',
-                team: person.team,
-                age: ''
+                name: genderIcon[person.gender] + '<div class="personnel-name"><strong>' + name + '</strong><br> ' + age + ' years</div>',
+                memberID: person.memberID,
+                contact: '<a href="mailto:' + person.email + '">' + person.email + '</a><br>' + person.mobile,
+                position: position + '<br>' + moment(surveyDate).format('MMM D, YYYY'),
+                date: 'Team Leader<br>' + moment(surveyDate).format('MMM D YYYY'),
+                location: location
             };
 
             perPersonnelData.push(personnelObject);
         });
 
-        _.each(surveyData, function(survey, id) {
-
-            // Join on "team"
-            var teamMembers = _.where(perPersonnelData, {team: survey.team}),
-            surveyDate = survey.endTime.split('T')[0];
-
-            if (teamMembers.length > 0 && teamMembers[0].date < surveyDate) {
-                _.each(teamMembers, function(teamMember) {
-
-                    var cluster = clusterInfo.findName(survey.cluster) + ' #' + survey.cluster;
-                    var first_admin = clusterInfo.findFirstAdminLevel(survey.cluster);
-                    var second_admin = clusterInfo.findSecondAdminLevel(survey.cluster);       
-
-                    teamMember.position = teamMember.position + '<br>' + moment(surveyDate).format('MMM D, YYYY');
-                    teamMember.date = 'Team Leader<br>' + moment(surveyDate).format('MMM D YYYY');
-                    teamMember.location = cluster + '<br> Admin Levels: ' + first_admin + ' / ' + second_admin; 
-                });
-            }
-        });
-
+        // If the table exists already, we destroy it
         if (personnel.table) {
-            // If the table exists already, we destroy it
-            // as it cannot easily be reinitialized.
             personnel.table.fnDestroy();
         }
 
@@ -115,7 +130,7 @@ var personnel = {
             },
             columns: [
                 { name: 'name', data: 'name' },
-                { name: 'personnel_id', data: 'personnel_id' },
+                { name: 'personnel_id', data: 'memberID' },
                 { name: 'contact', data: 'contact' },
                 { name: 'position', data: 'position' },
                 { name: 'location', data: 'location' },
@@ -127,10 +142,14 @@ var personnel = {
         // Add UI Items
         $('.page-header').append('<h1><i class="fa fa-user"></i> Personnel</h1>');
         $('#personnel_table_filter').addClass('pull-right');
-        $('.page-header').prepend('<button class="pull-right btn btn-default dataTables_extra_button">Download</button>');
+        $('.page-header').prepend('<button id="personnel_download" class="pull-right btn btn-default dataTables_extra_button">Download CSV</button>');
+
+        $('.personnel-last-survey').on('click', function() {
+          alert('This will show alert detail about place lastSurvey happened. Perhaps a map');
+        });
 
         // Download Button Action
-        jQuery('#personnel_download button').on('click', function (){
+        $('#personnel_download').on('click', function () {
             personnel.downloadData();
         });
 
