@@ -18,7 +18,11 @@ Install [Docker](https://docs.docker.com/installation/#installation)
     $ sudo pip install -U docker-compose
     $ cd eha-nutsurv-django/
     $ bower install
+    
+    # (the next line is optional, if you wish to also test the mobile app)
     $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
+    
+    # now build your container
     $ sudo docker-compose build
 
 
