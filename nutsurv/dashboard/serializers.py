@@ -42,7 +42,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
             'team_assistant': {'lookup_field': 'member_id'},
             'team_anthropometrist': {'lookup_field': 'member_id'},
         }
-        geo_field = "point"
+        geo_field = "location"
 
         fields = (
             'url',
@@ -58,7 +58,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
             'cluster_name',
             'start_time',
             'end_time',
-            'point',
+            'location',
         )
 
 
