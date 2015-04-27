@@ -387,13 +387,6 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
     def get_women_records(self):
         return self._get_records_for_survey_types(survey_types='women')
 
-    def get_household_member_records(self):
-        if 'members' in self.json:
-            output = self.json['members']
-        else:
-            output = []
-        return output
-
     def get_women_and_child_records(self):
         return self._get_records_for_survey_types(
             survey_types=('child', 'women')
@@ -763,7 +756,11 @@ class Alert(models.Model):
         for survey in surveys:
             surveys_ordered['women'].extend(survey.get_women_records())
             surveys_ordered['children'].extend(survey.get_child_records())
-            surveys_ordered['household_members'].extend(survey.get_household_member_records())
+            if 'members' in self.json:
+                survey_members = self.json['members']
+            else:
+                survey_members = []
+            surveys_ordered['household_members'].extend(survey_members)
 
         for member_type in survey_fields.keys():
             for member in surveys_ordered[member_type]:
