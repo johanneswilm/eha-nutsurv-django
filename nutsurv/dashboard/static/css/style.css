@@ -67,10 +67,8 @@ table.dataTable thead th {
 
 table.dataTable tbody td {
     padding-right: 10px !important;
-}
-
-table.dataTable tr td {
-    padding-right: 10px !important;
+    padding-left: 0px !important;
+    white-space: nowrap;
 }
 
 table.dataTable[style] {
@@ -78,7 +76,10 @@ table.dataTable[style] {
 }
 
 table.dataTable tr td i.fa {
-  font-size: 30px;
+    font-size: 30px;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
 }
 
 .bottom_link {
@@ -111,3 +112,17 @@ ul.description_list {
     margin-top: -5px;
 }
 
+#personnel_table tbody tr td:first-child {
+    min-width: 250px;
+}
+
+#personnel_table div.personnel-name {
+  width: 200px;
+  vertical-align: text-top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  float: left; 
+  line-height: 16px;
+}

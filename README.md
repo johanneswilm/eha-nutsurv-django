@@ -29,6 +29,11 @@ After you have all the tool dependencies installed for your respective OS, move 
     $ git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
     $ cd eha-nutsurv-django/
     $ bower install
+    
+    # (the next line is optional, if you wish to also test the mobile app)
+    $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
+    
+    # now build your container
     $ sudo docker-compose build
 
 ## Tab 2
