@@ -126,6 +126,7 @@ class TeamMemberTest(TestCase):
         response = self.client.delete(response['Location'], format='json')
         self.assertEqual(response.status_code, 204)
 
+
 class IdentationParseTests(TestCase):
     expected_output = [{
         'key': 'green:',
@@ -201,10 +202,10 @@ houses:
     """
 
     def test_parsing(self):
-	    """ Tests whether correctly indented file can be parsed
-	    """
-	    a = parse_indentation(self.good_indentation)
-	    self.assertEqual(a,self.expected_output)
+        """ Tests whether correctly indented file can be parsed
+        """
+        a = parse_indentation(self.good_indentation)
+        self.assertEqual(a, self.expected_output)
 
     def test_warning(self):
         """ Tests whether file with two extra indentation spaces is parsed and
@@ -213,6 +214,6 @@ houses:
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             a = parse_indentation(self.bad_indentation)
-        self.assertEqual(a,self.expected_output)
-        self.assertEqual(len(w),1)
-        self.assertEqual(str(w[0].message),'Indentation with errors!')
+        self.assertEqual(a, self.expected_output)
+        self.assertEqual(len(w), 1)
+        self.assertEqual(str(w[0].message), 'Indentation with errors!')

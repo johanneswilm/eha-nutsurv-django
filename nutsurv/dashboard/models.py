@@ -756,8 +756,8 @@ class Alert(models.Model):
         for survey in surveys:
             surveys_ordered['women'].extend(survey.get_women_records())
             surveys_ordered['children'].extend(survey.get_child_records())
-            if 'members' in self.json:
-                survey_members = self.json['members']
+            if 'members' in survey.json:
+                survey_members = survey.json['members']
             else:
                 survey_members = []
             surveys_ordered['household_members'].extend(survey_members)
