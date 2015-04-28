@@ -26,7 +26,7 @@ from rest_framework.reverse import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from jsonfield import JSONField
 from django_extensions.db.fields import (
-    AutoSlugField, CreationDateTimeField, ModificationDateTimeField,
+    CreationDateTimeField, ModificationDateTimeField,
 )
 
 # Internal
@@ -43,10 +43,6 @@ class TeamMember(models.Model):
         (MALE, _('Male')),
         (FEMALE, _('Female')),
     )
-    member_id = AutoSlugField(blank=False,
-                              unique=True,
-                              populate_from="id",
-                              separator='')
     first_name = models.CharField(blank=False, max_length=50)
     last_name = models.CharField(blank=False, max_length=50)
     mobile = PhoneNumberField(blank=True)
@@ -111,7 +107,7 @@ class TeamMember(models.Model):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return reverse('teammember-detail', args=[str(self.member_id)])
+        return reverse('teammember-detail', args=[str(self.id)])
 
 
 def validate_json(spec_file):
@@ -206,9 +202,9 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
 
         def make_team_member(parsed):
             tm, created = TeamMember.objects.get_or_create(
-                member_id=parsed['memberID'],
+                id=parsed['memberID'],
                 defaults={
-                    'member_id': parsed['memberID'],
+                    'id': parsed['memberID'],
                     'gender': parsed['gender'],
                     'first_name': parsed['firstName'],
                     'last_name': parsed['lastName'],
@@ -573,7 +569,7 @@ class Alert(models.Model):
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
 
     def get_absolute_url(self):
-        return reverse('alert-detail', args=[str(self.id)])
+        return reverse('alert-detail', args=[str(self.pk)])
 
     @classmethod
     def get_or_create_alert(cls, **values):

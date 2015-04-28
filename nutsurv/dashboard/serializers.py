@@ -37,11 +37,6 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
 
     class Meta:
         model = HouseholdSurveyJSON
-        extra_kwargs = {
-            'team_lead': {'lookup_field': 'member_id'},
-            'team_assistant': {'lookup_field': 'member_id'},
-            'team_anthropometrist': {'lookup_field': 'member_id'},
-        }
         geo_field = "location"
 
         fields = (
@@ -63,17 +58,15 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
 
 
 class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
-                                               lookup_field="member_id")
+    url = serializers.HyperlinkedIdentityField(view_name='teammember-detail')
     mobile = serializers.CharField(required=False)
-    memberID = serializers.CharField(source='member_id', read_only=True)
     last_survey = HouseholdSurveyJSONSerializer(many=False, read_only=True)
 
     class Meta:
 
         model = TeamMember
         fields = ['url',
-                  'memberID',
+                  'id',
                   'first_name',
                   'last_name',
                   'gender',
@@ -107,9 +100,3 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
             'type',
             'survey_id',
         )
-
-        extra_kwargs = {
-            'team_lead': {
-                'lookup_field': 'member_id'
-            },
-        }

@@ -28,7 +28,7 @@ var personnel = {
         _.each(dataGetter.downloads[personnel.urls.personnel].data, function(person, id) {
 
             var thisSurvey = _.omit(person.lastSurvey, trimSurvey);
-            var surveyValues = _.values(thisSurvey);  
+            var surveyValues = _.values(thisSurvey);
             var personValues = _.values(_.omit(person, ['url', 'lastSurvey']));
             var allValues = personValues.concat(surveyValues);
 
@@ -44,7 +44,7 @@ var personnel = {
     },
     surveyDetails: function(memberid) {
 
-        var memberDetails = _.findWhere(dataGetter.downloads[personnel.urls.personnel].data, { 'memberID': memberid.toString() });
+        var memberDetails = _.findWhere(dataGetter.downloads[personnel.urls.personnel].data, { 'id': memberid.toString() });
 
         if (memberDetails !== undefined) {
             var modal_template = _.template($('#template-personnel-details').html());
@@ -99,12 +99,12 @@ var personnel = {
               surveyDate = person.lastSurvey.endTime.split('T')[0];
 
               // Location
-              location = person.lastSurvey.clusterName + ' #' + person.lastSurvey.cluster + '<br> <a href="#" data-mermberID="' + person.memberID + '" class="personnel-last-survey">View Details</a>';
+              location = person.lastSurvey.clusterName + ' #' + person.lastSurvey.cluster + '<br> <a href="#" data-mermberID="' + person.id + '" class="personnel-last-survey">View Details</a>';
             }
 
             var personnelObject = {
                 name: genderIcon[person.gender] + '<div class="personnel-name"><strong>' + name + '</strong><br> ' + age + ' years</div>',
-                memberID: person.memberID,
+                id: person.id,
                 contact: '<a href="mailto:' + person.email + '">' + person.email + '</a><br>' + person.mobile,
                 position: position + '<br>' + moment(surveyDate).format('MMM D, YYYY'),
                 date: 'Team Leader<br>' + moment(surveyDate).format('MMM D YYYY'),
@@ -143,7 +143,7 @@ var personnel = {
             },
             columns: [
                 { name: 'name', data: 'name' },
-                { name: 'personnel_id', data: 'memberID' },
+                { name: 'personnel_id', data: 'id' },
                 { name: 'contact', data: 'contact' },
                 { name: 'position', data: 'position' },
                 { name: 'location', data: 'location' },
