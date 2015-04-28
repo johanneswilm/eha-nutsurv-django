@@ -65,7 +65,7 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
 class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='teammember-detail',
                                                lookup_field="member_id")
-    mobile = serializers.CharField()
+    mobile = serializers.CharField(required=False)
     memberID = serializers.CharField(source='member_id', read_only=True)
     last_survey = HouseholdSurveyJSONSerializer(many=False, read_only=True)
 
