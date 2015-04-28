@@ -23,6 +23,38 @@
   </div>
 </script>
 
+<script id="template-personnel-details" type="text/template">
+    <strong>Household:</strong> <%= householdNumber %> persons<br>
+    <strong>Started:</strong> <%= moment(startTime.split('T')[0] + ' ' + startTime.split('T')[1].split('.')[0]).format('MMM D, YYYY h:mm a') %><br>
+    <strong>Ended:</strong>  <%= moment(endTime.split('T')[0] + ' ' + endTime.split('T')[1].split('.')[0]).format('MMM D, YYYY h:mm a') %>
+    <hr>
+
+    <h4><i class="fa fa-map-marker"></i> Location</h4>
+    <strong>1st Admin Level:</strong> <%= firstAdminLevel %><br>
+    <strong>2nd Admin Level:</strong> <%= secondAdminLevel %><br>
+    <strong>Cluster:</strong> <%= cluster %><br>
+    <strong>Cluster #:</strong> <%= clusterName %><br>
+    <% if (location) { %>
+    <p>Has location data should show a map</p>
+    <% } else { %>
+    <p>No geo-data recorded</p>
+    <% } %>
+</script>
+
+<div class="modal fade" id="personnel-modal" tabindex="-1" role="dialog" aria-labelledby="personnel-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title"></h3>
+      </div>
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+</div> 
+
+
 <script src="/static/js/cluster_info.js"></script>
 <script src="/static/js/personnel.js"></script>
 {% endblock content %}
