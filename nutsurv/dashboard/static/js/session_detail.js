@@ -148,7 +148,7 @@ function set_table(survey_data, opts) {
 
     var all_data_present = su.members.length > 0 && su.members.length === expected_total_members;
     var data = {
-      'team': [su.teamLead, su.teamAssistant, su.teamAnthropometrist],
+      'team': [su.teamAssistant, su.teamAnthropometrist],
       'total_members': su.members.length,
       'mean': mean(_.pluck(su.members, view_as)),
       'max': _.max(_.pluck(su.members, view_as)),
