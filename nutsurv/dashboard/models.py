@@ -607,7 +607,7 @@ class Alert(models.Model):
 
         for fun in alert_generators:
             for alert in fun(household_survey):
-                cls.get_or_create_alert(alert)
+                cls.get_or_create_alert(**alert)
 
     @classmethod
     def mapping_check_missing_cluster(cls, household_survey):
@@ -1367,7 +1367,7 @@ class Alert(models.Model):
                     'team_name': team_info['team_name']
                 }
 
-                cls.get_or_create_alert(
+                yield dict(
                     team_lead=by_team[team_id]['team_lead'],
                     text=alert_text,
                     json=alert_json,
