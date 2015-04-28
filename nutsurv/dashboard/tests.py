@@ -137,7 +137,6 @@ class TeamMemberTest(TestCase):
         self.assertEqual(response.status_code, 201)
 
 
-
 class AlertTest(TestCase):
 
     def setUp(self):
@@ -160,6 +159,6 @@ class AlertTest(TestCase):
         result = list(Alert.mapping_check_missing_cluster(survey))
 
         self.assertEqual(result[0]['category'], 'map')
-        self.assertEqual(result[0]['text'], 'No cluster ID for survey of team {} (survey {})'.format(self.team_member.pk, survey.pk) )
+        self.assertEqual(result[0]['text'], 'No cluster ID for survey of team {} (survey {})'.format(self.team_member.pk, survey.pk))
         self.assertEqual(result[0]['survey'], survey)
         self.assertEqual(result[0]['team_lead'], self.team_member)

@@ -527,19 +527,19 @@ class Alert(models.Model):
     )
 
     ALERT_TYPES = (
-      'mapping_check_missing_cluster_id',
-      'mapping_check_missing_location',
-      'mapping_check_unknown_cluster',
-      'mapping_check_wrong_location',
-      'sex_ratio',
-      'child_age_in_months_ratio',
-      'child_age_displacement',
-      'woman_age_14_15_displacement',
-      'woman_age_4549_5054_displacement',
-      'digit_preference',
-      'data_collection_time',
-      'time_to_complete_single_survey',
-      'daily_data_collection_duration',
+        'mapping_check_missing_cluster_id',
+        'mapping_check_missing_location',
+        'mapping_check_unknown_cluster',
+        'mapping_check_wrong_location',
+        'sex_ratio',
+        'child_age_in_months_ratio',
+        'child_age_displacement',
+        'woman_age_14_15_displacement',
+        'woman_age_4549_5054_displacement',
+        'digit_preference',
+        'data_collection_time',
+        'time_to_complete_single_survey',
+        'daily_data_collection_duration',
     )
 
     alert_type = models.CharField(
@@ -748,8 +748,10 @@ class Alert(models.Model):
         if second_admin_level.contains_location(household_survey.get_location()):
             return
 
-        alert_text = 'Wrong location for team {} (survey {})'.format(household_survey.get_team_id(),
-            household_survey.id)
+        alert_text = 'Wrong location for team {} (survey {})'.format(
+            household_survey.get_team_id(),
+            household_survey.id,
+        )
 
         alert_type = 'mapping_check_wrong_location'
 
@@ -1009,7 +1011,6 @@ class Alert(models.Model):
             expected = (age14 + age15) / 2.0
             chi2, p = scipy.stats.chisquare(
                 [age14, age15], [expected, expected])
-
 
         if p >= 0.001:
             return
