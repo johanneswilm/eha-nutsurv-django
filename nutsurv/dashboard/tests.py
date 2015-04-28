@@ -78,7 +78,6 @@ class TeamMemberTest(TestCase):
 
     def test_new_teammember(self):
         team_member_data = {
-            "memberID": "2",
             "first_name": "Bob",
             "last_name": "Smitty",
             "gender": "M",
@@ -92,7 +91,6 @@ class TeamMemberTest(TestCase):
     def test_can_change(self):
         # This makes me sad, but is in the spec currently until we use passwords.
         team_member_data = {
-            "memberID": "2",
             "first_name": "Bob",
             "last_name": "Smitty",
             "gender": "M",
@@ -111,7 +109,6 @@ class TeamMemberTest(TestCase):
     def test_can_delete(self):
         # This makes me sad, but is in the spec currently. At least until we use passwords.
         team_member_data = {
-            "memberID": "2",
             "first_name": "Bob",
             "last_name": "Smitty",
             "gender": "M",
@@ -126,7 +123,6 @@ class TeamMemberTest(TestCase):
 
     def test_creating_mobile_is_optional(self):
         team_member_data = {
-            "memberID": "2",
             "first_name": "Bob",
             "last_name": "Smitty",
             "gender": "M",
