@@ -204,7 +204,6 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
             tm, created = TeamMember.objects.get_or_create(
                 id=parsed['memberID'],
                 defaults={
-                    'id': parsed['memberID'],
                     'gender': parsed['gender'],
                     'first_name': parsed['firstName'],
                     'last_name': parsed['lastName'],
@@ -569,7 +568,7 @@ class Alert(models.Model):
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
 
     def get_absolute_url(self):
-        return reverse('alert-detail', args=[str(self.pk)])
+        return reverse('alert-detail', kwargs={'pk': str(self.pk)})
 
     @classmethod
     def get_or_create_alert(cls, **values):
