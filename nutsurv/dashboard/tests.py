@@ -122,3 +122,15 @@ class TeamMemberTest(TestCase):
 
         response = self.client.delete(response['Location'], format='json')
         self.assertEqual(response.status_code, 204)
+
+    def test_creating_mobile_is_optional(self):
+        team_member_data = {
+            "memberID": "2",
+            "first_name": "Bob",
+            "last_name": "Smitty",
+            "gender": "M",
+            "birth_year": 1901,
+            "email": "wef@asdf.com"
+        }
+        response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
+        self.assertEqual(response.status_code, 201)
