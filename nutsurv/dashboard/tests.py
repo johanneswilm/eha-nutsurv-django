@@ -152,7 +152,7 @@ class AlertTest(TestCase):
             team_assistant=self.team_member,
             team_anthropometrist=self.team_member,
             household_number=12,
-            point=Point(52.503713, 13.424559),
+            location=Point(52.503713, 13.424559),
         )
         survey.save()
 
