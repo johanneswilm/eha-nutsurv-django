@@ -5,6 +5,7 @@ addons:
 
 install:
   - pip install flake8
+  - npm config set spin=false
   - npm install -g bower
   - sudo apt-get update && sudo apt-get install -y python-numpy python-scipy python-psycopg2  postgresql-9.3-postgis-2.1
 
