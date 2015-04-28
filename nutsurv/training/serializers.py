@@ -30,8 +30,8 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
         family_members = validated_data.pop('members')
         super(TrainingSurveySerializer, self).update(instance, validated_data)
         instance.members.all().delete()
-        new_family = [TrainingSubject(index=index, household_survey=instance, **family_member)
-                      for index, family_member in enumerate(family_members)]
+        new_family = [TrainingSubject(household_survey=instance, **family_member)
+                      for family_member in family_members]
 
         TrainingSubject.objects.bulk_create(new_family)
 
