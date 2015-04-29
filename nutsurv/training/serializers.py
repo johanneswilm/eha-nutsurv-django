@@ -39,7 +39,6 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
     class Meta:
         model = TrainingSurvey
-        extra_kwargs = HouseholdSurveyJSONSerializer.Meta.extra_kwargs
 
         fields = (
             'url',
