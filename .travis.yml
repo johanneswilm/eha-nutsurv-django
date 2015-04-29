@@ -15,7 +15,7 @@ script:
   - pip install -r requirements/production.txt
   - pip install -r requirements/development.txt
   - flake8 --exclude migrations --ignore E501,C901 ./nutsurv
-  - ! grep -C3 "field=jsonfield.fields.JSONField(help_text" -- */*/migrations/* || echo -e '\nMigrations for jsonfield.fields.JSONField are discouraged\n'
+  - '! grep -C3 "field=jsonfield.fields.JSONField(help_text" -- */*/migrations/* || echo -e "\nMigrations for jsonfield.fields.JSONField are discouraged\n"'
   - psql -f enable_postgis.sql -U postgres
   - psql -f make_nutsurv_dev.sql -U postgres
   - bower install
