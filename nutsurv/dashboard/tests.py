@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from django.contrib.gis.geos import Point
 import json
+import warnings
+
+from parse_python_indentation import parse_indentation
 
 from .models import Alert, HouseholdSurveyJSON, TeamMember
 
@@ -135,6 +138,98 @@ class TeamMemberTest(TestCase):
         }
         response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
         self.assertEqual(response.status_code, 201)
+
+
+class IdentationParseTests(TestCase):
+    expected_output = [{
+        'key': 'green:',
+        'offspring': [{
+            'key': 'follow',
+            'offspring': []
+        }, {
+            'key': 'blue',
+            'offspring': []
+        }, {
+            'key': 'yellow',
+            'offspring': []
+        }, {
+            'key': 'fishing',
+            'offspring': []
+        }, {
+            'key': 'snowman:',
+            'offspring': [{
+                'key': 'gardening',
+                'offspring': []
+            }]
+        }, {
+            'key': 'street:',
+            'offspring': [{
+                'key': 'great',
+                'offspring': []
+            }]
+        }]
+    }, {
+        'key': 'religion',
+        'offspring': []
+    }, {
+        'key': 'flags',
+        'offspring': []
+    }, {
+        'key': 'houses:',
+        'offspring': [{
+            'key': 'suffering',
+            'offspring': []
+        }]
+    }]
+    good_indentation = """
+green:
+    follow # And it should figure out how many spaces make out one indentation level from the first indentation it finds.
+    blue
+    yellow
+    fishing
+    snowman:
+        gardening
+    street:
+        great
+
+religion
+flags
+houses:
+    suffering
+    """
+    bad_indentation = """
+green:
+    follow # And it should figure out how many spaces make out one indentation level from the first indentation it finds.
+    blue
+    yellow
+    fishing
+    snowman:
+          gardening # This line is too indented. We should be able to read the file, but it should output a warning for this line.
+    street:
+        great
+
+religion
+flags
+houses:
+    suffering
+    """
+
+    def test_parsing(self):
+        """ Tests whether correctly indented file can be parsed
+        """
+        a = parse_indentation(self.good_indentation)
+        self.assertEqual(a, self.expected_output)
+
+    def test_warning(self):
+        """ Tests whether file with two extra indentation spaces is parsed and
+        creates a warning.
+        """
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            a = parse_indentation(self.bad_indentation)
+        self.assertEqual(a, self.expected_output)
+        self.assertEqual(len(w), 1)
+        self.assertEqual(str(w[0].message), 'Indentation with errors!')
 
 
 class AlertTest(TestCase):
