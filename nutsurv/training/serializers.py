@@ -1,20 +1,20 @@
 from rest_framework import serializers
 
-from .models import TrainingSurvey, TrainingRoom, TrainingRoomMember
+from .models import TrainingSurvey, TrainingSession, TrainingSubject
 
 from dashboard.serializers import HouseholdSurveyJSONSerializer, HouseholdMemberSerializer, TeamMemberSerializer
 
 
-class TrainingRoomMemberSerializer(HouseholdMemberSerializer):
+class TrainingSubjectSerializer(HouseholdMemberSerializer):
 
     class Meta:
-        model = TrainingRoomMember
+        model = TrainingSubject
         fields = HouseholdMemberSerializer.Meta.fields
 
 
 class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
-    members = TrainingRoomMemberSerializer(many=True, read_only=False)
+    members = TrainingSubjectSerializer(many=True, read_only=False)
 
     def create(self, validated_data):
 
@@ -30,10 +30,10 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
         family_members = validated_data.pop('members')
         super(TrainingSurveySerializer, self).update(instance, validated_data)
         instance.members.all().delete()
-        new_family = [TrainingRoomMember(index=index, household_survey=instance, **family_member)
+        new_family = [TrainingSubject(index=index, household_survey=instance, **family_member)
                       for index, family_member in enumerate(family_members)]
 
-        TrainingRoomMember.objects.bulk_create(new_family)
+        TrainingSubject.objects.bulk_create(new_family)
 
         return instance
 
@@ -59,19 +59,18 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
 
 class TrainingSurveySerializerWithMemberDetails(TrainingSurveySerializer):
-    team_lead = TeamMemberSerializer()
     team_assistant = TeamMemberSerializer()
     team_anthropometrist = TeamMemberSerializer()
 
 
-class TrainingRoomSerializer(serializers.ModelSerializer):
+class TrainingSessionSerializer(serializers.ModelSerializer):
 
     # TODO make this a serializers.HyperlinkedModelSerializer
     # once users have URL
 
     class Meta:
 
-        model = TrainingRoom
+        model = TrainingSession
 
         fields = [
             'id',

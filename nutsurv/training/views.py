@@ -1,13 +1,13 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from .models import TrainingSurvey, TrainingRoom, TrainingRoomMember
-from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithMemberDetails, TrainingRoomSerializer, TrainingRoomMemberSerializer
+from .models import TrainingSurvey, TrainingSession, TrainingSubject
+from .serializers import TrainingSurveySerializer, TrainingSurveySerializerWithMemberDetails, TrainingSessionSerializer, TrainingSubjectSerializer
 
 
-class TrainingRoomMemberViewset(viewsets.ModelViewSet):
-    queryset = TrainingRoomMember.objects.all()
-    serializer_class = TrainingRoomMemberSerializer
+class TrainingSubjectViewset(viewsets.ModelViewSet):
+    queryset = TrainingSubject.objects.all()
+    serializer_class = TrainingSubjectSerializer
 
 
 class TrainingSurveyViewset(viewsets.ModelViewSet):
@@ -16,16 +16,16 @@ class TrainingSurveyViewset(viewsets.ModelViewSet):
     permission_classes = ()  # Allow Any
 
 
-class TrainingRoomViewset(viewsets.ModelViewSet):
-    queryset = TrainingRoom.objects.all().order_by('-created')
-    serializer_class = TrainingRoomSerializer
+class TrainingSessionViewset(viewsets.ModelViewSet):
+    queryset = TrainingSession.objects.all().order_by('-created')
+    serializer_class = TrainingSessionSerializer
 
-    template_name = 'training/room_list.html'
+    template_name = 'training/session_list.html'
 
     def retrieve(self, request, pk=None, format=None):
 
-        instance = TrainingRoom.objects.get(pk=pk)
-        instance_serializer = TrainingRoomSerializer(
+        instance = TrainingSession.objects.get(pk=pk)
+        instance_serializer = TrainingSessionSerializer(
             instance,
             context={
                 'request': request
@@ -48,4 +48,4 @@ class TrainingRoomViewset(viewsets.ModelViewSet):
         data = instance_serializer.data
         data['surveys'] = survey_serializer.data
 
-        return Response(data, template_name='training/room_detail.html')
+        return Response(data, template_name='training/session_detail.html')

@@ -42,6 +42,19 @@ var personnel = {
             'personnel.csv'
         );
     },
+    surveyDetails: function(memberid) {
+
+        var memberDetails = _.findWhere(dataGetter.downloads[personnel.urls.personnel].data, { 'memberID': memberid.toString() });
+
+        if (memberDetails !== undefined) {
+            var modal_template = _.template($('#template-personnel-details').html());
+            $('#personnel-modal').find('h3.modal-title').html('<i class="fa fa-user"></i> ' + memberDetails.firstName + ' ' + memberDetails.lastName + '\'s Last Survey');
+            $('#personnel-modal').find('div.modal-body').html(modal_template(memberDetails.lastSurvey));
+            $('#personnel-modal').modal();
+        } else {
+          alert('No survey data exists');
+        }
+    },
     table: false,
     drawTable: function (data) {
 
@@ -71,8 +84,8 @@ var personnel = {
             var name = person.firstName + person.lastName;
             var age = currentYear - person.birthYear;
             var surveyDate = moment().format('MMM D, YYYY');
-            var position = 'Unknown';
-            var location = 'Unknown';
+            var position = 'Unknown Role';
+            var location = 'Unknown Cluster';
 
             // Has lastSurvey object
             if (person.lastSurvey) {
@@ -144,8 +157,8 @@ var personnel = {
         $('#personnel_table_filter').addClass('pull-right');
         $('.page-header').prepend('<button id="personnel_download" class="pull-right btn btn-default dataTables_extra_button">Download CSV</button>');
 
-        $('.personnel-last-survey').on('click', function() {
-          alert('This will show alert detail about place lastSurvey happened. Perhaps a map');
+        $('.personnel-last-survey').on('click', function(e) {
+            personnel.surveyDetails($(e.target).data('mermberid'));
         });
 
         // Download Button Action

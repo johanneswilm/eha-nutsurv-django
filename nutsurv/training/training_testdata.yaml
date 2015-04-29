@@ -1,19 +1,16 @@
 -   fields: {created: ! '2015-04-08 13:13:35.232272+00:00', creator: 1}
-    model: training.trainingroom
+    model: training.trainingsession
     pk: 1
 -   fields: {created: ! '2015-04-10 08:31:14.805383+00:00', creator: 1}
-    model: training.trainingroom
+    model: training.trainingsession
     pk: 2
--   fields: {household_number: 1, json: '""', team_anthropometrist: 12, team_assistant: 3,
-        team_lead: 4, uuid: '123'}
+-   fields: {household_number: 1, json: '""', team_anthropometrist: 12, team_assistant: 3, uuid: '123'}
     model: training.trainingsurvey
     pk: 1
--   fields: {household_number: 1, json: '""', team_anthropometrist: 12, team_assistant: 4,
-        team_lead: 3, uuid: '1312'}
+-   fields: {household_number: 1, json: '""', team_anthropometrist: 12, team_assistant: 4, uuid: '1312'}
     model: training.trainingsurvey
     pk: 2
--   fields: {household_number: 2, json: '""', team_anthropometrist: 3, team_assistant: 4,
-        team_lead: 4, uuid: '4343'}
+-   fields: {household_number: 2, json: '""', team_anthropometrist: 3, team_assistant: 4, uuid: '4343'}
     model: training.trainingsurvey
     pk: 3
 -   fields:
@@ -26,7 +23,7 @@
       household_survey: 2
       muac: 10
       weight: 20
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 4
 -   fields:
       index: 1
@@ -38,7 +35,7 @@
       household_survey: 2
       muac: 11
       weight: 40
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 5
 -   fields:
       index: 2
@@ -50,7 +47,7 @@
       household_survey: 2
       muac: 12
       weight: 60
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 6
 -   fields:
       index: 3
@@ -62,7 +59,7 @@
       household_survey: 2
       muac: 13
       weight: 80
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 7
 -   fields:
       index: 4
@@ -74,7 +71,7 @@
       household_survey: 2
       muac: 14
       weight: 100
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 8
 -   fields:
       index: 5
@@ -86,7 +83,7 @@
       household_survey: 2
       muac: 15
       weight: 120
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 9
 -   fields:
       index: 6
@@ -98,7 +95,7 @@
       household_survey: 2
       muac: 16
       weight: 140
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 10
 -   fields:
       index: 7
@@ -110,7 +107,7 @@
       household_survey: 2
       muac: 17
       weight: 160
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 11
 -   fields:
       index: 8
@@ -122,7 +119,7 @@
       household_survey: 2
       muac: 18
       weight: 180
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 12
 -   fields:
       index: 9
@@ -134,5 +131,5 @@
       household_survey: 2
       muac: 19
       weight: 200
-    model: training.trainingroommember
+    model: training.trainingsubject
     pk: 13

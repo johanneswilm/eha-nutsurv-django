@@ -9,7 +9,7 @@ $.get(window.location.pathname, function (data) {
      {data: 'created'},
      {data: 'url',
       render: function (data, type, full, meta ) {
-        return '<a class="btn btn-sm btn-primary" href="'+data+'"><i class="fa fa-eye"></i> Room details</a>';
+        return '<a class="btn btn-sm btn-primary" href="'+data+'"><i class="fa fa-eye"></i> Session details</a>';
       }},
     ],
   });

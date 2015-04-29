@@ -27,10 +27,4 @@ class Migration(migrations.Migration):
             field=models.DateTimeField(default=datetime.datetime(2015, 4, 20, 15, 32, 25, 696853, tzinfo=utc)),
             preserve_default=False,
         ),
-        migrations.AlterField(
-            model_name='householdsurveyjson',
-            name='json',
-            field=jsonfield.fields.JSONField(help_text=b'A JSON document containing data acquired from one household.  Typically not edited here but uploaded from a mobile application used by a team of surveyors in the field.  If in doubt, do not edit.', validators=[dashboard.models.validate_json]),
-            preserve_default=True,
-        ),
     ]

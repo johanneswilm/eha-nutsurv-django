@@ -1,12 +1,13 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
+from django.contrib.gis.geos import Point
 import json
 import warnings
 
 from parse_python_indentation import parse_indentation
 
-from .models import TeamMember, HouseholdSurveyJSON
+from .models import Alert, HouseholdSurveyJSON, TeamMember
 
 
 class EmptySmokeTest(TestCase):
@@ -126,6 +127,17 @@ class TeamMemberTest(TestCase):
         response = self.client.delete(response['Location'], format='json')
         self.assertEqual(response.status_code, 204)
 
+    def test_creating_mobile_is_optional(self):
+        team_member_data = {
+            "memberID": "2",
+            "first_name": "Bob",
+            "last_name": "Smitty",
+            "gender": "M",
+            "birth_year": 1901,
+            "email": "wef@asdf.com"
+        }
+        response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
+        self.assertEqual(response.status_code, 201)
 
 class IdentationParseTests(TestCase):
     expected_output = [{
@@ -217,3 +229,30 @@ houses:
         self.assertEqual(a, self.expected_output)
         self.assertEqual(len(w), 1)
         self.assertEqual(str(w[0].message), 'Indentation with errors!')
+
+
+class AlertTest(TestCase):
+
+    def setUp(self):
+        self.team_member, created = TeamMember.objects.get_or_create(
+            birth_year=2000,
+        )
+        assert created
+
+    def test_mapping_check_missing_cluster(self):
+
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=Point(52.503713, 13.424559),
+        )
+        survey.save()
+
+        result = list(Alert.mapping_check_missing_cluster(survey))
+
+        self.assertEqual(result[0]['category'], 'map')
+        self.assertEqual(result[0]['text'], 'No cluster ID for survey of team {} (survey {})'.format(self.team_member.pk, survey.pk))
+        self.assertEqual(result[0]['survey'], survey)
+        self.assertEqual(result[0]['team_lead'], self.team_member)
