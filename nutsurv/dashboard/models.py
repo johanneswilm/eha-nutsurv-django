@@ -107,7 +107,7 @@ class TeamMember(models.Model):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return reverse('teammember-detail',  kwargs={'pk': str(self.pk)})
+        return reverse('teammember-detail', kwargs={'pk': str(self.pk)})
 
 
 def validate_json(spec_file):
