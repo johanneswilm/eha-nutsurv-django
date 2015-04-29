@@ -107,7 +107,7 @@ class TeamMember(models.Model):
         return u'%s-%s %s' % (self.id, self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return reverse('teammember-detail', args=[str(self.id)])
+        return reverse('teammember-detail',  kwargs={'pk': str(self.pk)})
 
 
 def validate_json(spec_file):
@@ -568,7 +568,7 @@ class Alert(models.Model):
         return u'{} (alert #{}{})'.format(self.text, self.pk, archived)
 
     def get_absolute_url(self):
-        return reverse('alert-detail', kwargs={'pk': str(self.pk)})
+        return reverse('alert-detail', args=[str(self.id)])
 
     @classmethod
     def get_or_create_alert(cls, **values):
