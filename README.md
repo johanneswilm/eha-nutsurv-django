@@ -3,23 +3,21 @@ eha-nutsurv-django
 
 NutSurv - Data collection and quality assurance tools for Nutrition Surveys on mobile devices
 
-# Install Bower
-
-    $ npm install -g bower
-
 # Install with Docker
 
 Install [Docker](https://docs.docker.com/installation/#installation)
 
-### On MacOS
+### On Mac OS X
 
+- Install [Bower](http://bower.io)
 - Install [boot2docker](http://boot2docker.io)
 - Install [Homebrew](http://brew.sh)
 - Install Docker Compose `$ brew install docker-compose`
 
 ### On Ubuntu
 
-- Install Pythons PIP `$ sudo apt-get install python-pip`
+- Install Python's PIP and npm/nodejs `$ sudo apt-get install python-pip npm nodejs-legacy`
+- Install Bower `$ sudo npm install -g bower`
 - Install Docker Compose `$ sudo pip install -U docker-compose`
 
 After you have all the tool dependencies installed for your respective OS, move onto install the app.
@@ -29,10 +27,10 @@ After you have all the tool dependencies installed for your respective OS, move 
     $ git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
     $ cd eha-nutsurv-django/
     $ bower install
-    
+
     # (the next line is optional, if you wish to also test the mobile app)
     $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
-    
+
     # now build your container
     $ sudo docker-compose build
 
