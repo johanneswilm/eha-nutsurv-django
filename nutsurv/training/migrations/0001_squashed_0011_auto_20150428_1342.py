@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('dashboard', '0010_auto_20150420_1222'),
+        ('dashboard', '0001_squashed_0023_auto_20150428_1542'),
     ]
 
     operations = [
