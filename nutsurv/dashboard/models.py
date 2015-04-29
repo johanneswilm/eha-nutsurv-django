@@ -614,7 +614,6 @@ class Alert(models.Model):
             for alert in fun(household_survey):
                 cls.get_or_create_alert(alert)
 
-
     @classmethod
     def mapping_check_missing_cluster(cls, household_survey):
         """
@@ -782,7 +781,6 @@ class Alert(models.Model):
         95% of cases. If a field has been left blank for more than 5% of women,
         children or household members, an alert is created.
         """
-        team_lead = household_survey.team_lead
         survey_fields = {
             'women': [
                 "breastfeeding",
@@ -831,7 +829,7 @@ class Alert(models.Model):
         for survey in surveys:
             surveys_ordered['women'].extend(survey.get_women_records())
             surveys_ordered['children'].extend(survey.get_child_records())
-            surveys_ordered['household_members'].extend(survey.json.get('members',[]))
+            surveys_ordered['household_members'].extend(survey.json.get('members', []))
 
         for member_type in survey_fields.keys():
             for member in surveys_ordered[member_type]:
@@ -864,7 +862,6 @@ class Alert(models.Model):
                             text=alert_text,
                             json=alert_json,
                         )
-
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):

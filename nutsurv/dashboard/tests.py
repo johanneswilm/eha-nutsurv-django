@@ -139,6 +139,7 @@ class TeamMemberTest(TestCase):
         response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
         self.assertEqual(response.status_code, 201)
 
+
 class IdentationParseTests(TestCase):
     expected_output = [{
         'key': 'green:',
