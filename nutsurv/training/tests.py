@@ -67,6 +67,7 @@ class TrainingSurveyTests(TestCase):
     def test_post_training_with_1_person_family(self):
 
         person = {
+            u'index': 1,
             u'muac': 232,
             u'birthdate': u'2012-01-01',
             u'weight': 89.0,
@@ -99,6 +100,7 @@ class TrainingSurveyTests(TestCase):
     def test_post_training_with_incomplete_data(self):
 
         person = {
+            u'index': 1,
             u'muac': 1,
             u'weight': 1.50,
             u'height': 1.3,
