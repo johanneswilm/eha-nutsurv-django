@@ -3,7 +3,7 @@ import json
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 
-from .models import TrainingSurvey
+from training.models import TrainingSurvey
 from dashboard.models import HouseholdSurveyJSON, TeamMember
 
 

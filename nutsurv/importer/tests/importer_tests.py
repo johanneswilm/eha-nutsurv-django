@@ -1,10 +1,10 @@
 from django.test import TestCase
-from .management.commands.import_formhub import parse_flat_formhub_csv, find_household_members, get_rawdata
+from importer.management.commands.import_formhub import parse_flat_formhub_csv, find_household_members, get_rawdata
 
 import csv
 import os
 
-filename = '{}/tests/5_records_of_NNHS_R1_2014 Final Data Qst_version_10Feb14_2014_07_28.csv'.format(
+filename = '{}/5_records_of_NNHS_R1_2014 Final Data Qst_version_10Feb14_2014_07_28.csv'.format(
     os.path.dirname(__file__)
 )
 

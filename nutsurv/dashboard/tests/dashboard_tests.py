@@ -5,9 +5,9 @@ from django.contrib.gis.geos import Point
 import json
 import warnings
 
-from parse_python_indentation import parse_indentation
+from dashboard.parse_python_indentation import parse_indentation
 
-from .models import Alert, HouseholdSurveyJSON, TeamMember
+from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember
 
 
 class EmptySmokeTest(TestCase):
