@@ -5,11 +5,11 @@ from django.contrib.gis.geos import Point, Polygon, MultiPolygon
 import json
 import warnings
 import collections
+from datetime import datetime
 
 from dashboard.parse_python_indentation import parse_indentation
-
-from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember, SecondAdminLevel, Clusters
 from dashboard.serializers import HouseholdMemberSerializer
+from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember, SecondAdminLevel, Clusters
 
 
 class EmptySmokeTest(TestCase):
@@ -318,6 +318,139 @@ class AlertTest(TestCase):
         self.assertEqual(result[0]['text'], 'No cluster ID for survey of team {} (survey {})'.format(self.team_member.pk, survey.pk))
         self.assertEqual(result[0]['survey'], survey)
         self.assertEqual(result[0]['team_lead'], self.team_member)
+
+    def test_missing_data_alert(self):
+
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=Point(52.503713, 13.424559),
+        )
+        survey.save()
+
+        self.woman, created_woman = HouseholdMember.objects.get_or_create(
+            index=1,
+            household_survey=survey,
+            birthdate=datetime(1970, 1, 1),
+            gender='F',
+            height=23,
+            weight=199,
+        )
+
+        self.woman2, created_woman2 = HouseholdMember.objects.get_or_create(
+            index=2,
+            household_survey=survey,
+            birthdate=datetime(1971, 1, 1),
+            gender='F',
+            height=24,
+            muac=198,
+        )
+
+        result = list(Alert.missing_data_alert(survey))
+
+        self.assertEqual(len(result), 3)
+
+        alert_titles = [a['text'] for a in result]
+
+        self.maxDiff = 2322
+
+        self.assertEqual(alert_titles, [
+            'Missing data issue on field muac for women in team {}'.format(self.team_member.pk),
+            'Missing data issue on field edema for women in team {}'.format(self.team_member.pk),
+            'Missing data issue on field weight for women in team {}'.format(self.team_member.pk),
+        ])
+
+        self.assertTrue(
+            'Missing data issue on field height for women in team {}'.format(
+                self.team_member.pk) not in alert_titles
+        )
+
+
+class HouseholdMemberTest(TestCase):
+
+    def setUp(self):
+        self.maxDiff = 2000
+        self.team_member, created_teammember = TeamMember.objects.get_or_create(
+            birth_year=2000,
+        )
+        assert created_teammember
+
+        self.team_member2, created_teammember2 = TeamMember.objects.get_or_create(
+            birth_year=1980,
+        )
+        assert created_teammember2
+
+        self.survey, created_survey = HouseholdSurveyJSON.objects.get_or_create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+        )
+        assert created_survey
+
+        self.child1, created_child1 = HouseholdMember.objects.get_or_create(
+            index=1,
+            household_survey=self.survey,
+            birthdate=datetime(2014, 1, 1),
+            gender='F',
+            weight=454,
+        )
+
+        self.child2, created_child2 = HouseholdMember.objects.get_or_create(
+            index=2,
+            household_survey=self.survey,
+            birthdate=datetime(2015, 1, 1),
+            gender='M',
+            muac=29,
+        )
+
+        self.woman, created_woman = HouseholdMember.objects.get_or_create(
+            index=3,
+            household_survey=self.survey,
+            birthdate=datetime(2000, 1, 1),
+            gender='F',
+            height=23,
+            muac=199,
+        )
+
+    def test_managers(self):
+        self.assertEqual(3, HouseholdMember.objects.all().count())
+
+        self.assertEqual(1, HouseholdMember.women.all().count())
+        self.assertEqual(2, HouseholdMember.children.all().count())
+
+    def test_by_teamlead(self):
+        self.assertEqual(3, HouseholdMember.objects.by_teamlead(self.team_member).count())
+        self.assertEqual(0, HouseholdMember.objects.by_teamlead(self.team_member2).count())
+
+    def test_missing_data(self):
+
+        expected = (
+            {'children': {
+                'muac': {'total': 2, 'existing': 1},
+                'birthdate': {'total': 2, 'existing': 2},
+                'weight': {'total': 2, 'existing': 1},
+                'height': {'total': 2, 'existing': 0}},
+             'household_members': {
+                'gender': {'total': 3, 'existing': 3},
+                 'birthdate': {'total': 3, 'existing': 3}},
+             'women': {
+                'muac': {'total': 1, 'existing': 1},
+                 'edema': {'total': 1, 'existing': 0},
+                 'birthdate': {'total': 1, 'existing': 1},
+                 'weight': {'total': 1, 'existing': 0},
+                 'height': {'total': 1, 'existing': 1}
+            }
+            }
+        )
+
+        self.assertEqual(
+            expected,
+            HouseholdMember.missing_data(
+                HouseholdMember.objects.by_teamlead(self.team_member))
+        )
 
 
 class AlertLocationTest(TestCase):

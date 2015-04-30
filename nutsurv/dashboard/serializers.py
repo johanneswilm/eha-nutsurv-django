@@ -6,7 +6,9 @@ from .models import Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember
 
 
 class JSONSerializerField(serializers.Field):
+
     """ Serializer for JSONField -- required to make field writable"""
+
     def to_internal_value(self, data):
         return data
 
@@ -131,6 +133,7 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SimpleTeamMemberSerializer(TeamMemberSerializer):
+
     class Meta:
 
         model = TeamMember

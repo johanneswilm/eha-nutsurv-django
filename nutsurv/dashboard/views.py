@@ -77,8 +77,9 @@ def survey_completed_strata(request):
 
 @login_required
 def missing_data(request):
-    response = {}
-    return render(request, 'dashboard/missing_data.html', response)
+    return render(request, 'dashboard/missing_data.html', {
+        'existing_data': HouseholdMember.missing_data(),
+    })
 
 
 @login_required
