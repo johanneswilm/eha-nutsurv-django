@@ -2,23 +2,31 @@ from rest_framework import serializers
 
 from .models import TrainingSurvey, TrainingSession, TrainingSubject
 
-from dashboard.serializers import HouseholdSurveyJSONSerializer, HouseholdMemberSerializer, TeamMemberSerializer
+from dashboard.serializers import TeamMemberSerializer
 
 
-class TrainingSubjectSerializer(HouseholdMemberSerializer):
+class TrainingSubjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = TrainingSubject
-        fields = HouseholdMemberSerializer.Meta.fields
+        fields = [
+            'index',
+            'first_name',
+            'gender',
+            'muac',
+            'birthdate',
+            'weight',
+            'height',
+        ]
 
 
-class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
+class TrainingSurveySerializer(serializers.HyperlinkedModelSerializer):
 
     members = TrainingSubjectSerializer(many=True, read_only=False)
 
     def create(self, validated_data):
 
-        family_members = validated_data.pop('members')
+        family_members = validated_data.pop('members', [])
         instance = super(TrainingSurveySerializer, self).create(validated_data)
         validated_data['members'] = family_members
         self.update(instance, validated_data)
@@ -27,7 +35,7 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
     def update(self, instance, validated_data):
 
-        family_members = validated_data.pop('members')
+        family_members = validated_data.pop('members', [])
         super(TrainingSurveySerializer, self).update(instance, validated_data)
         instance.members.all().delete()
         new_family = [TrainingSubject(household_survey=instance, **family_member)

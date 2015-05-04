@@ -4,9 +4,9 @@ django-coverage
 mock
 model_mommy
 behave
-django-extensions
 Werkzeug
 django-debug-toolbar
 flake8
 autopep8
 pytest-django
+
