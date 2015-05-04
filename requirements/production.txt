@@ -1,5 +1,4 @@
 Django==1.7.6
-jsonfield
 jsonschema
 django-tastypie
 djangorestframework
@@ -17,3 +16,7 @@ djangorestframework-camel-case
 validictory
 ipython
 djangorestframework-gis
+django-pgjson
+psycopg2==2.5.4
+django-extensions
+jsonfield
