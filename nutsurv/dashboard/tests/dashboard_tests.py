@@ -12,7 +12,6 @@ from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember, SecondAdmin
 from dashboard.serializers import HouseholdMemberSerializer
 
 
-
 class EmptySmokeTest(TestCase):
 
     def setUp(self):
