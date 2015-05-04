@@ -46,8 +46,24 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
+class SimpleHouseholdMemberSerializer(HouseholdMemberSerializer):
+
+    class Meta:
+        model = HouseholdMember
+        fields = [
+            'index',
+            'first_name',
+            'gender',
+            'muac',
+            'birthdate',
+            'weight',
+            'height',
+            'extra_questions',
+        ]
+
+
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoModelSerializer):
-    members = HouseholdMemberSerializer(many=True, read_only=False)
+    members = SimpleHouseholdMemberSerializer(many=True, read_only=False)
 
     def create(self, validated_data):
 
@@ -63,10 +79,8 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
         family_members = validated_data.pop('members', [])
         super(HouseholdSurveyJSONSerializer, self).update(instance, validated_data)
         instance.members.all().delete()
-        new_family = [HouseholdMember(household_survey=instance, **family_member)
-                      for family_member in family_members]
-
-        HouseholdMember.objects.bulk_create(new_family)
+        for family_member in family_members:
+            HouseholdMember(household_survey=instance, **family_member).save()
 
         return instance
 
