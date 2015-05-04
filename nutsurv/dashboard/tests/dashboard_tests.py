@@ -135,6 +135,26 @@ class TeamMemberTest(TestCase):
         response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
         self.assertEqual(response.status_code, 201)
 
+    def test_extra_questions(self):
+        team_member_data = {
+            "first_name": "Bob",
+            "last_name": "Smitty",
+            "gender": "M",
+            "birth_year": 1901,
+            "email": "wef@asdf.com",
+            "extra_question": {
+                "How many road must a man travel?": 42,
+                "What is the meaning of life?": "Forty-two",
+                "Tabs v spaces": ["tabs are cool", "but spaces are better"],
+                "Spirit animal": {
+                    "cat": "Lord of the Internet",
+                    "dog": "Can't even right now"
+                },
+            }
+        }
+        response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
+        self.assertEqual(response.status_code, 201)
+
 
 class IdentationParseTests(TestCase):
     expected_output = [{

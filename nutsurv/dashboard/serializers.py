@@ -41,7 +41,7 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
             'birthdate',
             'weight',
             'height',
-            'extra_questions'
+            'extra_questions',
         ]
 
 
