@@ -1,13 +1,13 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
-from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point, Polygon, MultiPolygon
 import json
 import warnings
 
 from dashboard.parse_python_indentation import parse_indentation
 
-from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember
+from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember, SecondAdminLevel, Clusters
 
 
 class EmptySmokeTest(TestCase):
@@ -253,3 +253,145 @@ class AlertTest(TestCase):
         self.assertEqual(result[0]['text'], 'No cluster ID for survey of team {} (survey {})'.format(self.team_member.pk, survey.pk))
         self.assertEqual(result[0]['survey'], survey)
         self.assertEqual(result[0]['team_lead'], self.team_member)
+
+
+class AlertLocationTest(TestCase):
+
+    def setUp(self):
+        self.team_member, created = TeamMember.objects.get_or_create(
+            birth_year=2000,
+        )
+        assert created
+        second_admin_level_1 = SecondAdminLevel.objects.create(
+            name_0='Country 1',
+            name_1='State 1',
+            name_2='County 1',
+            varname_2='Springfield',
+            mpoly=MultiPolygon(Polygon(((0, 0), (0, 100), (100, 100), (100, 0), (0, 0))),)
+        )
+        second_admin_level_1.save()
+
+        second_admin_level_2 = SecondAdminLevel.objects.create(
+            name_0='Country 1',
+            name_1='State 1',
+            name_2='County 2',
+            varname_2='Shelbyville',
+            mpoly=MultiPolygon(Polygon(((0, 100), (0, 200), (100, 200), (100, 100), (0, 100))),)
+        )
+        second_admin_level_2.save()
+        second_admin_level_3 = SecondAdminLevel.objects.create(
+            name_0='Country 1',
+            name_1='State 2',
+            name_2='County 3',
+            varname_2='Ogdenville',
+            mpoly=MultiPolygon(Polygon(((300, 300), (300, 400), (400, 400), (400, 300), (300, 300))),)
+        )
+        second_admin_level_3.save()
+        # Delete all existing cluster info. TODO: Is this needed in a test?
+        Clusters.objects.all().delete()
+        clusters = Clusters.objects.create(
+            json={
+                "1": {
+                    "cluster_name": "Fast-Food Boulevard",
+                    "second_admin_level_name": "County 1",
+                    "first_admin_level_name": "State 1"
+                },
+                "2": {
+                    "cluster_name": "Main Street",
+                    "second_admin_level_name": "County 1",
+                    "first_admin_level_name": "State 1"
+                },
+                "3": {
+                    "cluster_name": "Chinatown",
+                    "second_admin_level_name": "County 2",
+                    "first_admin_level_name": "State 1"
+                },
+                "4": {
+                    "cluster_name": "Manhattan Square",
+                    "second_admin_level_name": "County 2",
+                    "first_admin_level_name": "State 1"
+                },
+                "5": {
+                    "cluster_name": "Ogdenville Outlet Mall",
+                    "second_admin_level_name": "County 3",
+                    "first_admin_level_name": "State 2"
+                },
+                "6": {
+                    "cluster_name": "New Christiana",
+                    "second_admin_level_name": "County 3",
+                    "first_admin_level_name": "State 2"
+                },
+            },
+            active=True
+        )
+        clusters.save()
+        self.assertNotEqual(Clusters.get_active(), None)
+
+    def test_correct_admin_levels(self):
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=Point(52.503713, 13.424559),
+            first_admin_level='State 1',
+            second_admin_level='County 1',
+            json={
+                "cluster": "1",
+                "location": [52.503713, 13.424559]
+            }
+        )
+        survey.save()
+
+        result_first_admin = list(Alert.mapping_check_wrong_location_first_admin_level(survey))
+        self.assertEqual(len(result_first_admin), 0)
+
+        result_second_admin = list(Alert.mapping_check_wrong_location_second_admin_level(survey))
+        self.assertEqual(len(result_second_admin), 0)
+
+    def test_incorrect_second_admin_level(self):
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=Point(52.503713, 113.424559),
+            first_admin_level='State 1',
+            second_admin_level='County 1',
+            json={
+                "cluster": "1",
+                "location": [52.503713, 113.424559]
+            }
+        )
+        survey.save()
+
+        result_first_admin = list(Alert.mapping_check_wrong_location_first_admin_level(survey))
+        self.assertEqual(len(result_first_admin), 0)
+
+        result_second_admin = list(Alert.mapping_check_wrong_location_second_admin_level(survey))
+        self.assertEqual(len(result_second_admin), 1)
+        self.assertEqual(result_second_admin[0]['alert_type'], 'mapping_check_wrong_location_second_admin_level')
+
+    def test_incorrect_first_and_second_admin_levels(self):
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=Point(352.503713, 313.424559),
+            first_admin_level='State 1',
+            second_admin_level='County 1',
+            json={
+                "cluster": "1",
+                "location": [352.503713, 313.424559]
+            }
+        )
+        survey.save()
+
+        result_first_admin = list(Alert.mapping_check_wrong_location_first_admin_level(survey))
+        self.assertEqual(len(result_first_admin), 1)
+        self.assertEqual(result_first_admin[0]['alert_type'], 'mapping_check_wrong_location_first_admin_level')
+
+        result_second_admin = list(Alert.mapping_check_wrong_location_second_admin_level(survey))
+        self.assertEqual(len(result_second_admin), 1)
+        self.assertEqual(result_second_admin[0]['alert_type'], 'mapping_check_wrong_location_second_admin_level')

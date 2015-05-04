@@ -740,7 +740,7 @@ class Alert(models.Model):
         latitude = float(location[1])
         point = Point(longitude, latitude)
 
-        second_admin_levels = SecondAdminLevel.objects.filter(mpoly__intersects=point)
+        second_admin_levels = SecondAdminLevel.objects.filter(mpoly__contains=point)
 
         found = len(second_admin_levels)
 
