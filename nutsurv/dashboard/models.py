@@ -155,6 +155,9 @@ class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
     extra_questions = JsonBField(default={})
 
+    def get_absolute_url(self):
+        return reverse('householdmember-detail', args=[str(self.id)])
+
 
 class BaseHouseholdSurveyJSON(gismodels.Model):
 

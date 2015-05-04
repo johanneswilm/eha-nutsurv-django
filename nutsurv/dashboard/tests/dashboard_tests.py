@@ -115,7 +115,18 @@ class HouseholdSurveyTest(TestCase):
         if is_valid is not True:
             print data.errors
         h = data.save()
-        self.assertDictEqual(h.extra_questions, household_member_data['extra_questions'], "no.")
+        self.assertDictEqual(h.extra_questions, household_member_data['extra_questions'])
+
+        username = 'test'
+        email = 'test@example.com'
+        password = 'test'
+        User.objects.create_superuser(username=username, email=email, password=password)
+
+        client = APIClient()
+        client.login(username=username, password=password)
+        response = client.get(h.get_absolute_url())
+        # Some nested extra_question structure that was saved
+        self.assertContains(response, "Lord of the Internet")
 
 
 class TeamMemberTest(TestCase):
