@@ -525,7 +525,8 @@ class Alert(models.Model):
         'mapping_check_missing_cluster_id',
         'mapping_check_missing_location',
         'mapping_check_unknown_cluster',
-        'mapping_check_wrong_location',
+        'mapping_check_wrong_location_first_admin_level',
+        'mapping_check_wrong_location_second_admin_level',
         'sex_ratio',
         'child_age_in_months_ratio',
         'child_age_displacement',
@@ -594,7 +595,8 @@ class Alert(models.Model):
             cls.mapping_check_missing_cluster,
             cls.mapping_check_missing_location,
             cls.mapping_check_unknown_cluster,
-            cls.mapping_check_wrong_location,
+            cls.mapping_check_wrong_location_first_admin_level,
+            cls.mapping_check_wrong_location_second_admin_level,
             cls.missing_data_alert,
             cls.sex_ratio_alert,
             cls.child_age_in_months_ratio_alert,
@@ -716,11 +718,73 @@ class Alert(models.Model):
         )
 
     @classmethod
-    def mapping_check_wrong_location(cls, household_survey):
+    def mapping_check_wrong_location_first_admin_level(cls, household_survey):
         """
         cluster and location are given and known
         to the server, but the location is not inside the boundaries of the
-        cluster that the data supposedly comes from.
+        first admin level area that the data supposedly comes from.
+        """
+
+        cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
+
+        # if cluster data found, get first admin level
+        ideal_first_admin_level_name = cluster.get('first_admin_level_name', None)
+
+        # if first admin level names not found, assume database inconsistencies and abort
+        if not ideal_first_admin_level_name:
+            return
+
+        location = household_survey.get_location()
+
+        longitude = float(location[0])
+        latitude = float(location[1])
+        point = Point(longitude, latitude)
+
+        second_admin_levels = SecondAdminLevel.objects.filter(mpoly__intersects=point)
+
+        found = len(second_admin_levels)
+
+        # The point was part of several second level admin areas, assume database insonsistencies and abort
+        if found > 1:
+            return
+        elif found == 1:
+            actual_first_admin_level_name = second_admin_levels[0].get_first_admin_level_name()
+
+            # The name of the actual first level admin level and that of where it should be are the same, no alert needs to be created
+            if actual_first_admin_level_name == ideal_first_admin_level_name:
+                return
+
+        alert_text = 'Wrong first admin level location for team {} (survey {})'.format(
+            household_survey.get_team_id(),
+            household_survey.id,
+        )
+
+        alert_type = 'mapping_check_wrong_location_first_admin_level'
+
+        alert_json = {
+            'type': alert_type,
+            'team_name': (household_survey.get_team_name()),
+            'team_id': (household_survey.get_team_id()),
+            'cluster_id': (household_survey.get_cluster_id()),
+            'first_admin_level_name': ideal_first_admin_level_name,
+            'survey_id': household_survey.id,
+            'location': (household_survey.get_location())
+        }
+
+        yield dict(
+            category='map',
+            alert_type=alert_type,
+            team_lead=(household_survey.team_lead),
+            text=alert_text,
+            json=alert_json,
+        )
+
+    @classmethod
+    def mapping_check_wrong_location_second_admin_level(cls, household_survey):
+        """
+        cluster and location are given and known
+        to the server, but the location is not inside the boundaries of the
+        second admin level area that the data supposedly comes from.
         """
 
         cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
@@ -744,12 +808,12 @@ class Alert(models.Model):
         if second_admin_level.contains_location(household_survey.get_location()):
             return
 
-        alert_text = 'Wrong location for team {} (survey {})'.format(
+        alert_text = 'Wrong second admin level location for team {} (survey {})'.format(
             household_survey.get_team_id(),
             household_survey.id,
         )
 
-        alert_type = 'mapping_check_wrong_location'
+        alert_type = 'mapping_check_wrong_location_second_admin_level'
 
         alert_json = {
             'type': alert_type,
