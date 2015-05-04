@@ -4,10 +4,11 @@ from rest_framework.test import APIClient
 from django.contrib.gis.geos import Point
 import json
 import warnings
+import collections
 
 from dashboard.parse_python_indentation import parse_indentation
-
 from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember
+from dashboard.serializers import HouseholdMemberSerializer
 
 
 class EmptySmokeTest(TestCase):
@@ -56,6 +57,17 @@ class SimpleAccessTest(TestCase):
 
 class HouseholdSurveyTest(TestCase):
 
+    def assertDictEqual(self, d1, d2, msg=None):  # assertEqual uses for dicts
+        for k, v1 in d1.iteritems():
+            self.assertIn(k, d2, msg)
+            v2 = d2[k]
+            if(isinstance(v1, collections.Iterable) and
+               not isinstance(v1, basestring)):
+                self.assertItemsEqual(v1, v2, msg)
+            else:
+                self.assertEqual(v1, v2, msg)
+        return True
+
     def setUp(self):
         self.team_member, created = TeamMember.objects.get_or_create(
             birth_year=2000,
@@ -72,6 +84,38 @@ class HouseholdSurveyTest(TestCase):
             location=None,
         )
         survey.save()
+
+    def test_extra_questions(self):
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=None,
+        )
+        survey.save()
+
+        household_member_data = {
+            "first_name": "Bob",
+            "last_name": "Smitty",
+            "index": 1,
+            "household_survey": survey.get_absolute_url(),
+            "extra_questions": {
+                "How many road must a man travel?": 42,
+                "What is the meaning of life?": "Forty-two",
+                "Tabs v spaces": ["tabs are cool", "but spaces are better"],
+                "Spirit animal": {
+                    "cat": "Lord of the Internet",
+                    "dog": "Can't even right now"
+                },
+            }
+        }
+        data = HouseholdMemberSerializer(data=household_member_data)
+        is_valid = data.is_valid()
+        if is_valid is not True:
+            print data.errors
+        h = data.save()
+        self.assertDictEqual(h.extra_questions, household_member_data['extra_questions'], "no.")
 
 
 class TeamMemberTest(TestCase):
@@ -131,26 +175,6 @@ class TeamMemberTest(TestCase):
             "gender": "M",
             "birth_year": 1901,
             "email": "wef@asdf.com"
-        }
-        response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
-        self.assertEqual(response.status_code, 201)
-
-    def test_extra_questions(self):
-        team_member_data = {
-            "first_name": "Bob",
-            "last_name": "Smitty",
-            "gender": "M",
-            "birth_year": 1901,
-            "email": "wef@asdf.com",
-            "extra_question": {
-                "How many road must a man travel?": 42,
-                "What is the meaning of life?": "Forty-two",
-                "Tabs v spaces": ["tabs are cool", "but spaces are better"],
-                "Spirit animal": {
-                    "cat": "Lord of the Internet",
-                    "dog": "Can't even right now"
-                },
-            }
         }
         response = self.client.post('/dashboard/teammembers/', team_member_data, format='json')
         self.assertEqual(response.status_code, 201)

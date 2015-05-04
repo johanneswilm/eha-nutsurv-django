@@ -490,6 +490,9 @@ class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
     team_lead = models.ForeignKey('TeamMember', related_name='%(class)s_as_team_lead')
     location = gismodels.PointField(null=True)
 
+    def get_absolute_url(self):
+        return reverse('householdsurveyjson-detail', args=[str(self.id)])
+
 
 class Alert(models.Model):
 
