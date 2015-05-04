@@ -80,7 +80,7 @@ var home = {
                   team: survey.team
               });
               if (!latestContact) {
-                  latestTeamContacts.push({ 
+                  latestTeamContacts.push({
                       team: survey.team,
                       time: survey.endTime
                   });
@@ -142,6 +142,10 @@ var home = {
         home.contactModalAlerts();
     },
     alertType: {
+        missing_data: {
+          title: 'Missing Data',
+          icon: 'fa-calculator'
+        },
         data_collection_time: {
             title: 'Data Collection Time',
             icon: 'fa-clock-o'
@@ -196,7 +200,7 @@ var home = {
 
         // Append & Bootstrap Select
         $('#home_alerts_filter_type').append(type_html);
-        
+
     },
     paginateAlerts: function() {
 
@@ -204,16 +208,16 @@ var home = {
         var paginateAlertList = new List('home_alerts_list', {
             valueNames: ['alert_title', 'alert_team_name', 'alert_type'],
             page: 10,
-            plugins: [ ListPagination({}) ] 
+            plugins: [ ListPagination({}) ]
         });
 
     	// Sort By Category
-    	$('#home_alerts_filter_type').change(function() {			
+    	$('#home_alerts_filter_type').change(function() {
     		var this_type = $(this).val().toString();
     		if (this_type == 'all') {
     	        paginateAlertList.filter();
     	    }
-    	    else {            
+    	    else {
     	        paginateAlertList.filter(function(item) {
     	            if (item.values().alert_type == this_type) {
     	                return true;

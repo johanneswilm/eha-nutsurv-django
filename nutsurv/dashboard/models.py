@@ -25,10 +25,11 @@ from django.db.models import Q
 # django 3rd party
 from rest_framework.reverse import reverse
 from phonenumber_field.modelfields import PhoneNumberField
-from jsonfield import JSONField
 from django_extensions.db.fields import (
     CreationDateTimeField, ModificationDateTimeField,
 )
+from django_pgjson.fields import JsonBField
+from jsonfield import JSONField
 
 # Internal
 from fields import UniqueActiveField
@@ -152,6 +153,7 @@ class BaseHouseholdMember(models.Model):
 
 class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
+    extra_questions = JsonBField(default={})
 
 
 class BaseHouseholdSurveyJSON(gismodels.Model):
@@ -513,6 +515,7 @@ class Alert(models.Model):
         'age_distribution',
         'number_distribution',
         'timing',
+        'missing_data',
     )
 
     category = models.CharField(

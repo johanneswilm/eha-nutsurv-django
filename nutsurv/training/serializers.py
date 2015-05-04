@@ -9,7 +9,15 @@ class TrainingSubjectSerializer(HouseholdMemberSerializer):
 
     class Meta:
         model = TrainingSubject
-        fields = HouseholdMemberSerializer.Meta.fields
+        fields = [
+            'index',
+            'first_name',
+            'gender',
+            'muac',
+            'birthdate',
+            'weight',
+            'height',
+        ]
 
 
 class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
@@ -18,7 +26,7 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
     def create(self, validated_data):
 
-        family_members = validated_data.pop('members')
+        family_members = validated_data.pop('members', [])
         instance = super(TrainingSurveySerializer, self).create(validated_data)
         validated_data['members'] = family_members
         self.update(instance, validated_data)
@@ -27,13 +35,13 @@ class TrainingSurveySerializer(HouseholdSurveyJSONSerializer):
 
     def update(self, instance, validated_data):
 
-        family_members = validated_data.pop('members')
+        family_members = validated_data.pop('members', [])
         super(TrainingSurveySerializer, self).update(instance, validated_data)
         instance.members.all().delete()
-        new_family = [TrainingSubject(household_survey=instance, **family_member)
+        new_family = [TrainingSubjectSerializer(household_survey=instance, **family_member)
                       for family_member in family_members]
 
-        TrainingSubject.objects.bulk_create(new_family)
+        TrainingSubjectSerializer.objects.bulk_create(new_family)
 
         return instance
 

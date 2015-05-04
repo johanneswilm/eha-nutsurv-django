@@ -5,6 +5,15 @@ from rest_framework_gis.serializers import GeoModelSerializer
 from .models import Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember
 
 
+class JSONSerializerField(serializers.Field):
+    """ Serializer for JSONField -- required to make field writable"""
+    def to_internal_value(self, data):
+        return data
+
+    def to_representation(self, value):
+        return value
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -20,6 +29,7 @@ class SimpleUserSerializer(UserSerializer):
 
 
 class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
+    extra_questions = JSONSerializerField()
 
     class Meta:
         model = HouseholdMember
@@ -31,10 +41,33 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
             'birthdate',
             'weight',
             'height',
+            'extra_questions'
         ]
 
 
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoModelSerializer):
+    members = HouseholdMemberSerializer(many=True, read_only=False)
+
+    def create(self, validated_data):
+
+        family_members = validated_data.pop('members', [])
+        instance = super(HouseholdSurveyJSONSerializer, self).create(validated_data)
+        validated_data['members'] = family_members
+        self.update(instance, validated_data)
+
+        return instance
+
+    def update(self, instance, validated_data):
+
+        family_members = validated_data.pop('members', [])
+        super(HouseholdSurveyJSONSerializer, self).update(instance, validated_data)
+        instance.members.all().delete()
+        new_family = [HouseholdMember(household_survey=instance, **family_member)
+                      for family_member in family_members]
+
+        HouseholdMember.objects.bulk_create(new_family)
+
+        return instance
 
     class Meta:
         model = HouseholdSurveyJSON
@@ -78,8 +111,23 @@ class TeamMemberSerializer(serializers.HyperlinkedModelSerializer):
                   ]
 
 
+class SimpleTeamMemberSerializer(TeamMemberSerializer):
+    class Meta:
+
+        model = TeamMember
+        fields = ['url',
+                  'id',
+                  'first_name',
+                  'last_name',
+                  'gender',
+                  'birth_year',
+                  'mobile',
+                  'email',
+                  ]
+
+
 class AlertSerializer(serializers.HyperlinkedModelSerializer):
-    team_lead = TeamMemberSerializer(many=False, read_only=True)
+    team_lead = SimpleTeamMemberSerializer(many=False, read_only=True)
 
     class Meta:
         model = Alert
