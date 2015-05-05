@@ -315,7 +315,8 @@ class AlertLocationTest(TestCase):
 
     def setUp(self):
         self.team_member, created = TeamMember.objects.get_or_create(
-            birth_year=2000,
+            birth_year=1956,
+            last_name='Krabappel'
         )
         assert created
         second_admin_level_1 = SecondAdminLevel.objects.create(
@@ -386,41 +387,35 @@ class AlertLocationTest(TestCase):
             team_lead=self.team_member,
             team_assistant=self.team_member,
             team_anthropometrist=self.team_member,
-            household_number=12,
+            household_number=13,
             location=Point(52.503713, 13.424559),
             first_admin_level='State 1',
             second_admin_level='County 1',
-            json={
-                "cluster": "1",
-                "location": [52.503713, 13.424559]
-            }
+            cluster=1
         )
         survey.save()
 
         result_first_admin = list(Alert.mapping_check_wrong_location_first_admin_level(survey))
-        self.assertEqual(len(result_first_admin), 0)
+        self.assertEqual(result_first_admin, [])
 
         result_second_admin = list(Alert.mapping_check_wrong_location_second_admin_level(survey))
-        self.assertEqual(len(result_second_admin), 0)
+        self.assertEqual(result_second_admin, [])
 
     def test_incorrect_second_admin_level(self):
         survey = HouseholdSurveyJSON.objects.create(
             team_lead=self.team_member,
             team_assistant=self.team_member,
             team_anthropometrist=self.team_member,
-            household_number=12,
-            location=Point(52.503713, 113.424559),
+            household_number=14,
+            location=Point(16.629403, 145.876453),
             first_admin_level='State 1',
             second_admin_level='County 1',
-            json={
-                "cluster": "1",
-                "location": [52.503713, 113.424559]
-            }
+            cluster=2
         )
         survey.save()
 
         result_first_admin = list(Alert.mapping_check_wrong_location_first_admin_level(survey))
-        self.assertEqual(len(result_first_admin), 0)
+        self.assertEqual(result_first_admin, [])
 
         result_second_admin = list(Alert.mapping_check_wrong_location_second_admin_level(survey))
         self.assertEqual(len(result_second_admin), 1)
@@ -431,14 +426,11 @@ class AlertLocationTest(TestCase):
             team_lead=self.team_member,
             team_assistant=self.team_member,
             team_anthropometrist=self.team_member,
-            household_number=12,
-            location=Point(352.503713, 313.424559),
+            household_number=15,
+            location=Point(387.092593, 375.938294),
             first_admin_level='State 1',
             second_admin_level='County 1',
-            json={
-                "cluster": "1",
-                "location": [352.503713, 313.424559]
-            }
+            cluster=4
         )
         survey.save()
 

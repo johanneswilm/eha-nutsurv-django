@@ -734,7 +734,11 @@ class Alert(models.Model):
         first admin level area that the data supposedly comes from.
         """
 
-        cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
+        cluster = Clusters.get_cluster_from_active(household_survey.cluster)
+
+        # If no cluster has been found, assume database inconsistencies and abort
+        if not cluster:
+            return
 
         # if cluster data found, get first admin level
         ideal_first_admin_level_name = cluster.get('first_admin_level_name', None)
@@ -743,7 +747,7 @@ class Alert(models.Model):
         if not ideal_first_admin_level_name:
             return
 
-        location = household_survey.get_location()
+        location = household_survey.location
 
         longitude = float(location[0])
         latitude = float(location[1])
@@ -772,12 +776,12 @@ class Alert(models.Model):
 
         alert_json = {
             'type': alert_type,
-            'team_name': (household_survey.get_team_name()),
+            'team_name': household_survey.team_lead.last_name,
             'team_id': (household_survey.get_team_id()),
-            'cluster_id': (household_survey.get_cluster_id()),
+            'cluster_id': household_survey.cluster,
             'first_admin_level_name': ideal_first_admin_level_name,
             'survey_id': household_survey.id,
-            'location': (household_survey.get_location())
+            'location': household_survey.location
         }
 
         yield dict(
@@ -796,7 +800,7 @@ class Alert(models.Model):
         second admin level area that the data supposedly comes from.
         """
 
-        cluster = Clusters.get_cluster_from_active(household_survey.get_cluster_id())
+        cluster = Clusters.get_cluster_from_active(household_survey.cluster)
 
         # if cluster data found, get first and second admin level
         second_admin_level_name = cluster.get('second_admin_level_name', None)
@@ -814,7 +818,7 @@ class Alert(models.Model):
             # if no second admin level found, assume database inconsistencies and abort
             return
 
-        if second_admin_level.contains_location(household_survey.get_location()):
+        if second_admin_level.contains_location(household_survey.location):
             return
 
         alert_text = 'Wrong second admin level location for team {} (survey {})'.format(
@@ -826,13 +830,13 @@ class Alert(models.Model):
 
         alert_json = {
             'type': alert_type,
-            'team_name': (household_survey.get_team_name()),
+            'team_name': household_survey.team_lead.last_name,
             'team_id': (household_survey.get_team_id()),
-            'cluster_id': (household_survey.get_cluster_id()),
+            'cluster_id': household_survey.cluster,
             'second_admin_level_name': second_admin_level_name,
             'first_admin_level_name': first_admin_level_name,
             'survey_id': household_survey.id,
-            'location': (household_survey.get_location())
+            'location': household_survey.location
         }
 
         yield dict(
