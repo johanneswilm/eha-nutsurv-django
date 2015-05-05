@@ -1,6 +1,34 @@
 # [Changelog](https://github.com/eHealthAfrica/eha-nutsurv-django/releases)
 
-## [develop](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/v0.9.0...develop)
+## [0.10.1](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/0.10.1...0.10.1)
+
+* [2e6ebf4](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/2e6ebf4) Add locations to alerts that need it
+* [2f0ee97](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/2f0ee97) don't put Point objects on the line for json.dumps
+* [29ad4bc](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/29ad4bc) New initial migrations
+* [417e7dd](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/417e7dd) Fixes #405, clean migration restart
+* [cb572f4](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/cb572f4) Revert change of how HouseholdMembers are saved
+* [5c6c616](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/5c6c616) add alert types to frontend code
+* [e493dca](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/e493dca) don't break on not finding cluster for second admin level check either
+* [ae492af](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/ae492af) remove json structure from alerts and tests for 1st and 2nd admin level region
+* [52789dd](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/52789dd) Query optimization for household member
+* [a070db5](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/a070db5) remove deletion of cluster document from test
+* [edbcf79](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/edbcf79) make flake8 happy
+* [9eb81ae](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/9eb81ae) add tests
+* [5d5c301](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/5d5c301) Add more extra_questions tests, don't show household memeber url
+* [7719ad9](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/7719ad9) Added test for household member API call
+* [c7bbee5](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/c7bbee5) Update Travis to use Postgres 9.4 for JSONB
+* [302104c](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/302104c) Added more extra_questions tests, added url helper for HouseholdMember
+* [83a5a38](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/83a5a38) add check for first admin level, fixes issue #304
+* [bc3792d](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/bc3792d) Fixed serializers and added tests for extra_data
+* [ddcab05](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/ddcab05) (wip) Added Extra Questions
+* [5e2de0f](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/5e2de0f) Fix import paths for testing
+* [349e51c](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/349e51c) add minimal raven.js config for dev/staging
+* [46f349d](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/46f349d) configure .request context processor
+* [5bd2cc5](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/5bd2cc5) add raven.js dependency via bower
+* [4e0c52b](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/4e0c52b) Fix #325 Added changlog
+* [ab9b7a9](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/ab9b7a9) add instructions for install of nodejs and npm, fixes #397
+
+## [v0.10.0](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/v0.10.0...v0.10.0)
 
 * [7bc20a5](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/7bc20a5) Fix alert generation
 * [dcac9d4](https://github.com/eHealthAfrica/eha-nutsurv-django/commit/dcac9d4) use pk for TeamMember urls and not for Alerts
