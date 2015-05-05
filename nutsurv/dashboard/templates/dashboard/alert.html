@@ -37,7 +37,7 @@
 var mapObj;
 var osm;
 
-var popupTmp = _.template('ERROR!<br>Team <%- teamName %>(<%- teamId%>)<% if (clusterId) { %><br>Cluster #: <%- clusterId %><% } %>');
+var popupTmp = _.template('ERROR!<br>Team <%- teamLead.lastName %>(<%- teamLead.id %>)<% if (clusterId) { %><br>Cluster #: <%- clusterId %><% } %>');
 
 function createMap() {
     osm = L.tileLayer(map.osmUrl, {
