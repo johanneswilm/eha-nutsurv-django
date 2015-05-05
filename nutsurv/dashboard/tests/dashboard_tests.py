@@ -343,8 +343,6 @@ class AlertLocationTest(TestCase):
             mpoly=MultiPolygon(Polygon(((300, 300), (300, 400), (400, 400), (400, 300), (300, 300))),)
         )
         second_admin_level_3.save()
-        # Delete all existing cluster info. TODO: Is this needed in a test?
-        Clusters.objects.all().delete()
         clusters = Clusters.objects.create(
             json={
                 "1": {
