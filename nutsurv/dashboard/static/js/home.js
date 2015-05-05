@@ -189,7 +189,15 @@ var home = {
         mapping_check_unknown_cluster: {
             title: 'Mapping Check Unknown Cluster',
             icon: 'fa-map-marker'
-        }
+        },
+        mapping_check_wrong_location_first_admin_level: {
+            title: 'Mapping Check Wrong Location First Admin Level',
+            icon: 'fa-map-marker'
+        },
+        mapping_check_wrong_location_second_admin_level: {
+            title: 'Mapping Check Wrong Location Second Admin Level',
+            icon: 'fa-map-marker'
+        },
     },
     drawAlertFilter: function() {
 
