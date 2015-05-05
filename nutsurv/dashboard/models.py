@@ -802,6 +802,10 @@ class Alert(models.Model):
 
         cluster = Clusters.get_cluster_from_active(household_survey.cluster)
 
+        # If no cluster has been found, assume database inconsistencies and abort
+        if not cluster:
+            return
+
         # if cluster data found, get first and second admin level
         second_admin_level_name = cluster.get('second_admin_level_name', None)
         first_admin_level_name = cluster.get('first_admin_level_name', None)
