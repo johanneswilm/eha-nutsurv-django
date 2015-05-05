@@ -1,5 +1,5 @@
 var map = {
-    osmUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    osmUrl: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     markers: {
         green: L.icon({
             iconUrl: '/static/images/marker-green.png',
