@@ -93,6 +93,7 @@ class HouseholdSurveyTest(TestCase):
             team_anthropometrist=self.team_member,
             household_number=12,
             location=None,
+            uuid='1234',
         )
         survey.save()
 
@@ -128,6 +129,14 @@ class HouseholdSurveyTest(TestCase):
         response = client.get(h.get_absolute_url())
         # Some nested extra_question structure that was saved
         self.assertContains(response, "Lord of the Internet")
+
+        response = client.get(survey.get_absolute_url())
+        self.assertContains(response, "Lord of the Internet")
+        survey_json = json.loads(response.content)
+
+        survey_json['members'][0]['extraQuestions']['New Question'] = 'New Answer'
+        response = client.put(survey.get_absolute_url(), survey_json, format='json')
+        self.assertContains(response, "New Answer")
 
 
 class TeamMemberTest(TestCase):

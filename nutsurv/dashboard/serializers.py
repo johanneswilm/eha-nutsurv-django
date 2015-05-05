@@ -46,8 +46,24 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
+class SimpleHouseholdMemberSerializer(HouseholdMemberSerializer):
+
+    class Meta:
+        model = HouseholdMember
+        fields = [
+            'index',
+            'first_name',
+            'gender',
+            'muac',
+            'birthdate',
+            'weight',
+            'height',
+            'extra_questions',
+        ]
+
+
 class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoModelSerializer):
-    members = HouseholdMemberSerializer(many=True, read_only=False)
+    members = SimpleHouseholdMemberSerializer(many=True, read_only=False)
 
     def create(self, validated_data):
 

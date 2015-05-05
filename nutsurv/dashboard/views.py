@@ -40,7 +40,7 @@ class HouseholdMemberViewset(viewsets.ModelViewSet):
 
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
-    queryset = HouseholdSurveyJSON.objects.all()
+    queryset = HouseholdSurveyJSON.objects.prefetch_related('members').all()
     serializer_class = HouseholdSurveyJSONSerializer
 
 
