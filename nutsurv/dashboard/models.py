@@ -638,12 +638,11 @@ class Alert(models.Model):
         alert_json = {
             'type': alert_type,
             'survey_id': household_survey.id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
-
-        if household_survey.get_location():
-            # TODO this should not be copied here, but referenced via the
-            # relation to the household_survey
-            alert_json['location'] = household_survey.get_location()
 
         yield dict(
             category='map',
@@ -674,6 +673,10 @@ class Alert(models.Model):
             'team_name': household_survey.get_team_name(),
             'team_id': household_survey.get_team_id(),
             'survey_id': household_survey.id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
 
         if household_survey.get_cluster_id():
@@ -711,11 +714,14 @@ class Alert(models.Model):
         alert_type = 'mapping_check_unknown_cluster',
         alert_json = {
             'type': alert_type,
-            'team_name': (household_survey.get_team_name()),
-            'team_id': (household_survey.get_team_id()),
-            'cluster_id': (household_survey.get_cluster_id()),
+            'team_name': household_survey.get_team_name(),
+            'team_id': household_survey.get_team_id(),
+            'cluster_id': household_survey.get_cluster_id(),
             'survey_id': household_survey.id,
-            'location': (household_survey.get_location())
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
 
         yield dict(
@@ -747,13 +753,7 @@ class Alert(models.Model):
         if not ideal_first_admin_level_name:
             return
 
-        location = household_survey.location
-
-        longitude = float(location[0])
-        latitude = float(location[1])
-        point = Point(longitude, latitude)
-
-        second_admin_levels = SecondAdminLevel.objects.filter(mpoly__contains=point)
+        second_admin_levels = SecondAdminLevel.objects.filter(mpoly__contains=household_survey.location)
 
         found = len(second_admin_levels)
 
@@ -777,17 +777,18 @@ class Alert(models.Model):
         alert_json = {
             'type': alert_type,
             'team_name': household_survey.team_lead.last_name,
-            'team_id': (household_survey.get_team_id()),
-            'cluster_id': household_survey.cluster,
-            'first_admin_level_name': ideal_first_admin_level_name,
-            'survey_id': household_survey.id,
-            'location': household_survey.location
+            'team_id': household_survey.team_lead.id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ]
         }
 
         yield dict(
             category='map',
             alert_type=alert_type,
-            team_lead=(household_survey.team_lead),
+            team_lead=household_survey.team_lead,
+            survey=household_survey,
             text=alert_text,
             json=alert_json,
         )
@@ -835,18 +836,20 @@ class Alert(models.Model):
         alert_json = {
             'type': alert_type,
             'team_name': household_survey.team_lead.last_name,
-            'team_id': (household_survey.get_team_id()),
-            'cluster_id': household_survey.cluster,
             'second_admin_level_name': second_admin_level_name,
             'first_admin_level_name': first_admin_level_name,
             'survey_id': household_survey.id,
-            'location': household_survey.location
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ]
         }
 
         yield dict(
             category='map',
             alert_type=alert_type,
             team_lead=(household_survey.team_lead),
+            survey=household_survey,
             text=alert_text,
             json=alert_json,
         )
@@ -927,7 +930,11 @@ class Alert(models.Model):
                             'team_name': team_name,
                             'team_id': team_id,
                             'member_type': member_type,
-                            'field': field
+                            'field': field,
+                            'location': [
+                                household_survey.location[0],
+                                household_survey.location[1],
+                            ],
                         }
 
                         yield dict(
@@ -993,7 +1000,11 @@ class Alert(models.Model):
         alert_json = {
             'type': alert_type,
             'team_name': team_name,
-            'team_id': team_id
+            'team_id': team_id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
 
         yield dict(
@@ -1128,7 +1139,11 @@ class Alert(models.Model):
         alert_json = {
             'type': alert_type,
             'team_name': team_name,
-            'team_id': team_id
+            'team_id': team_id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
 
         yield dict(
@@ -1190,7 +1205,11 @@ class Alert(models.Model):
         alert_json = {
             'type': alert_type,
             'team_name': team_name,
-            'team_id': team_id
+            'team_id': team_id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
 
         yield dict(
@@ -1252,7 +1271,12 @@ class Alert(models.Model):
         alert_json = {
             'alert': alert_type,
             'team_id': team_id,
-            'team_name': team_name
+            'team_name': team_name,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
+
         }
 
         yield dict(
@@ -1337,6 +1361,10 @@ class Alert(models.Model):
                     'type': alert_type,
                     'team_id': team_id,
                     'team_name': team_name,
+                    'location': [
+                        household_survey.location[0],
+                        household_survey.location[1],
+                    ],
                 }
 
                 yield dict(
@@ -1391,12 +1419,11 @@ class Alert(models.Model):
             'team_name': team_name,
             'team_id': team_id,
             'survey': household_survey.id,
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ],
         }
-
-        location = household_survey.get_location()
-
-        if location:
-            alert_json['location'] = location
 
         yield dict(
             category='timing',
@@ -1445,7 +1472,7 @@ class Alert(models.Model):
                 alert_json = {
                     'type': 'children_under_five',
                     'team_id': team_id,
-                    'team_name': team_info['team_name']
+                    'team_name': team_info['team_name'],
                 }
 
                 yield dict(
@@ -1542,7 +1569,7 @@ class Alert(models.Model):
                         'type': alert_type,
                         'team_id': team_id,
                         'team_name': by_team[team_id]['team_name'],
-                        'day': day.isoformat()
+                        'day': day.isoformat(),
                     }
 
                     yield dict(
@@ -1691,7 +1718,7 @@ class Alert(models.Model):
                 alert_json = {
                     'type': alert_type,
                     'team_id': team_id,
-                    'team_name': by_team[team_id]['team_name']
+                    'team_name': by_team[team_id]['team_name'],
                 }
 
                 yield dict(
