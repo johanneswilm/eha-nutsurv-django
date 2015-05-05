@@ -2,18 +2,16 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import jsonfield.fields
-import dashboard.models
 from django.conf import settings
+import jsonfield.fields
 
 
 class Migration(migrations.Migration):
 
-    replaces = [(b'training', '0001_initial'), (b'training', '0002_auto_20150420_1503'), (b'training', '0003_auto_20150420_1512'), (b'training', '0004_auto_20150420_1532'), (b'training', '0005_auto_20150420_1604'), (b'training', '0006_auto_20150420_1605'), (b'training', '0007_auto_20150421_1047'), (b'training', '0008_auto_20150421_1501'), (b'training', '0009_auto_20150421_1508'), (b'training', '0010_auto_20150423_1421'), (b'training', '0011_auto_20150428_1342')]
-
     dependencies = [
+        ('dashboard', '0002_auto_20150505_1309'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('dashboard', '0001_squashed_0023_auto_20150428_1542'),
+        ('training', '0001_initial'),
     ]
 
     operations = [
