@@ -781,7 +781,10 @@ class Alert(models.Model):
             'cluster_id': household_survey.cluster,
             'first_admin_level_name': ideal_first_admin_level_name,
             'survey_id': household_survey.id,
-            'location': household_survey.location
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ]
         }
 
         yield dict(
@@ -840,7 +843,10 @@ class Alert(models.Model):
             'second_admin_level_name': second_admin_level_name,
             'first_admin_level_name': first_admin_level_name,
             'survey_id': household_survey.id,
-            'location': household_survey.location
+            'location': [
+                household_survey.location[0],
+                household_survey.location[1],
+            ]
         }
 
         yield dict(
