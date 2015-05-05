@@ -79,8 +79,10 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
         family_members = validated_data.pop('members', [])
         super(HouseholdSurveyJSONSerializer, self).update(instance, validated_data)
         instance.members.all().delete()
-        for family_member in family_members:
-            HouseholdMember(household_survey=instance, **family_member).save()
+        new_family = [HouseholdMember(household_survey=instance, **family_member)
+                      for family_member in family_members]
+
+        HouseholdMember.objects.bulk_create(new_family)
 
         return instance
 
