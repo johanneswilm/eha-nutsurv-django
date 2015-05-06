@@ -17,7 +17,7 @@
     "bootstrap-select": "~1.6.4",
     "datatables": "~1.10.6",
     "datatables-bootstrap3-plugin": "~0.4.0",
-    "datatables-responsive": "eHealthAfrica/DataTables-Responsive#8dc6412",
+    "datatables-responsive": "eHealthAfrica/DataTables-Responsive#8dc6412abc02858a52bdccb3b6d8ed0ff1872670",
     "datatables-tabletools": "~2.2.4",
     "data-models": "eHealthAfrica/data-models#~1.12.1",
     "ehealth-bootstrap": "eHealthAfrica/ehealth-bootstrap#0.0.7",
