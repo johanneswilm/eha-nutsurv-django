@@ -18,7 +18,7 @@ the development team.
 It's updated from the development branch whenever there is a new pull-request
 merged in.
 
-If this sever doesn't work, resolving that should be top priority.
+If this sever doesn't work, resolving that should be a priority.
 
 There may be data imported here from the 2014 survey, the database might be
 truncated at any time and this instance can be used to reproduce or
@@ -34,7 +34,7 @@ efforts. It can be used by all stakeholders, at any time, for demo purposes.
 It's updated only from docker images that are built only from tagged releases
 that are consideerd release worthy by the development team.
 
-If this server doesn't work, resolving this is top priority, because it's
+If this server doesn't work, resolving this has priority, because it's
 considered a production system.
 
 No data will be imported here, data entry only works through via API (i.e.
@@ -43,7 +43,7 @@ through punching it in the nutsurv-mobile app.)
 
 ### production
 
-URL: TBD
+URL: https://nutsurv.eocng.org/
 
 Used by real end users, should not be used for demonstration purposes by
 anyone. Just real field data and real users are allowed here.
