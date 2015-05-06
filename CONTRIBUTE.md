@@ -55,6 +55,29 @@ If there is an issue with this server, solving that is top priority.
 
 There will be no csv data import here.
 
+## Branching and tagging strategy
+
+The latest and greatest version of the software is in the `develop` branch
+(currently not called `master` for historical reasons). Developers should fork
+off this branch for new feature branches. This branch is considered stable,
+working software, i.e. developers are encouraged to ensure that this is still
+the case before merging into this branch by all means (manual checking,
+continous integration, code review, etc.). If there is a severe defect in
+`develop`, developers need to resolve it immediately or use `git revert` on
+the commit introducing the defect, if applicable.
+
+Tagged releases are created by asking for consensus within the development
+team that that the most recent commit is release worthy. Important things to
+check for are migrations (if the data models changed), changelog, backwards
+compatibility with nutsurv-mobile, etc. If all conditions are met, use `git
+tag v$VERSION` to tag a release. Also use `git branch -b releases/v$VERSION`
+to create a release branch. Build a docker image from that and deploy it to
+staging.
+
+Hotfixes are made as commits to the `releases/v$VERSION` branch, then tagged
+as `v$VERSION.$PATCHVERSION`. After that has been released to staging, also
+consider adding that commit to `develop`.
+
 ## Initial Setup
 
 1. git clone git@github.com:eHealthAfrica/eha-nutsurv-django
