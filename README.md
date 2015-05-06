@@ -22,36 +22,47 @@ Install [Docker](https://docs.docker.com/installation/#installation)
 
 After you have all the tool dependencies installed for your respective OS, move onto install the app.
 
+
 ## Tab 1
+
+    $ sudo docker-compose up db
+
+## Tab 2
 
     $ git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
     $ cd eha-nutsurv-django/
     $ bower install
 
-    # (the next line is optional, if you wish to also test the mobile app)
-    $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
-
     # now build your container
     $ sudo docker-compose build
 
-## Tab 2
+    # (the next line is optional, if you wish to also test the mobile app)
+    $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
 
-    $ sudo docker-compose up db
 
-## Tab 1 again
+To run in development mode
 
     $ sudo docker-compose run web bash
 
 Now in the shell within the container:
 
-    # createdb -h localhost -U postgres -T template_postgis nutsurv_dev
-    # python /opt/nutsurv/nutsurv/manage.py migrate
-    # python /opt/nutsurv/nutsurv/manage.py createsuperuser
-    # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
+    root@host # createdb -h localhost -U postgres -T template_postgis nutsurv_dev
+    root@host # python /opt/nutsurv/nutsurv/manage.py migrate
+    root@host # python /opt/nutsurv/nutsurv/manage.py createsuperuser
+    root@host # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
 
 You probably also want to import some test data. Do that by typing:
 
-    # python /opt/nutsurv/nutsurv/manage.py import_formhub path/test-data.csv
+    root@host # python /opt/nutsurv/nutsurv/manage.py import_formhub path/test-data.csv
+
+Alternatively, if you want to run it in production mode with uwsgi on ports 80 and 443
+
+    $ openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+    $ sudo docker-compose run web
+
+Feel free to watch the logs in a new tab
+
+    $ tail -F ./logs/*.log
 
 
 ## Contributing
