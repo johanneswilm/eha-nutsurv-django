@@ -20,7 +20,7 @@
     "datatables-responsive": "eHealthAfrica/DataTables-Responsive#8dc6412",
     "datatables-tabletools": "~2.2.4",
     "data-models": "eHealthAfrica/data-models#~1.12.1",
-    "ehealth-bootstrap": "eHealthAfrica/ehealth-bootstrap#~0.0.5",
+    "ehealth-bootstrap": "eHealthAfrica/ehealth-bootstrap#0.0.7",
     "font-awesome": "~4.3.0",
     "jquery": "~1.10.2",
     "jquery-flot": "~0.8.3",
