@@ -18,7 +18,7 @@ the development team.
 It's updated from the development branch whenever there is a new pull-request
 merged in.
 
-If this sever doesn't work, resolving that should be a priority.
+If this server doesn't work, resolving that should be a priority.
 
 There may be data imported here from the 2014 survey, the database might be
 truncated at any time and this instance can be used to reproduce or
@@ -37,7 +37,7 @@ that are consideerd release worthy by the development team.
 If this server doesn't work, resolving this has priority, because it's
 considered a production system.
 
-No data will be imported here, data entry only works through via API (i.e.
+There will be no csv data import here. Data entry only works through via API (i.e.
 through punching it in the nutsurv-mobile app.)
 
 
@@ -53,7 +53,8 @@ have been proven solid on staging.
 
 If there is an issue with this server, solving that is top priority.
 
-There will be no csv data import here.
+There will be no csv data import here, also only users doing real nutrition
+surveys should submit data.
 
 ## Branching and tagging strategy
 
