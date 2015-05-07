@@ -25,3 +25,5 @@ nutsurv/components/
 nutsurv/.sass-cache/
 /bower_components/
 /test-data/
+*.pem
+*.crt
