@@ -1,0 +1,9 @@
+web:
+    image: docker-registry.eocng.org/ehealthafrica/nutsurv:%(branch_or_tag)s
+    volumes:
+    - ./certs/:/opt/nutsurv/certs/
+    - ./configuration.py:/opt/nutsurv/nutsurv/configuration.py
+    - ./logs/:/opt/nutsurv/logs/
+    net: "host"
+
+
