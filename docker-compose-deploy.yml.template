@@ -1,6 +1,3 @@
-db:
-    image: "mdillon/postgis:9.4"
-    net: "host"
 web:
     image: docker-registry.eocng.org/ehealthafrica/nutsurv:%(branch_or_tag)s
     volumes:
