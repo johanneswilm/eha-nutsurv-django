@@ -1,5 +1,9 @@
 # [Changelog](https://github.com/eHealthAfrica/eha-nutsurv-django/releases)
 
+## [0.10.4](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/0.10.4...0.10.4)
+
+* better styling
+
 ## [0.10.3](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/0.10.3...0.10.3)
 
 * Added guidelines for deploying
