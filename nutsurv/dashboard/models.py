@@ -182,6 +182,14 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
 
     second_admin_level = models.CharField(max_length=60, blank=True)
     first_admin_level = models.CharField(max_length=60, blank=True)
+
+    # With knowledge comes pain.
+    # Normalize yourself
+    # smile with hope.
+
+    cluster_population = models.IntegerField(null=True)
+    cluster_segment_population = models.IntegerField(null=True)
+
     cluster = models.IntegerField(blank=True, null=True)
     cluster_name = models.CharField(max_length=60, blank=True)
     start_time = models.DateTimeField(blank=True, null=True)
