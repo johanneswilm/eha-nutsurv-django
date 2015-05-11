@@ -102,6 +102,8 @@ class HouseholdSurveyJSONSerializer(serializers.HyperlinkedModelSerializer, GeoM
             'second_admin_level',
             'cluster',
             'cluster_name',
+            'cluster_population',
+            'cluster_segment_population',
             'start_time',
             'end_time',
             'location',
