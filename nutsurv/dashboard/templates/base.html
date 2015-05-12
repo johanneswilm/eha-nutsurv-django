@@ -31,6 +31,7 @@
     <link rel="stylesheet" href='/static/css/style.css' />
 
     <script src='{% static 'jquery/jquery.js' %}'></script>
+    {% if not debug %}
     <script src='{% static 'raven-js/dist/raven.js' %}'></script>
     <script src='{% static 'raven-js/plugins/jquery.js' %}'></script>
     <script src='{% static 'raven-js/plugins/console.js' %}'></script>
@@ -41,13 +42,14 @@
           ignoreUrls: [/tim-watts-dev\.eocng\.org/],
       };
       {% if request.get_host == 'nutsurv-dev.eocng.org' %}
-      Raven.config('https://b69d50b17fc54821ae3f9edfffc40fd6@app.getsentry.com/40331', options).install();
+      //Raven.config('https://b69d50b17fc54821ae3f9edfffc40fd6@app.getsentry.com/40331', options).install();
       {% elif request.get_host == 'nutsurv-staging.eocng.org' %}
-      Raven.config('https://f7b842172ce74a76a96a46bcf2a32d35@app.getsentry.com/41558', options).install();
+      //Raven.config('https://f7b842172ce74a76a96a46bcf2a32d35@app.getsentry.com/41558', options).install();
       {% else %}
         /* no raven config found for host {{ request.get_host }} */
       {% endif %}
     </script>
+    {% endif %}
     <script src='{% static 'leaflet/dist/leaflet-src.js' %}'></script>
     <script src='{% static 'leaflet.markercluster/dist/leaflet.markercluster-src.js' %}'></script>
     <script src='{% static 'bootstrap/dist/js/bootstrap.js' %}'></script>
@@ -58,7 +60,7 @@
     <script src='{% static 'datatables/media/js/jquery.dataTables.js' %}'></script>
     <script src='{% static 'datatables-responsive/js/dataTables.responsive.js' %}'></script>
     <script src='{% static 'datatables-tabletools/js/dataTables.tableTools.js' %}'></script>
-    <script src='/static/js/lib/dataTables.bootstrap.js'></script>
+    <script src='{% static 'datatables-bootstrap3-plugin/media/js/datatables-bootstrap3.js' %}'></script>
     <script src='{% static 'moment/moment.js' %}'></script>
     <script src='{% static 'list.js/dist/list.js' %}'></script>
     <script src='{% static 'list.pagination.js/dist/list.pagination.js' %}'></script>
