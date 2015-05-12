@@ -214,12 +214,27 @@ class BaseHouseholdMember(models.Model):
     def missing_data_for_fields(cls, reference, requested_fields):
         total = reference.count()
         d = {}
+
+        hardcoded_fields = cls._meta.get_all_field_names()
+        # TODO replace with
+        # hardcoded_fields [f.name for f in cls._meta.get_fields()]
+        # in django 1.8
+
+
         for key in requested_fields:
-            existing_data_count = reference.exclude(**dict(((key, None),),)).count()
+
+            if key in hardcoded_fields:
+                existing_data_count = reference.exclude(
+                    **dict(((key, None),),)).count()
+            else:
+                existing_data_count = reference.extra(
+                    where=["extra_questions ? %s"], params=[key]).count()
+
             d[key] = {
                 'existing': existing_data_count,
                 'total': total,
             }
+
         return d
 
     @classmethod

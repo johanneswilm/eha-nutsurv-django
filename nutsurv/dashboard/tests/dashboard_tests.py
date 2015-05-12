@@ -532,6 +532,9 @@ class HouseholdMemberTest(TestCase):
             birthdate=datetime(2014, 1, 1),
             gender='F',
             weight=454,
+            extra_questions={
+                'naughty': True
+            },
         )
 
         self.child2, created_child2 = HouseholdMember.objects.get_or_create(
@@ -540,6 +543,9 @@ class HouseholdMemberTest(TestCase):
             birthdate=datetime(2015, 1, 1),
             gender='M',
             muac=29,
+            extra_questions={
+                'naughty': False
+            },
         )
 
         self.woman, created_woman = HouseholdMember.objects.get_or_create(
@@ -549,6 +555,9 @@ class HouseholdMemberTest(TestCase):
             gender='F',
             height=23,
             muac=199,
+            extra_questions={
+                'Christmas Tree?': True
+            }
         )
 
     def test_managers(self):
@@ -632,6 +641,24 @@ class HouseholdMemberTest(TestCase):
             'birthdate',
             'gender',
         ], HouseholdMember.requested_survey_fields()['household_members'])
+
+        missing_data = HouseholdMember.missing_data(
+                HouseholdMember.objects.by_teamlead(self.team_member))
+
+        self.assertEqual(
+            {'existing': 2, 'total': 2},
+            missing_data['children']['naughty'],
+        )
+
+        self.assertEqual(
+            {'existing': 0, 'total': 2},
+            missing_data['children']['Naughty since'],
+        )
+
+        self.assertEqual(
+            {'existing': 1, 'total': 1},
+            missing_data['women']['Christmas Tree?'],
+        )
 
 
 class AlertLocationTest(TestCase):
