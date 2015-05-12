@@ -61,3 +61,8 @@ def deploy(branch_or_tag=None):
 
     with cd('~/nutsurv_deploy'):
         run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml up -d web')
+
+@roles('dev', 'staging', 'production')
+def migrate():
+    run('docker-compose -f ./docker-compose-deploy.yml run web python /opt/nutsurv/nutsurv/manage.py migrate')
+
