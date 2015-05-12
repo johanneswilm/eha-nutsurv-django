@@ -242,7 +242,7 @@ class BaseHouseholdMember(models.Model):
         if not qsl:
             return survey_fields
 
-        parsed_qsl = parse_python_indentation.parse_indentation(qsl)
+        parsed_qsl = parse_python_indentation.parse_indentation(qsl.specification)
 
         for member_type in survey_fields.keys():
             extra_fields = next((item for item in parsed_qsl if item["key"] == "{}:".format(member_type)), False)
