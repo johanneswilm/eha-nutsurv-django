@@ -314,8 +314,6 @@ var dataQuality = {
 
             childMembers = _.where(survey.members, {'surveyType': 'child'});
 
-
-
             _.each(childMembers, function(child) {
                 if (child.hasOwnProperty('gender')) {
                     if (child.gender==='M') {
@@ -348,7 +346,6 @@ var dataQuality = {
                 }
 
             });
-
 
         });
 
