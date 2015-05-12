@@ -31,7 +31,6 @@ def build_dockerimage(branch_or_tag='develop'):
         run('docker push docker-registry.eocng.org/ehealthafrica/nutsurv:{}'.format(
             branch_or_tag))
 
-
 @roles('dev', 'staging', 'production')
 def deploy(branch_or_tag=None):
 
@@ -59,5 +58,14 @@ def deploy(branch_or_tag=None):
         context={'branch_or_tag': branch_or_tag, }
     )
 
+
+@roles('dev', 'staging', 'production')
+def up():
     with cd('~/nutsurv_deploy'):
         run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml up -d web')
+
+@roles('dev', 'staging', 'production')
+def migrate():
+    with cd('~/nutsurv_deploy'):
+        run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml run web python /opt/nutsurv/nutsurv/manage.py migrate')
+
