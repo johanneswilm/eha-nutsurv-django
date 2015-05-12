@@ -48,67 +48,73 @@
     </div>
     <div class="col-md-6">
         <div id="data_quality_info" class="panel panel-default">
-            <div class="panel-heading">Statistics</div>
-            <div class="panel-body">
-                <table id="data_quality_table" class="table table-panel">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Missing</th>
-                            <th>Flagged</th>
-                            <th>Total</th>
-                            <th>N</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Weight-for-Height</td>
-                            <td><span id="whz_missing"></span>%</td>
-                            <td><span id="whz_flagged"></span>%</td>
-                            <td><span id="whz_total"></span>%</td>
-                            <td><span id="whz_n"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Height-for-Age</td>
-                            <td><span id="haz_missing"></span>%</td>
-                            <td><span id="haz_flagged"></span>%</td>
-                            <td><span id="haz_total"></span>%</td>
-                            <td><span id="haz_n"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Weight-for-Age</td>
-                            <td><span id="waz_missing"></span>%</td>
-                            <td><span id="waz_flagged"></span>%</td>
-                            <td><span id="waz_total"></span>%</td>
-                            <td><span id="waz_n"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mid-Upper Arm Circumference</td>
-                            <td><span id="muac_missing"></span>%</td>
-                            <td><span id="muac_flagged"></span>%</td>
-                            <td><span id="muac_total"></span>%</td>
-                            <td><span id="muac_n"></span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <ul id="data_quality_value_list" class="description_list">
-                    <li><span class="item">Gender ratio (m/f):</span><span class="description" id="data_quality_gender_ratio"></span>
-                    </li>
-                    <li><span class="item">Age ratio (0-29/30-59 months):</span><span class="description" id="data_quality_age_ratio"></span>
-                    </li>
-                    <li><span class="item">DPS - weight:</span><span class="description" id="data_quality_ldps_weight"></span>
-                    </li>
-                    <li><span class="item">DPS - height:</span><span class="description" id="data_quality_ldps_height"></span>
-                    </li>
-                    <li><span class="item">DPS - MUAC:</span><span class="description" id="data_quality_ldps_muac"></span>
-                    </li>
-                </ul>
-            </div>
+            <table id="data_quality_table" class="table table-panel">
+                <thead>
+                    <tr>
+                        <th>Statistics</th>
+                        <th>Missing</th>
+                        <th>Flagged</th>
+                        <th>Total</th>
+                        <th>N</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Weight-for-Height</td>
+                        <td><span id="whz_missing"></span>%</td>
+                        <td><span id="whz_flagged"></span>%</td>
+                        <td><span id="whz_total"></span>%</td>
+                        <td><span id="whz_n"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Height-for-Age</td>
+                        <td><span id="haz_missing"></span>%</td>
+                        <td><span id="haz_flagged"></span>%</td>
+                        <td><span id="haz_total"></span>%</td>
+                        <td><span id="haz_n"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Weight-for-Age</td>
+                        <td><span id="waz_missing"></span>%</td>
+                        <td><span id="waz_flagged"></span>%</td>
+                        <td><span id="waz_total"></span>%</td>
+                        <td><span id="waz_n"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mid-Upper Arm Circumference</td>
+                        <td><span id="muac_missing"></span>%</td>
+                        <td><span id="muac_flagged"></span>%</td>
+                        <td><span id="muac_total"></span>%</td>
+                        <td><span id="muac_n"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul id="data_quality_value_list" class="description_list">
+                <li>
+                    <span class="item">Gender ratio (m/f):</span>
+                    <span class="description" id="data_quality_gender_ratio"></span>
+                </li>
+                <li>
+                    <span class="item">Age ratio (0-29/30-59 months):</span>
+                    <span class="description" id="data_quality_age_ratio"></span>
+                </li>
+                <li>
+                    <span class="item">DPS - weight:</span>
+                    <span class="description" id="data_quality_ldps_weight"></span>
+                </li>
+                <li>
+                    <span class="item">DPS - height:</span>
+                    <span class="description" id="data_quality_ldps_height"></span>
+                </li>
+                <li>
+                    <span class="item">DPS - MUAC:</span>
+                    <span class="description" id="data_quality_ldps_muac"></span>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
