@@ -3,6 +3,8 @@
 ## [0.10.4](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/0.10.4...0.10.4)
 
 * better styling
+* Added fabric for oneclick deploys
+* Added cluster population fields to survey
 
 ## [0.10.3](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/0.10.3...0.10.3)
 
