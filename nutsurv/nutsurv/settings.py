@@ -56,10 +56,16 @@ INSTALLED_APPS = [
     'django_extensions',
 ]
 
+TEMPLATE_VISIBLE_SETTINGS = (
+    'RAVEN_CONFIG',
+)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+USE_ETAGS = True
+
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,6 +74,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -82,7 +89,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     # additional
     "django.core.context_processors.request",
-)
+    'nutsurv.context_processors.settings', )
+
 
 ROOT_URLCONF = 'nutsurv.urls'
 
@@ -156,6 +164,13 @@ REST_FRAMEWORK = {
     ),
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+    }
+}
+
 
 LOGGING = {
     'version': 1,
@@ -189,9 +204,3 @@ except IOError as e:
     logger.info("Did not load local configuration. That's ok, but you may want to copy the configurations.py-default")
 else:
     exec f in globals()
-
-
-if DEBUG:
-    INSTALLED_APPS += [
-        'debug_toolbar',
-    ]
