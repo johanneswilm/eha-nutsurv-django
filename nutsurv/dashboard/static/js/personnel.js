@@ -131,7 +131,7 @@ var personnel = {
                         // Select hidden columns for the given row
                         var data = api.cells(rowIdx, ':hidden').eq(0).map( function(cell) {
                             var header = jQuery( api.column( cell.column ).header() );
-                            return '<tr class="was-ist-das">'+
+                            return '<tr>'+
                                     '<td>'+ header.attr('data-column-name')+':'+'</td> '+
                                     '<td>'+ api.cell(cell).data()+'</td>'+
                                 '</tr>';

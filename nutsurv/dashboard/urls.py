@@ -2,10 +2,6 @@ from django.conf.urls import include, patterns, url
 
 from rest_framework import routers
 
-from tastypie.api import Api
-
-from api.resources import HouseholdSurveyJSONResource
-
 from .views import TeamsJSONView
 from .views import AggregateSurveyDataJSONView
 from .views import PersonnelJSONView
@@ -19,9 +15,6 @@ from .views import HouseholdSurveyJSONViewset
 from .views import TeamMemberViewset
 from .views import HouseholdMemberViewset
 
-v1_api = Api(api_name='v1')
-v1_api.register(HouseholdSurveyJSONResource())
-
 router = routers.DefaultRouter()
 router.register(r'alerts', AlertViewSet)
 router.register(r'surveys', HouseholdSurveyJSONViewset)
@@ -29,7 +22,6 @@ router.register(r'teammembers', TeamMemberViewset)
 router.register(r'householdmember', HouseholdMemberViewset)
 
 urlpatterns = patterns('',
-                       url(r'^api/', include(v1_api.urls)),
 
                        url(r'^', include(router.urls)),
                        url(r'^api-auth/',

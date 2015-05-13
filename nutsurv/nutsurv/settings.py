@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'dashboard',
     'training',
-    'tastypie',
     'accounts',
     'importer',
     'compressor',
