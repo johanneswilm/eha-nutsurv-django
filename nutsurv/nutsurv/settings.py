@@ -56,6 +56,9 @@ INSTALLED_APPS = [
     'django_extensions',
 ]
 
+TEMPLATE_VISIBLE_SETTINGS = (
+    'RAVEN_CONFIG',
+)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -86,7 +89,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
     # additional
     "django.core.context_processors.request",
-)
+    'nutsurv.context_processors.settings', )
+
 
 ROOT_URLCONF = 'nutsurv.urls'
 
@@ -200,9 +204,3 @@ except IOError as e:
     logger.info("Did not load local configuration. That's ok, but you may want to copy the configurations.py-default")
 else:
     exec f in globals()
-
-
-if DEBUG:
-    INSTALLED_APPS += [
-        'debug_toolbar',
-    ]
