@@ -68,4 +68,5 @@ def up():
 def migrate():
     with cd('~/nutsurv_deploy'):
         run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml run web python /opt/nutsurv/nutsurv/manage.py migrate')
+        run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml run web python /opt/nutsurv/nutsurv/manage.py createcachetable')
 
