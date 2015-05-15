@@ -134,33 +134,36 @@ def _age(selector, num_years):
 
 from django.db.models import F
 
+
 class HouseholdMemberManager(models.Manager):
 
     def by_teamlead(self, team_lead):
         return super(HouseholdMemberManager, self).get_queryset().filter(
             household_survey__team_lead=team_lead)
 
+
 class ChildrenManager(HouseholdMemberManager):
 
     def get_queryset(self):
         return super(ChildrenManager, self).get_queryset().annotate(
-          age = F('household_survey__start_time') - F('birthdate')
+            age=F('household_survey__start_time') - F('birthdate')
         ).extra(
-            where=[_age('<=', '6 years'),],
+            where=[_age('<=', '6 years'), ],
         )
+
 
 class WomenManager(HouseholdMemberManager):
 
     def get_queryset(self):
         return super(WomenManager, self).get_queryset().annotate(
-          age = F('household_survey__start_time') - F('birthdate')
+            age=F('household_survey__start_time') - F('birthdate')
         ).extra(
-          where=[
-              _age('>=', '15 years'),
-              _age('<=', '49 years'),
-          ],
+            where=[
+                _age('>=', '15 years'),
+                _age('<=', '49 years'),
+            ],
         ).filter(
-          gender='F',
+            gender='F',
         )
 
 
@@ -230,7 +233,6 @@ class BaseHouseholdMember(models.Model):
         # TODO replace with
         # hardcoded_fields [f.name for f in cls._meta.get_fields()]
         # in django 1.8
-
 
         for key in requested_fields:
 

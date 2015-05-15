@@ -10,8 +10,8 @@ from datetime import datetime
 from dashboard.parse_python_indentation import parse_indentation
 from dashboard.serializers import HouseholdMemberSerializer
 from dashboard.models import (
-        Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember,
-        SecondAdminLevel, Clusters, QuestionnaireSpecification,
+    Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember,
+    SecondAdminLevel, Clusters, QuestionnaireSpecification,
 )
 
 
@@ -503,7 +503,6 @@ women:
 # This example ends here.
 """
 
-from django.test.utils import override_settings
 
 class HouseholdMemberTest(TestCase):
 
@@ -606,7 +605,6 @@ class HouseholdMemberTest(TestCase):
         )
         qsl.save()
 
-
         self.assertEqual([
             'muac',
             'weight',
@@ -645,7 +643,7 @@ class HouseholdMemberTest(TestCase):
         ], HouseholdMember.requested_survey_fields()['household_members'])
 
         missing_data = HouseholdMember.missing_data(
-                HouseholdMember.objects.by_teamlead(self.team_member))
+            HouseholdMember.objects.by_teamlead(self.team_member))
 
         self.assertEqual(
             {'existing': 2, 'total': 2},
