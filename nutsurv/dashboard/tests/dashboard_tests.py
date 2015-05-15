@@ -330,6 +330,7 @@ class AlertTest(TestCase):
             team_anthropometrist=self.team_member,
             household_number=12,
             location=Point(52.503713, 13.424559),
+            start_time=datetime(2010, 1, 1),
         )
         survey.save()
 
