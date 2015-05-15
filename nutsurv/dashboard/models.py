@@ -288,6 +288,7 @@ class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
     extra_questions = JsonBField(default={})
 
+    objects = HouseholdMemberManager()
     women = WomenManager()
     children = ChildrenManager()
 
