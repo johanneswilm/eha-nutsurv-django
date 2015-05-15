@@ -129,26 +129,39 @@ def validate_json(spec_file):
     return wrapped
 
 
-def _six_years_ago():
-    return datetime.datetime.now() - dateutil.relativedelta.relativedelta(years=6)
+def _age(selector, num_years):
+    return '''("dashboard_householdsurveyjson"."start_time" - "dashboard_householdmember"."birthdate") {} INTERVAL '{}' '''.format(selector, num_years)
 
+from django.db.models import F
 
 class HouseholdMemberManager(models.Manager):
 
     def by_teamlead(self, team_lead):
-        return super(HouseholdMemberManager, self).get_queryset().filter(household_survey__team_lead=team_lead)
-
+        return super(HouseholdMemberManager, self).get_queryset().filter(
+            household_survey__team_lead=team_lead)
 
 class ChildrenManager(HouseholdMemberManager):
 
     def get_queryset(self):
-        return super(ChildrenManager, self).get_queryset().exclude(birthdate__lt=_six_years_ago())
-
+        return super(ChildrenManager, self).get_queryset().annotate(
+          age = F('household_survey__start_time') - F('birthdate')
+        ).extra(
+            where=[_age('<=', '6 years'),],
+        )
 
 class WomenManager(HouseholdMemberManager):
 
     def get_queryset(self):
-        return super(WomenManager, self).get_queryset().filter(birthdate__lt=_six_years_ago(), gender='F')
+        return super(WomenManager, self).get_queryset().annotate(
+          age = F('household_survey__start_time') - F('birthdate')
+        ).extra(
+          where=[
+              _age('>=', '15 years'),
+              _age('<=', '49 years'),
+          ],
+        ).filter(
+          gender='F',
+        )
 
 
 class BaseHouseholdMember(models.Model):
@@ -207,8 +220,6 @@ class BaseHouseholdMember(models.Model):
 
     objects = HouseholdMemberManager()
     household_members = HouseholdMemberManager()
-    children = ChildrenManager()
-    women = WomenManager()
 
     @classmethod
     def missing_data_for_fields(cls, reference, requested_fields):
@@ -274,6 +285,9 @@ class BaseHouseholdMember(models.Model):
 class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
     extra_questions = JsonBField(default={})
+
+    women = WomenManager()
+    children = ChildrenManager()
 
     def get_absolute_url(self):
         return reverse('householdmember-detail', args=[str(self.id)])

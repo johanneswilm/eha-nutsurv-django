@@ -503,6 +503,7 @@ women:
 # This example ends here.
 """
 
+from django.test.utils import override_settings
 
 class HouseholdMemberTest(TestCase):
 
@@ -523,13 +524,14 @@ class HouseholdMemberTest(TestCase):
             team_assistant=self.team_member,
             team_anthropometrist=self.team_member,
             household_number=12,
+            start_time=datetime(2000, 1, 1),
         )
         assert created_survey
 
         self.child1, created_child1 = HouseholdMember.objects.get_or_create(
             index=1,
             household_survey=self.survey,
-            birthdate=datetime(2014, 1, 1),
+            birthdate=datetime(1999, 1, 1),
             gender='F',
             weight=454,
             extra_questions={
@@ -540,7 +542,7 @@ class HouseholdMemberTest(TestCase):
         self.child2, created_child2 = HouseholdMember.objects.get_or_create(
             index=2,
             household_survey=self.survey,
-            birthdate=datetime(2015, 1, 1),
+            birthdate=datetime(1999, 1, 1),
             gender='M',
             muac=29,
             extra_questions={
@@ -551,7 +553,7 @@ class HouseholdMemberTest(TestCase):
         self.woman, created_woman = HouseholdMember.objects.get_or_create(
             index=3,
             household_survey=self.survey,
-            birthdate=datetime(2000, 1, 1),
+            birthdate=datetime(1980, 1, 1),
             gender='F',
             height=23,
             muac=199,
