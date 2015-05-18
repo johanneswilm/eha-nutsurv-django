@@ -1,10 +1,4 @@
 -r production.txt
-coverage
-django-coverage
-mock
-model_mommy
-behave
-Werkzeug
 django-debug-toolbar
 flake8
 autopep8
