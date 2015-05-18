@@ -12,7 +12,6 @@ install:
 script:
   - virtualenv --system-site-packages nutsurv-venv
   - source nutsurv-venv/bin/activate
-  - pip install -r requirements/production.txt
   - pip install -r requirements/development.txt
   - flake8 --exclude migrations --ignore E501,C901 ./nutsurv
   - '! grep -C3 "field=jsonfield.fields.JSONField(help_text" -- */*/migrations/* || echo -e "\nMigrations for jsonfield.fields.JSONField are discouraged\n"'
