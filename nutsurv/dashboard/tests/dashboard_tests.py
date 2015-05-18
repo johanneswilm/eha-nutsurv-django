@@ -5,11 +5,14 @@ from django.contrib.gis.geos import Point, Polygon, MultiPolygon
 import json
 import warnings
 import collections
+from datetime import datetime
 
 from dashboard.parse_python_indentation import parse_indentation
-
-from dashboard.models import Alert, HouseholdSurveyJSON, TeamMember, SecondAdminLevel, Clusters
 from dashboard.serializers import HouseholdMemberSerializer
+from dashboard.models import (
+    Alert, HouseholdSurveyJSON, TeamMember, HouseholdMember,
+    SecondAdminLevel, Clusters, QuestionnaireSpecification,
+)
 
 
 class EmptySmokeTest(TestCase):
@@ -318,6 +321,345 @@ class AlertTest(TestCase):
         self.assertEqual(result[0]['text'], 'No cluster ID for survey of team {} (survey {})'.format(self.team_member.pk, survey.pk))
         self.assertEqual(result[0]['survey'], survey)
         self.assertEqual(result[0]['team_lead'], self.team_member)
+
+    def test_missing_data_alert(self):
+
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            location=Point(52.503713, 13.424559),
+            start_time=datetime(2010, 1, 1),
+        )
+        survey.save()
+
+        self.woman, created_woman = HouseholdMember.objects.get_or_create(
+            index=1,
+            household_survey=survey,
+            birthdate=datetime(1970, 1, 1),
+            gender='F',
+            height=23,
+            weight=199,
+        )
+
+        self.woman2, created_woman2 = HouseholdMember.objects.get_or_create(
+            index=2,
+            household_survey=survey,
+            birthdate=datetime(1971, 1, 1),
+            gender='F',
+            height=24,
+            muac=198,
+        )
+
+        result = list(Alert.missing_data_alert(survey))
+
+        self.assertEqual(len(result), 3)
+
+        alert_titles = [a['text'] for a in result]
+
+        self.maxDiff = 2322
+
+        self.assertEqual(alert_titles, [
+            'Missing data issue on field muac for women in team {}'.format(self.team_member.pk),
+            'Missing data issue on field edema for women in team {}'.format(self.team_member.pk),
+            'Missing data issue on field weight for women in team {}'.format(self.team_member.pk),
+        ])
+
+        self.assertTrue(
+            'Missing data issue on field height for women in team {}'.format(
+                self.team_member.pk) not in alert_titles
+        )
+
+
+EXAMPLE_QSL = """\
+# This (and any other line starting with #) is a comment and will be ignored.
+# The above line will also be ignored as all empty lines are.
+
+# The next line is the title (compulsory)
+The Christmas Survey
+
+# The next section means that, unless explicitly specified, answers to all
+# the questions are required. They could also be optional.
+defaults
+  required
+
+# The following part defines the order in which the questionnaire sections you
+# define will be executed (and thus the order in which the questions you define
+# should be asked as the questionnaire sections are just containers for questions).
+# Only the sections mentioned in the section execution order will be executed
+# (unless one of the mentioned sections uses an inclusion directive to execute
+# some other section).
+section execution order
+  # The following means that you want a section called "household" to be
+  # executed first and that it should only be executed once per an interview.
+  household
+    single
+  # Please note what we have mentioned before: the indentation matters.
+  # The following will execute a questionnaire section labeled
+  # "household members" and indicates that it may need to be executed more
+  # than once (i.e. for multiple subjects (probably for each member?), hence
+  # the name)
+  household members
+    multiple
+
+# Now it is time to define our first questionnaire section. Let us call it
+# "household" (please note that the section label starts at indentation level 0
+# (zero, i.e. no indentation) and ends with a colon).
+household:
+  # The first question we define just says "Location" and does not even end
+  # with a question mark.
+  Presents Hiding Location
+    # The answer to this question is required (remember the defaults we
+    # set a little earlier?) and must be a GPS location.
+    gps
+  # Let us define a few more questions. As you can see the question label may be
+  # whatever you want but the data types like integer, gps or datetime are
+  # predefined (see the Data types section of the QSL spec).
+  Christmas Club ID
+    integer
+  Number Of Christmas Presents Requested
+    integer
+  Preferred Delivery time
+    datetime
+# We have just finished defining our first questionnaire section!
+
+# Let us define a few more questionnaire sections called "household members",
+# "children" and "women"
+household members:
+  Favorite Reindeer
+  # We did not define the data type for the above question which means that we
+  # want it to be just text.
+  Age (in years)
+    integer
+  Gender
+    gender
+  Favorite Reindeer has a red nose?
+    yes/no
+      # Let us mark this question as optional (i.e. no answer is
+      # required unless the interviewee really wants to answer.)
+      optional
+  Joined during recall?
+    yes/no
+  # The following section is an inclusion directive. It says that at this
+  # point in the interview we want to ask questions defined in another
+  # questionnaire section called "children" but we want this to happen only
+  # if the current subject responded to an earlier question about age (see
+  # the question label we defined before?) giving a number 5 or less. This
+  # is called a constraint.
+  [children]
+    Age (in years)
+      answer < 6
+  # We will use the inclusion directive again. This time we will specify two
+  # constraints. The section "women" will only be activated if both
+  # constraints are fulfilled.
+  [women]
+    Age (in years)
+      answer > 5
+    Gender
+      answer = F
+
+children:
+  naughty
+    yes/no
+  # The next two questions are associated using a "skip" relation. We prefer
+  # to get the date of birth of each child but if it is unavailable, we can
+  # settle for their age in months. To model this, we make the date of birth
+  # optional (i.e. override the defaults for this question) and keep the age
+  # in month required but we skip the latter each time we have got an answer
+  # to the former.
+  Naughty since
+    date
+      optional
+  Naughty time in months
+    integer
+    skip
+      Date of birth
+        answered
+  Presents Allowed
+    integer
+  Weight of Presents
+    integer
+  Height of Presents
+    integer
+  # We define a new data type for the next question. We use a special keyword
+  # "enumeration" and then enter a list of two possible answers.
+  Height type
+    enumeration
+      Standing height
+      Recumbent length
+
+women:
+  Christmas Tree?
+    yes/no
+  Christmas Carols?
+    yes/no
+  White christmas?
+    yes/no
+  Weight of Presents (kg)
+    integer
+  Height of Presents (cm)
+    integer
+
+# This example ends here.
+"""
+
+
+class HouseholdMemberTest(TestCase):
+
+    def setUp(self):
+        self.maxDiff = 2000
+        self.team_member, created_teammember = TeamMember.objects.get_or_create(
+            birth_year=2000,
+        )
+        assert created_teammember
+
+        self.team_member2, created_teammember2 = TeamMember.objects.get_or_create(
+            birth_year=1980,
+        )
+        assert created_teammember2
+
+        self.survey, created_survey = HouseholdSurveyJSON.objects.get_or_create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            start_time=datetime(2000, 1, 1),
+        )
+        assert created_survey
+
+        self.child1, created_child1 = HouseholdMember.objects.get_or_create(
+            index=1,
+            household_survey=self.survey,
+            birthdate=datetime(1999, 1, 1),
+            gender='F',
+            weight=454,
+            extra_questions={
+                'naughty': True
+            },
+        )
+
+        self.child2, created_child2 = HouseholdMember.objects.get_or_create(
+            index=2,
+            household_survey=self.survey,
+            birthdate=datetime(1999, 1, 1),
+            gender='M',
+            muac=29,
+            extra_questions={
+                'naughty': False
+            },
+        )
+
+        self.woman, created_woman = HouseholdMember.objects.get_or_create(
+            index=3,
+            household_survey=self.survey,
+            birthdate=datetime(1980, 1, 1),
+            gender='F',
+            height=23,
+            muac=199,
+            extra_questions={
+                'Christmas Tree?': True
+            }
+        )
+
+    def test_managers(self):
+        self.assertEqual(3, HouseholdMember.objects.all().count())
+
+        self.assertEqual(1, HouseholdMember.women.all().count())
+        self.assertEqual(2, HouseholdMember.children.all().count())
+
+    def test_by_teamlead(self):
+        self.assertEqual(3, HouseholdMember.objects.by_teamlead(self.team_member).count())
+        self.assertEqual(0, HouseholdMember.objects.by_teamlead(self.team_member2).count())
+
+    def test_missing_data(self):
+
+        expected = (
+            {'children': {
+                'muac': {'total': 2, 'existing': 1},
+                'birthdate': {'total': 2, 'existing': 2},
+                'weight': {'total': 2, 'existing': 1},
+                'height': {'total': 2, 'existing': 0}},
+             'household_members': {
+                'gender': {'total': 3, 'existing': 3},
+                 'birthdate': {'total': 3, 'existing': 3}},
+             'women': {
+                'muac': {'total': 1, 'existing': 1},
+                 'edema': {'total': 1, 'existing': 0},
+                 'birthdate': {'total': 1, 'existing': 1},
+                 'weight': {'total': 1, 'existing': 0},
+                 'height': {'total': 1, 'existing': 1}
+            }
+            }
+        )
+
+        self.assertEqual(
+            expected,
+            HouseholdMember.missing_data(
+                HouseholdMember.objects.by_teamlead(self.team_member))
+        )
+
+    def test_requested_survey_fields(self):
+        qsl = QuestionnaireSpecification(
+            specification=EXAMPLE_QSL,
+            active=True,
+        )
+        qsl.save()
+
+        self.assertEqual([
+            'muac',
+            'weight',
+            'birthdate',
+            'height',
+            u'naughty',
+            u'Naughty since',
+            u'Naughty time in months',
+            u'Presents Allowed',
+            u'Weight of Presents',
+            u'Height of Presents',
+            u'Height type'
+        ], HouseholdMember.requested_survey_fields()['children'])
+
+        self.assertEqual([
+            'muac',
+            'height',
+            'weight',
+            'birthdate',
+            'edema',
+            u'Christmas Tree?',
+            u'Christmas Carols?',
+            u'White christmas?',
+            u'Weight of Presents (kg)',
+            u'Height of Presents (cm)',
+            u'Christmas Tree?',
+            u'Christmas Carols?',
+            u'White christmas?',
+            u'Weight of Presents (kg)',
+            u'Height of Presents (cm)',
+        ], HouseholdMember.requested_survey_fields()['women'])
+
+        self.assertEqual([
+            'birthdate',
+            'gender',
+        ], HouseholdMember.requested_survey_fields()['household_members'])
+
+        missing_data = HouseholdMember.missing_data(
+            HouseholdMember.objects.by_teamlead(self.team_member))
+
+        self.assertEqual(
+            {'existing': 2, 'total': 2},
+            missing_data['children']['naughty'],
+        )
+
+        self.assertEqual(
+            {'existing': 0, 'total': 2},
+            missing_data['children']['Naughty since'],
+        )
+
+        self.assertEqual(
+            {'existing': 1, 'total': 1},
+            missing_data['women']['Christmas Tree?'],
+        )
 
 
 class AlertLocationTest(TestCase):

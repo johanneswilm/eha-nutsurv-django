@@ -129,7 +129,81 @@ def validate_json(spec_file):
     return wrapped
 
 
+def _age(selector, num_years):
+    return '''("dashboard_householdsurveyjson"."start_time" - "dashboard_householdmember"."birthdate") {} INTERVAL '{}' '''.format(selector, num_years)
+
+from django.db.models import F
+
+
+class HouseholdMemberManager(models.Manager):
+
+    def by_teamlead(self, team_lead):
+        return super(HouseholdMemberManager, self).get_queryset().filter(
+            household_survey__team_lead=team_lead)
+
+
+class ChildrenManager(HouseholdMemberManager):
+
+    def get_queryset(self):
+        return super(ChildrenManager, self).get_queryset().annotate(
+            age=F('household_survey__start_time') - F('birthdate')
+        ).extra(
+            where=[_age('<=', '6 years'), ],
+        )
+
+
+class WomenManager(HouseholdMemberManager):
+
+    def get_queryset(self):
+        return super(WomenManager, self).get_queryset().annotate(
+            age=F('household_survey__start_time') - F('birthdate')
+        ).extra(
+            where=[
+                _age('>=', '15 years'),
+                _age('<=', '49 years'),
+            ],
+        ).filter(
+            gender='F',
+        )
+
+
 class BaseHouseholdMember(models.Model):
+
+    # TODO add the following fields to the model that were present in the legacy
+    # json field:
+    # women:
+    #   "breastfeeding",
+    #   "age",
+    #   "pregnant",
+    #
+    # children:
+    #   "heightType",
+    #   "edema",
+    #   "birthDate",
+    #   "ageInMonths",
+    #
+    # household_members:
+    #   "age",
+
+    REQUESTED_SURVEY_FIELDS = {
+        'women': [
+            "muac",
+            "height",
+            "weight",
+            "birthdate",
+            "edema",
+        ],
+        'children': [
+            "muac",
+            "weight",
+            "birthdate",
+            "height",
+        ],
+        'household_members': [
+            "birthdate",
+            "gender",
+        ]
+    }
 
     GENDER = (
         ('M', 'Male'),
@@ -147,6 +221,65 @@ class BaseHouseholdMember(models.Model):
     height = models.FloatField(null=True)       # probably in centimeters ?
     edema = models.NullBooleanField()
 
+    objects = HouseholdMemberManager()
+    household_members = HouseholdMemberManager()
+
+    @classmethod
+    def missing_data_for_fields(cls, reference, requested_fields):
+        total = reference.count()
+        d = {}
+
+        hardcoded_fields = cls._meta.get_all_field_names()
+        # TODO replace with
+        # hardcoded_fields [f.name for f in cls._meta.get_fields()]
+        # in django 1.8
+
+        for key in requested_fields:
+
+            if key in hardcoded_fields:
+                existing_data_count = reference.exclude(
+                    **dict(((key, None),),)).count()
+            else:
+                existing_data_count = reference.extra(
+                    where=["extra_questions ? %s"], params=[key]).count()
+
+            d[key] = {
+                'existing': existing_data_count,
+                'total': total,
+            }
+
+        return d
+
+    @classmethod
+    def missing_data(cls, reference=None):
+        if reference is None:
+            reference = cls.household_members
+
+        d = {}
+        for member_type, requested_fields in cls.requested_survey_fields().items():
+            reference = getattr(cls, member_type)
+            d[member_type] = cls.missing_data_for_fields(reference, requested_fields)
+        return d
+
+    @classmethod
+    def requested_survey_fields(cls):
+
+        survey_fields = cls.REQUESTED_SURVEY_FIELDS
+        qsl = QuestionnaireSpecification.get_active()
+
+        if not qsl:
+            return survey_fields
+
+        parsed_qsl = parse_python_indentation.parse_indentation(qsl.specification)
+
+        for member_type in survey_fields.keys():
+            extra_fields = next((item for item in parsed_qsl if item["key"] == "{}:".format(member_type)), False)
+            if extra_fields:
+                for field in extra_fields['offspring']:
+                    survey_fields[member_type].append(field['key'])
+
+        return survey_fields
+
     class Meta:
         abstract = True
 
@@ -154,6 +287,10 @@ class BaseHouseholdMember(models.Model):
 class HouseholdMember(BaseHouseholdMember):
     household_survey = models.ForeignKey('HouseholdSurveyJSON', related_name='members')
     extra_questions = JsonBField(default={})
+
+    objects = HouseholdMemberManager()
+    women = WomenManager()
+    children = ChildrenManager()
 
     def get_absolute_url(self):
         return reverse('householdmember-detail', args=[str(self.id)])
@@ -864,95 +1001,45 @@ class Alert(models.Model):
 
     @classmethod
     def missing_data_alert(cls, household_survey, test='missing-data'):
-        """In the data we expect that any piece of data is entered in at least
+        """
+        In the data we expect that any piece of data is entered in at least
         95% of cases. If a field has been left blank for more than 5% of women,
         children or household members, an alert is created.
         """
-        survey_fields = {
-            'women': [
-                "breastfeeding",
-                "muac",
-                "height",
-                "weight",
-                "age",
-                "pregnant",
-                "edema",
-            ],
-            'children': [
-                "muac",
-                "weight",
-                "heightType",
-                "edema",
-                "birthDate",
-                "ageInMonths",
-                "height",
-            ],
-            'household_members': [
-                "age",
-                "gender",
-            ]
-        }
-        qsl = QuestionnaireSpecification.get_active()
-        if qsl:
-            parsed_qsl = parse_python_indentation.parse_indentation(qsl)
-            extra_women_fields = next((item for item in parsed_qsl if item["key"] == "women:"), False)
-            if extra_women_fields:
-                for field in extra_women_fields['offspring']:
-                    survey_fields['women'].append(field['key'])
-            extra_children_fields = next((item for item in parsed_qsl if item["key"] == "children:"), False)
-            if extra_children_fields:
-                for field in extra_children_fields['offspring']:
-                    survey_fields['children'].append(field['key'])
-            extra_household_member_fields = next((item for item in parsed_qsl if item["key"] == "household members:"), False)
-            if extra_household_member_fields:
-                for field in extra_household_member_fields['offspring']:
-                    survey_fields['household_members'].append(field['key'])
-        survey_fields_count = {}
-        for member_type in survey_fields.keys():
-            survey_fields_count[member_type] = {field: 0 for field in survey_fields[member_type]}
-        surveys = household_survey.find_all_surveys_by_this_team()
-        surveys_ordered = {field: [] for field in survey_fields.keys()}
 
-        for survey in surveys:
-            surveys_ordered['women'].extend(survey.get_women_records())
-            surveys_ordered['children'].extend(survey.get_child_records())
-            surveys_ordered['household_members'].extend(survey.json.get('members', []))
+        existing_data = HouseholdMember.missing_data(
+            HouseholdMember.objects.by_teamlead(household_survey.team_lead)
+        )
 
-        for member_type in survey_fields.keys():
-            for member in surveys_ordered[member_type]:
-                for field in survey_fields[member_type]:
-                    if field in member or ('survey' in member and field in member['survey']):
-                        survey_fields_count[member_type][field] += 1
+        for member_type, data in existing_data.items():
+            for field_name, field_data in data.items():
 
-        for member_type in survey_fields.keys():
-            if len(surveys_ordered[member_type]) > 0:
-                for field in survey_fields[member_type]:
-                    percent_missing = 100 - (survey_fields_count[member_type][field] * 100 / len(surveys_ordered[member_type]))
-                    if percent_missing > 5:
-                        team_name = household_survey.get_team_name()
-                        team_id = household_survey.get_team_id()
-                        alert_text = 'Missing data issue on field {} for {} in team {}'.format(field, member_type, team_id)
-                        alert_type = 'missing_data'
-                        alert_json = {
-                            'type': 'missing_data',
-                            'team_name': team_name,
-                            'team_id': team_id,
-                            'member_type': member_type,
-                            'field': field,
-                            'location': [
-                                household_survey.location[0],
-                                household_survey.location[1],
-                            ],
-                        }
+                if field_data['total'] == 0:
+                    continue
 
-                        yield dict(
-                            category='missing_data',
-                            alert_type=alert_type,
-                            team_lead=household_survey.team_lead,
-                            survey=household_survey,
-                            text=alert_text,
-                            json=alert_json,
-                        )
+                if float(field_data['existing']) / float(field_data['total']) < 0.95:
+                    alert_text = 'Missing data issue on field {} for {} in team {}'.format(
+                        field_name,
+                        member_type,
+                        household_survey.team_lead.pk
+                    )
+                    alert_type = 'missing_data'
+                    alert_json = {
+                        'type': 'missing_data',
+                        'team_name': household_survey.team_lead.first_name,
+                        'team_id': household_survey.team_lead.pk,
+                        'member_type': member_type,
+                        'field': field_name,
+                    }
+
+                    yield dict(
+                        category='missing_data',
+                        alert_type=alert_type,
+                        team_lead=household_survey.team_lead,
+                        survey=household_survey,
+                        text=alert_text,
+                        json=alert_json,
+                    )
 
     @classmethod
     def sex_ratio_alert(cls, household_survey, test='chi-squared'):
