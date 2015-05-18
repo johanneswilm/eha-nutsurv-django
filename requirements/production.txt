@@ -13,7 +13,6 @@ raven
 django-phonenumber-field
 djangorestframework-camel-case
 validictory
-ipython
 djangorestframework-gis
 django-pgjson
 psycopg2==2.5.4
