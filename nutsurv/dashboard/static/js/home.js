@@ -132,7 +132,7 @@ var home = {
         var alert_list = $('#home_alerts_list').find('div.list');
         alert_list.empty();
 
-        _.each(data, function(alert) {
+        _.each(data.results, function(alert) {
             var alertTemplate = _.template($('#home-alert-item').html());
             alert_list.append(alertTemplate(_.assign(alert, home.alertType[alert.type])));
         });

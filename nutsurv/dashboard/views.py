@@ -23,7 +23,12 @@ from .models import FirstAdminLevelsReserveClusters
 from .models import TeamMember
 from .models import HouseholdMember
 
-from rest_framework import viewsets
+from rest_framework import viewsets, pagination
+
+
+class HardLimitPagination(pagination.PageNumberPagination):
+    page_size = 1000
+    max_page_size = 1000
 
 
 class TeamMemberViewset(viewsets.ModelViewSet):
@@ -584,3 +589,4 @@ class AlertViewSet(viewsets.ModelViewSet):
     ).order_by('-created')
 
     serializer_class = AlertSerializer
+    pagination_class = HardLimitPagination
