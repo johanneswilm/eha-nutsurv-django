@@ -4,10 +4,10 @@
 {% block content %}
 <div class="page-header">
     <div class="selection_choices">
-      <select id="missing_data_teams" name="missing_data_teams">
+      <select id="team_lead_selector" name="team_lead_selector">
         <option value="" selected="selected">All team leads</option>
       </select>
-      <select id="missing_data_strata" name="missing_data_strata">
+      <select id="strata_selector" name="strata_selector">
         <option value="" selected="selected">All strata</option>
       </select>
     </div>
@@ -34,5 +34,5 @@
     {% endfor %}
 
 </div>
-<script src="/static/js/missing_data.js"></script>
+<script src="/static/js/team_strata_selector.js"></script>
 {% endblock content %}
