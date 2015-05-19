@@ -25,9 +25,11 @@ from .models import HouseholdMember
 
 from rest_framework import viewsets, pagination
 
+
 class HardLimitPagination(pagination.PageNumberPagination):
     page_size = 1000
     max_page_size = 1000
+
 
 class TeamMemberViewset(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all()
@@ -35,6 +37,7 @@ class TeamMemberViewset(viewsets.ModelViewSet):
     serializer_class = TeamMemberSerializer
     template_name = 'dashboard/teammember.html'
     lookup_field = 'pk'
+
 
 class HouseholdMemberViewset(viewsets.ModelViewSet):
     queryset = HouseholdMember.objects.all()
@@ -587,4 +590,3 @@ class AlertViewSet(viewsets.ModelViewSet):
 
     serializer_class = AlertSerializer
     pagination_class = HardLimitPagination
-
