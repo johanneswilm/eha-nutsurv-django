@@ -1,9 +1,5 @@
 import json
 
-import datetime
-import dateutil.parser
-import dateutil.relativedelta
-
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
