@@ -48,7 +48,6 @@ Now in the shell within the container:
 
     root@host # createdb -h localhost -U postgres -T template_postgis nutsurv_dev
     root@host # python /opt/nutsurv/nutsurv/manage.py migrate
-    root@host # python /opt/nutsurv/nutsurv/manage.py loaddata /opt
     root@host # python /opt/nutsurv/nutsurv/manage.py loaddata /opt/nutsurv/nutsurv/dashboard/fixtures/SecondLevelAdmin.json
     root@host # python /opt/nutsurv/nutsurv/manage.py createsuperuser
     root@host # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
