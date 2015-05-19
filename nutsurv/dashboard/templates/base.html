@@ -37,7 +37,7 @@
     {% compress js %}
     <script src='{% static 'jquery/jquery.js' %}'></script>
 
-    {% if not debug %}
+    {% if not DEBUG %}
     <script src='{% static 'raven-js/dist/raven.js' %}'></script>
     <script src='{% static 'raven-js/plugins/jquery.js' %}'></script>
     <script src='{% static 'raven-js/plugins/console.js' %}'></script>
@@ -68,10 +68,13 @@
     <script src="/static/js/index.js"></script>
     {% endcompress %}
 
+
+    {% if not DEBUG %}
     {% if RAVEN_CONFIG.dsn %}
     <script>
       Raven.config('{{ RAVEN_CONFIG.dsn }}').install();
     </script>
+    {% endif %}
     {% endif %}
 </head>
 
