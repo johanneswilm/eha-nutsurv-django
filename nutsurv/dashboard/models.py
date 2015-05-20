@@ -129,11 +129,19 @@ def validate_json(spec_file):
     return wrapped
 
 
-def _age(selector, num_years):
-    return '''("dashboard_householdsurveyjson"."start_time" - "dashboard_householdmember"."birthdate") {} INTERVAL '{}' '''.format(selector, num_years)
+from django.db.models import F, Count, Func
 
-from django.db.models import F
+class Age(Func):
+    function = 'AGE'
 
+class FullMonths(Func):
+    # yes, it's sad that postgres doesn't have a `justify_months` fun
+    template = '(( 12 * EXTRACT(years FROM %(expressions)s)) + EXTRACT(months FROM %(expressions)s))::integer'
+    output_field = models.IntegerField()
+
+class FullYears(Func):
+    template = '(EXTRACT(years FROM %(expressions)s))::integer'
+    output_field = models.IntegerField()
 
 class HouseholdMemberManager(models.Manager):
 
@@ -141,28 +149,33 @@ class HouseholdMemberManager(models.Manager):
         return super(HouseholdMemberManager, self).get_queryset().filter(
             household_survey__team_lead=team_lead)
 
+    def age_distribution_in_years(self):
+        return super(HouseholdMemberManager, self).get_queryset().annotate(
+            age_in_years=FullYears(Age(F('household_survey__start_time'), F('birthdate')))
+        ).values('age_in_years').order_by('age_in_years').annotate(count=Count('age_in_years'))
 
 class ChildrenManager(HouseholdMemberManager):
 
     def get_queryset(self):
         return super(ChildrenManager, self).get_queryset().annotate(
-            age=F('household_survey__start_time') - F('birthdate')
-        ).extra(
-            where=[_age('<=', '6 years'), ],
+            age_in_years=FullYears(Age(F('household_survey__start_time'), F('birthdate')))
+        ).filter(
+            age_in_years__lt=6,
         )
 
+    def age_distribution_in_months(self):
+        return super(ChildrenManager, self).get_queryset().annotate(
+            age_in_months=FullMonths(Age(F('household_survey__start_time'), F('birthdate')))
+        ).values('age_in_months').order_by('age_in_months').annotate(count=Count('age_in_months'))
 
 class WomenManager(HouseholdMemberManager):
 
     def get_queryset(self):
         return super(WomenManager, self).get_queryset().annotate(
-            age=F('household_survey__start_time') - F('birthdate')
-        ).extra(
-            where=[
-                _age('>=', '15 years'),
-                _age('<=', '49 years'),
-            ],
+            age_in_years=FullYears(Age(F('household_survey__start_time'), F('birthdate')))
         ).filter(
+            age_in_years__gt=15,
+            age_in_years__lt=49,
             gender='F',
         )
 
