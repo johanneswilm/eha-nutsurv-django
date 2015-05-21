@@ -20,6 +20,8 @@ from .models import TeamMember
 from .models import HouseholdMember
 
 from rest_framework import viewsets, pagination
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
 
 
 class HardLimitPagination(pagination.PageNumberPagination):
@@ -36,9 +38,32 @@ class TeamMemberViewset(viewsets.ModelViewSet):
 
 
 class HouseholdMemberViewset(viewsets.ModelViewSet):
+    pagination_class = pagination.PageNumberPagination
     queryset = HouseholdMember.objects.all()
     serializer_class = HouseholdMemberSerializer
 
+    @list_route(methods=['get'])
+    def age_distribution(self, request, format):
+
+        c = HouseholdMember.children
+        h = HouseholdMember.objects
+
+        if request.GET.get('team_lead'):
+            team_lead = TeamMember.objects.get(pk=int(request.GET['team_lead']))
+            c = c.by_teamlead(team_lead)
+            h = h.by_teamlead(team_lead)
+
+        if request.GET.get('stratum'):
+            stratum_num = int(request.GET['stratum'])
+            c = c.by_cluster_num(stratum_num)
+            h = h.by_cluster_num(stratum_num)
+
+        return Response({
+            'age_distribution': {
+                'children': c.age_distribution_in_months(),
+                'household_member': h.age_distribution_in_years(),
+            }
+        })
 
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
     queryset = HouseholdSurveyJSON.objects.prefetch_related('members').all()

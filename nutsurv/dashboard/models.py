@@ -148,6 +148,9 @@ class HouseholdMemberQuerySet(models.QuerySet):
     def by_teamlead(self, team_lead):
         return self.filter(household_survey__team_lead=team_lead)
 
+    def by_cluster_num(self, cluster_num):
+        return self.filter(household_survey__cluster=cluster_num)
+
     def age_distribution_in_years(self):
         return self.annotate(
             age_in_years=FullYears(Age(F('household_survey__start_time'), F('birthdate')))
