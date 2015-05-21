@@ -3,14 +3,7 @@
 {% block tabs %}{% include 'dashboard/_tabs.html' with active_tab='inspect_data' %}{% endblock %}
 {% block content %}
 <div class="page-header">
-    <div class="selection_choices">
-      <select id="team_lead_selector" name="team_lead_selector">
-        <option value="" selected="selected">All team leads</option>
-      </select>
-      <select id="strata_selector" name="strata_selector">
-        <option value="" selected="selected">All strata</option>
-      </select>
-    </div>
+    {% include 'dashboard/_team_strata_selector.html' %}
     <h1>Missing Data</h1>
 </div>
 <div class="row">
