@@ -11,8 +11,8 @@ function read_querystring() {
 
 function change_querystring() {
   window.location.search = '?' + jQuery.param({
-    team_lead: $("#missing_data_teams").val(),
-    stratum: $("#missing_data_strata").val(),
+    team_lead: $("#team_lead_selector").val(),
+    stratum: $("#strata_selector").val(),
   });
 }
 
@@ -29,7 +29,7 @@ function fill_selectpicker(sel, template, data, selected_value) {
 
 $.get('/dashboard/teammembers/', function (data) {
   fill_selectpicker(
-    "#missing_data_teams",
+    "#team_lead_selector",
     '<option value="<%- names.id %>"><%- names.firstName %> <%- names.lastName %></option>',
     data,
     read_querystring()['team_lead']
@@ -38,7 +38,7 @@ $.get('/dashboard/teammembers/', function (data) {
 
 $.get('/dashboard/clustersjsonview/', function (data) {
   fill_selectpicker(
-    "#missing_data_strata",
+    "#strata_selector",
     '<option value="<%- names.first_admin_level_name %>" ><%- names.cluster_name %></option>',
     data.clusters,
     read_querystring()['stratum']
@@ -46,4 +46,3 @@ $.get('/dashboard/clustersjsonview/', function (data) {
 });
 
 }());
-

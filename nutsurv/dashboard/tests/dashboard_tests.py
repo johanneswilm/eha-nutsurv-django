@@ -661,6 +661,18 @@ class HouseholdMemberTest(TestCase):
             missing_data['women']['Christmas Tree?'],
         )
 
+    def test_age_distribution_years(self):
+        self.assertEqual([
+            {'count': 2, 'age_in_years': 1},
+            {'count': 1, 'age_in_years': 20}
+        ], list(HouseholdMember.objects.age_distribution_in_years()))
+
+    def test_age_distribution_months(self):
+        self.assertEqual(
+            [{'count': 2, 'age_in_months': 12}],
+            list(HouseholdMember.children.age_distribution_in_months())
+        )
+
 
 class AlertLocationTest(TestCase):
 
