@@ -131,17 +131,21 @@ def validate_json(spec_file):
 
 from django.db.models import F, Count, Func
 
+
 class Age(Func):
     function = 'AGE'
+
 
 class FullMonths(Func):
     # yes, it's sad that postgres doesn't have a `justify_months` fun
     template = '(( 12 * EXTRACT(years FROM %(expressions)s)) + EXTRACT(months FROM %(expressions)s))::integer'
     output_field = models.IntegerField()
 
+
 class FullYears(Func):
     template = '(EXTRACT(years FROM %(expressions)s))::integer'
     output_field = models.IntegerField()
+
 
 class HouseholdMemberQuerySet(models.QuerySet):
 
@@ -163,6 +167,7 @@ class HouseholdMemberQuerySet(models.QuerySet):
 
 HouseholdMemberManager = models.Manager.from_queryset(HouseholdMemberQuerySet)
 
+
 class ChildrenManager(HouseholdMemberManager):
 
     def get_queryset(self):
@@ -171,6 +176,7 @@ class ChildrenManager(HouseholdMemberManager):
         ).filter(
             age_in_years__lt=6,
         )
+
 
 class WomenManager(HouseholdMemberManager):
 
