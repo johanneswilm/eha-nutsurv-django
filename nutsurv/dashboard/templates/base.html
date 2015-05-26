@@ -1,6 +1,7 @@
 <!doctype html>
 {% load compress %}
 {% load static %}
+{% load raven %}
 
 <html lang="en">
 
@@ -70,11 +71,9 @@
 
 
     {% if not DEBUG %}
-    {% if RAVEN_CONFIG.dsn %}
     <script>
-      Raven.config('{{ RAVEN_CONFIG.dsn }}').install();
+      Raven.config('{% sentry_public_dsn 'https' %}').install();
     </script>
-    {% endif %}
     {% endif %}
 </head>
 
