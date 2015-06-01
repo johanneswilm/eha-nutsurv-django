@@ -10,7 +10,6 @@ Install [Docker](https://docs.docker.com/installation/#installation)
 ### On Mac OS X
 
 - Install [Bower](http://bower.io)
-- Install [boot2docker](http://boot2docker.io)
 - Install [Homebrew](http://brew.sh)
 - Install Docker Compose `$ brew install docker-compose`
 
@@ -25,7 +24,7 @@ After you have all the tool dependencies installed for your respective OS, move 
 
 ## Tab 1
 
-    $ sudo docker-compose up db
+    $ docker-compose up db
 
 ## Tab 2
 
@@ -34,7 +33,7 @@ After you have all the tool dependencies installed for your respective OS, move 
     $ bower install
 
     # now build your container
-    $ sudo docker-compose build
+    $ docker-compose build
 
     # (the next line is optional, if you wish to also test the mobile app)
     $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
@@ -42,7 +41,7 @@ After you have all the tool dependencies installed for your respective OS, move 
 
 To run in development mode
 
-    $ sudo docker-compose run web bash
+    $ docker-compose run web bash
 
 Now in the shell within the container:
 
