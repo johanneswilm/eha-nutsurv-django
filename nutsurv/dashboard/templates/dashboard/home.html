@@ -5,46 +5,11 @@
     <h1><i class="fa fa-home"></i> Home</h1>
 </div>
 
-<div class="row">
-	<div class="col-md-8">
-	    <div class="panel panel-default">
-	       	<div class="panel-heading"><i class="fa fa-bell"></i> Alerts</div>
-	        <div class="panel-body">
-	            <div id="home_alerts_list">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <input type="text" class="search form-control" placeholder="Search title or team name">
-                        </div>
-                        <div class="col-md-6">
-                            <select id="home_alerts_filter_type" class="pull-right"></select>
-                        </div>
-                    </div>
-                    <hr class="alert-line">
-                    <div class="list"></div>
-                    <ul class="pagination pull-left"></ul>
-    				<button id="home_alerts_download" class="btn btn-success pull-right">
-    					<i class="fa fa-download"></i> Download
-    				</button>
-                </div>
-
-	        </div>
-	    </div>
-	</div>
-	<div class="col-md-4">
-	    <div class="panel panel-default">
-	        <div class="panel-heading"><i class="fa fa-map-marker"></i> Survey Map</div>
-	        <div class="panel-body">
-	            <div id="home_map" class="map"></div>
-	        </div>
-	    </div>
-	    <div  id="home_last_contact" class="panel panel-default">
-	        <div class="panel-heading"><i class="fa fa-flag"></i> Latest Team Activity</div>
-	        <div class="panel-body">
-	            <ul id="home_last_contact_list" class="list-unstyled"></ul>
-              <button id="home_lastcontact_download" class="btn btn-primary pull-right">Download</button>
-	        </div>
-	    </div>
-	</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><i class="fa fa-map-marker"></i> Survey Map</div>
+    <div class="panel-body">
+        <div id="home_map" class="map"></div>
+    </div>
 </div>
 
 <div class="modal fade" id="contact-team-modal" tabindex="-1" role="dialog" aria-labelledby="contact-team-modal-label" aria-hidden="true">
