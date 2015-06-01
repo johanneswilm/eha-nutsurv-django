@@ -50,6 +50,7 @@ Now in the shell within the container:
     root@host # python /opt/nutsurv/nutsurv/manage.py createcachetable
     root@host # python /opt/nutsurv/nutsurv/manage.py loaddata /opt/nutsurv/nutsurv/dashboard/fixtures/SecondLevelAdmin.json
     root@host # python /opt/nutsurv/nutsurv/manage.py createsuperuser
+    root@host # cp /opt/nutsurv/nutsurv/configuration.py-default /opt/nutsurv/nutsurv/configuration.py
     root@host # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
 
 You probably also want to import some test data. Do that by typing:
@@ -134,4 +135,4 @@ Now, when you have defined your new dictionary, you can use it and load your GIS
 
 # Override settings
 
-You can override settings by adding a file named "configuration.py" to the root of the project. See configuration.py-default for an example.
+You can override settings by editing the "configuration.py" file that you created during set up.
