@@ -1,4 +1,4 @@
-var dataQuality = {
+var childAnthropometry = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
         teams: '/dashboard/teamsjsonview/',
@@ -7,21 +7,21 @@ var dataQuality = {
     initiate: function() {
         var selectors = jQuery('#data_quality_teams,#data_quality_strata');
         selectors.selectpicker();
-        selectors.on('change', dataQuality.changeStratumOrTeam);
+        selectors.on('change', childAnthropometry.changeStratumOrTeam);
 
-        dataQuality.drawCharts();
-        dataQuality.drawTable();
+        childAnthropometry.drawCharts();
+        childAnthropometry.drawTable();
 
-        dataGetter.addNew(dataQuality.urls.teams, dataQuality.fillTeamsList, false);
-        dataGetter.addNew(dataQuality.urls.firstAdminLevels, dataQuality.fillStrataList, false);
-        dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateCharts, true);
-        dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateTable, true);
-        dataGetter.addNew(dataQuality.urls.survey, dataQuality.updateList, true);
+        dataGetter.addNew(childAnthropometry.urls.teams, childAnthropometry.fillTeamsList, false);
+        dataGetter.addNew(childAnthropometry.urls.firstAdminLevels, childAnthropometry.fillStrataList, false);
+        dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateCharts, true);
+        dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateTable, true);
+        dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateList, true);
     },
     fillTeamsList: function(data) {
         var selector = jQuery('#data_quality_teams');
         _.each(data.teams, function(names, id) {
-            selector.append(dataQuality.teamOptionTmp({
+            selector.append(childAnthropometry.teamOptionTmp({
                 id: id,
                 names: names
             }));
@@ -32,7 +32,7 @@ var dataQuality = {
     fillStrataList: function(data) {
         var selector = jQuery('#data_quality_strata');
         _.each(data.first_admin_levels.sort(), function(stratum) {
-            selector.append(dataQuality.stratumOptionTmp({
+            selector.append(childAnthropometry.stratumOptionTmp({
                 stratum: stratum
             }));
         });
@@ -40,12 +40,12 @@ var dataQuality = {
     },
     stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
     changeStratumOrTeam: function () {
-        var data = dataGetter.downloads[dataQuality.urls.survey].data,
+        var data = dataGetter.downloads[childAnthropometry.urls.survey].data,
             team = jQuery('#data_quality_teams').val(),
             stratum = jQuery('#data_quality_strata').val();
-        dataQuality.updateCharts(data,team,stratum);
-        dataQuality.updateTable(data,team,stratum);
-        dataQuality.updateList(data,team,stratum);
+        childAnthropometry.updateCharts(data,team,stratum);
+        childAnthropometry.updateTable(data,team,stratum);
+        childAnthropometry.updateList(data,team,stratum);
     },
     drawCharts: function() {
         var options = {
@@ -67,8 +67,8 @@ var dataQuality = {
             }
         };
 
-        dataQuality.WHZDataQualityPlot = jQuery.plot('#data_quality_whz_chart', [], options);
-        dataQuality.HAZDataQualityPlot = jQuery.plot('#data_quality_haz_chart', [], options);
+        childAnthropometry.WHZDataQualityPlot = jQuery.plot('#data_quality_whz_chart', [], options);
+        childAnthropometry.HAZDataQualityPlot = jQuery.plot('#data_quality_haz_chart', [], options);
         // Only hide tabs after canvases have been drawn on them.
         setTimeout(
             function() {
@@ -76,14 +76,14 @@ var dataQuality = {
             },
             0
         );
-        dataQuality.WAZDataQualityPlot = jQuery.plot('#data_quality_waz_chart', [], options);
+        childAnthropometry.WAZDataQualityPlot = jQuery.plot('#data_quality_waz_chart', [], options);
         setTimeout(
             function() {
                 jQuery('#data_quality_chart_tabs_WAZ').addClass('tab-pane');
             },
             0
         );
-        dataQuality.MUACDataQualityPlot = jQuery.plot('#data_quality_muac_chart', [], muacOptions);
+        childAnthropometry.MUACDataQualityPlot = jQuery.plot('#data_quality_muac_chart', [], muacOptions);
         setTimeout(
             function() {
                 jQuery('#data_quality_chart_tabs_MUAC').addClass('tab-pane');
@@ -161,17 +161,17 @@ var dataQuality = {
             HAZkde.data = [];
         }
 
-        dataQuality.WHZDataQualityPlot.setData([normalizedCurve,WHZkde]);
-        dataQuality.WHZDataQualityPlot.setupGrid();
-        dataQuality.WHZDataQualityPlot.draw();
+        childAnthropometry.WHZDataQualityPlot.setData([normalizedCurve,WHZkde]);
+        childAnthropometry.WHZDataQualityPlot.setupGrid();
+        childAnthropometry.WHZDataQualityPlot.draw();
 
-        dataQuality.HAZDataQualityPlot.setData([normalizedCurve,HAZkde]);
-        dataQuality.HAZDataQualityPlot.setupGrid();
-        dataQuality.HAZDataQualityPlot.draw();
+        childAnthropometry.HAZDataQualityPlot.setData([normalizedCurve,HAZkde]);
+        childAnthropometry.HAZDataQualityPlot.setupGrid();
+        childAnthropometry.HAZDataQualityPlot.draw();
 
-        dataQuality.WAZDataQualityPlot.setData([normalizedCurve,WAZkde]);
-        dataQuality.WAZDataQualityPlot.setupGrid();
-        dataQuality.WAZDataQualityPlot.draw();
+        childAnthropometry.WAZDataQualityPlot.setData([normalizedCurve,WAZkde]);
+        childAnthropometry.WAZDataQualityPlot.setupGrid();
+        childAnthropometry.WAZDataQualityPlot.draw();
 
         MUACs.sort(function(a,b){return a - b});
 
@@ -183,17 +183,17 @@ var dataQuality = {
 
         MUACkde.data = kde(MUACs).points(muacGraphRange);
 
-        muacAxes = dataQuality.MUACDataQualityPlot.getAxes();
+        muacAxes = childAnthropometry.MUACDataQualityPlot.getAxes();
         muacAxes.xaxis.options.min = muacMin;
         muacAxes.xaxis.options.max = muacMax;
-        dataQuality.MUACDataQualityPlot.setData([MUACkde]);
-        dataQuality.MUACDataQualityPlot.setupGrid();
-        dataQuality.MUACDataQualityPlot.draw();
+        childAnthropometry.MUACDataQualityPlot.setData([MUACkde]);
+        childAnthropometry.MUACDataQualityPlot.setupGrid();
+        childAnthropometry.MUACDataQualityPlot.draw();
 
     },
     table: false,
     drawTable: function () {
-        dataQuality.table = jQuery('#data_quality_table').dataTable({
+        childAnthropometry.table = jQuery('#data_quality_table').dataTable({
             paging: false,
             searching: false,
             info: false
@@ -284,9 +284,9 @@ var dataQuality = {
         jQuery('#whz_flagged').html(parseInt(whzFlagged/whzN*100));
         jQuery('#haz_flagged').html(parseInt(hazFlagged/hazN*100));
         jQuery('#waz_flagged').html(parseInt(wazFlagged/wazN*100));
-        if (dataQuality.table) {
-            dataQuality.table.fnDestroy();
-            dataQuality.drawTable();
+        if (childAnthropometry.table) {
+            childAnthropometry.table.fnDestroy();
+            childAnthropometry.drawTable();
         }
     },
     updateList: function (data, team, stratum) {
@@ -357,4 +357,4 @@ var dataQuality = {
     }
 };
 
-dataQuality.initiate();
+childAnthropometry.initiate();

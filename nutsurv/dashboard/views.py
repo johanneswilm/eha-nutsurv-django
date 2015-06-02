@@ -110,9 +110,9 @@ def missing_data(request):
 
 
 @login_required
-def data_quality(request):
+def child_anthropometry(request):
     response = {}
-    return render(request, 'dashboard/data_quality.html', response)
+    return render(request, 'dashboard/child_anthropometry.html', response)
 
 
 @login_required
