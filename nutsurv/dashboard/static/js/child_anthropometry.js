@@ -349,7 +349,7 @@ var childAnthropometry = {
 
         });
 
-        jQuery('#child_anthropometry_gender_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
+        jQuery('#child_anthropometry_sex_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
         jQuery('#child_anthropometry_age_ratio').html(parseInt(youngChildren/oldChildren*100)/100);
         jQuery('#child_anthropometry_ldps_weight').html(lastDigitPreferenceScore(weights));
         jQuery('#child_anthropometry_ldps_height').html(lastDigitPreferenceScore(heights));
