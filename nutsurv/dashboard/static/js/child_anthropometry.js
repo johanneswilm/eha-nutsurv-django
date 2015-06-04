@@ -5,7 +5,7 @@ var childAnthropometry = {
         firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
-        var selectors = jQuery('#data_quality_teams,#data_quality_strata');
+        var selectors = jQuery('#child_anthropometry_teams,#child_anthropometry_strata');
         selectors.selectpicker();
         selectors.on('change', childAnthropometry.changeStratumOrTeam);
 
@@ -19,7 +19,7 @@ var childAnthropometry = {
         dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateList, true);
     },
     fillTeamsList: function(data) {
-        var selector = jQuery('#data_quality_teams');
+        var selector = jQuery('#child_anthropometry_teams');
         _.each(data.teams, function(names, id) {
             selector.append(childAnthropometry.teamOptionTmp({
                 id: id,
@@ -30,7 +30,7 @@ var childAnthropometry = {
     },
     teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
     fillStrataList: function(data) {
-        var selector = jQuery('#data_quality_strata');
+        var selector = jQuery('#child_anthropometry_strata');
         _.each(data.first_admin_levels.sort(), function(stratum) {
             selector.append(childAnthropometry.stratumOptionTmp({
                 stratum: stratum
@@ -41,8 +41,8 @@ var childAnthropometry = {
     stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
     changeStratumOrTeam: function () {
         var data = dataGetter.downloads[childAnthropometry.urls.survey].data,
-            team = jQuery('#data_quality_teams').val(),
-            stratum = jQuery('#data_quality_strata').val();
+            team = jQuery('#child_anthropometry_teams').val(),
+            stratum = jQuery('#child_anthropometry_strata').val();
         childAnthropometry.updateCharts(data,team,stratum);
         childAnthropometry.updateTable(data,team,stratum);
         childAnthropometry.updateList(data,team,stratum);
@@ -67,26 +67,26 @@ var childAnthropometry = {
             }
         };
 
-        childAnthropometry.WHZDataQualityPlot = jQuery.plot('#data_quality_whz_chart', [], options);
-        childAnthropometry.HAZDataQualityPlot = jQuery.plot('#data_quality_haz_chart', [], options);
+        childAnthropometry.WHZDataQualityPlot = jQuery.plot('#child_anthropometry_whz_chart', [], options);
+        childAnthropometry.HAZDataQualityPlot = jQuery.plot('#child_anthropometry_haz_chart', [], options);
         // Only hide tabs after canvases have been drawn on them.
         setTimeout(
             function() {
-                jQuery('#data_quality_chart_tabs_HAZ').addClass('tab-pane');
+                jQuery('#child_anthropometry_chart_tabs_HAZ').addClass('tab-pane');
             },
             0
         );
-        childAnthropometry.WAZDataQualityPlot = jQuery.plot('#data_quality_waz_chart', [], options);
+        childAnthropometry.WAZDataQualityPlot = jQuery.plot('#child_anthropometry_waz_chart', [], options);
         setTimeout(
             function() {
-                jQuery('#data_quality_chart_tabs_WAZ').addClass('tab-pane');
+                jQuery('#child_anthropometry_chart_tabs_WAZ').addClass('tab-pane');
             },
             0
         );
-        childAnthropometry.MUACDataQualityPlot = jQuery.plot('#data_quality_muac_chart', [], muacOptions);
+        childAnthropometry.MUACDataQualityPlot = jQuery.plot('#child_anthropometry_muac_chart', [], muacOptions);
         setTimeout(
             function() {
-                jQuery('#data_quality_chart_tabs_MUAC').addClass('tab-pane');
+                jQuery('#child_anthropometry_chart_tabs_MUAC').addClass('tab-pane');
             },
             0
         );
@@ -193,7 +193,7 @@ var childAnthropometry = {
     },
     table: false,
     drawTable: function () {
-        childAnthropometry.table = jQuery('#data_quality_table').dataTable({
+        childAnthropometry.table = jQuery('#child_anthropometry_table').dataTable({
             paging: false,
             searching: false,
             info: false
@@ -349,11 +349,11 @@ var childAnthropometry = {
 
         });
 
-        jQuery('#data_quality_gender_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
-        jQuery('#data_quality_age_ratio').html(parseInt(youngChildren/oldChildren*100)/100);
-        jQuery('#data_quality_ldps_weight').html(lastDigitPreferenceScore(weights));
-        jQuery('#data_quality_ldps_height').html(lastDigitPreferenceScore(heights));
-        jQuery('#data_quality_ldps_muac').html(lastDigitPreferenceScore(MUACs));
+        jQuery('#child_anthropometry_gender_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
+        jQuery('#child_anthropometry_age_ratio').html(parseInt(youngChildren/oldChildren*100)/100);
+        jQuery('#child_anthropometry_ldps_weight').html(lastDigitPreferenceScore(weights));
+        jQuery('#child_anthropometry_ldps_height').html(lastDigitPreferenceScore(heights));
+        jQuery('#child_anthropometry_ldps_muac').html(lastDigitPreferenceScore(MUACs));
     }
 };
 

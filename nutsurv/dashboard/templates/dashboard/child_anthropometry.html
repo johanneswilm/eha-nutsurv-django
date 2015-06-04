@@ -3,10 +3,10 @@
 {% block content %}
 <div class="page-header">
     <div class="selection_choices">
-        <select id="data_quality_teams" name="data_quality_teams">
+        <select id="child_anthropometry_teams" name="child_anthropometry_teams">
             <option value="-1" selected="selected">All teams</option>
         </select>
-        <select id="data_quality_strata" name="data_quality_strata">
+        <select id="child_anthropometry_strata" name="child_anthropometry_strata">
             <option value="All strata" selected="selected">All strata</option>
         </select>
     </div>
@@ -14,32 +14,32 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div id="data_quality_chart" class="panel panel-default">
+        <div id="child_anthropometry_chart" class="panel panel-default">
             <div class="panel-heading">Graphs</div>
             <div class="panel-body">
-                <div id="data_quality_chart_tabs" role="tabpanel">
+                <div id="child_anthropometry_chart_tabs" role="tabpanel">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" id="data_quality_chart_tabs_WHZ_tab" href="#data_quality_chart_tabs_WHZ">WHZ</a>
+                        <li class="active"><a data-toggle="tab" id="child_anthropometry_chart_tabs_WHZ_tab" href="#child_anthropometry_chart_tabs_WHZ">WHZ</a>
                         </li>
-                        <li><a data-toggle="tab" id="data_quality_chart_tabs_HAZ_tab" href="#data_quality_chart_tabs_HAZ">HAZ</a>
+                        <li><a data-toggle="tab" id="child_anthropometry_chart_tabs_HAZ_tab" href="#child_anthropometry_chart_tabs_HAZ">HAZ</a>
                         </li>
-                        <li><a data-toggle="tab" id="data_quality_chart_tabs_WAZ_tab" href="#data_quality_chart_tabs_WAZ">WAZ</a>
+                        <li><a data-toggle="tab" id="child_anthropometry_chart_tabs_WAZ_tab" href="#child_anthropometry_chart_tabs_WAZ">WAZ</a>
                         </li>
-                        <li><a data-toggle="tab" id="data_quality_chart_tabs_MUAC_tab" href="#data_quality_chart_tabs_MUAC">MUAC</a>
+                        <li><a data-toggle="tab" id="child_anthropometry_chart_tabs_MUAC_tab" href="#child_anthropometry_chart_tabs_MUAC">MUAC</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="data_quality_chart_tabs_WHZ">
-                            <div id="data_quality_whz_chart" class="chart"></div>
+                        <div role="tabpanel" class="tab-pane active" id="child_anthropometry_chart_tabs_WHZ">
+                            <div id="child_anthropometry_whz_chart" class="chart"></div>
                         </div>
-                        <div role="tabpanel" id="data_quality_chart_tabs_HAZ">
-                            <div id="data_quality_haz_chart" class="chart"></div>
+                        <div role="tabpanel" id="child_anthropometry_chart_tabs_HAZ">
+                            <div id="child_anthropometry_haz_chart" class="chart"></div>
                         </div>
-                        <div role="tabpanel" id="data_quality_chart_tabs_WAZ">
-                            <div id="data_quality_waz_chart" class="chart"></div>
+                        <div role="tabpanel" id="child_anthropometry_chart_tabs_WAZ">
+                            <div id="child_anthropometry_waz_chart" class="chart"></div>
                         </div>
-                        <div role="tabpanel" id="data_quality_chart_tabs_MUAC">
-                            <div id="data_quality_muac_chart" class="chart"></div>
+                        <div role="tabpanel" id="child_anthropometry_chart_tabs_MUAC">
+                            <div id="child_anthropometry_muac_chart" class="chart"></div>
                         </div>
                     </div>
                 </div>
@@ -47,8 +47,8 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div id="data_quality_info" class="panel panel-default">
-            <table id="data_quality_table" class="table table-panel">
+        <div id="child_anthropometry_info" class="panel panel-default">
+            <table id="child_anthropometry_table" class="table table-panel">
                 <thead>
                     <tr>
                         <th>Statistics</th>
@@ -93,26 +93,26 @@
                     </tr>
                 </tbody>
             </table>
-            <ul id="data_quality_value_list" class="description_list">
+            <ul id="child_anthropometry_value_list" class="description_list">
                 <li>
                     <span class="item">Sex ratio (m/f):</span>
-                    <span class="description" id="data_quality_gender_ratio"></span>
+                    <span class="description" id="child_anthropometry_sex_ratio"></span>
                 </li>
                 <li>
                     <span class="item">Age ratio (0-29/30-59 months):</span>
-                    <span class="description" id="data_quality_age_ratio"></span>
+                    <span class="description" id="child_anthropometry_age_ratio"></span>
                 </li>
                 <li>
                     <span class="item">DPS - weight:</span>
-                    <span class="description" id="data_quality_ldps_weight"></span>
+                    <span class="description" id="child_anthropometry_ldps_weight"></span>
                 </li>
                 <li>
                     <span class="item">DPS - height:</span>
-                    <span class="description" id="data_quality_ldps_height"></span>
+                    <span class="description" id="child_anthropometry_ldps_height"></span>
                 </li>
                 <li>
                     <span class="item">DPS - MUAC:</span>
-                    <span class="description" id="data_quality_ldps_muac"></span>
+                    <span class="description" id="child_anthropometry_ldps_muac"></span>
                 </li>
             </ul>
         </div>
