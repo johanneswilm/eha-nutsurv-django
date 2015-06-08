@@ -1,7 +1,7 @@
 var childAnthropometry = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        teams: '/dashboard/teamsjsonview/',
+        teams: '/dashboard/teammembers/',
         firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
@@ -20,10 +20,10 @@ var childAnthropometry = {
     },
     fillTeamsList: function(data) {
         var selector = jQuery('#child_anthropometry_teams');
-        _.each(data.teams, function(names, id) {
+        _.each(data, function(team) {
             selector.append(childAnthropometry.teamOptionTmp({
-                id: id,
-                names: names
+                id: team.id,
+                names: team.firstName + ' ' + team.lastName
             }));
         });
         selector.selectpicker('refresh');

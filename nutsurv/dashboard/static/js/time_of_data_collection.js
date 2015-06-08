@@ -1,7 +1,7 @@
 var timeOfDataCollection = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        teams: '/dashboard/teamsjsonview/',
+        teams: '/dashboard/teammembers/',
         firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
@@ -15,10 +15,10 @@ var timeOfDataCollection = {
     },
     fillTeamsList: function(data) {
         var selector = jQuery('#time_of_data_collection_teams');
-        _.each(data.teams, function(names, id) {
+        _.each(data, function(team) {
             selector.append(timeOfDataCollection.teamOptionTmp({
-                id: id,
-                names: names
+                id: team.id,
+                names: team.firstName + ' ' + team.lastName
             }));
         });
         selector.selectpicker('refresh');
