@@ -89,6 +89,26 @@ class HouseholdSurveyTest(TestCase):
         )
         survey.save()
 
+    def test_unicode_for_survey_with_some_fields(self):
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=763,
+        )
+        self.assertEqual(unicode(survey), 'cluster: None; household: 763; team: 4- ; start time: None')
+
+    def test_unicode_for_survey_with_all_fields(self):
+        survey = HouseholdSurveyJSON.objects.create(
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=832,
+            cluster=232,
+            start_time=datetime(2010, 1, 1),
+        )
+        self.assertEqual(unicode(survey), 'cluster: 232; household: 832; team: 3- ; start time: 2010-01-01 00:00:00')
+
     def test_extra_questions(self):
         survey = HouseholdSurveyJSON.objects.create(
             team_lead=self.team_member,
