@@ -397,26 +397,11 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
         self.team_anthropometrist = make_team_member(anthro)
 
     def __unicode__(self):
-        # Try to build a name describing a survey.
-        if not self.json:
-            # If field json is invalid then there is no way to compute the name.
-            return u'invalid {}'.format(self._meta.verbose_name)
-        if 'householdID' in self.json:
-            household = self.json['householdID']
-        else:
-            household = None
-        if 'cluster' in self.json:
-            cluster = self.json['cluster']
-        else:
-            cluster = None
-        if 'startTime' in self.json:
-            start_time = self.json['startTime']
-        else:
-            start_time = None
-        team_name = self.get_team_name()
-
         return u'cluster: {}; household: {}; team: {}; start time: {}'.format(
-            cluster, household, team_name, start_time
+            getattr(self, 'cluster'),
+            getattr(self, 'household_number'),
+            getattr(self, 'team_lead'),
+            getattr(self, 'start_time'),
         )
 
     def _get_time_stamp(self, key):
