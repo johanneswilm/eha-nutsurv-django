@@ -165,6 +165,11 @@ class HouseholdMemberQuerySet(models.QuerySet):
             age_in_months=FullMonths(Age(F('household_survey__start_time'), F('birthdate')))
         ).values('age_in_months').order_by('age_in_months').annotate(count=Count('age_in_months'))
 
+    def with_age(self):
+        return self.annotate(
+            age_in_months=FullMonths(Age(F('household_survey__start_time'), F('birthdate')))
+        )
+
 HouseholdMemberManager = models.Manager.from_queryset(HouseholdMemberQuerySet)
 
 

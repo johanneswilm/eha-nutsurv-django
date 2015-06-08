@@ -1,4 +1,6 @@
 import json
+import math
+import logging
 
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
@@ -22,6 +24,8 @@ from .models import HouseholdMember
 from rest_framework import viewsets, pagination
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
+
+from importer import anthrocomputation
 
 
 class HardLimitPagination(pagination.PageNumberPagination):
@@ -239,37 +243,71 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         }
 
         """
-        docs = HouseholdSurveyJSON.objects.all().only('json')
+        docs = HouseholdSurveyJSON.objects.all()
         survey_data = []
         for doc in docs:
-            survey_data.append(self._clean_json(doc.json))
+            survey_data.append(self._clean_json(doc))
         return JsonResponse({'survey_data': survey_data})
 
     @classmethod
-    def _clean_json(cls, i_json):
-        """Clean JSON document given as i_json and containing data from a
+    def _clean_json(cls, doc):
+        """Clean JSON document given containing data from a
         single survey to decrease the amount of data sent to the
         client.
         """
+
         output = {}
 
         # map the top-level attributes
-        output['location'] = i_json['location']
-        output['cluster'] = i_json['cluster']
-        output['startTime'] = i_json['startTime']
-        output['endTime'] = i_json['endTime']
-        output['team'] = i_json['team']['teamID']
+        output['location'] = list(doc.location)
+        output['cluster'] = doc.cluster
+        output['startTime'] = str(doc.start_time)
+        output['endTime'] = str(doc.end_time)
+        output['team'] = doc.team_lead.id
 
         output['members'] = []
         # map household members
-        for i_member in i_json['members']:
+
+        for i_member in doc.members.all().with_age():
+
             o_member = {}
-            o_member['gender'] = i_member['gender']
-            o_member['age'] = i_member['age']
-            if 'surveyType' in i_member:
-                o_member['surveyType'] = i_member['surveyType']
-                o_member['survey'] = i_member['survey']
+            o_member['gender'] = i_member.gender
+
+            o_member['birthdate'] = i_member.birthdate
+
+            o_member['survey'] = {
+                'muac': i_member.muac,
+                'height': i_member.height,
+                'weight': i_member.weight,
+                'zscores': {},
+            }
+
+            zscores = anthrocomputation.keys_who_to_unicef(anthrocomputation.getAnthroResult(
+                ageInDays=i_member.age_in_months * anthrocomputation.DAYSINMONTH,
+                sex=i_member.gender,
+                weight=i_member.weight,
+                height=i_member.height,
+                isRecumbent=True,  # TODO use actual data
+                hasOedema=False,  # TODO use actual data
+                hc=None,  # TODO use actual data ?
+                muac=i_member.muac,
+                tsf=None,  # TODO use actual data ?
+                ssf=None,  # TODO use actual data ?
+            ))
+
+            for zscore_name in ('HAZ', 'WAZ', 'WHZ',):
+                if not math.isnan(zscores[zscore_name]):
+                    o_member["survey"]["zscores"][zscore_name] = zscores[zscore_name]
+                else:
+                    logging.warn("'%s' calculation returned NaN, not calculating this", zscore_name)
+
+            if HouseholdMember.women.all().filter(id__in=[i_member.id]).count():
+                o_member['surveyType'] = 'woman'
+            elif HouseholdMember.children.all().filter(id__in=[i_member.id]).count():
+                o_member['surveyType'] = 'child'
+
             output['members'].append(o_member)
+
         return output
 
 
