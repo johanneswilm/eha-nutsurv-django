@@ -1,9 +1,1 @@
-from django.contrib import admin
-
-from . import models
-
-admin.site.register(
-    (
-        models.FormhubSurvey,
-    )
-)
+# Admin config? Where we're going, we don't need admin config.

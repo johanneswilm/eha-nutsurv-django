@@ -1,6 +1,5 @@
 import uuid
 import random
-import math
 import logging
 
 from datetime import datetime
@@ -9,7 +8,6 @@ from jsonfield import JSONField
 from django.db import models
 
 from dashboard import models as dashboard_models
-from importer import anthrocomputation
 
 from pytz import timezone
 import dateutil.parser
@@ -17,7 +15,6 @@ import dateutil.parser
 
 def reset_data():
     FakeTeams.objects.all().delete()
-    FormhubSurvey.objects.all().delete()
     dashboard_models.HouseholdSurveyJSON.objects.all().delete()
     dashboard_models.Alert.objects.all().delete()
 
@@ -96,174 +93,6 @@ def update_mapping_documents_from_new_survey(json):
     if first_admin_level_number not in first_admin_level_data.json:
         first_admin_level_data.json.append(first_admin_level_number)
         first_admin_level_data.save()
-
-
-class FormhubSurvey(models.Model):
-    uuid = models.CharField(max_length=256, unique=True)
-    json = JSONField(null=True, blank=True, help_text=' ')
-    converted_household_survey = models.ForeignKey(dashboard_models.HouseholdSurveyJSON,
-                                                   null=True, blank=True)
-
-    def __unicode__(self):
-        return self.uuid
-
-    class Meta:
-        verbose_name_plural = 'Formhub Survey Entries'
-
-    def convert_to_household_survey(self):
-        """The purpose here is to convert the data as it comes from formhub to
-        the format that comes from the nutsurv mobile app.
-
-        """
-        if not all(key in self.json for key in ('hh_number',
-                                                '_gps_latitude', '_gps_longitude', 'cluster', 'team_num',
-                                                'starttime', 'endtime', '_submission_time', '_uuid',
-                                                'consent/hh_roster')):
-            return  # Basic info not there, we give up. TODO: log error
-        if not self.converted_household_survey:
-            household_survey_list = dashboard_models.HouseholdSurveyJSON.objects.filter(uuid=self.uuid)
-            if household_survey_list:
-                self.converted_household_survey = household_survey_list[0]
-            else:
-                self.converted_household_survey = dashboard_models.HouseholdSurveyJSON(
-                    uuid=self.uuid,
-                    household_number=self.json['hh_number'],
-                )
-
-        members = []
-        for fh_member in self.json['consent/hh_roster']:
-            member = {
-                "firstName": fh_member['consent/hh_roster/listing/name'],
-                "age": fh_member['consent/hh_roster/listing/age_years'],
-            }
-            if fh_member['consent/hh_roster/listing/sex'] == 1:
-                member["gender"] = "M"
-            else:
-                member["gender"] = "F"
-            members.append(member)
-
-        if 'consent/note_7' in self.json:
-            for fh_woman in self.json['consent/note_7']:
-                if "consent/note_7/womanname1" in fh_woman:
-                    name = fh_woman["consent/note_7/womanname1"]
-                    member = next((item for item in members
-                                   if item["firstName"] == name), None)
-                else:
-                    member = False  # TODO: log as non-imported woman survey
-                if member:
-                    member["surveyType"] = "women"
-                    member["survey"] = {}
-                    if 'consent/note_7/wom_muac' in fh_woman:
-                        member["survey"]["muac"] = fh_woman["consent/note_7/wom_muac"]
-
-        if 'consent/child' in self.json:
-            for fh_child in self.json['consent/child']:
-                if "consent/child/child_name" in fh_child:
-                    name = fh_child["consent/child/child_name"]
-                    member = next((item for item in members
-                                   if item["firstName"] == name), None)
-                else:
-                    member = False  # TODO: log as non-imported child survey
-                if member:
-                    member["surveyType"] = "child"
-                    member["survey"] = {}
-                    if 'consent/child/child_60/muac' in fh_child:
-                        member["survey"]["muac"] = fh_child['consent/child/child_60/muac']
-                    if 'consent/child/child_60/height' in fh_child:
-                        member["survey"]["height"] = fh_child['consent/child/child_60/height']
-                    if 'consent/child/child_60/weight' in fh_child:
-                        member["survey"]["weight"] = fh_child['consent/child/child_60/weight']
-                    if 'consent/child/child/months' in fh_child:
-                        member["survey"]["ageInMonth"] = fh_child['consent/child/months']
-                    if 'consent/child/child_60/edema' in fh_child:
-                        if fh_child['consent/child/child_60/edema'] == 0:
-                            member["survey"]["edema"] = 'N'
-                        else:
-                            member["survey"]["edema"] = 'Y'
-                    if 'consent/child/months' in fh_child:
-                        member["survey"]["ageInMonths"] = fh_child['consent/child/months']
-                        ageInDays = fh_child['consent/child/months'] * anthrocomputation.DAYSINMONTH
-                    else:
-                        ageInDays = None
-                    sex = member["gender"]
-                    if 'consent/child/child_60/weight' in fh_child:
-                        weight = fh_child['consent/child/child_60/weight']
-                    else:
-                        weight = None
-                    if 'consent/child/child_60/height' in fh_child:
-                        height = fh_child['consent/child/child_60/height']
-                    else:
-                        height = None
-                    if 'consent/child/child_60/measure' in fh_child and fh_child['consent/child/child_60/measure'] == 2:
-                        isRecumbent = True
-                    else:
-                        isRecumbent = False
-                    if 'consent/child/child_60/edema' in fh_child and fh_child['consent/child/child_60/edema'] > 0:
-                        hasOedema = True
-                    else:
-                        hasOedema = False
-                    hc = None  # Not used.
-                    if 'consent/child/child_60/muac' in fh_child:
-                        muac = fh_child['consent/child/child_60/muac']
-                    else:
-                        muac = None
-                    tsf = None  # Not used.
-                    ssf = None  # Not used.
-                    zscores = anthrocomputation.getAnthroResult(ageInDays,
-                                                                sex, weight, height, isRecumbent, hasOedema, hc,
-                                                                muac, tsf, ssf)
-                    if ('ZLH4A' in zscores
-                            and not math.isnan(zscores["ZLH4A"])) \
-                        or ('ZW4A' in zscores
-                            and not math.isnan(zscores["ZW4A"])) \
-                        or ('ZW4LH' in zscores
-                            and not math.isnan(zscores["ZW4LH"])):
-                        member["survey"]["zscores"] = {}
-                        if 'ZLH4A' in zscores \
-                                and not math.isnan(zscores["ZLH4A"]):
-                            member["survey"]["zscores"]["HAZ"] = \
-                                zscores["ZLH4A"]
-                        if 'ZW4A' in zscores \
-                                and not math.isnan(zscores["ZW4A"]):
-                            member["survey"]["zscores"]["WAZ"] = \
-                                zscores["ZW4A"]
-                        if 'ZW4LH' in zscores \
-                                and not math.isnan(zscores["ZW4LH"]):
-                            member["survey"]["zscores"]["WHZ"] = \
-                                zscores["ZW4LH"]
-
-        converted_json = {
-            "uuid": self.json['_uuid'],
-            # From simple date/time to datetime with timezone
-            "syncDate": self.json['_submission_time'] + ".000Z",
-            "startTime": convert_to_utc_js_datestring(self.json['starttime']),
-            # From simple date/time to datetime with timezone
-            "created": self.json['_submission_time'] + ".000Z",
-            # TODO: Using a UUID here for now. not sure this is good enough.
-            "_rev": str(uuid.uuid4()),
-            "modified": self.json['_submission_time'],
-            "householdID": self.json['hh_number'],
-            "cluster": self.json['cluster'],
-            "endTime": convert_to_utc_js_datestring(self.json['endtime']),
-            "location": [
-                self.json['_gps_latitude'],
-                self.json['_gps_longitude']
-            ],
-            "members": members,
-            "team": FakeTeams.objects.get_or_create(team_id=self.json['team_num'])[0].json,
-            "_id": self.json['_uuid'],
-            "tools": {},
-            "history": []
-        }
-        self.converted_household_survey.json = converted_json
-        self.converted_household_survey.parse_and_set_team_members()
-        self.converted_household_survey.save()
-
-        update_mapping_documents_from_new_survey(self.json)
-
-        # Check for all relevant household alerts
-        if self.converted_household_survey.json is not None:
-            dashboard_models.Alert.run_alert_checks_on_document(self.converted_household_survey)
 
 
 FIRST_NAMES = [
