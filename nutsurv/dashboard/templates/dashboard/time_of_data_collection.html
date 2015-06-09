@@ -3,14 +3,7 @@
 {% block content %}
 <div id="time_of_data_collection_chart" >
     <div class="page-header">
-        <div class="selection_choices">
-          <select id="time_of_data_collection_teams" name="time_of_data_collection_teams" >
-            <option value="-1" selected="selected">All team leads</option>
-          </select>
-          <select id="time_of_data_collection_strata" name="time_of_data_collection_strata">
-            <option value="All strata" selected="selected">All strata</option>
-          </select>
-        </div>
+        {% include 'dashboard/_team_strata_selector.html' %}
         <h1>Time of Data Collection</h1>
     </div>
     <table id="time_of_data_collection_table" class="table table-panel">
@@ -42,5 +35,6 @@
     </table>
 </div>
 <script src="/static/js/cluster_info.js"></script>
+<script src="/static/js/team_strata_selector.js"></script>
 <script src="/static/js/time_of_data_collection.js"></script>
 {% endblock content %}
