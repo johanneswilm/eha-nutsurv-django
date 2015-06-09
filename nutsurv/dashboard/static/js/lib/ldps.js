@@ -1,43 +1,28 @@
 /* Licensed as open source/free software (MIT license):
 
  Authors:
- Johannes Wilm
+ Johannes Wilm, Adam Butler
  */
 
-function lastDigitPreferenceScore(arrayOfNumbers) {
-    var lastDigits = {},
-        N = arrayOfNumbers.length,
+function lastDigitPreferenceScore(numbers) {
+    var lastDigits = [0,0,0,0,0,0,0,0,0,0],
+        N = numbers.length,
         chisquare = 0,
-        digitsAfterComma = 0,
         LDPS,
         i;
 
-    for (i = 0; i < 10; i++) {
-        lastDigits[i] = 0;
-    }
-    // We assume that all numbers have an equal amount of digits after the comma as jvascript removes trailing zeros by default.
-    arrayOfNumbers.forEach(function(number) {
-        var numbersAfterComma =  number.toString().split('.')[1];
-        if (numbersAfterComma && numbersAfterComma.length > digitsAfterComma) {
-                digisAfterComma = numbersAfterComma.length;
+    // find the last digit, and record it's occurrence in the lastDigits array
+    _.each(numbers, function(number) {
+        var lastDigit;
+        var numberAsString;
+        if (number) {
+            numberAsString = number + '';
+            lastDigit = numberAsString.charAt(numberAsString.length - 1);
+            lastDigits[lastDigit]++;
         }
     });
 
-    // Record the last digit of each number in arrayOfNumbers
-    arrayOfNumbers.forEach(function(number) {
-        var numbersAfterComma =  number.toString().split('.')[1],
-        lastDigit;
-        if (digitsAfterComma===0) {
-            lastDigit = parseInt(number.toString().split('').pop());
-        } else if (digitsAfterComma===numbersAfterComma.length) {
-            lastDigit = parseInt(number.toString().split('').pop());
-        } else {
-            lastDigit = 0;
-        }
-        lastDigits[lastDigit]++;
-    });
-
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < lastDigits.length; i++) {
         chisquare += Math.pow((lastDigits[i] - (N/10)), 2)/(N/10);
     }
 
