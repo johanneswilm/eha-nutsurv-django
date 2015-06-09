@@ -1,8 +1,7 @@
 var home = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        alerts: '/dashboard/alerts/',
-        teams: '/dashboard/teamsjsonview/'
+        alerts: '/dashboard/alerts/'
     },
     initiate: function() {
         jQuery('#home_alerts_download').on('click', home.downloadAlertsCSV);
@@ -15,7 +14,6 @@ var home = {
         dataGetter.addNew(home.urls.alerts, home.createAlertsCSV, true);
 
         dataGetter.addNew(home.urls.survey, home.drawLatestContacts, true);
-        dataGetter.addNew(home.urls.teams, home.drawLatestContacts, false);
 
     },
     mapMarkers: L.markerClusterGroup(),
