@@ -1,48 +1,21 @@
 var childAnthropometry = {
     urls: {
-        survey: '/dashboard/aggregatesurveydatajsonview/',
-        teams: '/dashboard/teammembers/',
-        firstAdminLevels: '/dashboard/firstadminleveljsonview/'
+        survey: '/dashboard/aggregatesurveydatajsonview/'
     },
     initiate: function() {
-        var selectors = jQuery('#child_anthropometry_teams,#child_anthropometry_strata');
-        selectors.selectpicker();
-        selectors.on('change', childAnthropometry.changeStratumOrTeam);
+        teamStrataSelectors.init(this.changeStratumOrTeam);
 
         childAnthropometry.drawCharts();
         childAnthropometry.drawTable();
 
-        dataGetter.addNew(childAnthropometry.urls.teams, childAnthropometry.fillTeamsList, false);
-        dataGetter.addNew(childAnthropometry.urls.firstAdminLevels, childAnthropometry.fillStrataList, false);
         dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateCharts, true);
         dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateTable, true);
         dataGetter.addNew(childAnthropometry.urls.survey, childAnthropometry.updateList, true);
     },
-    fillTeamsList: function(data) {
-        var selector = jQuery('#child_anthropometry_teams');
-        _.each(data, function(team) {
-            selector.append(childAnthropometry.teamOptionTmp({
-                id: team.id,
-                names: team.firstName + ' ' + team.lastName
-            }));
-        });
-        selector.selectpicker('refresh');
-    },
-    teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
-    fillStrataList: function(data) {
-        var selector = jQuery('#child_anthropometry_strata');
-        _.each(data.first_admin_levels.sort(), function(stratum) {
-            selector.append(childAnthropometry.stratumOptionTmp({
-                stratum: stratum
-            }));
-        });
-        selector.selectpicker('refresh');
-    },
-    stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
     changeStratumOrTeam: function () {
         var data = dataGetter.downloads[childAnthropometry.urls.survey].data,
-            team = jQuery('#child_anthropometry_teams').val(),
-            stratum = jQuery('#child_anthropometry_strata').val();
+            team = jQuery('#team_lead_selector').val(),
+            stratum = jQuery('#strata_selector').val();
         childAnthropometry.updateCharts(data,team,stratum);
         childAnthropometry.updateTable(data,team,stratum);
         childAnthropometry.updateList(data,team,stratum);

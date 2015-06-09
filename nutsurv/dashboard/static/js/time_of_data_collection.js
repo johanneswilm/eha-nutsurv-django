@@ -1,43 +1,15 @@
 var timeOfDataCollection = {
     urls: {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        teams: '/dashboard/teammembers/',
-        firstAdminLevels: '/dashboard/firstadminleveljsonview/'
     },
     initiate: function() {
-        var selectors = jQuery('#time_of_data_collection_teams,#time_of_data_collection_strata');
-        selectors.selectpicker();
-        selectors.on('change', timeOfDataCollection.changeStratumOrTeam);
-
-        dataGetter.addNew(timeOfDataCollection.urls.teams, timeOfDataCollection.fillTeamsList, false);
-        dataGetter.addNew(timeOfDataCollection.urls.firstAdminLevels, timeOfDataCollection.fillStrataList, false);
+        teamStrataSelectors.init(this.changeStratumOrTeam);
         dataGetter.addNew(timeOfDataCollection.urls.survey, timeOfDataCollection.drawTable, true);
     },
-    fillTeamsList: function(data) {
-        var selector = jQuery('#time_of_data_collection_teams');
-        _.each(data, function(team) {
-            selector.append(timeOfDataCollection.teamOptionTmp({
-                id: team.id,
-                names: team.firstName + ' ' + team.lastName
-            }));
-        });
-        selector.selectpicker('refresh');
-    },
-    teamOptionTmp: _.template('<option value="<%- id %>"><%- names %></option>'),
-    fillStrataList: function(data) {
-        var selector = jQuery('#time_of_data_collection_strata');
-        _.each(data.first_admin_levels.sort(), function(stratum) {
-            selector.append(timeOfDataCollection.stratumOptionTmp({
-                stratum: stratum
-            }));
-        });
-        selector.selectpicker('refresh');
-    },
-    stratumOptionTmp: _.template('<option value="<%- stratum %>" ><%- stratum %></option>'),
     changeStratumOrTeam: function () {
         var data = dataGetter.downloads[timeOfDataCollection.urls.survey].data,
-            team = jQuery('#time_of_data_collection_teams').val(),
-            stratum = jQuery('#time_of_data_collection_strata').val();
+            team = jQuery('#team_lead_selector').val(),
+            stratum = jQuery('#strata_selector').val();
         timeOfDataCollection.drawTable(data,team,stratum);
     },
     table: false,

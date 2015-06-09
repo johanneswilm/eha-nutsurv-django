@@ -24,4 +24,6 @@ $.get('/dashboard/householdmember/age_distribution/.json' + window.location.sear
     return [o.age_in_years, o.count];
   })], opts);
 
-})
+});
+
+teamStrataSelectors.init();
