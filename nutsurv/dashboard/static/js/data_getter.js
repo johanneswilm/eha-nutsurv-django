@@ -8,9 +8,12 @@ var dataGetter = {
     addNew: function(url, triggerFunction, updatable) { // A function to be called when registring a new trigegrFunction for a given url.
         // TODO: What if certain data is seen as being updateable by one tab and constant by another?
         if (url in dataGetter.urls) {
-            // The url has been registered already. Add the trigegr fucntion to this datagetter and call the trigegr function with the latest data obtained from the url.
+            // The url has been registered already. Add the trigegr fucntion to this datagetter ....
             dataGetter.urls[url].triggerFunctions.push(triggerFunction);
-            triggerFunction(dataGetter.downloads[url].data);
+            // ... and call the trigegr function if we have any latest data obtained from the url.
+            if (dataGetter.downloads[url].data) {
+                triggerFunction(dataGetter.downloads[url].data);
+            }
         } else {
             dataGetter.urls[url] = {triggerFunctions:[triggerFunction], updatable: updatable};
             dataGetter.downloads[url] = {data: false, current: false};
