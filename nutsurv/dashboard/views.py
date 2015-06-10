@@ -287,8 +287,8 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 sex=i_member.gender,
                 weight=i_member.weight,
                 height=i_member.height,
-                isRecumbent=True,  # TODO use actual data
                 hasOedema=False,  # TODO use actual data
+                isRecumbent=i_member.height_type == 'recumbent',
                 hc=None,  # TODO use actual data ?
                 muac=i_member.muac,
                 tsf=None,  # TODO use actual data ?

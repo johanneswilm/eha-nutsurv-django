@@ -249,6 +249,12 @@ class BaseHouseholdMember(models.Model):
     height = models.FloatField(null=True)       # probably in centimeters ?
     edema = models.NullBooleanField()
 
+    HEIGHT_TYPE = (
+        ('recumbent', 'Recumbent'),
+        ('standing', 'Standing'),
+    )
+    height_type = models.CharField(max_length=10, choices=HEIGHT_TYPE, blank=True)
+
     objects = HouseholdMemberManager()
     household_members = HouseholdMemberManager()
 

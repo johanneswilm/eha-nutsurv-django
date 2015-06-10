@@ -43,6 +43,7 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
             'birthdate',
             'weight',
             'height',
+            'height_type',
             'extra_questions',
             'household_survey',
         ]
@@ -60,6 +61,7 @@ class SimpleHouseholdMemberSerializer(HouseholdMemberSerializer):
             'birthdate',
             'weight',
             'height',
+            'height_type',
             'extra_questions',
         ]
 
