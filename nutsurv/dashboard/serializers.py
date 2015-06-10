@@ -46,6 +46,7 @@ class HouseholdMemberSerializer(serializers.HyperlinkedModelSerializer):
             'height_type',
             'extra_questions',
             'household_survey',
+            'edema',
         ]
 
 
@@ -63,6 +64,7 @@ class SimpleHouseholdMemberSerializer(HouseholdMemberSerializer):
             'height',
             'height_type',
             'extra_questions',
+            'edema',
         ]
 
 

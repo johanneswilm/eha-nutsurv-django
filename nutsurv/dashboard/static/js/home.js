@@ -34,4 +34,3 @@ $(function() {
     map.addLayer(mapMarkers);
     $.get('/dashboard/aggregatesurveydatajsonview/', updateMap);
 });
-
