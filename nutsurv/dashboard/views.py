@@ -282,24 +282,26 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 'zscores': {},
             }
 
-            zscores = anthrocomputation.keys_who_to_unicef(anthrocomputation.getAnthroResult(
-                ageInDays=i_member.age_in_months * anthrocomputation.DAYSINMONTH,
-                sex=i_member.gender,
-                weight=i_member.weight,
-                height=i_member.height,
-                isRecumbent=i_member.height_type == 'recumbent',
-                hasOedema=i_member.edema,
-                hc=None,  # TODO use actual data ?
-                muac=i_member.muac,
-                tsf=None,  # TODO use actual data ?
-                ssf=None,  # TODO use actual data ?
-            ))
+            if i_member.age_in_months:
 
-            for zscore_name in ('HAZ', 'WAZ', 'WHZ',):
-                if not math.isnan(zscores[zscore_name]):
-                    o_member["survey"]["zscores"][zscore_name] = zscores[zscore_name]
-                else:
-                    logging.warn("'%s' calculation returned NaN, not calculating this", zscore_name)
+                zscores = anthrocomputation.keys_who_to_unicef(anthrocomputation.getAnthroResult(
+                    ageInDays=i_member.age_in_months * anthrocomputation.DAYSINMONTH,
+                    sex=i_member.gender,
+                    weight=i_member.weight,
+                    height=i_member.height,
+                    isRecumbent=i_member.height_type == 'recumbent',
+                    hasOedema=i_member.edema,
+                    hc=None,  # TODO use actual data ?
+                    muac=i_member.muac,
+                    tsf=None,  # TODO use actual data ?
+                    ssf=None,  # TODO use actual data ?
+                ))
+
+                for zscore_name in ('HAZ', 'WAZ', 'WHZ',):
+                    if not math.isnan(zscores[zscore_name]):
+                        o_member["survey"]["zscores"][zscore_name] = zscores[zscore_name]
+                    else:
+                        logging.warn("'%s' calculation returned NaN, not calculating this", zscore_name)
 
             if HouseholdMember.women.all().filter(id__in=[i_member.id]).count():
                 o_member['surveyType'] = 'woman'
