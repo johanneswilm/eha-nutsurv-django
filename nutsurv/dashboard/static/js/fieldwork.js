@@ -1,12 +1,8 @@
 var mappingChecks = {
-    urls : {
-        alerts: '/dashboard/alerts/'
-    },
     initiate: function () {
-        jQuery('#fieldwork_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
-
+        $('#fieldwork_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
         mappingChecks.createMap();
-        dataGetter.addNew(mappingChecks.urls.alerts, mappingChecks.updateMap, true);
+        $.get('/dashboard/alerts/', mappingChecks.updateMap);
     },
     createMap: function () {
       var osm = L.tileLayer(mapConfig.osmUrl, {
@@ -27,11 +23,19 @@ var mappingChecks = {
     },
     mapMarkers: [],
     incorrectSurveys: false,
-    popupTmp: _.template('ERROR!<br>Team <%- teamName %>(<%- teamId %>)<% if (clusterId) { %><br>Cluster #: <%- clusterId %><% } %>'),
+    dateFormatter: new Intl.DateTimeFormat("en-GB"),
+    errorFormatter: function(error) {
+        error = error.replace(/_/g, " ").replace("mapping check", "").trim();
+        return error.charAt(0).toUpperCase() + error.slice(1);
+    },
+    popupTmp: _.template('Error: <b><%- this.errorFormatter(type) %></b>' +
+        '<br>Survey date: <b><%- this.dateFormatter.format(new Date(created)) %></b>' +
+        '<br>Team lead: <b><%- teamLead.firstName+" "+teamLead.lastName %></b>' +
+        '<% if (clusterId) { %><br>Cluster #: <b><%- clusterId %><% } %></b>'),
     updateMap: function (data) {
 
       var group, incorrectSurveys = [],
-        mapAlerts = _.where(data, {category:'map'});
+        mapAlerts = _.where(data.results, {category:'map'});
         if (mapAlerts.length > 0) {
             _.each(mappingChecks.mapMarkers, function(marker) {
                 // Remove all previous markers
@@ -80,10 +84,11 @@ var mappingChecks = {
         });
     },
     alertTmp: {
-        'mapping_check_wrong_location': _.template('<li>Wrong location! Team <%- teamName %> (<%- teamId %>)</li>'),
-        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team <%- teamName %> (<%- teamId %>)</li>'),
-        'mapping_check_missing_location': _.template('<li>Missing location! Team <%- teamName %> (<%- teamId %>)</li>'),
-        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team <%- teamName %> (<%- teamId %>)</li>'),
+        'mapping_check_wrong_location': _.template('<li>Wrong location! Team leader <%- teamLead.id %></li>'),
+        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team leader <%- teamLead.id %></li>'),
+        'mapping_check_missing_location': _.template('<li>Missing location! Team leader <%- teamLead.id %></li>'),
+        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team leader <%- teamLead.id %></li>'),
+        'mapping_check_wrong_location_first_admin_level': _.template('<li>Wrong location (first admin level)! Team leader <%- teamLead.id %></li>'),
         'no_alerts': _.template('<li>Currently there are no map alerts</li>')
     }
 
