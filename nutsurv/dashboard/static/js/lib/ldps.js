@@ -1,49 +1,50 @@
 /* Licensed as open source/free software (MIT license):
 
  Authors:
- Johannes Wilm
+ Johannes Wilm, Adam Butler
  */
 
-function lastDigitPreferenceScore(arrayOfNumbers) {
-    var lastDigits = {},
-        N = arrayOfNumbers.length,
-        chisquare = 0,
-        digitsAfterComma = 0,
-        LDPS,
-        i;
+function lastDigitPreferenceScore(numbers) {
+    var lastDigits;
+    var maxDecimalPlaces;
+    var N = numbers.length;
+    var chisquare = 0;
 
-    for (i = 0; i < 10; i++) {
-        lastDigits[i] = 0;
-    }
-    // We assume that all numbers have an equal amount of digits after the comma as jvascript removes trailing zeros by default.
-    arrayOfNumbers.forEach(function(number) {
-        var numbersAfterComma =  number.toString().split('.')[1];
-        if (numbersAfterComma && numbersAfterComma.length > digitsAfterComma) {
-                digisAfterComma = numbersAfterComma.length;
-        }
+    var decimalPlaces = function(number) {
+        var decimals = (number + '').split('.')[1];
+        return decimals && decimals.length;
+    };
+
+    var lastDigit = function(number) {
+        var numberAsString = number + '';
+        return numberAsString.charAt(numberAsString.length - 1);
+    };
+
+    // there shouldn't be null values, but just in case
+    numbers = _.filter(numbers, function(number) {
+        return number;
     });
 
-    // Record the last digit of each number in arrayOfNumbers
-    arrayOfNumbers.forEach(function(number) {
-        var numbersAfterComma =  number.toString().split('.')[1],
-        lastDigit;
-        if (digitsAfterComma===0) {
-            lastDigit = parseInt(number.toString().split('').pop());
-        } else if (digitsAfterComma===numbersAfterComma.length) {
-            lastDigit = parseInt(number.toString().split('').pop());
-        } else {
+    // since javascript removes trailing zeroes, we need to find the maximum decimal places in this dataset
+    maxDecimalPlaces = _.reduce(numbers, function(maxDP, number) {
+        var dp = decimalPlaces(number);
+        return dp > maxDP ? dp : maxDP;
+    }, 0);
+
+    lastDigits = _.reduce(numbers, function(lastDigitDistribution, number) {
+        var lastDigit;
+        if (maxDecimalPlaces > decimalPlaces(number)) {
             lastDigit = 0;
+        } else {
+            lastDigit = lastDigit(number);
         }
-        lastDigits[lastDigit]++;
+        lastDigitDistribution[lastDigit]++;
+    }, [0,0,0,0,0,0,0,0,0,0]);
+
+    _.each(lastDigits, function(lastDigit, index) {
+        chisquare += Math.pow((lastDigit - (N/10)), 2) / (N/10);
     });
 
-    for (i = 0; i < 10; i++) {
-        chisquare += Math.pow((lastDigits[i] - (N/10)), 2)/(N/10);
-    }
-
-    // Calculate the DPS according to WHoMonica study http://www.ktl.fi/publications/monica/bp/bpqa.htm
-    LDPS = 100 * Math.sqrt( chisquare/ (9 * N));
-
-    return LDPS;
-
+    // Calculate the DPS according to WHoMonica study http://www.thl.fi/publications/monica/bp/bpqa.htm
+    return 100 * Math.sqrt( chisquare / (9 * N));
 }
