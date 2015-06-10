@@ -40,7 +40,7 @@ var osm;
 var popupTmp = _.template('ERROR!<br>Team <%- teamLead.lastName %>(<%- teamLead.id %>)<% if (clusterId) { %><br>Cluster #: <%- clusterId %><% } %>');
 
 function createMap() {
-    osm = L.tileLayer(map.osmUrl, {
+    osm = L.tileLayer(mapConfig.osmUrl, {
         minZoom: 1,
         maxZoom: 18,
         attribution: false
@@ -60,7 +60,7 @@ function createMap() {
 function addMarker(mapAlert) {
     var marker = L.marker(
         mapAlert.location, {
-            icon: map.markers.red
+            icon: mapConfig.markers.red
         }
     );
     marker.addTo(mapObj).bindPopup(popupTmp(mapAlert));

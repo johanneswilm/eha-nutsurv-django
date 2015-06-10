@@ -1,4 +1,4 @@
-var map = {
+var mapConfig = {
     osmUrl: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     markers: {
         green: L.icon({
