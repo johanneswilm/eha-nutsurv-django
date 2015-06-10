@@ -9,7 +9,7 @@ var mappingChecks = {
         dataGetter.addNew(mappingChecks.urls.alerts, mappingChecks.updateMap, true);
     },
     createMap: function () {
-      var osm = L.tileLayer(map.osmUrl, {
+      var osm = L.tileLayer(mapConfig.osmUrl, {
           minZoom: 1,
           maxZoom: 18,
           attribution: false
@@ -41,7 +41,7 @@ var mappingChecks = {
             _.each(mapAlerts, function(mapAlert){
                 var marker;
                 if (mapAlert.hasOwnProperty('location')) {
-                    marker = L.marker(mapAlert.location, {icon: map.markers.red}),
+                    marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red}),
                     mappingChecks.mapMarkers.push(marker),
                     marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
                 }
