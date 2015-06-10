@@ -5,30 +5,46 @@
  */
 
 function lastDigitPreferenceScore(numbers) {
-    var lastDigits = [0,0,0,0,0,0,0,0,0,0],
-        N = numbers.length,
-        chisquare = 0,
-        LDPS,
-        i;
+    var lastDigits;
+    var maxDecimalPlaces;
+    var N = numbers.length;
+    var chisquare = 0;
 
-    // find the last digit, and record it's occurrence in the lastDigits array
-    _.each(numbers, function(number) {
-        var lastDigit;
-        var numberAsString;
-        if (number) {
-            numberAsString = number + '';
-            lastDigit = numberAsString.charAt(numberAsString.length - 1);
-            lastDigits[lastDigit]++;
-        }
+    var decimalPlaces = function(number) {
+        var decimals = (number + '').split('.')[1];
+        return decimals && decimals.length;
+    };
+
+    var lastDigit = function(number) {
+        var numberAsString = number + '';
+        return numberAsString.charAt(numberAsString.length - 1);
+    };
+
+    // there shouldn't be null values, but just in case
+    numbers = _.filter(numbers, function(number) {
+        return number;
     });
 
-    for (i = 0; i < lastDigits.length; i++) {
-        chisquare += Math.pow((lastDigits[i] - (N/10)), 2)/(N/10);
-    }
+    // since javascript removes trailing zeroes, we need to find the maximum decimal places in this dataset
+    maxDecimalPlaces = _.reduce(numbers, function(maxDP, number) {
+        var dp = decimalPlaces(number);
+        return dp > maxDP ? dp : maxDP;
+    }, 0);
 
-    // Calculate the DPS according to WHoMonica study http://www.ktl.fi/publications/monica/bp/bpqa.htm
-    LDPS = 100 * Math.sqrt( chisquare/ (9 * N));
+    lastDigits = _.reduce(numbers, function(lastDigitDistribution, number) {
+        var lastDigit;
+        if (maxDecimalPlaces > decimalPlaces(number)) {
+            lastDigit = 0;
+        } else {
+            lastDigit = lastDigit(number);
+        }
+        lastDigitDistribution[lastDigit]++;
+    }, [0,0,0,0,0,0,0,0,0,0]);
 
-    return LDPS;
+    _.each(lastDigits, function(lastDigit, index) {
+        chisquare += Math.pow((lastDigit - (N/10)), 2) / (N/10);
+    });
 
+    // Calculate the DPS according to WHoMonica study http://www.thl.fi/publications/monica/bp/bpqa.htm
+    return 100 * Math.sqrt( chisquare / (9 * N));
 }
