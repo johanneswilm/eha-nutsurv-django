@@ -1,7 +1,7 @@
 var surveyCompletedTeams = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        teams: '/dashboard/teamsjsonview/'
+        teams: '/dashboard/teammembers/'
     },
     initiate: function () {
         dataGetter.addNew(surveyCompletedTeams.urls.teams, surveyCompletedTeams.setupTablePerTeam, false);
@@ -35,13 +35,13 @@ var surveyCompletedTeams = {
         }
 
         var surveyData = dataGetter.downloads[surveyCompletedTeams.urls.survey].data.survey_data,
-            teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data.teams,
+            teamData = dataGetter.downloads[surveyCompletedTeams.urls.teams].data,
             perTeamData = [];
 
-        _.each(teamData, function(teamNames, team) {
+        _.each(teamData, function(team) {
             var teamObject = {
-                    team: parseInt(team),
-                    teamID: team,
+                    team: team.id,
+                    teamID: team.id,
                     households: 0,
                     women: 0,
                     children: 0,
