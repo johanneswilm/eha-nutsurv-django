@@ -16,12 +16,14 @@
             </div>
             <div class="panel-body">
                 {% for field_name, field_data in data.items %}
-                    <h5 style="float: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</h5>
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-warning" role="progressbar" style="width: {{ field_data.existing|as_percentage_of:field_data.total }}; color: black;">
-                        {{ field_data.existing|as_percentage_of:field_data.total }}
-                      </div>
-                    </div>
+                    {% with data_completion=field_data.existing|as_percentage_of:field_data.total %}
+                        <h5 style="float: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</h5>
+                        <div class="progress">
+                          <div class="progress-bar {% if data_completion == "100%" %}progress-bar-success{% else %}progress-bar-warning{% endif %}" role="progressbar" style="width: {{ data_completion }}; color: black;">
+                            {{ data_completion }}
+                          </div>
+                        </div>
+                    {% endwith %}
                 </li>
                 {% endfor %}
             </div>
