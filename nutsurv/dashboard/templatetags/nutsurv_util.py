@@ -11,6 +11,13 @@ def as_inverse_percentage_of(part, whole):
     except (ValueError, ZeroDivisionError):
         return ""
 
+@register.filter
+def as_percentage_of(part, whole):
+    try:
+        return '{0:.2%}'.format((float(part) / float(whole)))
+    except (ValueError, ZeroDivisionError):
+        return ""
+
 
 @register.filter
 @stringfilter
