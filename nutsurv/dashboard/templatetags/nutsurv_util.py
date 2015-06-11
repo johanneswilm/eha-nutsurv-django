@@ -13,6 +13,17 @@ def as_inverse_percentage_of(part, whole):
 
 
 @register.filter
+def as_percentage_of(part, whole):
+    try:
+        if part == whole:
+            return "100%"
+        else:
+            return '{0:.2%}'.format((float(part) / float(whole)))
+    except (ValueError, ZeroDivisionError):
+        return ""
+
+
+@register.filter
 @stringfilter
 def underscores_to_spaces(value):
     return value.replace('_', ' ')

@@ -11,16 +11,21 @@
     {% for member_type, data in existing_data.items %}
     <div class="col-md-6">
         <div id="missing_data_{{ member_type }}" class="panel panel-default">
-            <div class="panel-heading">Data missing for {{ member_type|underscores_to_spaces }} surveys</div>
+            <div class="panel-heading">
+                <span>Data completion for <b>{{ member_type|underscores_to_spaces }}</b> surveys</span>
+            </div>
             <div class="panel-body">
-                <ul id="missing_data_{{ member_type }}_list" class="description_list">
-                    {% for field_name, field_data in data.items %}
-                    <li>
-                        <span class="item">{{ field_name|capfirst }}:</span>
-                        <span class="description">{{ field_data.existing|as_inverse_percentage_of:field_data.total }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
+                {% for field_name, field_data in data.items %}
+                    {% with data_completion=field_data.existing|as_percentage_of:field_data.total %}
+                        <span style="float: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</span>
+                        <div class="progress">
+                          <div class="progress-bar {% if data_completion == "100%" %}progress-bar-success{% else %}progress-bar-warning{% endif %}" role="progressbar" style="width: {{ data_completion }}; color: black;">
+                            {{ data_completion }}
+                          </div>
+                        </div>
+                    {% endwith %}
+                </li>
+                {% endfor %}
             </div>
         </div>
     </div>
