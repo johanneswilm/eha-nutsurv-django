@@ -694,6 +694,86 @@ class HouseholdMemberTest(TestCase):
         )
 
 
+class AgeDistributionTest(TestCase):
+
+    def setUp(self):
+        self.maxDiff = 2000
+        self.team_member, created_teammember = TeamMember.objects.get_or_create(
+            birth_year=2000,
+        )
+        assert created_teammember
+
+        self.team_member2, created_teammember2 = TeamMember.objects.get_or_create(
+            birth_year=1980,
+        )
+        assert created_teammember2
+
+        self.survey1, created_survey1 = HouseholdSurveyJSON.objects.get_or_create(
+            uuid='12',
+            team_lead=self.team_member,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            start_time=datetime(2000, 1, 1),
+        )
+        assert created_survey1
+
+        self.survey2, created_survey2 = HouseholdSurveyJSON.objects.get_or_create(
+            uuid='13',
+            team_lead=self.team_member2,
+            team_assistant=self.team_member,
+            team_anthropometrist=self.team_member,
+            household_number=12,
+            start_time=datetime(2000, 1, 1),
+        )
+        assert created_survey2
+
+        self.child1, created_child1 = HouseholdMember.objects.get_or_create(
+            index=1,
+            household_survey=self.survey1,
+            birthdate=datetime(1999, 1, 1),
+            gender='F',
+            weight=454,
+        )
+
+        self.child2, created_child2 = HouseholdMember.objects.get_or_create(
+            index=2,
+            household_survey=self.survey2,
+            birthdate=datetime(1999, 3, 1),
+            gender='M',
+            muac=29,
+        )
+
+        self.client = Client()
+        self.username = 'test'
+        self.email = 'test@example.com'
+        self.password = 'test'
+        self.test_user = User.objects.create_superuser(self.username, self.email, self.password)
+        login = self.client.login(username=self.username, password=self.password)
+        self.assertEqual(login, True)
+
+    def test_age_distribution(self):
+        response = self.client.get('/dashboard/householdmember/age_distribution/.json')
+        self.assertEqual(response.status_code, 200)
+
+        # there should be two children
+
+        self.assertEqual(json.loads(response.content), {
+            u'ageDistribution': {
+                u'householdMember': [{u'count': 1, u'age_in_years': 0}, {u'count': 1, u'age_in_years': 1}],
+                u'children': [{u'count': 1, u'age_in_months': 10}, {u'count': 1, u'age_in_months': 12}]}})
+
+    def test_age_distribution_by_team_lead(self):
+        response = self.client.get('/dashboard/householdmember/age_distribution/.json?team_lead={}'.format(self.team_member.pk))
+
+        # there's just one child that was interviewed by this team member
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), {
+            u'ageDistribution': {
+                u'householdMember': [{u'count': 1, u'age_in_years': 1}],
+                u'children': [{u'count': 1, u'age_in_months': 12}]}})
+
 class AlertLocationTest(TestCase):
 
     def setUp(self):
