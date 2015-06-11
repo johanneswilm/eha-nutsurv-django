@@ -109,7 +109,7 @@ def survey_completed_strata(request):
 @login_required
 def missing_data(request):
 
-    h = HouseholdMembers.objects
+    h = HouseholdMember.objects
 
     if request.GET.get('team_lead'):
         team_lead = TeamMember.objects.get(pk=int(request.GET['team_lead']))
