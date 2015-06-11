@@ -108,8 +108,19 @@ def survey_completed_strata(request):
 
 @login_required
 def missing_data(request):
+
+    h = HouseholdMember.objects
+
+    if request.GET.get('team_lead'):
+        team_lead = TeamMember.objects.get(pk=int(request.GET['team_lead']))
+        h = h.by_teamlead(team_lead)
+
+    if request.GET.get('stratum'):
+        stratum_num = int(request.GET['stratum'])
+        h = h.by_cluster_num(stratum_num)
+
     return render(request, 'dashboard/missing_data.html', {
-        'existing_data': HouseholdMember.missing_data(),
+        'existing_data': HouseholdMember.missing_data(h),
     })
 
 
