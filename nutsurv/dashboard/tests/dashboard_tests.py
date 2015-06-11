@@ -774,6 +774,7 @@ class AgeDistributionTest(TestCase):
                 u'householdMember': [{u'count': 1, u'age_in_years': 1}],
                 u'children': [{u'count': 1, u'age_in_months': 12}]}})
 
+
 class AlertLocationTest(TestCase):
 
     def setUp(self):
