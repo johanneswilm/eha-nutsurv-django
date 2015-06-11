@@ -12,12 +12,12 @@
     <div class="col-md-6">
         <div id="missing_data_{{ member_type }}" class="panel panel-default">
             <div class="panel-heading">
-                <h4>Data completion for <b>{{ member_type|underscores_to_spaces }}</b> surveys</h4>
+                <span class="lead">Data completion for <b>{{ member_type|underscores_to_spaces }}</b> surveys</span>
             </div>
             <div class="panel-body">
                 {% for field_name, field_data in data.items %}
                     {% with data_completion=field_data.existing|as_percentage_of:field_data.total %}
-                        <h5 style="float: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</h5>
+                        <span style="float: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</span>
                         <div class="progress">
                           <div class="progress-bar {% if data_completion == "100%" %}progress-bar-success{% else %}progress-bar-warning{% endif %}" role="progressbar" style="width: {{ data_completion }}; color: black;">
                             {{ data_completion }}
