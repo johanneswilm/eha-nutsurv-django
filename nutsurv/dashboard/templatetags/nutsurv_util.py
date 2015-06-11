@@ -17,6 +17,8 @@ def as_percentage_of(part, whole):
     try:
         if part == whole:
             return "100%"
+        elif part == 0:
+            return "0%"
         else:
             return '{0:.2%}'.format((float(part) / float(whole)))
     except (ValueError, ZeroDivisionError):

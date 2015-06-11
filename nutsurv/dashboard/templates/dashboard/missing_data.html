@@ -17,8 +17,8 @@
             <div class="panel-body">
                 {% for field_name, field_data in data.items %}
                     {% with data_completion=field_data.existing|as_percentage_of:field_data.total %}
-                        <span style="float: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</span>
-                        <div class="progress">
+                        <span class="clearfix" style="float: left; clear: left; width: 20%; margin-top: 5px;">{{ field_name|capfirst }}:</span>
+                        <div class="progress" style="float: left; width: 80%;">
                           <div class="progress-bar {% if data_completion == "100%" %}progress-bar-success{% else %}progress-bar-warning{% endif %}" role="progressbar" style="width: {{ data_completion }}; color: black;">
                             {{ data_completion }}
                           </div>
