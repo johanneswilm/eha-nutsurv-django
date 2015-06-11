@@ -12,7 +12,7 @@
     <div class="col-md-6">
         <div id="missing_data_{{ member_type }}" class="panel panel-default">
             <div class="panel-heading">
-                <span class="lead">Data completion for <b>{{ member_type|underscores_to_spaces }}</b> surveys</span>
+                <span>Data completion for <b>{{ member_type|underscores_to_spaces }}</b> surveys</span>
             </div>
             <div class="panel-body">
                 {% for field_name, field_data in data.items %}
