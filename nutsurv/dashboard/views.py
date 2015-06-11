@@ -139,48 +139,6 @@ class LoginRequiredView(View):
         return login_required(view)
 
 
-class TeamsJSONView(LoginRequiredView):
-
-    def get(self, request, *args, **kwargs):
-        """Generates an HTTP response with a JSON document containing
-        information about all teams in the format requested by Johannes and
-        shown below:
-        {
-            "teams": {
-                "1": "John, Daisy & Flint",
-                "2": "Patrick, Abigail & Stephanie",
-                "3": "Rose, Hannah & Chris"
-            }
-        }
-        """
-        teams = {'teams': self._find_all_teams()}
-        return HttpResponse(json.dumps(teams), content_type='application/json')
-
-    @staticmethod
-    def _find_all_teams():
-        """Computes and returns a dictionary containing team data in the format
-        requested by Johannes and shown in the following example:
-        {
-            '1': 'John, Daisy & Flint',
-            '2': 'Patrick, Abigail & Stephanie',
-            '3': 'Rose, Hannah & Chris'
-        }
-        """
-        docs = HouseholdSurveyJSON.objects.all()
-        teams_dict = {}
-        for doc in docs:
-            team = doc.json['team']
-            team_id = team['teamID']
-            if team_id in teams_dict:
-                continue
-            members = team['members']
-            member_names = [
-                u'%s %s' % (m['firstName'], m['lastName']) for m in members
-            ]
-            teams_dict[team_id] = u'%s, %s & %s' % tuple(member_names)
-        return teams_dict
-
-
 class AggregateSurveyDataJSONView(LoginRequiredView):
 
     def get(self, request, *args, **kwargs):
