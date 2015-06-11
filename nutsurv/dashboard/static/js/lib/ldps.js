@@ -15,7 +15,7 @@ function lastDigitPreferenceScore(numbers) {
         return decimals && decimals.length;
     };
 
-    var lastDigit = function(number) {
+    var getLastDigit = function(number) {
         var numberAsString = number + '';
         return numberAsString.charAt(numberAsString.length - 1);
     };
@@ -36,9 +36,10 @@ function lastDigitPreferenceScore(numbers) {
         if (maxDecimalPlaces > decimalPlaces(number)) {
             lastDigit = 0;
         } else {
-            lastDigit = lastDigit(number);
+            lastDigit = getLastDigit(number);
         }
-        lastDigitDistribution[lastDigit]++;
+        lastDigitDistribution[Number(lastDigit)]++;
+        return lastDigitDistribution;
     }, [0,0,0,0,0,0,0,0,0,0]);
 
     _.each(lastDigits, function(lastDigit, index) {
