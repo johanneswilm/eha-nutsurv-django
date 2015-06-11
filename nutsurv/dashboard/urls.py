@@ -2,7 +2,6 @@ from django.conf.urls import include, patterns, url
 
 from rest_framework import routers
 
-from .views import TeamsJSONView
 from .views import AggregateSurveyDataJSONView
 from .views import ActiveQuestionnaireSpecificationView
 from .views import ClustersPerFirstAdminLevelJSONView
@@ -52,8 +51,6 @@ urlpatterns = patterns('',
                        url(r'^time_of_data_collection$',
                            'dashboard.views.time_of_data_collection',
                            name='time_of_data_collection'),
-                       url(r'^teamsjsonview/$', TeamsJSONView.as_view(),
-                           name='teams-json-view'),
                        url(r'^aggregatesurveydatajsonview/$',
                            AggregateSurveyDataJSONView.as_view(),
                            name='aggregate-survey-data-json-view'),

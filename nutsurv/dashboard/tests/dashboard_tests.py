@@ -33,9 +33,6 @@ class EmptySmokeTest(TestCase):
     def test_empty_200_aggregatesurveydatajsonview(self):
         self._test_empty_200('/dashboard/aggregatesurveydatajsonview/')
 
-    def test_empty_200_teamsjsonview(self):
-        self._test_empty_200('/dashboard/teamsjsonview/')
-
     def test_empty_200_alerts(self):
         self._test_empty_200('/dashboard/alerts/')
 
