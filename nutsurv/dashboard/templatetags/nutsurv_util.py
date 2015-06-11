@@ -11,13 +11,14 @@ def as_inverse_percentage_of(part, whole):
     except (ValueError, ZeroDivisionError):
         return ""
 
+
 @register.filter
 def as_percentage_of(part, whole):
     try:
         if part == whole:
             return "100%"
         else:
-          return '{0:.2%}'.format((float(part) / float(whole)))
+            return '{0:.2%}'.format((float(part) / float(whole)))
     except (ValueError, ZeroDivisionError):
         return ""
 
