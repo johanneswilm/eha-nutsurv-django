@@ -197,7 +197,6 @@ var surveyCompletedStrata = {
                     },
 
             columns: [
-                { "searchable": false, data: function(){return '';}, orderable: false },
                 { name: 'stratum', data: 'stratum' },
                 { name: 'households', data: 'households' },
                 { name: 'clusters_total', data: 'clusters' },

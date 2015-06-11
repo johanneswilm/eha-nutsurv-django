@@ -172,7 +172,6 @@ var timeOfDataCollection = {
                     },
             data : [tableData],
             columns: [
-                { "searchable": false, data: function(){return '';}, orderable: false},
                 { name: 'per interview, N', data: 'per interview, N', orderable: false},
                 { name: 'per interview, max', data: 'per interview, max', orderable: false},
                 { name: 'per interview, average', data: 'per interview, average', orderable: false},

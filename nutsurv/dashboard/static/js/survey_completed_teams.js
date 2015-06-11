@@ -173,7 +173,6 @@ var surveyCompletedTeams = {
                     },
 
             columns: [
-                { "searchable": false, data: function(){return '';}, orderable: false },
                 { name: 'team', data: 'teamID' },
                 { name: 'clusters', data: 'clusters' },
                 { name: 'households', data: 'households' },
