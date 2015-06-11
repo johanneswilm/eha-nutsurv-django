@@ -1,7 +1,7 @@
 var surveyCompletedTeams = {
     urls : {
         survey: '/dashboard/aggregatesurveydatajsonview/',
-        teams: '/dashboard/teamsjsonview/'
+        teams: '/dashboard/teammembers/'
     },
     initiate: function () {
         dataGetter.addNew(surveyCompletedTeams.urls.teams, surveyCompletedTeams.setupTablePerTeam, false);
@@ -173,7 +173,6 @@ var surveyCompletedTeams = {
                     },
 
             columns: [
-                { "searchable": false, data: function(){return '';}, orderable: false },
                 { name: 'team', data: 'teamID' },
                 { name: 'clusters', data: 'clusters' },
                 { name: 'households', data: 'households' },
