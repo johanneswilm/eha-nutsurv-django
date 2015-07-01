@@ -228,7 +228,12 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
         output = {}
 
         # map the top-level attributes
-        output['location'] = list(doc.location)
+
+        if hasattr(doc, 'location') and doc.location:
+            output['location'] = list(doc.location)
+        else:
+            output['location'] = None
+
         output['cluster'] = doc.cluster
         output['startTime'] = str(doc.start_time)
         output['endTime'] = str(doc.end_time)
