@@ -55,7 +55,7 @@ def deploy(branch_or_tag=None, do_stop=True):
                 and ('no such' not in stop_result.lower())):
             assert False, stop_result
 
-    run('test -e ~/nutsurv_deploy/ || mkdir ~/nutsurv_deploy/')
+    run('test -d ~/nutsurv_deploy/ || mkdir ~/nutsurv_deploy/')
     ensure_docker_compose()
     upload_template(
         'docker-compose-deploy.yml.template',
@@ -67,9 +67,9 @@ def deploy(branch_or_tag=None, do_stop=True):
 @roles('dev', 'staging', 'production')
 def up():
 
-    run('test -e ~/nutsurv_deploy/configuration.py')
-    run('test -e ~/nutsurv_deploy/certs/cert.pem')
-    run('test -e ~/nutsurv_deploy/certs/key.pem')
+    run('test -f ~/nutsurv_deploy/configuration.py')
+    run('test -f ~/nutsurv_deploy/certs/cert.pem')
+    run('test -f ~/nutsurv_deploy/certs/key.pem')
 
     ensure_docker_compose()
     with cd('~/nutsurv_deploy'):
