@@ -1,4 +1,4 @@
-from fabric.api import roles, env, run, cd
+from fabric.api import roles, env, run, cd, sudo
 from fabric.contrib.files import upload_template
 
 env.hosts = [
@@ -19,6 +19,8 @@ env.roledefs = {
 def echo():
     run('ls /')
 
+def ensure_docker_compose():
+    sudo('which docker-compose || pip install docker-compose')
 
 @roles('build')
 def build_dockerimage(branch_or_tag='develop'):
@@ -32,7 +34,7 @@ def build_dockerimage(branch_or_tag='develop'):
             branch_or_tag))
 
 @roles('dev', 'staging', 'production')
-def deploy(branch_or_tag=None):
+def deploy(branch_or_tag=None, do_stop=True):
 
     if env.host_string == 'ubuntu@nutsurv-dev.eocng.org':
         if branch_or_tag is None:
@@ -45,13 +47,16 @@ def deploy(branch_or_tag=None):
     run('docker pull docker-registry.eocng.org/ehealthafrica/nutsurv:{}'.format(
         branch_or_tag))
 
-    stop_result = run('docker stop nutsurvdeploy_web_1', warn_only=True)
+    if do_stop is True:
+        stop_result = run('docker stop nutsurvdeploy_web_1', warn_only=True)
 
-    if (stop_result
-            and (stop_result != 'nutsurvdeploy_web_1')
-            and ('no such' not in stop_result.lower())):
-        assert False, stop_result
+        if (stop_result
+                and (stop_result != 'nutsurvdeploy_web_1')
+                and ('no such' not in stop_result.lower())):
+            assert False, stop_result
 
+    run('test -e ~/nutsurv_deploy/ || mkdir ~/nutsurv_deploy/')
+    ensure_docker_compose()
     upload_template(
         'docker-compose-deploy.yml.template',
         '~/nutsurv_deploy/docker-compose-deploy.yml',
@@ -61,11 +66,18 @@ def deploy(branch_or_tag=None):
 
 @roles('dev', 'staging', 'production')
 def up():
+
+    run('test -e ~/nutsurv_deploy/configuration.py')
+    run('test -e ~/nutsurv_deploy/certs/cert.pem')
+    run('test -e ~/nutsurv_deploy/certs/key.pem')
+
+    ensure_docker_compose()
     with cd('~/nutsurv_deploy'):
         run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml up -d web')
 
 @roles('dev', 'staging', 'production')
 def migrate():
+    ensure_docker_compose()
     with cd('~/nutsurv_deploy'):
         run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml run web python /opt/nutsurv/nutsurv/manage.py migrate')
         run('docker-compose -f ~/nutsurv_deploy/docker-compose-deploy.yml run web python /opt/nutsurv/nutsurv/manage.py createcachetable')
