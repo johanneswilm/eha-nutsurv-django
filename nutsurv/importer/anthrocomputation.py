@@ -406,9 +406,6 @@ def getAnthroResult(ageInDays, sex, weight, height, isRecumbent, hasOedema, hc, 
     ar['ageUnknown'] = ageInDays is None
     ar['heightUnknown'] = height is None
 
-    if sex not in ["M", "F"] or (ar['ageUnknown'] and ar['heightUnknown']):
-        return ar
-
     ar['weight'] = weight if weight is not None else NaN
     ar['lengthOrHeightAdjusted'] = NaN
     ar['isLength'] = isRecumbent
