@@ -62,7 +62,7 @@ for formhub_survey in surveys:
                     "height": float(c.height or 0),
                     "heightType": c.measure == '2' and 'recumbent' or 'standing',
                     "extraQuestions": {},
-                    "edema": int(m.edma or 0)
+                    "edema": int(c.edema or 0)
                     }]
 
     nutsurv_survey = {
