@@ -14,7 +14,7 @@ import os
 lines = ''.join(l for l in fileinput.input())
 raw_json = json.loads(lines)
 
-NUTSURV_DOMAIN = os.getenv('NUTSURV_DOMAIN', 'http://dev-trace-and-go.eocng.org')
+NUTSURV_DOMAIN = os.getenv('NUTSURV_DOMAIN', 'http://nutsurv-dev.eocng.org')
 TEAM_MEMBER_URL = NUTSURV_DOMAIN + '/dashboard/teammembers/%s/'
 
 
