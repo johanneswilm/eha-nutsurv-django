@@ -88,7 +88,7 @@ for formhub_survey in surveys:
     }
     out = json.dumps(nutsurv_survey, sort_keys=True, indent=4)
     print out
-    url = "http://tim-watts-dev.eocng.org:8001/dashboard/surveys/"
+    url = NUTSURV_DOMAIN + "/dashboard/surveys/"
     headers = {'Content-type': 'application/json'}
     r = requests.post(url, data=out, headers=headers)
     print r.json()
