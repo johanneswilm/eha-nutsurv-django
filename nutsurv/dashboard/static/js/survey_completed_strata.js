@@ -85,9 +85,9 @@ var surveyCompletedStrata = {
             }
 
             // Increase the number of households surveyed for this stratum by one.
-            stratumObject.households++,
-            childMembers = _.where(survey.members, {'surveyType': 'child'}),
-            womenMembers = _.where(survey.members, {'surveyType': 'women'});
+            stratumObject.households++;
+            childMembers = _.where(survey.members, {'surveyType': 'child'});
+            womenMembers = _.where(survey.members, {'surveyType': 'woman'});
 
             if (!(survey.cluster in stratumObject.clusterCodes)) {
                 stratumObject.clusterCodes[survey.cluster] = 1;
@@ -217,7 +217,7 @@ var surveyCompletedStrata = {
                 { name: 'children_max', data: 'maxChildren' },
                 { name: 'children_mean', data: 'meanChildren' },
             ],
-            order: [[ 1, "asc" ]]
+            order: [[ 1, "desc" ]]
         });
 
         jQuery('#survey_completed_strata_download').html('<button></button>');

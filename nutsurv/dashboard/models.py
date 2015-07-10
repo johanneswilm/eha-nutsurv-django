@@ -723,16 +723,16 @@ class Alert(models.Model):
     archived = models.BooleanField(default=False)
 
     def cluster_id(self):
-        return self.json.get('cluster_id')
+        return self.json.get('cluster_id', None)
 
     def location(self):
-        return self.json.get('location')
+        return self.json.get('location', None)
 
     def type(self):
         return self.alert_type
 
     def survey_id(self):
-        return self.json.get('survey_id')
+        return self.json.get('survey_id', None)
 
     def __unicode__(self):
         if self.archived:
