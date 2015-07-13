@@ -42,7 +42,6 @@ def deploy(branch_or_tag=None, do_stop=True):
 
     else:
         assert branch_or_tag, "Please specify a tag"
-        assert branch_or_tag.startswith('v'), "You can only deploy tags to {}".format(env.host_string)
 
     run('docker pull docker-registry.eocng.org/ehealthafrica/nutsurv:{}'.format(
         branch_or_tag))
