@@ -418,7 +418,7 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
     def _get_time_stamp(self, key):
         try:
             time_string = self.json[key]
-        except KeyError:
+        except (KeyError, TypeError):
             return None
         try:
             time_stamp = dateutil.parser.parse(time_string)
@@ -660,6 +660,18 @@ class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
     def get_absolute_url(self):
         return reverse('householdsurveyjson-detail', args=[str(self.id)])
 
+    def get_team_leader_name(self):
+        """Returns a team leader name or None if no team leader name found.
+        """
+        return self.team_lead.first_name
+
+    def save(self, *args, **kwargs):
+        super(HouseholdSurveyJSON, self).save(*args, **kwargs) # Call the "real" save() method.
+
+        # TODO: Stop the pain.
+        Alert.run_alert_checks_on_document(self)
+
+
 
 class Alert(models.Model):
 
@@ -790,7 +802,7 @@ class Alert(models.Model):
         Generates alert if cluster is missing
         """
 
-        if household_survey.get_cluster_id():
+        if household_survey.get_cluster_id() or not household_survey.location:
             return
 
         alert_text = 'No cluster ID for survey of team {} (survey {})'.format(
@@ -823,7 +835,7 @@ class Alert(models.Model):
         Generates alert if location is missing
         """
 
-        if household_survey.get_location():
+        if household_survey.get_location() or not household_survey.location:
             return
 
         alert_text = 'No location for survey of team {} (survey {})'.format(
@@ -908,6 +920,10 @@ class Alert(models.Model):
 
         # If no cluster has been found, assume database inconsistencies and abort
         if not cluster:
+            return
+
+        # This sometimes happens
+        if not household_survey.location:
             return
 
         # if cluster data found, get first admin level
@@ -1518,7 +1534,7 @@ class Alert(models.Model):
                 triggered = True
                 break
 
-        if not triggered:
+        if not triggered or not household_survey.location:
             return
 
         team_name = household_survey.get_team_name()
