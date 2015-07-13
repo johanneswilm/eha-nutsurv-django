@@ -666,11 +666,10 @@ class HouseholdSurveyJSON(BaseHouseholdSurveyJSON):
         return self.team_lead.first_name
 
     def save(self, *args, **kwargs):
-        super(HouseholdSurveyJSON, self).save(*args, **kwargs) # Call the "real" save() method.
+        super(HouseholdSurveyJSON, self).save(*args, **kwargs)  # Call the "real" save() method.
 
         # TODO: Stop the pain.
         Alert.run_alert_checks_on_document(self)
-
 
 
 class Alert(models.Model):
