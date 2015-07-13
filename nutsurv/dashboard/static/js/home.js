@@ -20,6 +20,9 @@ $(function() {
         mapMarkers.clearLayers();
 
         _.each(data.survey_data, function(survey) {
+            if (!survey.location) {
+                return;
+            }
             var marker = L.marker(survey.location, {
                     icon: mapConfig.markers.green
                 }),
