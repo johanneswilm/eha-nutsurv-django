@@ -36,7 +36,7 @@ class ImporterTests(TestCase):
               'first_name': 'Lubabatu',
               'gender': 'F',
               'survey': {'muac': 276},
-              'surveyType': 'women'}]
+              'surveyType': 'woman'}]
         )
 
     def test_smoke_find_household_members_zscores(self):

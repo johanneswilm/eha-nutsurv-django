@@ -549,11 +549,11 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
         return self._get_records_for_survey_types(survey_types='child')
 
     def get_women_records(self):
-        return self._get_records_for_survey_types(survey_types='women')
+        return self._get_records_for_survey_types(survey_types='woman')
 
     def get_women_and_child_records(self):
         return self._get_records_for_survey_types(
-            survey_types=('child', 'women')
+            survey_types=('child', 'woman')
         )
 
     @staticmethod
