@@ -64,7 +64,7 @@ var surveyCompletedTeams = {
         _.each(surveyData, function(survey) {
             var teamObject = _.findWhere(perTeamData, {team: survey.team}),
             childMembers = _.where(survey.members, {'surveyType': 'child'}),
-            womenMembers = _.where(survey.members, {'surveyType': 'women'});
+            womenMembers = _.where(survey.members, {'surveyType': 'woman'});
             // Increase the number of households surveyed for this team by one.
             if (teamObject) {
                 teamObject.households++;
