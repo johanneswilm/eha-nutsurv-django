@@ -295,8 +295,8 @@ var childAnthropometry = {
                         femaleChildren++;
                     }
                 }
-                if (child.hasOwnProperty('birthDate')) {
-                    birthDate = new Date(child.birthDate);
+                if (child.hasOwnProperty('birthdate')) {
+                    birthDate = new Date(child.birthdate);
                     monthAge =  currentDate.getMonth() -
                         birthDate.getMonth() +
                         (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
