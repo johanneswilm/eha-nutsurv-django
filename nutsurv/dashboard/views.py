@@ -195,7 +195,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                     {
                         'gender': 'F',
                         'age': 25,
-                        'surveyType': 'women',
+                        'surveyType': 'woman',
                         'survey': {
                             'breastfeeding': 'Y',
                             'muac': 25.3,

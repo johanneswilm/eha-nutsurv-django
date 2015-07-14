@@ -53,7 +53,7 @@ def find_household_members(data):
             logging.warning('Did not find woman named "%s" in this.', name)
             continue
 
-        member["surveyType"] = "women"
+        member["surveyType"] = "woman"
         member["survey"] = {}
 
         if 'wom_muac' in fh_woman:
