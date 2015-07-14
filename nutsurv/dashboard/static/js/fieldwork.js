@@ -69,7 +69,7 @@ var mappingChecks = {
         var output = 'team_id,cluster_id\n';
 
         _.each(mappingChecks.incorrectSurveys, function (survey) {
-            output += survey.teamId + ',' + survey.clusterId + '\n';
+            output += survey.teamLead.id + ',' + survey.clusterId + '\n';
         });
 
         saveAs(
