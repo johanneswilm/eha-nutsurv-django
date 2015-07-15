@@ -47,7 +47,7 @@
         <div class="alert-name col-sm-7">
             <h3 class="alert_title"><%= title %></h3>
             <span class="alert-details">
-                <strong class="alert_team_name"><%  if (teamLead) { %><%= teamLead.firstName %><% } %></strong>
+                <strong class="alert_team_name"><%  if (teamLead) { %><%= teamLead.id %><% } %></strong>
                 on <%= created %>
             </span>
         </div>
@@ -72,8 +72,8 @@
 <script id="contact-team-item" type="text/template">
     <li class="list-group-item">
         <div class="clearfix">
-            <strong class="remove-top remove-bottom pull-left"><%= firstName + ' ' + lastName %></strong>
-            <em class="pull-right">Team Leader</em>
+            <strong class="remove-top remove-bottom pull-left"><%= id %></strong>
+            <em class="pull-right">Team ID</em>
         </div>
         <%= gender %>, <%= (moment().format('YYYY') - birthYear) %> yrs<br>
         <% if (mobile) { %>Mobile: <%= mobile %><br><% } %>
