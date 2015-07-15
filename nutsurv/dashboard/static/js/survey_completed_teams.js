@@ -193,15 +193,6 @@ var surveyCompletedTeams = {
             ],
             order: [[ 1, "asc" ]]
         });
-
-        jQuery('#survey_completed_teams_download').html('<button></button>');
-        jQuery('#survey_completed_teams_download button').addClass('btn btn-default dataTables_extra_button');
-        jQuery('#survey_completed_teams_download button').text('Download');
-
-        jQuery('#survey_completed_teams_download button').on('click', function (){
-            surveyCompletedTeams.downloadData();
-        });
-
     },
 
 };

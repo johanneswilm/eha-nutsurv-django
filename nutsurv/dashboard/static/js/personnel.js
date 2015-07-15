@@ -155,17 +155,9 @@ var personnel = {
         // Add UI Items
         $('.page-header').append('<h1><i class="fa fa-user"></i> Personnel</h1>');
         $('#personnel_table_filter').addClass('pull-right');
-        $('.page-header').prepend('<button id="personnel_download" class="pull-right btn btn-default dataTables_extra_button">Download CSV</button>');
-
         $('.personnel-last-survey').on('click', function(e) {
             personnel.surveyDetails($(e.target).data('mermberid'));
         });
-
-        // Download Button Action
-        $('#personnel_download').on('click', function () {
-            personnel.downloadData();
-        });
-
     },
 };
 
