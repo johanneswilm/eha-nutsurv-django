@@ -219,15 +219,6 @@ var surveyCompletedStrata = {
             ],
             order: [[ 1, "desc" ]]
         });
-
-        jQuery('#survey_completed_strata_download').html('<button></button>');
-        jQuery('#survey_completed_strata_download button').addClass('btn btn-default dataTables_extra_button');
-        jQuery('#survey_completed_strata_download button').text('Download');
-
-        jQuery('#survey_completed_strata_download button').on('click', function (){
-            surveyCompletedStrata.downloadData();
-        });
-
     },
 };
 

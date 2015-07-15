@@ -1,6 +1,5 @@
 var mappingChecks = {
     initiate: function () {
-        $('#fieldwork_alerts_download').on('click', mappingChecks.downloadAlertsCSV);
         mappingChecks.createMap();
         $.get('/dashboard/alerts/', mappingChecks.updateMap);
     },
