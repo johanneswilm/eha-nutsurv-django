@@ -26,7 +26,7 @@ $(function() {
             var marker = L.marker(survey.location, {
                     icon: mapConfig.markers.green
                 }),
-                popupHTML = "Team leader: " + survey.team + "<br>" + "Cluster #: " + survey.cluster;
+                popupHTML = "Team ID: " + survey.team + "<br>" + "Cluster #: " + survey.cluster;
             marker.bindPopup(popupHTML);
             mapMarkers.addLayer(marker);
         });

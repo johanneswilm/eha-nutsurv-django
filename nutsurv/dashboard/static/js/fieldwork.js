@@ -29,7 +29,7 @@ var mappingChecks = {
     },
     popupTmp: _.template('Error: <b><%- this.errorFormatter(type) %></b>' +
         '<br>Survey date: <b><%- this.dateFormatter.format(new Date(created)) %></b>' +
-        '<br>Team lead: <b><%- teamLead.firstName+" "+teamLead.lastName %></b>' +
+        '<br>Team ID: <b><%- teamLead.id %></b>' +
         '<% if (clusterId) { %><br>Cluster #: <b><%- clusterId %><% } %></b>'),
     updateMap: function (data) {
 
@@ -83,11 +83,11 @@ var mappingChecks = {
         });
     },
     alertTmp: {
-        'mapping_check_wrong_location': _.template('<li>Wrong location! Team leader <%- teamLead.id %></li>'),
-        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team leader <%- teamLead.id %></li>'),
-        'mapping_check_missing_location': _.template('<li>Missing location! Team leader <%- teamLead.id %></li>'),
-        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team leader <%- teamLead.id %></li>'),
-        'mapping_check_wrong_location_first_admin_level': _.template('<li>Wrong location (first admin level)! Team leader <%- teamLead.id %></li>'),
+        'mapping_check_wrong_location': _.template('<li>Wrong location! Team ID <%- teamLead.id %></li>'),
+        'mapping_check_unknown_cluster': _.template('<li>Unknown cluster! Team ID <%- teamLead.id %></li>'),
+        'mapping_check_missing_location': _.template('<li>Missing location! Team ID <%- teamLead.id %></li>'),
+        'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team ID <%- teamLead.id %></li>'),
+        'mapping_check_wrong_location_first_admin_level': _.template('<li>Wrong location (first admin level)! Team ID <%- teamLead.id %></li>'),
         'no_alerts': _.template('<li>Currently there are no map alerts</li>')
     }
 
