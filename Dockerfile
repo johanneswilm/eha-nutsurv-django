@@ -15,7 +15,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
   python-virtualenv \
   libpq-dev
 
-RUN pip install libsass
 ADD . /opt/nutsurv
 RUN pip install -r /opt/nutsurv/requirements/development.txt
 RUN python /opt/nutsurv/nutsurv/manage.py collectstatic --settings=nutsurv.collectstatic_settings --noinput
