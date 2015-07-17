@@ -144,12 +144,6 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
 )
 
-COMPRESS_PRECOMPILERS = (
-    ('text/sass', 'sassc "{infile}" "{outfile}"'),
-    ('text/scss', 'lib.scssabsolutefilter.SCSSFilter'),
-)
-
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_RENDERER_CLASSES': (
