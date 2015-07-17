@@ -13,14 +13,9 @@
 
     <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
 
-
-
     {% compress css %}
-    <link rel="stylesheet" type="text/scss" href='{% static 'ehealth-bootstrap/default/bootstrap.scss' %}' />
-    <link rel="stylesheet" type="text/scss" href='{% static 'ehealth-bootstrap/default/bootstrap-ehealth.scss' %}' />
-    {% endcompress %}
-
-    {% compress css %}
+    <link rel="stylesheet" href='{% static 'ehealth-bootstrap/default/bootstrap.css' %}' />
+    <link rel="stylesheet" href='{% static 'ehealth-bootstrap/default/bootstrap-ehealth.css' %}' />
 	  <link rel="stylesheet" href='{% static 'font-awesome/css/font-awesome.css' %}' />
     <link rel="stylesheet" href='{% static 'bootstrap-select/dist/css/bootstrap-select.css' %}' />
     <link rel="stylesheet" href='{% static 'leaflet/dist/leaflet.css' %}' />
