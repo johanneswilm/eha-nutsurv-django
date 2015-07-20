@@ -1,0 +1,3987 @@
+{
+  "1006": {
+    "cluster_name": "NO 14 UWALAKA STREET",
+    "second_admin_level_name": "UMUAHIA NORTH",
+    "first_admin_level_name": "ABIA"
+  },
+  "2304": {
+    "cluster_name": "CHUIAHEMBA MBATIANKAA",
+    "second_admin_level_name": "UKUM",
+    "first_admin_level_name": "BENUE"
+  },
+  "4786": {
+    "cluster_name": "NO; 27 AGIP ROAD",
+    "second_admin_level_name": "OBIO/AKPOR",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1948": {
+    "cluster_name": "D 1 IBADAN ST BY KABBA RD",
+    "second_admin_level_name": "KADUNA NORTH",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1544": {
+    "cluster_name": "SAMA'ILA MOHAMMED",
+    "second_admin_level_name": "DUTSE",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "4140": {
+    "cluster_name": "BESIO PHARMACY LTD.",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1944": {
+    "cluster_name": "ELISHA JACOB",
+    "second_admin_level_name": "ZANGON-KATAF",
+    "first_admin_level_name": "KADUNA"
+  },
+  "818": {
+    "cluster_name": "KABIR GEHE",
+    "second_admin_level_name": "KURFI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "346": {
+    "cluster_name": "AMAIYINTA TOWN HALL",
+    "second_admin_level_name": "AFIKPO SOUTH",
+    "first_admin_level_name": "EBONYI"
+  },
+  "340": {
+    "cluster_name": "ADEOLU MATHEW",
+    "second_admin_level_name": "EGBADO  NORTH",
+    "first_admin_level_name": "OGUN"
+  },
+  "342": {
+    "cluster_name": "EMI-MAIGARI",
+    "second_admin_level_name": "LAVUN",
+    "first_admin_level_name": "NIGER"
+  },
+  "666": {
+    "cluster_name": "SAMUEL CKIAKU",
+    "second_admin_level_name": "OYIGBO",
+    "first_admin_level_name": "RIVERS"
+  },
+  "810": {
+    "cluster_name": "SARKIN DAJI MUSA",
+    "second_admin_level_name": "GORONYO",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "812": {
+    "cluster_name": "PROF SAMUEL CHUKWU",
+    "second_admin_level_name": "NKANU EAST",
+    "first_admin_level_name": "ENUGU"
+  },
+  "348": {
+    "cluster_name": "BULAMA BUKAR",
+    "second_admin_level_name": "BIU",
+    "first_admin_level_name": "BORNO"
+  },
+  "816": {
+    "cluster_name": "MAGAJI MANU",
+    "second_admin_level_name": "ILLELA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "1798": {
+    "cluster_name": "Shyllon / Adeshiyan 2",
+    "second_admin_level_name": "MUSHIN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "718": {
+    "cluster_name": "STADIUM",
+    "second_admin_level_name": "DANGE SHUNI",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "716": {
+    "cluster_name": "YUSUF MUSULUMI SANNI",
+    "second_admin_level_name": "OYUN",
+    "first_admin_level_name": "KWARA"
+  },
+  "714": {
+    "cluster_name": "YUSUF EGGA (AREN EGGON)",
+    "second_admin_level_name": "OBI",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "712": {
+    "cluster_name": "ASSEMBLIES OF GOD CHURCH",
+    "second_admin_level_name": "UKUM",
+    "first_admin_level_name": "BENUE"
+  },
+  "710": {
+    "cluster_name": "Sule Danladi",
+    "second_admin_level_name": "GASHAKA",
+    "first_admin_level_name": "TARABA"
+  },
+  "1494": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "GOMBE",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1496": {
+    "cluster_name": "Jibbai",
+    "second_admin_level_name": "LANGTANG NORTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "420": {
+    "cluster_name": "ORKAR IORCHA",
+    "second_admin_level_name": "KEANA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "660": {
+    "cluster_name": "ABDULLAHI MUSA",
+    "second_admin_level_name": "JAKUSKO",
+    "first_admin_level_name": "YOBE"
+  },
+  "594": {
+    "cluster_name": "H.R.H EZE NNANNA IGBODEKWE",
+    "second_admin_level_name": "ORU EAST",
+    "first_admin_level_name": "IMO"
+  },
+  "1068": {
+    "cluster_name": "2, Olaogun",
+    "second_admin_level_name": "LAGOS MAINLAND",
+    "first_admin_level_name": "LAGOS"
+  },
+  "916": {
+    "cluster_name": "ALHAJI   SAMAILA",
+    "second_admin_level_name": "JEGA",
+    "first_admin_level_name": "KEBBI"
+  },
+  "4736": {
+    "cluster_name": "KAJOLA CAMP 1",
+    "second_admin_level_name": "AKURE SOUTH",
+    "first_admin_level_name": "ONDO"
+  },
+  "2316": {
+    "cluster_name": "CHF. HIGHNESS EGOJOGBO E.G. OJOGBO",
+    "second_admin_level_name": "SOUTHERN IJAW",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "1060": {
+    "cluster_name": "GBENGA   ALABI",
+    "second_admin_level_name": "IFELODUN",
+    "first_admin_level_name": "KWARA"
+  },
+  "1996": {
+    "cluster_name": "CALVARY  HOSPITAL",
+    "second_admin_level_name": "NNEWI SOUTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1064": {
+    "cluster_name": "MASALLACIN JUMAA",
+    "second_admin_level_name": "ROGO",
+    "first_admin_level_name": "KANO"
+  },
+  "424": {
+    "cluster_name": "KUKIGHIR VEMBE",
+    "second_admin_level_name": "OBI",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "148": {
+    "cluster_name": "GBAYE OGUNTADE",
+    "second_admin_level_name": "IBARAPA CENTRAL",
+    "first_admin_level_name": "OYO"
+  },
+  "294": {
+    "cluster_name": "MUSA AWOYA",
+    "second_admin_level_name": "TOTO",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "912": {
+    "cluster_name": "AWWAL MOHAMMED",
+    "second_admin_level_name": "POTISKUM",
+    "first_admin_level_name": "YOBE"
+  },
+  "292": {
+    "cluster_name": "Mai Chibi I.",
+    "second_admin_level_name": "YORRO",
+    "first_admin_level_name": "TARABA"
+  },
+  "290": {
+    "cluster_name": "MUHAMMAD SAMNAN GARI",
+    "second_admin_level_name": "DANDI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1086": {
+    "cluster_name": "ISMAILA MOMOH",
+    "second_admin_level_name": "ADAVI",
+    "first_admin_level_name": "KOGI"
+  },
+  "1084": {
+    "cluster_name": "WILLIAM ONUOHA",
+    "second_admin_level_name": "AWGU",
+    "first_admin_level_name": "ENUGU"
+  },
+  "1082": {
+    "cluster_name": "PAUL OBI",
+    "second_admin_level_name": "OGOJA",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "596": {
+    "cluster_name": "MOKAWU GIDE",
+    "second_admin_level_name": "KARASUWA",
+    "first_admin_level_name": "YOBE"
+  },
+  "194": {
+    "cluster_name": "ILESANMI OYEBODE",
+    "second_admin_level_name": "ORIADE",
+    "first_admin_level_name": "OSUN"
+  },
+  "1122": {
+    "cluster_name": "BISALA NOMA SAMADUBI",
+    "second_admin_level_name": "SHANGA",
+    "first_admin_level_name": "KEBBI"
+  },
+  "196": {
+    "cluster_name": "COCIN ANGLO-JOS",
+    "second_admin_level_name": "JOS SOUTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1124": {
+    "cluster_name": "ORISAMAKIN EMILOLA",
+    "second_admin_level_name": "ILAJE",
+    "first_admin_level_name": "ONDO"
+  },
+  "190": {
+    "cluster_name": "MALL. UMARU MAI GYAURO",
+    "second_admin_level_name": "NGURU",
+    "first_admin_level_name": "YOBE"
+  },
+  "192": {
+    "cluster_name": "BALA AZHO",
+    "second_admin_level_name": "KEANA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "270": {
+    "cluster_name": "BULAMA GONI UMARA",
+    "second_admin_level_name": "GEIDAM",
+    "first_admin_level_name": "YOBE"
+  },
+  "272": {
+    "cluster_name": "NAHUTAN LAMBA",
+    "second_admin_level_name": "DARAZO",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "274": {
+    "cluster_name": "UNION BAPTIST CHURCH",
+    "second_admin_level_name": "BORIPE",
+    "first_admin_level_name": "OSUN"
+  },
+  "276": {
+    "cluster_name": "E. O. ENE",
+    "second_admin_level_name": "CALABAR MUNICIPAL",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "1526": {
+    "cluster_name": "ADBULLAHI ABAKAR",
+    "second_admin_level_name": "GADA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "2824": {
+    "cluster_name": "CHIEF AKPOVI",
+    "second_admin_level_name": "UGHELLI NORTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "2826": {
+    "cluster_name": "ALH. YAU MAIGADO",
+    "second_admin_level_name": "LAFIA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "738": {
+    "cluster_name": "Ishaya Vinazen",
+    "second_admin_level_name": "LAU",
+    "first_admin_level_name": "TARABA"
+  },
+  "3380": {
+    "cluster_name": "KAYODE AKINTAYO",
+    "second_admin_level_name": "EGBEDA",
+    "first_admin_level_name": "OYO"
+  },
+  "3026": {
+    "cluster_name": "GABRIEL ELUMA",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "6196": {
+    "cluster_name": "MR  BOLAJI   ATANDA",
+    "second_admin_level_name": "ILORIN WEST",
+    "first_admin_level_name": "KWARA"
+  },
+  "524": {
+    "cluster_name": "LAWAL JIKAN AJA",
+    "second_admin_level_name": "KANKARA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "526": {
+    "cluster_name": "Solomon Isa",
+    "second_admin_level_name": "GASSOL",
+    "first_admin_level_name": "TARABA"
+  },
+  "1408": {
+    "cluster_name": "Birnin kudu House",
+    "second_admin_level_name": "GWARAM",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "520": {
+    "cluster_name": "ROYAL PALACE",
+    "second_admin_level_name": "AKOKO EDO",
+    "first_admin_level_name": "EDO"
+  },
+  "522": {
+    "cluster_name": "JAURO MUSA",
+    "second_admin_level_name": "BAYO",
+    "first_admin_level_name": "BORNO"
+  },
+  "2518": {
+    "cluster_name": "ALH DAN AZUMI ABUBAKAR",
+    "second_admin_level_name": "KANKARA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "1016": {
+    "cluster_name": "MAI UNG HUSSAINI",
+    "second_admin_level_name": "BIRNIN-GWARI",
+    "first_admin_level_name": "KADUNA"
+  },
+  "528": {
+    "cluster_name": "Fulani Settlement Yow",
+    "second_admin_level_name": "BARKIN  LADI",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "3582": {
+    "cluster_name": "GLANCE FILLING STATION",
+    "second_admin_level_name": "ADO-ODO/OTA",
+    "first_admin_level_name": "OGUN"
+  },
+  "2446": {
+    "cluster_name": "ADEROGBA",
+    "second_admin_level_name": "SAKI WEST",
+    "first_admin_level_name": "OYO"
+  },
+  "1232": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "KALTUNGO",
+    "first_admin_level_name": "GOMBE"
+  },
+  "2524": {
+    "cluster_name": "YOHANNA BOT",
+    "second_admin_level_name": "JOS SOUTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "442": {
+    "cluster_name": "Cocin Prayer house",
+    "second_admin_level_name": "RIYOM",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1066": {
+    "cluster_name": "AJAKURAMA MKT",
+    "second_admin_level_name": "OVIA SOUTH WEST",
+    "first_admin_level_name": "EDO"
+  },
+  "1238": {
+    "cluster_name": "IGBAKIRI",
+    "second_admin_level_name": "ASARI TORU",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1330": {
+    "cluster_name": "MR. STEPHEN AGBOR",
+    "second_admin_level_name": "BIASE",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "4190": {
+    "cluster_name": "GARBA SHA DADINKA",
+    "second_admin_level_name": "GUSAU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1332": {
+    "cluster_name": "IGWE NWANGA",
+    "second_admin_level_name": "ISHIELU",
+    "first_admin_level_name": "EBONYI"
+  },
+  "108": {
+    "cluster_name": "CENTRAL MOSQUE",
+    "second_admin_level_name": "GWAGWALADA",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1370": {
+    "cluster_name": "PATRICK  IGBINIGIE",
+    "second_admin_level_name": "IKPOBA-OKHA",
+    "first_admin_level_name": "EDO"
+  },
+  "696": {
+    "cluster_name": "GALADIMA DAN TSOLO",
+    "second_admin_level_name": "JAHUN",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "100": {
+    "cluster_name": "CATHOLIC CHURCH",
+    "second_admin_level_name": "AKPABUYO",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "106": {
+    "cluster_name": "MAI UNG. LAWAL",
+    "second_admin_level_name": "MASHI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "104": {
+    "cluster_name": "HIS.EXCE.ALH.ADMU.ALEIRO",
+    "second_admin_level_name": "ALEIRO",
+    "first_admin_level_name": "KEBBI"
+  },
+  "902": {
+    "cluster_name": "KASUNMI GONI",
+    "second_admin_level_name": "SHIRORO",
+    "first_admin_level_name": "NIGER"
+  },
+  "1848": {
+    "cluster_name": "MOUNT ZION CHURCH",
+    "second_admin_level_name": "ODUKPANI",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "2042": {
+    "cluster_name": "NKST CHURCH MKE",
+    "second_admin_level_name": "KWANDE",
+    "first_admin_level_name": "BENUE"
+  },
+  "1540": {
+    "cluster_name": "ALH.ISSA MOHAMMED",
+    "second_admin_level_name": "ILORIN EAST",
+    "first_admin_level_name": "KWARA"
+  },
+  "904": {
+    "cluster_name": "SCH. OF ISLAMIC STUDIES",
+    "second_admin_level_name": "Bwari",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "32": {
+    "cluster_name": "MR OLAPOJU OLAOYE",
+    "second_admin_level_name": "IBADAN NORTH EAST",
+    "first_admin_level_name": "OYO"
+  },
+  "908": {
+    "cluster_name": "SATGURU MAHARAJJI",
+    "second_admin_level_name": "NEMBE",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "30": {
+    "cluster_name": "MANI MAIBUHU",
+    "second_admin_level_name": "SHINKAFI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1846": {
+    "cluster_name": "UBANDOMAN BARAYA",
+    "second_admin_level_name": "TAFAWA-BALEWA",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "2048": {
+    "cluster_name": "ALH. BAWA",
+    "second_admin_level_name": "TARAUNI",
+    "first_admin_level_name": "KANO"
+  },
+  "34": {
+    "cluster_name": "ALADEKOMO",
+    "second_admin_level_name": "EKITI SOUTH WEST",
+    "first_admin_level_name": "EKITI"
+  },
+  "1536": {
+    "cluster_name": "CHIEF. INAH IREM",
+    "second_admin_level_name": "ABI",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "4958": {
+    "cluster_name": "MINA SOTONYE",
+    "second_admin_level_name": "PORT-HAROURT",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1534": {
+    "cluster_name": "LEPROSY CLINIC MANGER",
+    "second_admin_level_name": "GWER EAST",
+    "first_admin_level_name": "BENUE"
+  },
+  "644": {
+    "cluster_name": "MBAM NWENYA",
+    "second_admin_level_name": "ABAKALIKI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "438": {
+    "cluster_name": "GARBA MALAM",
+    "second_admin_level_name": "RONI",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1246": {
+    "cluster_name": "SUDA",
+    "second_admin_level_name": "TORO",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "436": {
+    "cluster_name": "BENSON OBILOR",
+    "second_admin_level_name": "OWERRI WEST",
+    "first_admin_level_name": "IMO"
+  },
+  "434": {
+    "cluster_name": "Musa Noma",
+    "second_admin_level_name": "BALI",
+    "first_admin_level_name": "TARABA"
+  },
+  "1632": {
+    "cluster_name": "BULAMA YURA",
+    "second_admin_level_name": "YUNUSARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "432": {
+    "cluster_name": "Sunshine Clinic",
+    "second_admin_level_name": "KURMI",
+    "first_admin_level_name": "TARABA"
+  },
+  "430": {
+    "cluster_name": "Mohd Yakongo",
+    "second_admin_level_name": "KATCHA",
+    "first_admin_level_name": "NIGER"
+  },
+  "2162": {
+    "cluster_name": "WAKILI JINJINRI",
+    "second_admin_level_name": "JAKUSKO",
+    "first_admin_level_name": "YOBE"
+  },
+  "338": {
+    "cluster_name": "CHIEF JEREMIAH OKON",
+    "second_admin_level_name": "AKPABUYO",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "2610": {
+    "cluster_name": "JAMES K. NEJEYU",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "330": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "AKKO",
+    "first_admin_level_name": "GOMBE"
+  },
+  "332": {
+    "cluster_name": "DR POPOOLA",
+    "second_admin_level_name": "EMURE",
+    "first_admin_level_name": "EKITI"
+  },
+  "2038": {
+    "cluster_name": "KERLIN PRODUCTS",
+    "second_admin_level_name": "ADO-ODO/OTA",
+    "first_admin_level_name": "OGUN"
+  },
+  "1904": {
+    "cluster_name": "PRINCE OWOLABI",
+    "second_admin_level_name": "ADO EKITI",
+    "first_admin_level_name": "EKITI"
+  },
+  "344": {
+    "cluster_name": "CHRIST APOSTOLIC CHURCH",
+    "second_admin_level_name": "ORI IRE",
+    "first_admin_level_name": "OYO"
+  },
+  "850": {
+    "cluster_name": "Alh. Garba Bagobiri",
+    "second_admin_level_name": "CHANCHAGA",
+    "first_admin_level_name": "NIGER"
+  },
+  "852": {
+    "cluster_name": "FRIDAY OMOROGIE",
+    "second_admin_level_name": "IKA SOUTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "858": {
+    "cluster_name": "CHRIST ANGLICAN NUR/PRI. SCHOOL",
+    "second_admin_level_name": "MAKURDI",
+    "first_admin_level_name": "BENUE"
+  },
+  "6": {
+    "cluster_name": "FALLI NGOBJI",
+    "second_admin_level_name": "CHIBOK",
+    "first_admin_level_name": "BORNO"
+  },
+  "3852": {
+    "cluster_name": "PRIMARY SCHOOL",
+    "second_admin_level_name": "WASAGU/DANKO",
+    "first_admin_level_name": "KEBBI"
+  },
+  "2830": {
+    "cluster_name": "DOMINION CHAPEL INT'L",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "848": {
+    "cluster_name": "Yusha'u Usaini",
+    "second_admin_level_name": "MALLAM MADORI",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "98": {
+    "cluster_name": "MODE DAN DATTIJO",
+    "second_admin_level_name": "SHAGARI",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "90": {
+    "cluster_name": "UMARU BALANGE",
+    "second_admin_level_name": "MATAZU",
+    "first_admin_level_name": "KATSINA"
+  },
+  "92": {
+    "cluster_name": "AZEEZ TIJANI",
+    "second_admin_level_name": "ATIGBO",
+    "first_admin_level_name": "OYO"
+  },
+  "94": {
+    "cluster_name": "MATHEW ATTAH",
+    "second_admin_level_name": "ANKPA",
+    "first_admin_level_name": "KOGI"
+  },
+  "1622": {
+    "cluster_name": "MAGORAWA",
+    "second_admin_level_name": "DUTSE",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1430": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "KALTUNGO",
+    "first_admin_level_name": "GOMBE"
+  },
+  "3200": {
+    "cluster_name": "GEORFRY UDEH",
+    "second_admin_level_name": "GBOKO",
+    "first_admin_level_name": "BENUE"
+  },
+  "814": {
+    "cluster_name": "L.G.E.A PRIM. SCHOOL",
+    "second_admin_level_name": "LANGTAN SOUTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1628": {
+    "cluster_name": "ALH RAFIU SHITTU",
+    "second_admin_level_name": "ISEYIN",
+    "first_admin_level_name": "OYO"
+  },
+  "1352": {
+    "cluster_name": "RIVER OF LIFE CHURCH",
+    "second_admin_level_name": "ASA",
+    "first_admin_level_name": "KWARA"
+  },
+  "740": {
+    "cluster_name": "LGEA Prim School",
+    "second_admin_level_name": "KANKE",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "742": {
+    "cluster_name": "DAYSPRING BUILDING",
+    "second_admin_level_name": "ENUGU NORTH",
+    "first_admin_level_name": "ENUGU"
+  },
+  "744": {
+    "cluster_name": "MICHAEL ADELEKE",
+    "second_admin_level_name": "IKOLE",
+    "first_admin_level_name": "EKITI"
+  },
+  "558": {
+    "cluster_name": "MAGAJI BAMMO",
+    "second_admin_level_name": "GUMMI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "748": {
+    "cluster_name": "Mohammed Yelwa",
+    "second_admin_level_name": "JALINGO",
+    "first_admin_level_name": "TARABA"
+  },
+  "470": {
+    "cluster_name": "WILLIAM BOYE",
+    "second_admin_level_name": "DEGEMA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "556": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "BALANGA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "550": {
+    "cluster_name": "T/MAGANI MAI BUNDI",
+    "second_admin_level_name": "SILAME",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "552": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "SHOGOM",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1314": {
+    "cluster_name": "ALHAJI ADO SHAGAMU",
+    "second_admin_level_name": "NGURU",
+    "first_admin_level_name": "YOBE"
+  },
+  "238": {
+    "cluster_name": "ALBERT TIMOTHY",
+    "second_admin_level_name": "UMUAHIA NORTH",
+    "first_admin_level_name": "ABIA"
+  },
+  "234": {
+    "cluster_name": "Mr. Jonathan",
+    "second_admin_level_name": "BIDA",
+    "first_admin_level_name": "NIGER"
+  },
+  "236": {
+    "cluster_name": "Joel Andraus",
+    "second_admin_level_name": "LAU",
+    "first_admin_level_name": "TARABA"
+  },
+  "4612": {
+    "cluster_name": "MALLAM MOHAMMED",
+    "second_admin_level_name": "MAIDUGURI",
+    "first_admin_level_name": "BORNO"
+  },
+  "230": {
+    "cluster_name": "YAKUBU NA ZARA",
+    "second_admin_level_name": "WARAWA",
+    "first_admin_level_name": "KANO"
+  },
+  "426": {
+    "cluster_name": "SHIYAR KAN WURI",
+    "second_admin_level_name": "KWARE",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "232": {
+    "cluster_name": "CHRIST APOSTOLIC CHURCH.",
+    "second_admin_level_name": "AKOKO SOUTH EAST",
+    "first_admin_level_name": "ONDO"
+  },
+  "1312": {
+    "cluster_name": "BULAMA MOH'D",
+    "second_admin_level_name": "BORGU",
+    "first_admin_level_name": "NIGER"
+  },
+  "1052": {
+    "cluster_name": "GAUIS OBASEKI",
+    "second_admin_level_name": "OREDO",
+    "first_admin_level_name": "EDO"
+  },
+  "3068": {
+    "cluster_name": "THE GLORIOUS FAMILY CHURCH",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1054": {
+    "cluster_name": "AKWAOWO VICTOR",
+    "second_admin_level_name": "ORUK -- ANAM",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "5352": {
+    "cluster_name": "IBRAHIM LAWAN LASSAN",
+    "second_admin_level_name": "MAIDUGURI",
+    "first_admin_level_name": "BORNO"
+  },
+  "1056": {
+    "cluster_name": "LATTER GLORY CHURCH",
+    "second_admin_level_name": "AYEDIRE",
+    "first_admin_level_name": "OSUN"
+  },
+  "2342": {
+    "cluster_name": "ALHAJI  JUBRIL OLOLU",
+    "second_admin_level_name": "ILORIN WEST",
+    "first_admin_level_name": "KWARA"
+  },
+  "1190": {
+    "cluster_name": "IDEAL FOUNDATION SCHOOL",
+    "second_admin_level_name": "ILESHA WEST",
+    "first_admin_level_name": "OSUN"
+  },
+  "2224": {
+    "cluster_name": "SARKIN ASKI",
+    "second_admin_level_name": "ZURMI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "992": {
+    "cluster_name": "NNAMONSO A. UDOSANG",
+    "second_admin_level_name": "IBIONO IBOM",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "1194": {
+    "cluster_name": "MUSA MAI SUYA",
+    "second_admin_level_name": "WUDIL",
+    "first_admin_level_name": "KANO"
+  },
+  "1196": {
+    "cluster_name": "ABU YARIMAN DUTSIN MA",
+    "second_admin_level_name": "DUTSIN MA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "1696": {
+    "cluster_name": "ALH IDRIS",
+    "second_admin_level_name": "GWALE",
+    "first_admin_level_name": "KANO"
+  },
+  "1694": {
+    "cluster_name": "MOSES NKWEGU",
+    "second_admin_level_name": "IZZI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1690": {
+    "cluster_name": "ALAPTA",
+    "second_admin_level_name": "ZARIA",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1758": {
+    "cluster_name": "CHF. EGEI FILLING STATION",
+    "second_admin_level_name": "YENAGOA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "1750": {
+    "cluster_name": "HAKIMIN DAMBOA",
+    "second_admin_level_name": "POTISKUM",
+    "first_admin_level_name": "YOBE"
+  },
+  "146": {
+    "cluster_name": "SUNDAY ADILAUBA",
+    "second_admin_level_name": "OGUTA",
+    "first_admin_level_name": "IMO"
+  },
+  "144": {
+    "cluster_name": "OKE UGELE ANAYO",
+    "second_admin_level_name": "IFEDORE",
+    "first_admin_level_name": "ONDO"
+  },
+  "1174": {
+    "cluster_name": "HARUNA ADEGBE",
+    "second_admin_level_name": "ANKPA",
+    "first_admin_level_name": "KOGI"
+  },
+  "140": {
+    "cluster_name": "ST. ISABEL PRIVATE SCH",
+    "second_admin_level_name": "IBADAN NORTH WEST",
+    "first_admin_level_name": "OYO"
+  },
+  "1170": {
+    "cluster_name": "CHRISTOPHER IKENI",
+    "second_admin_level_name": "OGBIA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "1270": {
+    "cluster_name": "MICHEAL MOKWUE",
+    "second_admin_level_name": "NJIKOKA",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "610": {
+    "cluster_name": "CHARLES OGBEBOR",
+    "second_admin_level_name": "IKA SOUTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "2676": {
+    "cluster_name": "ALABATA",
+    "second_admin_level_name": "ONA- ARA",
+    "first_admin_level_name": "OYO"
+  },
+  "1274": {
+    "cluster_name": "HILLARY IBE",
+    "second_admin_level_name": "OJI -RIVER",
+    "first_admin_level_name": "ENUGU"
+  },
+  "614": {
+    "cluster_name": "RCM SHA'AKA",
+    "second_admin_level_name": "JOS SOUTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1796": {
+    "cluster_name": "Deeper Life Church",
+    "second_admin_level_name": "WUKARI",
+    "first_admin_level_name": "TARABA"
+  },
+  "1888": {
+    "cluster_name": "REV D.K. OYEYEMI.S HOUSE",
+    "second_admin_level_name": "IBADAN NORTH EAST",
+    "first_admin_level_name": "OYO"
+  },
+  "2124": {
+    "cluster_name": "ZAKKA MAI YAKI",
+    "second_admin_level_name": "CHIKUN",
+    "first_admin_level_name": "KADUNA"
+  },
+  "948": {
+    "cluster_name": "SOLOMON AGUELE",
+    "second_admin_level_name": "ESAN SOUTH EAST",
+    "first_admin_level_name": "EDO"
+  },
+  "944": {
+    "cluster_name": "ST DAVID ANGLICAN CHURCH",
+    "second_admin_level_name": "AKURE NORTH",
+    "first_admin_level_name": "ONDO"
+  },
+  "4912": {
+    "cluster_name": "ALHAJI  SAMBO  BABAAROMU",
+    "second_admin_level_name": "ILORIN WEST",
+    "first_admin_level_name": "KWARA"
+  },
+  "1288": {
+    "cluster_name": "THOMAS KEKONG",
+    "second_admin_level_name": "BOKI",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "940": {
+    "cluster_name": "JOEL OKEKE",
+    "second_admin_level_name": "IDEMILI SOUTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1002": {
+    "cluster_name": "UMMARU WAKILI",
+    "second_admin_level_name": "TAMBUWAL",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "3038": {
+    "cluster_name": "BOLUWAJI ADETINOYE",
+    "second_admin_level_name": "ONDO WEST",
+    "first_admin_level_name": "ONDO"
+  },
+  "1470": {
+    "cluster_name": "BONIFACE PETER",
+    "second_admin_level_name": "MAYO-BELWA",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1476": {
+    "cluster_name": "STEPHEN OGBU",
+    "second_admin_level_name": "UDENU",
+    "first_admin_level_name": "ENUGU"
+  },
+  "1474": {
+    "cluster_name": "Buba Serki",
+    "second_admin_level_name": "KARIM-LAMIDO",
+    "first_admin_level_name": "TARABA"
+  },
+  "684": {
+    "cluster_name": "CHIEF EDOGUN",
+    "second_admin_level_name": "EGOR",
+    "first_admin_level_name": "EDO"
+  },
+  "2530": {
+    "cluster_name": "MOHAMMED PANDAM",
+    "second_admin_level_name": "LAFIA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "1000": {
+    "cluster_name": "TOTAL PETROLEUM",
+    "second_admin_level_name": "OYO EAST",
+    "first_admin_level_name": "OYO"
+  },
+  "680": {
+    "cluster_name": "JESUS ESTATE",
+    "second_admin_level_name": "OBOKUN",
+    "first_admin_level_name": "OSUN"
+  },
+  "2534": {
+    "cluster_name": "LAWALI DAN NANA",
+    "second_admin_level_name": "KAURAN-NAMODA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "682": {
+    "cluster_name": "POLICE COMMAND PRIMARY SCHOOL",
+    "second_admin_level_name": "YOLA NORTH",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1304": {
+    "cluster_name": "ALH. IBRAHIM DENDE  ELEWU",
+    "second_admin_level_name": "ILORIN WEST",
+    "first_admin_level_name": "KWARA"
+  },
+  "2594": {
+    "cluster_name": "ALHAJA  SIFAWU  ALFA-ESIN",
+    "second_admin_level_name": "ILORIN EAST",
+    "first_admin_level_name": "KWARA"
+  },
+  "622": {
+    "cluster_name": "Kasali Oluwo II",
+    "second_admin_level_name": "EPE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "132": {
+    "cluster_name": "Mal.Angwan A. Beri",
+    "second_admin_level_name": "ZING",
+    "first_admin_level_name": "TARABA"
+  },
+  "130": {
+    "cluster_name": "ALH. TUKUR",
+    "second_admin_level_name": "KARAYE",
+    "first_admin_level_name": "KANO"
+  },
+  "498": {
+    "cluster_name": "ASAWA ANYONKO",
+    "second_admin_level_name": "KONSHISHA",
+    "first_admin_level_name": "BENUE"
+  },
+  "494": {
+    "cluster_name": "CHIEF AROWOJOLU",
+    "second_admin_level_name": "IRELE",
+    "first_admin_level_name": "ONDO"
+  },
+  "496": {
+    "cluster_name": "ADADA SEC. SCHOOL",
+    "second_admin_level_name": "UZO - UWANI",
+    "first_admin_level_name": "ENUGU"
+  },
+  "138": {
+    "cluster_name": "IGBO EGUN VILLAGE",
+    "second_admin_level_name": "IMEKO-AFON",
+    "first_admin_level_name": "OGUN"
+  },
+  "490": {
+    "cluster_name": "DEEPER LIFE CHURCH",
+    "second_admin_level_name": "OBUBRA",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "492": {
+    "cluster_name": "AGBEDE OGUNTOYINBO",
+    "second_admin_level_name": "IREPODUN/IFELODUN",
+    "first_admin_level_name": "EKITI"
+  },
+  "24": {
+    "cluster_name": "COOPER E OKEGBE",
+    "second_admin_level_name": "NJABA",
+    "first_admin_level_name": "IMO"
+  },
+  "1830": {
+    "cluster_name": "HIGH COURT",
+    "second_admin_level_name": "KARU",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "20": {
+    "cluster_name": "REDEEMED CHRISTIAN CHURCH OF GOD",
+    "second_admin_level_name": "UVWIE",
+    "first_admin_level_name": "DELTA"
+  },
+  "22": {
+    "cluster_name": "SYLVANUS IWUOHA",
+    "second_admin_level_name": "EHIME MBANO",
+    "first_admin_level_name": "IMO"
+  },
+  "914": {
+    "cluster_name": "HAJIYA AMINA",
+    "second_admin_level_name": "ZURU",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1838": {
+    "cluster_name": "ENOGIE PALACE UWELU",
+    "second_admin_level_name": "EGOR",
+    "first_admin_level_name": "EDO"
+  },
+  "28": {
+    "cluster_name": "ELDER MAGAJI",
+    "second_admin_level_name": "EFON",
+    "first_admin_level_name": "EKITI"
+  },
+  "406": {
+    "cluster_name": "COCIN Chu. S/Layi D.",
+    "second_admin_level_name": "IBI",
+    "first_admin_level_name": "TARABA"
+  },
+  "2156": {
+    "cluster_name": "JU'MUAT MOSQUE",
+    "second_admin_level_name": "BUNGUDU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1372": {
+    "cluster_name": "NO 50 REDEEMED STREET",
+    "second_admin_level_name": "OSISIOMA NGWA",
+    "first_admin_level_name": "ABIA"
+  },
+  "2150": {
+    "cluster_name": "Yewolawi Old Tulu",
+    "second_admin_level_name": "SHIRORO",
+    "first_admin_level_name": "NIGER"
+  },
+  "402": {
+    "cluster_name": "HAMADIYA CENTAL  MOSQUE",
+    "second_admin_level_name": "AKOKO SOUTH WEST",
+    "first_admin_level_name": "ONDO"
+  },
+  "1376": {
+    "cluster_name": "ABUBAKAR SADIQ S.",
+    "second_admin_level_name": "BOSSO",
+    "first_admin_level_name": "NIGER"
+  },
+  "1378": {
+    "cluster_name": "MIXED SECONDARY SCHOOL",
+    "second_admin_level_name": "ORHIONMWON",
+    "first_admin_level_name": "EDO"
+  },
+  "930": {
+    "cluster_name": "MRS BABALOLA",
+    "second_admin_level_name": "ILESHA EAST",
+    "first_admin_level_name": "OSUN"
+  },
+  "2158": {
+    "cluster_name": "MAMUDA SALE F BAYAK",
+    "second_admin_level_name": "BAUCHI",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "936": {
+    "cluster_name": "OKE IMALE (AKERUN)",
+    "second_admin_level_name": "EGBADO  NORTH",
+    "first_admin_level_name": "OGUN"
+  },
+  "2408": {
+    "cluster_name": "ONIKAN",
+    "second_admin_level_name": "AYEDADE",
+    "first_admin_level_name": "OSUN"
+  },
+  "934": {
+    "cluster_name": "MAL. UNG AUWALU",
+    "second_admin_level_name": "GARKO",
+    "first_admin_level_name": "KANO"
+  },
+  "1950": {
+    "cluster_name": "EKO EGWU",
+    "second_admin_level_name": "AFIKPO NORTH",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1704": {
+    "cluster_name": "MOSES OMOTOSO",
+    "second_admin_level_name": "IFE EAST",
+    "first_admin_level_name": "OSUN"
+  },
+  "1018": {
+    "cluster_name": "TAKALAFIYA",
+    "second_admin_level_name": "SHANGA",
+    "first_admin_level_name": "KEBBI"
+  },
+  "378": {
+    "cluster_name": "COMM. CENTRAL MOSQ.",
+    "second_admin_level_name": "AJAOKUTA",
+    "first_admin_level_name": "KOGI"
+  },
+  "3264": {
+    "cluster_name": "GAGA COMMUNITY PRY SCH",
+    "second_admin_level_name": "AKURE SOUTH",
+    "first_admin_level_name": "ONDO"
+  },
+  "828": {
+    "cluster_name": "GIDAN WAKE",
+    "second_admin_level_name": "GIWA",
+    "first_admin_level_name": "KADUNA"
+  },
+  "824": {
+    "cluster_name": "ST MATTEW'S ANG CHURCH",
+    "second_admin_level_name": "NWANGELE",
+    "first_admin_level_name": "IMO"
+  },
+  "372": {
+    "cluster_name": "Mai Gari Mama",
+    "second_admin_level_name": "BIRNINWA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "820": {
+    "cluster_name": "ASSEMBLIES OF GOD CHURCH",
+    "second_admin_level_name": "ISHIELU",
+    "first_admin_level_name": "EBONYI"
+  },
+  "822": {
+    "cluster_name": "ENGR. JOHN AMADI",
+    "second_admin_level_name": "OBIO/AKPOR",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1062": {
+    "cluster_name": "CH. OJOMU",
+    "second_admin_level_name": "IFEDORE",
+    "first_admin_level_name": "ONDO"
+  },
+  "708": {
+    "cluster_name": "MAGAJI MAKERA",
+    "second_admin_level_name": "TALATA MAFARA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1604": {
+    "cluster_name": "IBRAHIM SARKIN NOMA",
+    "second_admin_level_name": "KAURAN-NAMODA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "706": {
+    "cluster_name": "EMI-SHAABA SABA",
+    "second_admin_level_name": "PATIGI",
+    "first_admin_level_name": "KWARA"
+  },
+  "700": {
+    "cluster_name": "CHERUBIM   & SERAPHIM",
+    "second_admin_level_name": "ILORIN SOUTH",
+    "first_admin_level_name": "KWARA"
+  },
+  "618": {
+    "cluster_name": "ALHAJI ISUHU KARAYE",
+    "second_admin_level_name": "SOKOTO SOUTH",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "702": {
+    "cluster_name": "PHC CLINIC",
+    "second_admin_level_name": "IGALAMELA-ODOLU",
+    "first_admin_level_name": "KOGI"
+  },
+  "392": {
+    "cluster_name": "AREA COURT YABO",
+    "second_admin_level_name": "YABO",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "88": {
+    "cluster_name": "M/UNG MUSA",
+    "second_admin_level_name": "MALUMFASHI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "390": {
+    "cluster_name": "Sabon Garin Dan Mallam",
+    "second_admin_level_name": "KIYAWA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1486": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "YAMALTU/DEBA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "394": {
+    "cluster_name": "UNG. DANCHUWA",
+    "second_admin_level_name": "DAMBAN",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "82": {
+    "cluster_name": "EBO-OBASHI SETTLEMENT",
+    "second_admin_level_name": "ABAKALIKI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "80": {
+    "cluster_name": "MUSA MA'AJI",
+    "second_admin_level_name": "MARIGA",
+    "first_admin_level_name": "NIGER"
+  },
+  "398": {
+    "cluster_name": "MALLAM ZUBAIRU",
+    "second_admin_level_name": "FUNE",
+    "first_admin_level_name": "YOBE"
+  },
+  "86": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "SHOGOM",
+    "first_admin_level_name": "GOMBE"
+  },
+  "84": {
+    "cluster_name": "MUSA ADAMU",
+    "second_admin_level_name": "TOUNGO",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "414": {
+    "cluster_name": "ADOBA AJEBI",
+    "second_admin_level_name": "APA",
+    "first_admin_level_name": "BENUE"
+  },
+  "794": {
+    "cluster_name": "USMAN A MOH'D",
+    "second_admin_level_name": "MOKWA",
+    "first_admin_level_name": "NIGER"
+  },
+  "792": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "YAMALTU/DEBA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "790": {
+    "cluster_name": "MR ZACCHAUS IGESHU",
+    "second_admin_level_name": "EKITI SOUTH WEST",
+    "first_admin_level_name": "EKITI"
+  },
+  "2302": {
+    "cluster_name": "OZOKUBA OZASI",
+    "second_admin_level_name": "OKENE",
+    "first_admin_level_name": "KOGI"
+  },
+  "2798": {
+    "cluster_name": "FULU GBENE",
+    "second_admin_level_name": "EKEREMOR",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "798": {
+    "cluster_name": "CHARITY NUR/PRY SCHOOL",
+    "second_admin_level_name": "EGBADO  SOUTH",
+    "first_admin_level_name": "OGUN"
+  },
+  "612": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "YAMALTU/DEBA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1658": {
+    "cluster_name": "ALHAJI BUKAR",
+    "second_admin_level_name": "MAIDUGURI",
+    "first_admin_level_name": "BORNO"
+  },
+  "410": {
+    "cluster_name": "UMUDURUAGWU OIL FACTORY",
+    "second_admin_level_name": "IHITTE/UBOMA",
+    "first_admin_level_name": "IMO"
+  },
+  "170": {
+    "cluster_name": "MR. R. AKHABUE RICHARD AKHABUE",
+    "second_admin_level_name": "ESAN CENTRAL",
+    "first_admin_level_name": "EDO"
+  },
+  "1272": {
+    "cluster_name": "MAGISTRATE COURT",
+    "second_admin_level_name": "BIRNIN KEBBI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1654": {
+    "cluster_name": "OGBO  GRAMMAR  SCHOOL",
+    "second_admin_level_name": "IREPODUN",
+    "first_admin_level_name": "KWARA"
+  },
+  "586": {
+    "cluster_name": "SALMON PAFEYE",
+    "second_admin_level_name": "BURUTU",
+    "first_admin_level_name": "DELTA"
+  },
+  "1986": {
+    "cluster_name": "LIYANSAN GBELEJU",
+    "second_admin_level_name": "IRELE",
+    "first_admin_level_name": "ONDO"
+  },
+  "584": {
+    "cluster_name": "GSS TUNGA",
+    "second_admin_level_name": "AWE",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "1138": {
+    "cluster_name": "JACOB AGBO",
+    "second_admin_level_name": "ONDO EAST",
+    "first_admin_level_name": "ONDO"
+  },
+  "582": {
+    "cluster_name": "SAIDU MAI KURATANDU",
+    "second_admin_level_name": "KATAGUM",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "580": {
+    "cluster_name": "MUH'D TUKUR",
+    "second_admin_level_name": "INGAWA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "2280": {
+    "cluster_name": "OPOBO GBABO",
+    "second_admin_level_name": "SOUTHERN IJAW",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "1132": {
+    "cluster_name": "UNIQUE COLL. & ACCESS",
+    "second_admin_level_name": "KABBA/BUNU",
+    "first_admin_level_name": "KOGI"
+  },
+  "1130": {
+    "cluster_name": "ALATISE BAKERY",
+    "second_admin_level_name": "OBAFEMI- OWODE",
+    "first_admin_level_name": "OGUN"
+  },
+  "3216": {
+    "cluster_name": "C & S ORIOKE ANU AKUTE",
+    "second_admin_level_name": "IFO",
+    "first_admin_level_name": "OGUN"
+  },
+  "588": {
+    "cluster_name": "KATURU OUT POST",
+    "second_admin_level_name": "SHINKAFI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1134": {
+    "cluster_name": "bankai Sarkin kassa",
+    "second_admin_level_name": "KANAM",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "244": {
+    "cluster_name": "CHIEF'S PALACE YANGA",
+    "second_admin_level_name": "KUJE",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "446": {
+    "cluster_name": "ALH SALIMAN KUDOMI",
+    "second_admin_level_name": "ODO-OTIN",
+    "first_admin_level_name": "OSUN"
+  },
+  "246": {
+    "cluster_name": "HON. CHIEF CLEMENT ONWUKWE",
+    "second_admin_level_name": "IKWUANO",
+    "first_admin_level_name": "ABIA"
+  },
+  "240": {
+    "cluster_name": "ST. PATRICK CATH. CHURCH",
+    "second_admin_level_name": "AGUATA",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "248": {
+    "cluster_name": "CHIEF OLOOYIN",
+    "second_admin_level_name": "ILA",
+    "first_admin_level_name": "OSUN"
+  },
+  "972": {
+    "cluster_name": "IGBABEE ADAM",
+    "second_admin_level_name": "GWER WEST",
+    "first_admin_level_name": "BENUE"
+  },
+  "1436": {
+    "cluster_name": "PASTOR FAKEHINDE",
+    "second_admin_level_name": "ADO EKITI",
+    "first_admin_level_name": "EKITI"
+  },
+  "2578": {
+    "cluster_name": "PATRICK EZEAMAMA",
+    "second_admin_level_name": "AGUATA",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1260": {
+    "cluster_name": "USMAN UMARU",
+    "second_admin_level_name": "FIKA",
+    "first_admin_level_name": "YOBE"
+  },
+  "518": {
+    "cluster_name": "WURO HESO 'B'",
+    "second_admin_level_name": "MUBI SOUTH",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1008": {
+    "cluster_name": "SILAS  ANYAORAH",
+    "second_admin_level_name": "AWKA NORTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "510": {
+    "cluster_name": "WILLIAM IKYU",
+    "second_admin_level_name": "GBOKO",
+    "first_admin_level_name": "BENUE"
+  },
+  "512": {
+    "cluster_name": "OZOEMENAM ORDUKWU",
+    "second_admin_level_name": "IKWERRE",
+    "first_admin_level_name": "RIVERS"
+  },
+  "514": {
+    "cluster_name": "PA   JAMES  ADEKUNLE",
+    "second_admin_level_name": "OKE-ERO",
+    "first_admin_level_name": "KWARA"
+  },
+  "2198": {
+    "cluster_name": "EKIOMOERE BOU",
+    "second_admin_level_name": "EKEREMOR",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "516": {
+    "cluster_name": "MALLAM JIBIR",
+    "second_admin_level_name": "MACHINA",
+    "first_admin_level_name": "YOBE"
+  },
+  "458": {
+    "cluster_name": "LEDEE ADAA",
+    "second_admin_level_name": "KHANA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1226": {
+    "cluster_name": "MUNIRATU   MALOMO",
+    "second_admin_level_name": "IFELODUN",
+    "first_admin_level_name": "KWARA"
+  },
+  "1224": {
+    "cluster_name": "TUNGAR NOMA",
+    "second_admin_level_name": "DANDI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1222": {
+    "cluster_name": "LIMAN ADAMU",
+    "second_admin_level_name": "SABON BIRNI",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "624": {
+    "cluster_name": "ODORO MBADUM FAMILY HALL",
+    "second_admin_level_name": "IKA",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "450": {
+    "cluster_name": "MAI UNG AMADU",
+    "second_admin_level_name": "DOGUWA",
+    "first_admin_level_name": "KANO"
+  },
+  "452": {
+    "cluster_name": "MR AYELABOWO",
+    "second_admin_level_name": "IJERO",
+    "first_admin_level_name": "EKITI"
+  },
+  "628": {
+    "cluster_name": "BABDAN RAFI",
+    "second_admin_level_name": "SHAGARI",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "454": {
+    "cluster_name": "STOPOVER GUEST HOUSE",
+    "second_admin_level_name": "OSHIMILI SOUTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "2450": {
+    "cluster_name": "ADELEKE M",
+    "second_admin_level_name": "IBADAN SOUTH EAST",
+    "first_admin_level_name": "OYO"
+  },
+  "456": {
+    "cluster_name": "WACHMAN CHURCH",
+    "second_admin_level_name": "Bwari",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1228": {
+    "cluster_name": "S.O. ODUSUSI",
+    "second_admin_level_name": "SAGAMU",
+    "first_admin_level_name": "OGUN"
+  },
+  "1874": {
+    "cluster_name": "OLORI MOSQUE",
+    "second_admin_level_name": "IWO",
+    "first_admin_level_name": "OSUN"
+  },
+  "592": {
+    "cluster_name": "ALHAJI   RAJI   ADEYI",
+    "second_admin_level_name": "OFFA",
+    "first_admin_level_name": "KWARA"
+  },
+  "1872": {
+    "cluster_name": "UMARU ALH. CHINDO",
+    "second_admin_level_name": "GAMAWA",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "178": {
+    "cluster_name": "SALIHU S. FAWA",
+    "second_admin_level_name": "LAVUN",
+    "first_admin_level_name": "NIGER"
+  },
+  "176": {
+    "cluster_name": "TAFARARE",
+    "second_admin_level_name": "FUNE",
+    "first_admin_level_name": "YOBE"
+  },
+  "172": {
+    "cluster_name": "NCO'S QUARTERS BLK (26-50)",
+    "second_admin_level_name": "IJEBU NORTH EAST",
+    "first_admin_level_name": "OGUN"
+  },
+  "198": {
+    "cluster_name": "MR. SAMUEL OLANIYAN",
+    "second_admin_level_name": "IFE NORTH",
+    "first_admin_level_name": "OSUN"
+  },
+  "2050": {
+    "cluster_name": "YEKINI AYENIFUJA",
+    "second_admin_level_name": "OKITIPUPA",
+    "first_admin_level_name": "ONDO"
+  },
+  "2054": {
+    "cluster_name": "NO. 12 UDI STREET",
+    "second_admin_level_name": "ABAKALIKI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "654": {
+    "cluster_name": "SAHABI D/MAI HALI",
+    "second_admin_level_name": "SOKOTO NORTH",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "4532": {
+    "cluster_name": "ALH.USMAN MAKAMA",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "978": {
+    "cluster_name": "SHIYAR ALU DAN GALADIMA S/FAWA",
+    "second_admin_level_name": "GWADABAWA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "656": {
+    "cluster_name": "MUYIBATU AKINTOLA'S HOUSE",
+    "second_admin_level_name": "ABEOKUTA   SOUTH",
+    "first_admin_level_name": "OGUN"
+  },
+  "180": {
+    "cluster_name": "M. D. BABAYEMI",
+    "second_admin_level_name": "ADO EKITI",
+    "first_admin_level_name": "EKITI"
+  },
+  "2": {
+    "cluster_name": "LAWALI MURTALA",
+    "second_admin_level_name": "BUNGUDU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "186": {
+    "cluster_name": "GIDAN KIRUWA",
+    "second_admin_level_name": "TURETA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "184": {
+    "cluster_name": "TIJANI BALOGUN",
+    "second_admin_level_name": "AKOKO NORTH WEST",
+    "first_admin_level_name": "ONDO"
+  },
+  "598": {
+    "cluster_name": "RASIDI  ADENIYI",
+    "second_admin_level_name": "OLA OLUWA",
+    "first_admin_level_name": "OSUN"
+  },
+  "652": {
+    "cluster_name": "PATRICK LAWRENCE AMEH",
+    "second_admin_level_name": "Bwari",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1508": {
+    "cluster_name": "WAM KURA",
+    "second_admin_level_name": "FUFORE",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "658": {
+    "cluster_name": "CHIEF AUGUSTINE NWANYANWU",
+    "second_admin_level_name": "ETCHE",
+    "first_admin_level_name": "RIVERS"
+  },
+  "2622": {
+    "cluster_name": "PRECIOUS CORNERSTONE SCH.",
+    "second_admin_level_name": "IFO",
+    "first_admin_level_name": "OGUN"
+  },
+  "2620": {
+    "cluster_name": "S. KINOGI KABAOKE PALACE",
+    "second_admin_level_name": "BARUTEN",
+    "first_admin_level_name": "KWARA"
+  },
+  "1504": {
+    "cluster_name": "CH. ADEGBOTOLU JULIUS",
+    "second_admin_level_name": "ONDO WEST",
+    "first_admin_level_name": "ONDO"
+  },
+  "2480": {
+    "cluster_name": "BUKAR MALA ALI",
+    "second_admin_level_name": "MAIDUGURI",
+    "first_admin_level_name": "BORNO"
+  },
+  "3874": {
+    "cluster_name": "MODU MAI GORO",
+    "second_admin_level_name": "MAIDUGURI",
+    "first_admin_level_name": "BORNO"
+  },
+  "3876": {
+    "cluster_name": "BELIEVE GOD GBENE",
+    "second_admin_level_name": "YENAGOA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "3428": {
+    "cluster_name": "ZONE A MOSQUE",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "3286": {
+    "cluster_name": "SOLOMON ADAGBONYIN",
+    "second_admin_level_name": "IKPOBA-OKHA",
+    "first_admin_level_name": "EDO"
+  },
+  "188": {
+    "cluster_name": "Wabet",
+    "second_admin_level_name": "PANKSHIN",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1916": {
+    "cluster_name": "JAURO MUSA",
+    "second_admin_level_name": "BIU",
+    "first_admin_level_name": "BORNO"
+  },
+  "868": {
+    "cluster_name": "MR. AJIKE ANYA JP",
+    "second_admin_level_name": "OHAFIA",
+    "first_admin_level_name": "ABIA"
+  },
+  "12": {
+    "cluster_name": "Gabriel Shuwardet",
+    "second_admin_level_name": "SHENDAM",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "16": {
+    "cluster_name": "OLADIPUPO LATEEF ABIOLA",
+    "second_admin_level_name": "ATIBA",
+    "first_admin_level_name": "OYO"
+  },
+  "18": {
+    "cluster_name": "Rika Abeshi",
+    "second_admin_level_name": "USSA",
+    "first_admin_level_name": "TARABA"
+  },
+  "862": {
+    "cluster_name": "MERCURY HOSTEL (MALE)",
+    "second_admin_level_name": "DAURA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "864": {
+    "cluster_name": "ALH JUMARE",
+    "second_admin_level_name": "KADUNA NORTH",
+    "first_admin_level_name": "KADUNA"
+  },
+  "866": {
+    "cluster_name": "ABBA GALADIMA",
+    "second_admin_level_name": "BATSARI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "2756": {
+    "cluster_name": "OMEDE ADAMA",
+    "second_admin_level_name": "DEKINA",
+    "first_admin_level_name": "KOGI"
+  },
+  "2026": {
+    "cluster_name": "MBATUBO ONIA",
+    "second_admin_level_name": "DEGEMA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "2020": {
+    "cluster_name": "MINISTRY OF DEFENCE QTRS",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1502": {
+    "cluster_name": "Ijo Alasalatu",
+    "second_admin_level_name": "IKORODU",
+    "first_admin_level_name": "LAGOS"
+  },
+  "880": {
+    "cluster_name": "ALH. JIBRIL",
+    "second_admin_level_name": "KUMBOTSO",
+    "first_admin_level_name": "KANO"
+  },
+  "886": {
+    "cluster_name": "ALIRI",
+    "second_admin_level_name": "GAMAWA",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "884": {
+    "cluster_name": "NWOKPURU MBAM",
+    "second_admin_level_name": "IZZI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "928": {
+    "cluster_name": "RIGAR ILU",
+    "second_admin_level_name": "RANO",
+    "first_admin_level_name": "KANO"
+  },
+  "888": {
+    "cluster_name": "REV. DANIEL BABALOLA",
+    "second_admin_level_name": "ILESHA WEST",
+    "first_admin_level_name": "OSUN"
+  },
+  "3112": {
+    "cluster_name": "ALH SALE DAN TREDA",
+    "second_admin_level_name": "NASARAWA",
+    "first_admin_level_name": "KANO"
+  },
+  "278": {
+    "cluster_name": "ILE ALAJIKI",
+    "second_admin_level_name": "OGBOMOSHO NORTH",
+    "first_admin_level_name": "OYO"
+  },
+  "1964": {
+    "cluster_name": "Muyiwa Opeleye / Ewubere Street",
+    "second_admin_level_name": "SURULERE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "1960": {
+    "cluster_name": "BABA GARKUWA",
+    "second_admin_level_name": "LAVUN",
+    "first_admin_level_name": "NIGER"
+  },
+  "1610": {
+    "cluster_name": "Rugan Alh. Nagabo",
+    "second_admin_level_name": "PAIKORO",
+    "first_admin_level_name": "NIGER"
+  },
+  "4168": {
+    "cluster_name": "OSEGBO GABRIEL",
+    "second_admin_level_name": "IDEMILI NORTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "322": {
+    "cluster_name": "MOHAMMED DAURA",
+    "second_admin_level_name": "YOLA NORTH",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "320": {
+    "cluster_name": "UGWUDIGBO THOMAS",
+    "second_admin_level_name": "IGBO-ETITI",
+    "first_admin_level_name": "ENUGU"
+  },
+  "326": {
+    "cluster_name": "COMMUNITY BOREHOLE",
+    "second_admin_level_name": "UHUNMWONDE",
+    "first_admin_level_name": "EDO"
+  },
+  "328": {
+    "cluster_name": "DOLORI",
+    "second_admin_level_name": "TARMUA",
+    "first_admin_level_name": "YOBE"
+  },
+  "200": {
+    "cluster_name": "DR. MUHAMMADU WACHIN GANA",
+    "second_admin_level_name": "GBAKO",
+    "first_admin_level_name": "NIGER"
+  },
+  "776": {
+    "cluster_name": "ALH ILLO DAN KARAYE",
+    "second_admin_level_name": "MAIYAMA",
+    "first_admin_level_name": "KEBBI"
+  },
+  "204": {
+    "cluster_name": "DABA",
+    "second_admin_level_name": "NANGERE",
+    "first_admin_level_name": "YOBE"
+  },
+  "2874": {
+    "cluster_name": "ALHAJA    SUEBAT",
+    "second_admin_level_name": "ILORIN SOUTH",
+    "first_admin_level_name": "KWARA"
+  },
+  "208": {
+    "cluster_name": "CHERUBIM &SARAPHIM",
+    "second_admin_level_name": "OBOWO",
+    "first_admin_level_name": "IMO"
+  },
+  "3624": {
+    "cluster_name": "ST.JAMES &ANG.CHURCH",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1340": {
+    "cluster_name": "UEC CHURCH",
+    "second_admin_level_name": "OFU",
+    "first_admin_level_name": "KOGI"
+  },
+  "3626": {
+    "cluster_name": "MALLAM   ABDULBAKI",
+    "second_admin_level_name": "ILORIN WEST",
+    "first_admin_level_name": "KWARA"
+  },
+  "76": {
+    "cluster_name": "ST. MARY CATHOLIC CHURCH",
+    "second_admin_level_name": "IFO",
+    "first_admin_level_name": "OGUN"
+  },
+  "2978": {
+    "cluster_name": "KABIRU ROGO",
+    "second_admin_level_name": "GUSAU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "74": {
+    "cluster_name": "JAURO LARI",
+    "second_admin_level_name": "MISAU",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "3058": {
+    "cluster_name": "ABU MAI UNGUWAR",
+    "second_admin_level_name": "MARU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "70": {
+    "cluster_name": "HASHIMU MUSA",
+    "second_admin_level_name": "WURNO",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "78": {
+    "cluster_name": "MAGAJI ILA",
+    "second_admin_level_name": "GWADABAWA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "1042": {
+    "cluster_name": "DR. PHILIP",
+    "second_admin_level_name": "ADO EKITI",
+    "first_admin_level_name": "EKITI"
+  },
+  "686": {
+    "cluster_name": "MAMMAN KITAMA'U",
+    "second_admin_level_name": "WURNO",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "2334": {
+    "cluster_name": "OBANIGBA II",
+    "second_admin_level_name": "OWO",
+    "first_admin_level_name": "ONDO"
+  },
+  "2182": {
+    "cluster_name": "BEST EDUC. N/P SCHL.",
+    "second_admin_level_name": "ODIGBO",
+    "first_admin_level_name": "ONDO"
+  },
+  "1048": {
+    "cluster_name": "LAWALI AHMED",
+    "second_admin_level_name": "ANKA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1576": {
+    "cluster_name": "EWUSI",
+    "second_admin_level_name": "ASA",
+    "first_admin_level_name": "KWARA"
+  },
+  "1680": {
+    "cluster_name": "SOOKO",
+    "second_admin_level_name": "IFE NORTH",
+    "first_admin_level_name": "OSUN"
+  },
+  "1768": {
+    "cluster_name": "MUSA ABUBAKAR",
+    "second_admin_level_name": "GUSAU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "2180": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "YAMALTU/DEBA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1760": {
+    "cluster_name": "TITUS AMIARA",
+    "second_admin_level_name": "ONICHA",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1142": {
+    "cluster_name": "FEDE INN",
+    "second_admin_level_name": "AKOKO SOUTH WEST",
+    "first_admin_level_name": "ONDO"
+  },
+  "1788": {
+    "cluster_name": "SANNI  ORI-OWO",
+    "second_admin_level_name": "ILORIN SOUTH",
+    "first_admin_level_name": "KWARA"
+  },
+  "1140": {
+    "cluster_name": "ALH UBA GUDIYA",
+    "second_admin_level_name": "TAKAI",
+    "first_admin_level_name": "KANO"
+  },
+  "1268": {
+    "cluster_name": "IKULONO EFU",
+    "second_admin_level_name": "NASARAWA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "1146": {
+    "cluster_name": "ALH. YUSUF AHMED",
+    "second_admin_level_name": "OWO",
+    "first_admin_level_name": "ONDO"
+  },
+  "474": {
+    "cluster_name": "TASHAN NAMAMA",
+    "second_admin_level_name": "IKARA",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1144": {
+    "cluster_name": "Paranu Sunday",
+    "second_admin_level_name": "WUKARI",
+    "first_admin_level_name": "TARABA"
+  },
+  "1262": {
+    "cluster_name": "Joseph/Odunuga street",
+    "second_admin_level_name": "IKEJA",
+    "first_admin_level_name": "LAGOS"
+  },
+  "664": {
+    "cluster_name": "MAL. MUAZU DANSA",
+    "second_admin_level_name": "KANO MUNICIPAL",
+    "first_admin_level_name": "KANO"
+  },
+  "662": {
+    "cluster_name": "CHIEF S. O. OJO IWORO",
+    "second_admin_level_name": "EKITI EAST",
+    "first_admin_level_name": "EKITI"
+  },
+  "1264": {
+    "cluster_name": "CENTRAL MOSQUE",
+    "second_admin_level_name": "FASKARI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "2098": {
+    "cluster_name": "IyagbeTown(Mr. yinusa jinaidu house)",
+    "second_admin_level_name": "AMUWO ODOFIN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "2368": {
+    "cluster_name": "TAMBARI GACHI",
+    "second_admin_level_name": "BIRNIN KEBBI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "690": {
+    "cluster_name": "LABATA COMPOUND",
+    "second_admin_level_name": "IFE CENTRAL",
+    "first_admin_level_name": "OSUN"
+  },
+  "2526": {
+    "cluster_name": "KENNETH OZUMBA",
+    "second_admin_level_name": "ISHIELU",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1542": {
+    "cluster_name": "BALA MAISHANU",
+    "second_admin_level_name": "BAUCHI",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "694": {
+    "cluster_name": "Dan Masara Jos",
+    "second_admin_level_name": "JOS NORTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "2522": {
+    "cluster_name": "G.S.S TORO S. BAUCHI HOUSE",
+    "second_admin_level_name": "TORO",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "698": {
+    "cluster_name": "Emmanuel Wakape",
+    "second_admin_level_name": "SARDAUNA",
+    "first_admin_level_name": "TARABA"
+  },
+  "3126": {
+    "cluster_name": "MR ABOLADE ODUSANYA",
+    "second_admin_level_name": "ADO-ODO/OTA",
+    "first_admin_level_name": "OGUN"
+  },
+  "2268": {
+    "cluster_name": "SANUSI MAI KWANONI",
+    "second_admin_level_name": "KATSINA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "1548": {
+    "cluster_name": "WAHAB AYINLA",
+    "second_admin_level_name": "EKITI SOUTH WEST",
+    "first_admin_level_name": "EKITI"
+  },
+  "542": {
+    "cluster_name": "LAMIDO BELLOJI",
+    "second_admin_level_name": "YUSUFARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "540": {
+    "cluster_name": "BABAYO UBANDOMA",
+    "second_admin_level_name": "GANJUWA",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "546": {
+    "cluster_name": "CPS UMUAGAMA",
+    "second_admin_level_name": "IGBOEZE NORTH",
+    "first_admin_level_name": "ENUGU"
+  },
+  "1468": {
+    "cluster_name": "MAI UNG. DANJAJI",
+    "second_admin_level_name": "LERE",
+    "first_admin_level_name": "KADUNA"
+  },
+  "544": {
+    "cluster_name": "JOHN OMIDINA",
+    "second_admin_level_name": "ATAKUMOSA EAST",
+    "first_admin_level_name": "OSUN"
+  },
+  "8": {
+    "cluster_name": "MALLAM BALA",
+    "second_admin_level_name": "BURSARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "548": {
+    "cluster_name": "KARAMBANI .A. MUNAMAWA",
+    "second_admin_level_name": "KUBAU",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1466": {
+    "cluster_name": "ALRAMA AUDU",
+    "second_admin_level_name": "FUNE",
+    "first_admin_level_name": "YOBE"
+  },
+  "1460": {
+    "cluster_name": "UGWUEGBU AMBROSE",
+    "second_admin_level_name": "ISIALA-MBANO",
+    "first_admin_level_name": "IMO"
+  },
+  "1316": {
+    "cluster_name": "IBRAHEEM SERIKI",
+    "second_admin_level_name": "IREPO",
+    "first_admin_level_name": "OYO"
+  },
+  "2466": {
+    "cluster_name": "TARGET SEIKIBO",
+    "second_admin_level_name": "YENAGOA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "996": {
+    "cluster_name": "MALAM  YUSUF",
+    "second_admin_level_name": "JEGA",
+    "first_admin_level_name": "KEBBI"
+  },
+  "990": {
+    "cluster_name": "ELDER  CHINYERE S. ESHILE",
+    "second_admin_level_name": "ISIALA-NGWA SOUTH",
+    "first_admin_level_name": "ABIA"
+  },
+  "2212": {
+    "cluster_name": "MAL. ISYAKA LIMAN",
+    "second_admin_level_name": "LAFIA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "258": {
+    "cluster_name": "MAL . ALIYU AHMAD",
+    "second_admin_level_name": "KARAYE",
+    "first_admin_level_name": "KANO"
+  },
+  "998": {
+    "cluster_name": "ALIYU BAKANIKE",
+    "second_admin_level_name": "ANKA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1318": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "KWAMI",
+    "first_admin_level_name": "GOMBE"
+  },
+  "120": {
+    "cluster_name": "CENTRAL SCH.AKPAKWUME",
+    "second_admin_level_name": "UDI",
+    "first_admin_level_name": "ENUGU"
+  },
+  "122": {
+    "cluster_name": "KIRBITIN BARE BARI",
+    "second_admin_level_name": "SHIRA",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "3402": {
+    "cluster_name": "Apena  I",
+    "second_admin_level_name": "OSHODI ISOLO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "124": {
+    "cluster_name": "ODOFIN OGUNDARA",
+    "second_admin_level_name": "IFELODUN",
+    "first_admin_level_name": "OSUN"
+  },
+  "218": {
+    "cluster_name": "H. R. H MOSES OKWEYE",
+    "second_admin_level_name": "NDOKWA EAST",
+    "first_admin_level_name": "DELTA"
+  },
+  "126": {
+    "cluster_name": "SARKIN KAYA ABU",
+    "second_admin_level_name": "ANKA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1402": {
+    "cluster_name": "MODU GASUMI",
+    "second_admin_level_name": "GEIDAM",
+    "first_admin_level_name": "YOBE"
+  },
+  "3408": {
+    "cluster_name": "Akinbo Street 3",
+    "second_admin_level_name": "AJEROMI IFELODUN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "214": {
+    "cluster_name": "mohammed Bulama",
+    "second_admin_level_name": "MAIGATARI",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1824": {
+    "cluster_name": "MANGAL PLAZA",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1826": {
+    "cluster_name": "NKST CHURCH AGUJI",
+    "second_admin_level_name": "KONSHISHA",
+    "first_admin_level_name": "BENUE"
+  },
+  "2068": {
+    "cluster_name": "Jauro Aliyu Atake",
+    "second_admin_level_name": "SARDAUNA",
+    "first_admin_level_name": "TARABA"
+  },
+  "2410": {
+    "cluster_name": "Esteport Ave",
+    "second_admin_level_name": "KOSOFE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "416": {
+    "cluster_name": "CATHOLIC CHURCH",
+    "second_admin_level_name": "OSISIOMA NGWA",
+    "first_admin_level_name": "ABIA"
+  },
+  "1388": {
+    "cluster_name": "Kumba",
+    "second_admin_level_name": "SARDAUNA",
+    "first_admin_level_name": "TARABA"
+  },
+  "2414": {
+    "cluster_name": "N . N . P . C . GEN HOUSE",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "412": {
+    "cluster_name": "FIRST BAPTIST CHURCH",
+    "second_admin_level_name": "IJEBU EAST",
+    "first_admin_level_name": "OGUN"
+  },
+  "1384": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "BALANGA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "920": {
+    "cluster_name": "MUAZU NA INUWA",
+    "second_admin_level_name": "RINGIM",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1386": {
+    "cluster_name": "MALAM AHMAD",
+    "second_admin_level_name": "TSAFE",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "924": {
+    "cluster_name": "Omotorogon",
+    "second_admin_level_name": "BALI",
+    "first_admin_level_name": "TARABA"
+  },
+  "1382": {
+    "cluster_name": "William Sunday",
+    "second_admin_level_name": "JOS NORTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "318": {
+    "cluster_name": "Olowoporoku",
+    "second_admin_level_name": "OSHODI ISOLO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "310": {
+    "cluster_name": "DAVID BALOGUN",
+    "second_admin_level_name": "OSE",
+    "first_admin_level_name": "ONDO"
+  },
+  "316": {
+    "cluster_name": "BAPTIST CHURCH MUCHALLA",
+    "second_admin_level_name": "MUBI NORTH",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1922": {
+    "cluster_name": "BABA ANGULU",
+    "second_admin_level_name": "NASARAWA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "1924": {
+    "cluster_name": "ALHAJI  YUSUF   ALATA",
+    "second_admin_level_name": "IFELODUN",
+    "first_admin_level_name": "KWARA"
+  },
+  "3442": {
+    "cluster_name": "CLEMENT TSAKU",
+    "second_admin_level_name": "LAFIA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "832": {
+    "cluster_name": "YOUTH PARK",
+    "second_admin_level_name": "MKPAT ENIN",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "830": {
+    "cluster_name": "MAI UNGUWA GARBA",
+    "second_admin_level_name": "KUNCHI",
+    "first_admin_level_name": "KANO"
+  },
+  "834": {
+    "cluster_name": "CHIEF HERBERT CHIKWE",
+    "second_admin_level_name": "OWERRI NORTH",
+    "first_admin_level_name": "IMO"
+  },
+  "3572": {
+    "cluster_name": "SYLVANUS JORDAN",
+    "second_admin_level_name": "SOUTHERN IJAW",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "922": {
+    "cluster_name": "Mamdam Mallam",
+    "second_admin_level_name": "WASE",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "368": {
+    "cluster_name": "JAURO ABDULLAHI",
+    "second_admin_level_name": "MAIHA",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1334": {
+    "cluster_name": "SAMUEL ASHANU",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "364": {
+    "cluster_name": "RTD ILIYASU YAHAYA",
+    "second_admin_level_name": "LAFIA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "360": {
+    "cluster_name": "EJIMA  OPALUWA",
+    "second_admin_level_name": "IDAH",
+    "first_admin_level_name": "KOGI"
+  },
+  "2760": {
+    "cluster_name": "Bassa Court",
+    "second_admin_level_name": "JOS NORTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "10": {
+    "cluster_name": "ALTI SECRETARY",
+    "second_admin_level_name": "ZURMI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "26": {
+    "cluster_name": "LIFE APOSTOLIC CHURCH",
+    "second_admin_level_name": "LAGELU",
+    "first_admin_level_name": "OYO"
+  },
+  "2766": {
+    "cluster_name": "S.A. FADUMIYE",
+    "second_admin_level_name": "ADO EKITI",
+    "first_admin_level_name": "EKITI"
+  },
+  "380": {
+    "cluster_name": "OKEPA HALL",
+    "second_admin_level_name": "EKITI SOUTH WEST",
+    "first_admin_level_name": "EKITI"
+  },
+  "3318": {
+    "cluster_name": "IGNATIUS UKACHUKWU",
+    "second_admin_level_name": "IHIALA",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "384": {
+    "cluster_name": "CHIEF' APOSTOLIC CHURCH",
+    "second_admin_level_name": "GWAGWALADA",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "386": {
+    "cluster_name": "ALHAJI  OSENI  MOMOH",
+    "second_admin_level_name": "ETSAKO WEST",
+    "first_admin_level_name": "EDO"
+  },
+  "388": {
+    "cluster_name": "SAANU OLAWALE",
+    "second_admin_level_name": "IPOKIA",
+    "first_admin_level_name": "OGUN"
+  },
+  "444": {
+    "cluster_name": "Mallam Mai Tsamiya",
+    "second_admin_level_name": "HADEJIA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "784": {
+    "cluster_name": "LAWAL MOHAMMED",
+    "second_admin_level_name": "OKEHI",
+    "first_admin_level_name": "KOGI"
+  },
+  "1644": {
+    "cluster_name": "ALH NUHU MAI UNG",
+    "second_admin_level_name": "SOBA",
+    "first_admin_level_name": "KADUNA"
+  },
+  "786": {
+    "cluster_name": "BELLO  ABUBAKAR",
+    "second_admin_level_name": "GWANDU",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1646": {
+    "cluster_name": "Mohd .T. Mohd",
+    "second_admin_level_name": "BIDA",
+    "first_admin_level_name": "NIGER"
+  },
+  "780": {
+    "cluster_name": "DICKSON UZODIGWE",
+    "second_admin_level_name": "AWKA NORTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "782": {
+    "cluster_name": "REDEEM PEOPLES MISSION",
+    "second_admin_level_name": "GANYE",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1642": {
+    "cluster_name": "NWOBA AGWUM",
+    "second_admin_level_name": "IKWO",
+    "first_admin_level_name": "EBONYI"
+  },
+  "788": {
+    "cluster_name": "ABDU MATO",
+    "second_admin_level_name": "RANO",
+    "first_admin_level_name": "KANO"
+  },
+  "1742": {
+    "cluster_name": "CHF. PHILIP JOSIAH",
+    "second_admin_level_name": "AHOADA WEST",
+    "first_admin_level_name": "RIVERS"
+  },
+  "772": {
+    "cluster_name": "SANI MUSA KALLA",
+    "second_admin_level_name": "NGURU",
+    "first_admin_level_name": "YOBE"
+  },
+  "114": {
+    "cluster_name": "Alhaji Shua'ibu",
+    "second_admin_level_name": "Auyo",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "3610": {
+    "cluster_name": "Orere Abosan Estate",
+    "second_admin_level_name": "IKORODU",
+    "first_admin_level_name": "LAGOS"
+  },
+  "578": {
+    "cluster_name": "Halilu M. Ya'u",
+    "second_admin_level_name": "GAGARAWA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "604": {
+    "cluster_name": "NNABUSI EME",
+    "second_admin_level_name": "ENUGU EAST",
+    "first_admin_level_name": "ENUGU"
+  },
+  "2292": {
+    "cluster_name": "L.G.E.A. Primary School",
+    "second_admin_level_name": "QUA ' AN PAN",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "570": {
+    "cluster_name": "ADE ABOLARIN",
+    "second_admin_level_name": "MOBA",
+    "first_admin_level_name": "EKITI"
+  },
+  "576": {
+    "cluster_name": "Atinge Joseph",
+    "second_admin_level_name": "TAKUM",
+    "first_admin_level_name": "TARABA"
+  },
+  "574": {
+    "cluster_name": "DURU MODESTUS OKERE",
+    "second_admin_level_name": "NGOR-OKPALA",
+    "first_admin_level_name": "IMO"
+  },
+  "60": {
+    "cluster_name": "Oroka",
+    "second_admin_level_name": "GASHAKA",
+    "first_admin_level_name": "TARABA"
+  },
+  "404": {
+    "cluster_name": "HAMIDU NOMA",
+    "second_admin_level_name": "AREWA-DANDI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "62": {
+    "cluster_name": "ALHAJI DAN KARAMI",
+    "second_admin_level_name": "ILLELA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "152": {
+    "cluster_name": "THOMAS BAHAGOWO",
+    "second_admin_level_name": "AKWANGA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "64": {
+    "cluster_name": "ALH. BUKAR YARO",
+    "second_admin_level_name": "KAGA",
+    "first_admin_level_name": "BORNO"
+  },
+  "66": {
+    "cluster_name": "NOMA SHEHU",
+    "second_admin_level_name": "SHANGA",
+    "first_admin_level_name": "KEBBI"
+  },
+  "68": {
+    "cluster_name": "BUL. ABUBAKAR",
+    "second_admin_level_name": "JERE",
+    "first_admin_level_name": "BORNO"
+  },
+  "250": {
+    "cluster_name": "MR. SYLVANUS OHAECHE",
+    "second_admin_level_name": "EZEAGU",
+    "first_admin_level_name": "ENUGU"
+  },
+  "256": {
+    "cluster_name": "20/24 OBA STREET OFF 46 PH. ROAD",
+    "second_admin_level_name": "ABA  SOUTH",
+    "first_admin_level_name": "ABIA"
+  },
+  "2804": {
+    "cluster_name": "GODFREY CHUNWO",
+    "second_admin_level_name": "OBIO/AKPOR",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1208": {
+    "cluster_name": "YW LGEA SCHOOL",
+    "second_admin_level_name": "YAGBA WEST",
+    "first_admin_level_name": "KOGI"
+  },
+  "2200": {
+    "cluster_name": "CENTRAL MOSQUE",
+    "second_admin_level_name": "ANKPA",
+    "first_admin_level_name": "KOGI"
+  },
+  "1588": {
+    "cluster_name": "DUKOLI",
+    "second_admin_level_name": "KATAGUM",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "2204": {
+    "cluster_name": "OKOYE LONGINUS",
+    "second_admin_level_name": "NNEWI SOUTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1394": {
+    "cluster_name": "UMUDECHIIDE FAMILY HALL",
+    "second_admin_level_name": "AHOADA EAST",
+    "first_admin_level_name": "RIVERS"
+  },
+  "2206": {
+    "cluster_name": "MR.LONGINUS AMADI",
+    "second_admin_level_name": "ABOH MBAISE",
+    "first_admin_level_name": "IMO"
+  },
+  "1426": {
+    "cluster_name": "MR YOUNG MALUMI",
+    "second_admin_level_name": "WARRI SOUTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "1582": {
+    "cluster_name": "SALIHU  HASSAN",
+    "second_admin_level_name": "ARGUNGU",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1428": {
+    "cluster_name": "Mai Ung. Isah",
+    "second_admin_level_name": "KAUGAMA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1580": {
+    "cluster_name": "SAS ENGINEERING",
+    "second_admin_level_name": "IBADAN NORTH EAST",
+    "first_admin_level_name": "OYO"
+  },
+  "602": {
+    "cluster_name": "NARUNA  MAGAJI",
+    "second_admin_level_name": "GADA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "1584": {
+    "cluster_name": "NCHELEM NWOSU",
+    "second_admin_level_name": "EMOHUA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1038": {
+    "cluster_name": "M. Muhd Baban Bebe",
+    "second_admin_level_name": "TAURA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "938": {
+    "cluster_name": "MR OLUWOLE OWATE",
+    "second_admin_level_name": "OKITIPUPA",
+    "first_admin_level_name": "ONDO"
+  },
+  "508": {
+    "cluster_name": "ZAKARI",
+    "second_admin_level_name": "BAKURA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "736": {
+    "cluster_name": "ELBE ESO",
+    "second_admin_level_name": "BATSARI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "506": {
+    "cluster_name": "IHEBIE LIVINUS",
+    "second_admin_level_name": "ISU",
+    "first_admin_level_name": "IMO"
+  },
+  "2402": {
+    "cluster_name": "ALASO ADURA OLADELE'S HOUSE",
+    "second_admin_level_name": "IFO",
+    "first_admin_level_name": "OGUN"
+  },
+  "502": {
+    "cluster_name": "PROF. OLUTOLA",
+    "second_admin_level_name": "IDO-OSI",
+    "first_admin_level_name": "EKITI"
+  },
+  "1034": {
+    "cluster_name": "Adamu Boka",
+    "second_admin_level_name": "KIRIKASAMMA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "630": {
+    "cluster_name": "OBA KUDU ABIMBOLA",
+    "second_admin_level_name": "SAKI WEST",
+    "first_admin_level_name": "OYO"
+  },
+  "2046": {
+    "cluster_name": "NO18 UGOALA STREET",
+    "second_admin_level_name": "ABA  SOUTH",
+    "first_admin_level_name": "ABIA"
+  },
+  "632": {
+    "cluster_name": "BARE-BARI",
+    "second_admin_level_name": "RABAH",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "1206": {
+    "cluster_name": "ISAH DAGE",
+    "second_admin_level_name": "BICHI",
+    "first_admin_level_name": "KANO"
+  },
+  "634": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "GOMBE",
+    "first_admin_level_name": "GOMBE"
+  },
+  "468": {
+    "cluster_name": "Low Cost Housing Est.",
+    "second_admin_level_name": "JADA",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "636": {
+    "cluster_name": "YERIMA B. ABBA",
+    "second_admin_level_name": "NGALA",
+    "first_admin_level_name": "BORNO"
+  },
+  "464": {
+    "cluster_name": "INFECTIOUS DISEASE HOSPITAL",
+    "second_admin_level_name": "CALABAR SOUTH",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "1218": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "BILLIRI",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1350": {
+    "cluster_name": "IMAM MUILI FOSUN",
+    "second_admin_level_name": "OLUYOLE",
+    "first_admin_level_name": "OYO"
+  },
+  "1356": {
+    "cluster_name": "MAL. SAMINU GARBA",
+    "second_admin_level_name": "GIWA",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1354": {
+    "cluster_name": "SAND BEACH INN",
+    "second_admin_level_name": "ENUGU EAST",
+    "first_admin_level_name": "ENUGU"
+  },
+  "38": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "NAFADA(BAJOGA)",
+    "first_admin_level_name": "GOMBE"
+  },
+  "168": {
+    "cluster_name": "MAGAJI BANDE",
+    "second_admin_level_name": "DANGE SHUNI",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "164": {
+    "cluster_name": "OBI VINCENT",
+    "second_admin_level_name": "ORU EAST",
+    "first_admin_level_name": "IMO"
+  },
+  "166": {
+    "cluster_name": "ARZIKA DAUDA",
+    "second_admin_level_name": "TAMBUWAL",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "162": {
+    "cluster_name": "Hon. Alh. Dahiru Bako",
+    "second_admin_level_name": "JALINGO",
+    "first_admin_level_name": "TARABA"
+  },
+  "964": {
+    "cluster_name": "SALE ABDULLAHI",
+    "second_admin_level_name": "JERE",
+    "first_admin_level_name": "BORNO"
+  },
+  "1728": {
+    "cluster_name": "USMAN HAKIMI",
+    "second_admin_level_name": "GUMMI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "962": {
+    "cluster_name": "JAMBO GREMA",
+    "second_admin_level_name": "BURSARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "1104": {
+    "cluster_name": "GODWIN ASUQUO",
+    "second_admin_level_name": "UYO",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "2108": {
+    "cluster_name": "CHUKWUMA OGODO",
+    "second_admin_level_name": "OBUBRA",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "1102": {
+    "cluster_name": "MOSHOOD OLAWALE",
+    "second_admin_level_name": "IREPODUN",
+    "first_admin_level_name": "OSUN"
+  },
+  "1518": {
+    "cluster_name": "MALLAM MAGAJI",
+    "second_admin_level_name": "GULANI",
+    "first_admin_level_name": "YOBE"
+  },
+  "1100": {
+    "cluster_name": "PROF NJOKU",
+    "second_admin_level_name": "NSUKKA",
+    "first_admin_level_name": "ENUGU"
+  },
+  "2514": {
+    "cluster_name": "LAWRENCE NWILE",
+    "second_admin_level_name": "KHANA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1514": {
+    "cluster_name": "OMIKA ZEKERI",
+    "second_admin_level_name": "DEKINA",
+    "first_admin_level_name": "KOGI"
+  },
+  "408": {
+    "cluster_name": "ANYADIKE MESHACK",
+    "second_admin_level_name": "EKWUSIGO",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1458": {
+    "cluster_name": "ABUBAKAR MATASHI",
+    "second_admin_level_name": "MARU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1510": {
+    "cluster_name": "SADIKU OCHI",
+    "second_admin_level_name": "OKENE",
+    "first_admin_level_name": "KOGI"
+  },
+  "1108": {
+    "cluster_name": "COCIN Church",
+    "second_admin_level_name": "SHENDAM",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1512": {
+    "cluster_name": "KUMULE MANYO",
+    "second_admin_level_name": "DEMSA",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "400": {
+    "cluster_name": "LIMAN BADDEGI II",
+    "second_admin_level_name": "LAPAI",
+    "first_admin_level_name": "NIGER"
+  },
+  "2636": {
+    "cluster_name": "ALABA RAGO MARKET",
+    "second_admin_level_name": "OJO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "2632": {
+    "cluster_name": "MAI SAMAR",
+    "second_admin_level_name": "MASHEGU",
+    "first_admin_level_name": "NIGER"
+  },
+  "1090": {
+    "cluster_name": "COCIN Siken",
+    "second_admin_level_name": "BOKKOS",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1814": {
+    "cluster_name": "RABI'U HEADMASTER",
+    "second_admin_level_name": "TALATA MAFARA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1810": {
+    "cluster_name": "AFIA ABUBU",
+    "second_admin_level_name": "BEKWARRA",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "878": {
+    "cluster_name": "GAA ARIGIDANA I",
+    "second_admin_level_name": "ITESIWAJU",
+    "first_admin_level_name": "OYO"
+  },
+  "1240": {
+    "cluster_name": "SALEH SARKIN BAKA",
+    "second_admin_level_name": "SHIRA",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "876": {
+    "cluster_name": "ISA SHARIA COURT",
+    "second_admin_level_name": "ISA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "874": {
+    "cluster_name": "Jauro Takai",
+    "second_admin_level_name": "ARDO-KOLA",
+    "first_admin_level_name": "TARABA"
+  },
+  "1818": {
+    "cluster_name": "SANI DANKULU",
+    "second_admin_level_name": "MOKWA",
+    "first_admin_level_name": "NIGER"
+  },
+  "674": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "BILLIRI",
+    "first_admin_level_name": "GOMBE"
+  },
+  "254": {
+    "cluster_name": "ALIH SULE",
+    "second_admin_level_name": "OFU",
+    "first_admin_level_name": "KOGI"
+  },
+  "1242": {
+    "cluster_name": "NZE EKE S.O",
+    "second_admin_level_name": "AHIAZU-MBAISE",
+    "first_admin_level_name": "IMO"
+  },
+  "2032": {
+    "cluster_name": "NO 12 OJEWERE STREET",
+    "second_admin_level_name": "EBONYI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "2746": {
+    "cluster_name": "CHIEF CHARLES OSANG",
+    "second_admin_level_name": "BOKI",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "EA_code": {
+    "cluster_name": "EA_NAME",
+    "second_admin_level_name": "Lga_name",
+    "first_admin_level_name": "State_Name"
+  },
+  "1244": {
+    "cluster_name": "VICE CHACELLORS HOUSE",
+    "second_admin_level_name": "PORT-HAROURT",
+    "first_admin_level_name": "RIVERS"
+  },
+  "890": {
+    "cluster_name": "AAGBARA VITE",
+    "second_admin_level_name": "GOKANA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "892": {
+    "cluster_name": "Jauro Joseph Shugaba",
+    "second_admin_level_name": "ZING",
+    "first_admin_level_name": "TARABA"
+  },
+  "3914": {
+    "cluster_name": "SYLVANUS AWI",
+    "second_admin_level_name": "YENAGOA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "894": {
+    "cluster_name": "CHRIST CHILDREN SCH.",
+    "second_admin_level_name": "AKOKO NORTH WEST",
+    "first_admin_level_name": "ONDO"
+  },
+  "896": {
+    "cluster_name": "ASABA IZONYE",
+    "second_admin_level_name": "EKEREMOR",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "958": {
+    "cluster_name": "MALLAM SABIU",
+    "second_admin_level_name": "GULANI",
+    "first_admin_level_name": "YOBE"
+  },
+  "898": {
+    "cluster_name": "DAKACI YAKUBU SHAIBU",
+    "second_admin_level_name": "SANGA",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1098": {
+    "cluster_name": "Block H, 208 Ajelogo Market",
+    "second_admin_level_name": "KOSOFE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "646": {
+    "cluster_name": "Victory Hospital",
+    "second_admin_level_name": "MUSHIN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "4952": {
+    "cluster_name": "IYA OKE OLASETEMINIKAN",
+    "second_admin_level_name": "ILAJE",
+    "first_admin_level_name": "ONDO"
+  },
+  "3134": {
+    "cluster_name": "MANSUR MOHAMMED",
+    "second_admin_level_name": "MAIDUGURI",
+    "first_admin_level_name": "BORNO"
+  },
+  "3224": {
+    "cluster_name": "BARUWA SHOP",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "4016": {
+    "cluster_name": "UNG. KANAWA MAGAJI",
+    "second_admin_level_name": "BAUCHI",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "1606": {
+    "cluster_name": "Samari Jatau",
+    "second_admin_level_name": "GANYE",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "356": {
+    "cluster_name": "TELA BELLO",
+    "second_admin_level_name": "GULANI",
+    "first_admin_level_name": "YOBE"
+  },
+  "354": {
+    "cluster_name": "PRINCIPAL G.G.S.S.",
+    "second_admin_level_name": "DUTSI",
+    "first_admin_level_name": "KATSINA"
+  },
+  "350": {
+    "cluster_name": "Itelorun Street 1",
+    "second_admin_level_name": "SURULERE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "802": {
+    "cluster_name": "Ladan Shehu",
+    "second_admin_level_name": "BALI",
+    "first_admin_level_name": "TARABA"
+  },
+  "800": {
+    "cluster_name": "POWER  GARDEN",
+    "second_admin_level_name": "ETSAKO EAST",
+    "first_admin_level_name": "EDO"
+  },
+  "806": {
+    "cluster_name": "David Yaro",
+    "second_admin_level_name": "USSA",
+    "first_admin_level_name": "TARABA"
+  },
+  "358": {
+    "cluster_name": "GUSAU",
+    "second_admin_level_name": "DOGUWA",
+    "first_admin_level_name": "KANO"
+  },
+  "216": {
+    "cluster_name": "ALH. KIDAWA",
+    "second_admin_level_name": "RIJAU",
+    "first_admin_level_name": "NIGER"
+  },
+  "768": {
+    "cluster_name": "IBRAHEEM  BABA  BAALE",
+    "second_admin_level_name": "IREPODUN",
+    "first_admin_level_name": "KWARA"
+  },
+  "210": {
+    "cluster_name": "L A PRY SCHOOL.ILERO",
+    "second_admin_level_name": "KAJOLA",
+    "first_admin_level_name": "OYO"
+  },
+  "3100": {
+    "cluster_name": "ASSEMBLIES OF GOD CHURCH",
+    "second_admin_level_name": "PORT-HAROURT",
+    "first_admin_level_name": "RIVERS"
+  },
+  "760": {
+    "cluster_name": "MR. OYUS OYEDETUN",
+    "second_admin_level_name": "SULEJA",
+    "first_admin_level_name": "NIGER"
+  },
+  "1784": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "AKKO",
+    "first_admin_level_name": "GOMBE"
+  },
+  "764": {
+    "cluster_name": "ZANGON BUGAJE",
+    "second_admin_level_name": "TALATA MAFARA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1770": {
+    "cluster_name": "PASTOR MIKE",
+    "second_admin_level_name": "PORT-HAROURT",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1110": {
+    "cluster_name": "YADDA HULA TAURAWA",
+    "second_admin_level_name": "BUNGUDU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1076": {
+    "cluster_name": "TEACHING HOSPITAL",
+    "second_admin_level_name": "CALABAR MUNICIPAL",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "1074": {
+    "cluster_name": "ELECHI TEGWOR",
+    "second_admin_level_name": "EMOHUA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "2328": {
+    "cluster_name": "EKENWAOBAS MARKET",
+    "second_admin_level_name": "OSISIOMA NGWA",
+    "first_admin_level_name": "ABIA"
+  },
+  "1072": {
+    "cluster_name": "AGU NWAFOR",
+    "second_admin_level_name": "ONICHA",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1778": {
+    "cluster_name": "HOLYGHOST CATH CHURCH",
+    "second_admin_level_name": "MBAITOLI",
+    "first_admin_level_name": "IMO"
+  },
+  "1070": {
+    "cluster_name": "AKPAN SAM",
+    "second_admin_level_name": "NSIT UBIUM",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "288": {
+    "cluster_name": "MALAM JADI",
+    "second_admin_level_name": "TANGAZA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "462": {
+    "cluster_name": "NUHU OKPU",
+    "second_admin_level_name": "NASARAWA-EGGON",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "1678": {
+    "cluster_name": "MBAMASE",
+    "second_admin_level_name": "GUMA",
+    "first_admin_level_name": "BENUE"
+  },
+  "572": {
+    "cluster_name": "EBUNOLUWA INT'L SCHOOL",
+    "second_admin_level_name": "EGBEDORE",
+    "first_admin_level_name": "OSUN"
+  },
+  "1674": {
+    "cluster_name": "IKEMU EVELYN",
+    "second_admin_level_name": "ETHIOPE WEST",
+    "first_admin_level_name": "DELTA"
+  },
+  "280": {
+    "cluster_name": "CHIEF AJANA",
+    "second_admin_level_name": "OKITIPUPA",
+    "first_admin_level_name": "ONDO"
+  },
+  "284": {
+    "cluster_name": "CHIEF D.F EDOZIE",
+    "second_admin_level_name": "OSHIMILI SOUTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "286": {
+    "cluster_name": "MAI ANGUWA AUDU",
+    "second_admin_level_name": "FIKA",
+    "first_admin_level_name": "YOBE"
+  },
+  "1094": {
+    "cluster_name": "NEW APOSTOLIC CH.",
+    "second_admin_level_name": "IKONO",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "1096": {
+    "cluster_name": "MUHAMMADU KIMBA",
+    "second_admin_level_name": "BUKKUYUM",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "678": {
+    "cluster_name": "AUGUSTINE NWANGBO",
+    "second_admin_level_name": "ADO",
+    "first_admin_level_name": "BENUE"
+  },
+  "1092": {
+    "cluster_name": "GORDON OBAROGE",
+    "second_admin_level_name": "ISOKO SOUTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "1978": {
+    "cluster_name": "BANKOLE YUSUF",
+    "second_admin_level_name": "AYEDADE",
+    "first_admin_level_name": "OSUN"
+  },
+  "4336": {
+    "cluster_name": "GALADIMA OF KARU",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1154": {
+    "cluster_name": "COMMUNITY PRY SCHOOL",
+    "second_admin_level_name": "EJIGBO",
+    "first_admin_level_name": "OSUN"
+  },
+  "676": {
+    "cluster_name": "CHRIST FOR THR WORLD MISSION",
+    "second_admin_level_name": "ETUNG",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "1156": {
+    "cluster_name": "ALHAJI IDI",
+    "second_admin_level_name": "YUSUFARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "670": {
+    "cluster_name": "LCCN DULO BWATIYE",
+    "second_admin_level_name": "FUFORE",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "1150": {
+    "cluster_name": "Malam Abdu Likita",
+    "second_admin_level_name": "BABURA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "672": {
+    "cluster_name": "ALI PASS-MAN",
+    "second_admin_level_name": "KAURAN-NAMODA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1152": {
+    "cluster_name": "Mallam Umaru Magama",
+    "second_admin_level_name": "KAZAURE",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "262": {
+    "cluster_name": "BULAMA MODU FANDIMI",
+    "second_admin_level_name": "YUNUSARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "266": {
+    "cluster_name": "721 Road, D Close",
+    "second_admin_level_name": "AMUWO ODOFIN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "1792": {
+    "cluster_name": "ALHPA N/P SCH.",
+    "second_admin_level_name": "AKURE SOUTH",
+    "first_admin_level_name": "ONDO"
+  },
+  "264": {
+    "cluster_name": "ALKALI UMMARU",
+    "second_admin_level_name": "GORONYO",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "2554": {
+    "cluster_name": "ADAM BULAMA ALIYU",
+    "second_admin_level_name": "DALA",
+    "first_admin_level_name": "KANO"
+  },
+  "182": {
+    "cluster_name": "Catholic Church",
+    "second_admin_level_name": "IBI",
+    "first_admin_level_name": "TARABA"
+  },
+  "1550": {
+    "cluster_name": "MAGAJI MAMMAN",
+    "second_admin_level_name": "GADA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "1552": {
+    "cluster_name": "MALAM ABU MAI ARABIC",
+    "second_admin_level_name": "KAURAN-NAMODA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "2012": {
+    "cluster_name": "ALH ABUBAKAR MAI AKU",
+    "second_admin_level_name": "KADUNA SOUTH",
+    "first_admin_level_name": "KADUNA"
+  },
+  "58": {
+    "cluster_name": "ABUBAKAR UMARU",
+    "second_admin_level_name": "KAURU",
+    "first_admin_level_name": "KADUNA"
+  },
+  "1556": {
+    "cluster_name": "BENJAMIN OMOGO",
+    "second_admin_level_name": "OHAUKWU",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1558": {
+    "cluster_name": "PETER ANYAOGU",
+    "second_admin_level_name": "IGBOEZE NORTH",
+    "first_admin_level_name": "ENUGU"
+  },
+  "56": {
+    "cluster_name": "Zaki Ndua Nongu",
+    "second_admin_level_name": "TARKA",
+    "first_admin_level_name": "BENUE"
+  },
+  "2994": {
+    "cluster_name": "SIMBRIDGE SECONDARY SCH",
+    "second_admin_level_name": "EGOR",
+    "first_admin_level_name": "EDO"
+  },
+  "50": {
+    "cluster_name": "ETHIOPE SENIOR HOUSE",
+    "second_admin_level_name": "SAGAMU",
+    "first_admin_level_name": "OGUN"
+  },
+  "2396": {
+    "cluster_name": "ALHAJI HUDU",
+    "second_admin_level_name": "KANKARA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "536": {
+    "cluster_name": "SACRED HEART SCHOOL",
+    "second_admin_level_name": "OBOT-- AKARA",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "532": {
+    "cluster_name": "LAGOS JUNCTION  PRIMARY  SCHOOL",
+    "second_admin_level_name": "WARRI NORTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "54": {
+    "cluster_name": "NA HANTSI LONGMAN",
+    "second_admin_level_name": "WURNO",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "2194": {
+    "cluster_name": "T A C  AROJO VILLAGE",
+    "second_admin_level_name": "IFE CENTRAL",
+    "first_admin_level_name": "OSUN"
+  },
+  "1412": {
+    "cluster_name": "ABDULHAMEED",
+    "second_admin_level_name": "JAKUSKO",
+    "first_admin_level_name": "YOBE"
+  },
+  "1414": {
+    "cluster_name": "ALH MAGAJI",
+    "second_admin_level_name": "SABUWA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "538": {
+    "cluster_name": "SOPEN COMP. HIGH SCHOOL",
+    "second_admin_level_name": "IJEBU NORTH",
+    "first_admin_level_name": "OGUN"
+  },
+  "2778": {
+    "cluster_name": "LAFIAGI SEC. SCHOOL",
+    "second_admin_level_name": "EDU",
+    "first_admin_level_name": "KWARA"
+  },
+  "988": {
+    "cluster_name": "WALKER-MAN CHRISTIAN ASSO.",
+    "second_admin_level_name": "IKWUANO",
+    "first_admin_level_name": "ABIA"
+  },
+  "2474": {
+    "cluster_name": "CHIEF BENARD NWANFOR",
+    "second_admin_level_name": "ETCHE",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1326": {
+    "cluster_name": "LAWRENCE AJAYI",
+    "second_admin_level_name": "OSE",
+    "first_admin_level_name": "ONDO"
+  },
+  "774": {
+    "cluster_name": "MR IBRAHIM ADENIRAN",
+    "second_admin_level_name": "IREWOLE",
+    "first_admin_level_name": "OSUN"
+  },
+  "982": {
+    "cluster_name": "Mai Ang. Dan'asabe Hoku",
+    "second_admin_level_name": "WUKARI",
+    "first_admin_level_name": "TARABA"
+  },
+  "980": {
+    "cluster_name": "OBANTAL HOSPITAL",
+    "second_admin_level_name": "OLUYOLE",
+    "first_admin_level_name": "OYO"
+  },
+  "986": {
+    "cluster_name": "ASSEMBLIES OF GOD CH.",
+    "second_admin_level_name": "SOUTHERN IJAW",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "984": {
+    "cluster_name": "MALAM FARI",
+    "second_admin_level_name": "ITAS/GADAU",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "252": {
+    "cluster_name": "BUKAR GANA",
+    "second_admin_level_name": "YOLA NORTH",
+    "first_admin_level_name": "ADAMAWA"
+  },
+  "116": {
+    "cluster_name": "SALOMI OFONI",
+    "second_admin_level_name": "PATANI",
+    "first_admin_level_name": "DELTA"
+  },
+  "110": {
+    "cluster_name": "MALAM GARBA DAN KANE",
+    "second_admin_level_name": "BUKKUYUM",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1336": {
+    "cluster_name": "DAA CAMPS",
+    "second_admin_level_name": "OGBA/EGBEMA/NDONI",
+    "first_admin_level_name": "RIVERS"
+  },
+  "118": {
+    "cluster_name": "ZAKI TSENONGO UMA",
+    "second_admin_level_name": "MAKURDI",
+    "first_admin_level_name": "BENUE"
+  },
+  "1858": {
+    "cluster_name": "MURTALA HALL A5",
+    "second_admin_level_name": "JERE",
+    "first_admin_level_name": "BORNO"
+  },
+  "1850": {
+    "cluster_name": "Christ Apostolic Church",
+    "second_admin_level_name": "AJEROMI IFELODUN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "2072": {
+    "cluster_name": "PHC NASS GWOMG",
+    "second_admin_level_name": "JOS NORTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "206": {
+    "cluster_name": "Bello Haladu",
+    "second_admin_level_name": "KARIM-LAMIDO",
+    "first_admin_level_name": "TARABA"
+  },
+  "1856": {
+    "cluster_name": "AGBOMOGE BLOCK INDUSTRY",
+    "second_admin_level_name": "SAGAMU",
+    "first_admin_level_name": "OGUN"
+  },
+  "1256": {
+    "cluster_name": "EBUNOHA CHARLES",
+    "second_admin_level_name": "EZEAGU",
+    "first_admin_level_name": "ENUGU"
+  },
+  "428": {
+    "cluster_name": "NAMADI BEBEJI",
+    "second_admin_level_name": "BEBEJI",
+    "first_admin_level_name": "KANO"
+  },
+  "1254": {
+    "cluster_name": "ADEFISAYO GABRIEL AWORELE",
+    "second_admin_level_name": "IFE SOUTH",
+    "first_admin_level_name": "OSUN"
+  },
+  "1252": {
+    "cluster_name": "DANMALAM BADAMA",
+    "second_admin_level_name": "BIRNIN-MAGAJI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "918": {
+    "cluster_name": "OGODO OGBU",
+    "second_admin_level_name": "IKWO",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1398": {
+    "cluster_name": "MR.   NWAJIAKU",
+    "second_admin_level_name": "IDEMILI NORTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1396": {
+    "cluster_name": "EZE AJIOGU",
+    "second_admin_level_name": "EBONYI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "2178": {
+    "cluster_name": "GATAMA CHUHU BAUCHI",
+    "second_admin_level_name": "RIJAU",
+    "first_admin_level_name": "NIGER"
+  },
+  "422": {
+    "cluster_name": "HYCIENT OBIAGWU",
+    "second_admin_level_name": "ORSU",
+    "first_admin_level_name": "IMO"
+  },
+  "1528": {
+    "cluster_name": "Kusoru Compound",
+    "second_admin_level_name": "ETI OSA",
+    "first_admin_level_name": "LAGOS"
+  },
+  "910": {
+    "cluster_name": "ZANGINA ADAMU",
+    "second_admin_level_name": "GAYA",
+    "first_admin_level_name": "KANO"
+  },
+  "1390": {
+    "cluster_name": "OBIMBA HALL",
+    "second_admin_level_name": "OHAFIA",
+    "first_admin_level_name": "ABIA"
+  },
+  "308": {
+    "cluster_name": "NKST PRIM SCHOOL YAAYA",
+    "second_admin_level_name": "VANDEIKYA",
+    "first_admin_level_name": "BENUE"
+  },
+  "3958": {
+    "cluster_name": "OUR LADY'S CATH. CHURCH",
+    "second_admin_level_name": "IDEMILI NORTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "300": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "FUNAKAYE",
+    "first_admin_level_name": "GOMBE"
+  },
+  "302": {
+    "cluster_name": "Oduntan Street II",
+    "second_admin_level_name": "MUSHIN",
+    "first_admin_level_name": "LAGOS"
+  },
+  "530": {
+    "cluster_name": "MALAM DUNGAI",
+    "second_admin_level_name": "TSAFE",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "304": {
+    "cluster_name": "HARUNA FULLANI",
+    "second_admin_level_name": "OLORUNSOGO",
+    "first_admin_level_name": "OYO"
+  },
+  "2202": {
+    "cluster_name": "Likita Longurum (Congo)",
+    "second_admin_level_name": "SHENDAM",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "306": {
+    "cluster_name": "AYOOLA JAFARU'S COMPOUND",
+    "second_admin_level_name": "IMEKO-AFON",
+    "first_admin_level_name": "OGUN"
+  },
+  "778": {
+    "cluster_name": "PATRICK UGWU",
+    "second_admin_level_name": "OHAOZARA",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1932": {
+    "cluster_name": "CHIEF OMUEMU",
+    "second_admin_level_name": "OREDO",
+    "first_admin_level_name": "EDO"
+  },
+  "4114": {
+    "cluster_name": "Atan Olukosi",
+    "second_admin_level_name": "ALIMOSHO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "1936": {
+    "cluster_name": "ETSUYANKPA",
+    "second_admin_level_name": "MOKWA",
+    "first_admin_level_name": "NIGER"
+  },
+  "1934": {
+    "cluster_name": "YISAU OGUNSANYA",
+    "second_admin_level_name": "IJEBU NORTH",
+    "first_admin_level_name": "OGUN"
+  },
+  "846": {
+    "cluster_name": "RIGHT WING FILLING STATION",
+    "second_admin_level_name": "AROCHUKWU",
+    "first_admin_level_name": "ABIA"
+  },
+  "844": {
+    "cluster_name": "AKPABUYO COUNCIL SECRETARIAL",
+    "second_admin_level_name": "AKPABUYO",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "840": {
+    "cluster_name": "Garison Julapai",
+    "second_admin_level_name": "KARIM-LAMIDO",
+    "first_admin_level_name": "TARABA"
+  },
+  "1280": {
+    "cluster_name": "MAIGEZOJI",
+    "second_admin_level_name": "DAN MUSA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "374": {
+    "cluster_name": "ANIEKAN ASUQUO",
+    "second_admin_level_name": "BAKASSI",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "2208": {
+    "cluster_name": "MEKIA ISHAYA",
+    "second_admin_level_name": "MANGU",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "2560": {
+    "cluster_name": "Aina Ajobo Street",
+    "second_admin_level_name": "IFAKO IJAYE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "2678": {
+    "cluster_name": "VINCENT MUOGBO",
+    "second_admin_level_name": "IDEMILI NORTH",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1972": {
+    "cluster_name": "Davou Pam",
+    "second_admin_level_name": "BARKIN  LADI",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "3366": {
+    "cluster_name": "TRUE FOUNDATION GOSPEL CHURCH",
+    "second_admin_level_name": "OBIO/AKPOR",
+    "first_admin_level_name": "RIVERS"
+  },
+  "2924": {
+    "cluster_name": "ADAMU DANYA",
+    "second_admin_level_name": "KAFIN-HAUSA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "2926": {
+    "cluster_name": "ABARA KARIBO",
+    "second_admin_level_name": "SOUTHERN IJAW",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "1630": {
+    "cluster_name": "Moh'd Ibrahim",
+    "second_admin_level_name": "AGAIE",
+    "first_admin_level_name": "NIGER"
+  },
+  "1738": {
+    "cluster_name": "Festac Hotel",
+    "second_admin_level_name": "GASSOL",
+    "first_admin_level_name": "TARABA"
+  },
+  "1984": {
+    "cluster_name": "MICHAEL IZUAGBACHUKWU",
+    "second_admin_level_name": "ANAOCHA",
+    "first_admin_level_name": "ANAMBRA"
+  },
+  "1634": {
+    "cluster_name": "ST. LOUIS SEC. SCHOOL",
+    "second_admin_level_name": "OWO",
+    "first_admin_level_name": "ONDO"
+  },
+  "1636": {
+    "cluster_name": "Maiunguwa Inusa",
+    "second_admin_level_name": "BIRNIN KUDU",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "6272": {
+    "cluster_name": "1,Bolaji Str. (Chairman CDA'S House)",
+    "second_admin_level_name": "ALIMOSHO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "1730": {
+    "cluster_name": "LAMIDO JABARO",
+    "second_admin_level_name": "YUSUFARI",
+    "first_admin_level_name": "YOBE"
+  },
+  "1988": {
+    "cluster_name": "Alafia",
+    "second_admin_level_name": "IFAKO IJAYE",
+    "first_admin_level_name": "LAGOS"
+  },
+  "568": {
+    "cluster_name": "MOH'D   HAMZA",
+    "second_admin_level_name": "AKWANGA",
+    "first_admin_level_name": "NASARAWA"
+  },
+  "754": {
+    "cluster_name": "Block D24, D25 & D26",
+    "second_admin_level_name": "BASSA",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "758": {
+    "cluster_name": "HAYIN KOGI",
+    "second_admin_level_name": "MADOBI",
+    "first_admin_level_name": "KANO"
+  },
+  "564": {
+    "cluster_name": "U.E.C. CHURCH",
+    "second_admin_level_name": "IBAJI",
+    "first_admin_level_name": "KOGI"
+  },
+  "566": {
+    "cluster_name": "RAFIN GIDAN MALAM SHEKARAU",
+    "second_admin_level_name": "BODINGA",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "1594": {
+    "cluster_name": "St. John Bosco Cath.Church",
+    "second_admin_level_name": "QUA ' AN PAN",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1596": {
+    "cluster_name": "DOSUNMU'S HOUSE",
+    "second_admin_level_name": "IFO",
+    "first_admin_level_name": "OGUN"
+  },
+  "4608": {
+    "cluster_name": "Oladun/Yomi Shotimehin",
+    "second_admin_level_name": "ALIMOSHO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "228": {
+    "cluster_name": "IDEHENRE PALACE",
+    "second_admin_level_name": "ESAN WEST",
+    "first_admin_level_name": "EDO"
+  },
+  "226": {
+    "cluster_name": "MAL. NUHU",
+    "second_admin_level_name": "KIRU",
+    "first_admin_level_name": "KANO"
+  },
+  "2956": {
+    "cluster_name": "MOROKETE",
+    "second_admin_level_name": "ADO-ODO/OTA",
+    "first_admin_level_name": "OGUN"
+  },
+  "3172": {
+    "cluster_name": "BOKIZIBA ODEKE",
+    "second_admin_level_name": "YENAGOA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "2950": {
+    "cluster_name": "Sound Hope",
+    "second_admin_level_name": "ALIMOSHO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "222": {
+    "cluster_name": "GODWIN CAMP",
+    "second_admin_level_name": "BOMADI",
+    "first_admin_level_name": "DELTA"
+  },
+  "220": {
+    "cluster_name": "MR OGBOMO",
+    "second_admin_level_name": "OVIA SOUTH WEST",
+    "first_admin_level_name": "EDO"
+  },
+  "1024": {
+    "cluster_name": "MATUNDA SHEKARE",
+    "second_admin_level_name": "FAKAI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "2216": {
+    "cluster_name": "KANGO",
+    "second_admin_level_name": "BUNGUDU",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1188": {
+    "cluster_name": "SHOPMAN OGBORIO",
+    "second_admin_level_name": "SAGBAMA",
+    "first_admin_level_name": "BAYELSA"
+  },
+  "2214": {
+    "cluster_name": "ALHAJI GARBA",
+    "second_admin_level_name": "WASAGU/DANKO",
+    "first_admin_level_name": "KEBBI"
+  },
+  "1186": {
+    "cluster_name": "MICHAEL HALLIDAY",
+    "second_admin_level_name": "BONNY",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1036": {
+    "cluster_name": "BABAWURO M. LALLE",
+    "second_admin_level_name": "FUNE",
+    "first_admin_level_name": "YOBE"
+  },
+  "1184": {
+    "cluster_name": "Sule Sale",
+    "second_admin_level_name": "SULE TANKAR-KAR",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "1044": {
+    "cluster_name": "ADAM MUSTAFA",
+    "second_admin_level_name": "KONDUGA",
+    "first_admin_level_name": "BORNO"
+  },
+  "1182": {
+    "cluster_name": "YUSUF YAS",
+    "second_admin_level_name": "MANGU",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1180": {
+    "cluster_name": "Nanpus  Tatga",
+    "second_admin_level_name": "PANKSHIN",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "726": {
+    "cluster_name": "Na Alhaji Ibrahim",
+    "second_admin_level_name": "MIGA",
+    "first_admin_level_name": "JIGAWA"
+  },
+  "724": {
+    "cluster_name": "DABO  ALIYU  HALL",
+    "second_admin_level_name": "DAMATURU",
+    "first_admin_level_name": "YOBE"
+  },
+  "722": {
+    "cluster_name": "MADAKI GOJE",
+    "second_admin_level_name": "SUMAILA",
+    "first_admin_level_name": "KANO"
+  },
+  "500": {
+    "cluster_name": "MOHAMMAD MAI GARI",
+    "second_admin_level_name": "KEBBE",
+    "first_admin_level_name": "SOKOTO"
+  },
+  "720": {
+    "cluster_name": "ALH. GWIO KURA",
+    "second_admin_level_name": "BADE",
+    "first_admin_level_name": "YOBE"
+  },
+  "1744": {
+    "cluster_name": "IDRIS  NDAKO",
+    "second_admin_level_name": "EDU",
+    "first_admin_level_name": "KWARA"
+  },
+  "728": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "BALANGA",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1164": {
+    "cluster_name": "MUH'D D/JUMMA SHATA",
+    "second_admin_level_name": "BIRNIN KEBBI",
+    "first_admin_level_name": "KEBBI"
+  },
+  "150": {
+    "cluster_name": "AFOR MARKET",
+    "second_admin_level_name": "NSUKKA",
+    "first_admin_level_name": "ENUGU"
+  },
+  "606": {
+    "cluster_name": "HARDO SULAIMAN JULDE",
+    "second_admin_level_name": "TORO",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "1160": {
+    "cluster_name": "MAI UNGUWA  IBRAHIM",
+    "second_admin_level_name": "KUBAU",
+    "first_admin_level_name": "KADUNA"
+  },
+  "154": {
+    "cluster_name": "GIMTI MALAU",
+    "second_admin_level_name": "MANGU",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1162": {
+    "cluster_name": "ALH MUHAMED",
+    "second_admin_level_name": "SURULERE",
+    "first_admin_level_name": "OYO"
+  },
+  "156": {
+    "cluster_name": "MR TYEM ASOMBO",
+    "second_admin_level_name": "USHONGO",
+    "first_admin_level_name": "BENUE"
+  },
+  "1484": {
+    "cluster_name": "ASSEMBLIES OF GOD CHURCH",
+    "second_admin_level_name": "UGHELLI NORTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "1168": {
+    "cluster_name": "CHIEF JOHNSON NTANG",
+    "second_admin_level_name": "ORUK -- ANAM",
+    "first_admin_level_name": "AKWA IBOM"
+  },
+  "608": {
+    "cluster_name": "SELEPRIM JOE",
+    "second_admin_level_name": "AKUKU  TORU",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1202": {
+    "cluster_name": "YAR DUTSI",
+    "second_admin_level_name": "BAKURA",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "2584": {
+    "cluster_name": "LOVINA OLUOGU",
+    "second_admin_level_name": "ABUA/ODUAL",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1898": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "FUNAKAYE",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1366": {
+    "cluster_name": "BUKAR KIME",
+    "second_admin_level_name": "KONDUGA",
+    "first_admin_level_name": "BORNO"
+  },
+  "1214": {
+    "cluster_name": "WAKILI A. BUBA",
+    "second_admin_level_name": "BAGUDO",
+    "first_admin_level_name": "KEBBI"
+  },
+  "48": {
+    "cluster_name": "BAALE IDOWU HOUSE",
+    "second_admin_level_name": "ADO-ODO/OTA",
+    "first_admin_level_name": "OGUN"
+  },
+  "46": {
+    "cluster_name": "IGBINEDION  ENABULE",
+    "second_admin_level_name": "OVIA NORTH EAST",
+    "first_admin_level_name": "EDO"
+  },
+  "950": {
+    "cluster_name": "Alh. Ali Gashiwa",
+    "second_admin_level_name": "RAFI",
+    "first_admin_level_name": "NIGER"
+  },
+  "44": {
+    "cluster_name": "ADUNNI SHOPPING COMPLX",
+    "second_admin_level_name": "OGBOMOSHO SOUTH",
+    "first_admin_level_name": "OYO"
+  },
+  "42": {
+    "cluster_name": "ALHAJI MAGAJI DANO",
+    "second_admin_level_name": "GIADE",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "954": {
+    "cluster_name": "BULAMA GREMA JALO",
+    "second_admin_level_name": "GUBIO",
+    "first_admin_level_name": "BORNO"
+  },
+  "956": {
+    "cluster_name": "OHIE MARKET",
+    "second_admin_level_name": "ESAN NORTH EAST",
+    "first_admin_level_name": "EDO"
+  },
+  "1568": {
+    "cluster_name": "PMC BARRACKS",
+    "second_admin_level_name": "JOS SOUTH",
+    "first_admin_level_name": "PLATEAU"
+  },
+  "1446": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "DUKKU",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1298": {
+    "cluster_name": "Yusi Machido",
+    "second_admin_level_name": "AKKO",
+    "first_admin_level_name": "GOMBE"
+  },
+  "1112": {
+    "cluster_name": "SADI NA YALWA",
+    "second_admin_level_name": "FUNTUA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "1116": {
+    "cluster_name": "ALH. SANI MAKERI",
+    "second_admin_level_name": "ZURMI",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "1292": {
+    "cluster_name": "ILUOZE",
+    "second_admin_level_name": "AMAC",
+    "first_admin_level_name": "FCT ABUJA"
+  },
+  "1118": {
+    "cluster_name": "MR JAMES AMAGADA",
+    "second_admin_level_name": "ISOKO NORTH",
+    "first_admin_level_name": "DELTA"
+  },
+  "2504": {
+    "cluster_name": "OKEMINI NDUGO",
+    "second_admin_level_name": "IZZI",
+    "first_admin_level_name": "EBONYI"
+  },
+  "1564": {
+    "cluster_name": "BADA LADINDIN",
+    "second_admin_level_name": "OYO WEST",
+    "first_admin_level_name": "OYO"
+  },
+  "1294": {
+    "cluster_name": "7, Church Street",
+    "second_admin_level_name": "ALIMOSHO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "1448": {
+    "cluster_name": "DOGARI YARI",
+    "second_admin_level_name": "KAGARKO",
+    "first_admin_level_name": "KADUNA"
+  },
+  "466": {
+    "cluster_name": "BAMABA EPELLE",
+    "second_admin_level_name": "OPOBO/NKORO",
+    "first_admin_level_name": "RIVERS"
+  },
+  "2722": {
+    "cluster_name": "DR OMOIKE",
+    "second_admin_level_name": "OREDO",
+    "first_admin_level_name": "EDO"
+  },
+  "796": {
+    "cluster_name": "WAKKALA DAN YARI",
+    "second_admin_level_name": "MARADUN",
+    "first_admin_level_name": "ZAMFARA"
+  },
+  "2640": {
+    "cluster_name": "UNG. IBRAHIM  DAN INO",
+    "second_admin_level_name": "NINGI",
+    "first_admin_level_name": "BAUCHI"
+  },
+  "2644": {
+    "cluster_name": "INNOCENT AYA",
+    "second_admin_level_name": "OHAUKWU",
+    "first_admin_level_name": "EBONYI"
+  },
+  "488": {
+    "cluster_name": "CHIEF EFFIOM OKON",
+    "second_admin_level_name": "CALABAR MUNICIPAL",
+    "first_admin_level_name": "CROSS RIVER"
+  },
+  "486": {
+    "cluster_name": "EZE AMAKIRI",
+    "second_admin_level_name": "OGBA/EGBEMA/NDONI",
+    "first_admin_level_name": "RIVERS"
+  },
+  "484": {
+    "cluster_name": "CHIEF S.A.N. OPUNGIRIKO",
+    "second_admin_level_name": "OKRIKA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1804": {
+    "cluster_name": "ADENIYI BAKERY",
+    "second_admin_level_name": "IJERO",
+    "first_admin_level_name": "EKITI"
+  },
+  "1800": {
+    "cluster_name": "ASSEMBLIES OF GOD CHURCH",
+    "second_admin_level_name": "OKRIKA",
+    "first_admin_level_name": "RIVERS"
+  },
+  "1714": {
+    "cluster_name": "JUMA'AT MOSQUE",
+    "second_admin_level_name": "SAFANA",
+    "first_admin_level_name": "KATSINA"
+  },
+  "1592": {
+    "cluster_name": "PERETORO SUNDAY",
+    "second_admin_level_name": "BURUTU",
+    "first_admin_level_name": "DELTA"
+  },
+  "472": {
+    "cluster_name": "SABATH MISSION",
+    "second_admin_level_name": "ANINRI",
+    "first_admin_level_name": "ENUGU"
+  },
+  "1364": {
+    "cluster_name": "Mathew Galadima",
+    "second_admin_level_name": "MUNYA",
+    "first_admin_level_name": "NIGER"
+  },
+  "1862": {
+    "cluster_name": "Military House",
+    "second_admin_level_name": "OSHODI ISOLO",
+    "first_admin_level_name": "LAGOS"
+  },
+  "1360": {
+    "cluster_name": "ALHAJI ARESA",
+    "second_admin_level_name": "OSOGBO",
+    "first_admin_level_name": "OSUN"
+  },
+  "478": {
+    "cluster_name": "ATIMA JOHN",
+    "second_admin_level_name": "ETHIOPE WEST",
+    "first_admin_level_name": "DELTA"
+  },
+  "4586": {
+    "cluster_name": "COMMUNITY HEALTH CENTRE",
+    "second_admin_level_name": "YENAGOA",
+    "first_admin_level_name": "BAYELSA"
+  }
+}
