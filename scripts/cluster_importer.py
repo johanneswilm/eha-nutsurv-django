@@ -21,6 +21,8 @@ import fileinput
 reader = csv.reader(fileinput.input(), delimiter=',')
 clusterfile = {}
 for row in reader:
+    if not any(row):
+        continue
     clusterfile[row[7]] = {
       "cluster_name": row[4],
       "second_admin_level_name": row[2],
