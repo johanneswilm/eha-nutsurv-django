@@ -302,9 +302,9 @@ var childAnthropometry = {
                         (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
                     if (monthAge > 30) {
                         oldChildren++;
-                    } else {
+                    } else if (monthAge > 6) {
                         youngChildren++;
-                    }
+                    } // else we don't care
                 }
                 if (child.hasOwnProperty('survey')) {
                     if (child.survey.hasOwnProperty('weight')) {
