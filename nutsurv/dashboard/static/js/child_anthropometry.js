@@ -300,7 +300,7 @@ var childAnthropometry = {
                     monthAge =  currentDate.getMonth() -
                         birthDate.getMonth() +
                         (12 * (currentDate.getFullYear() - birthDate.getFullYear()));
-                    if (monthAge <30) {
+                    if (monthAge > 30) {
                         oldChildren++;
                     } else {
                         youngChildren++;
