@@ -37,7 +37,7 @@ teamStrataSelectors = {
     $.get('/dashboard/teammembers/', function (data) {
       scope.fill_selectpicker(
         "#team_lead_selector",
-        '<option value="<%- names.id %>"><%- names.firstName %> <%- names.lastName %></option>',
+        '<option value="<%- names.id %>"><%- names.id %></option>',
         data,
         scope.read_querystring()['team_lead'],
         callback
