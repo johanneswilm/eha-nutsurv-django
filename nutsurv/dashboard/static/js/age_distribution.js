@@ -1,5 +1,12 @@
 $.get('/dashboard/householdmember/age_distribution/.json' + window.location.search, function (data) {
   var opts = {
+      grid: {
+          hoverable: true
+      },
+      tooltip: {
+          show: true,
+          content: "Age: %x, Count: %y"
+      },
       series: {
           color: "#2779AA",
           bars: {
