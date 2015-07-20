@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
+# Formats a cluster file in the following format to JSON.
+#
+# Usage: `./cluster_importer.py < 2015_06_29_NNHS_2015_Selected\ EA_Final.csv`
+#
 #    x    COLUMN NAMES
-
+#
 #    0    State_Name
 #    1    State_code
 #    2    Lga_name
