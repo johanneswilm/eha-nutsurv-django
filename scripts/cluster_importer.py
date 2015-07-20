@@ -20,6 +20,7 @@ import fileinput
 
 reader = csv.reader(fileinput.input(), delimiter=',')
 clusterfile = {}
+next(reader)
 for row in reader:
     if not any(row):
         continue
