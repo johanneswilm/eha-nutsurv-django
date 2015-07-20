@@ -16,11 +16,18 @@ $.get('/dashboard/householdmember/age_distribution/.json' + window.location.sear
           min: 0
       }
   };
-  jQuery.plot('#age_distribution_children_chart', [data.ageDistribution.children.map(function(o) {
+
+  var allAgeDistribution = data.ageDistribution.householdMember;
+
+  var childrensAgeDistribution = data.ageDistribution.filter(function(o) {
+    return o.age_in_months <= 59 && o.age_in_months >= 0;
+  });
+
+  jQuery.plot('#age_distribution_children_chart', [childrensAgeDistribution.map(function(o) {
     return [o.age_in_months, o.count];
   })], opts);
 
-  jQuery.plot('#age_distribution_household_members_chart', [data.ageDistribution.householdMember.map(function(o) {
+  jQuery.plot('#age_distribution_household_members_chart', [allAgeDistribution.map(function(o) {
     return [o.age_in_years, o.count];
   })], opts);
 
