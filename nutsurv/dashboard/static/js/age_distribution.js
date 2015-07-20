@@ -19,7 +19,7 @@ $.get('/dashboard/householdmember/age_distribution/.json' + window.location.sear
 
   var allAgeDistribution = data.ageDistribution.householdMember;
 
-  var childrensAgeDistribution = data.ageDistribution.filter(function(o) {
+  var childrensAgeDistribution = data.ageDistribution.children.filter(function(o) {
     return o.age_in_months <= 59 && o.age_in_months >= 0;
   });
 
