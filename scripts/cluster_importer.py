@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
+# Formats a cluster file in the following format to JSON.
+#
+# Usage: `./cluster_importer.py < 2015_06_29_NNHS_2015_Selected\ EA_Final.csv`
+#
 #    x    COLUMN NAMES
-
+#
 #    0    State_Name
 #    1    State_code
 #    2    Lga_name
@@ -16,15 +20,18 @@
 
 import csv
 import json
+import fileinput
 
-with open('2015_06_29_NNHS_2015_Selected EA_Final.xlsx - EA_2015.csv') as csvfile:
-    reader = csv.reader(csvfile, delimiter=',')
-    clusterfile = {}
-    for row in reader:
-        clusterfile[row[5]] = {
-          "cluster_name": row[4],
-          "second_admin_level_name": row[2],
-          "first_admin_level_name": row[0],
-        }
+reader = csv.reader(fileinput.input(), delimiter=',')
+clusterfile = {}
+next(reader)
+for row in reader:
+    if not any(row):
+        continue
+    clusterfile[row[7]] = {
+      "cluster_name": row[4],
+      "second_admin_level_name": row[2],
+      "first_admin_level_name": row[0],
+    }
 
-    print json.dumps(clusterfile, indent=2, separators=(',', ': '))
+print json.dumps(clusterfile, indent=2, separators=(',', ': '))
