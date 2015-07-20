@@ -2,16 +2,16 @@ from fabric.api import roles, env, run, cd, sudo
 from fabric.contrib.files import upload_template
 
 env.hosts = [
-    'ubuntu@nutsurv-dev.eocng.org',
-    'ubuntu@nutsurv-staging.eocng.org',
-    'ubuntu@nutsurv.eocng.org',
-    'ubuntu@bigbuilder.eocng.org',
+    'deploy@nutsurv-d.ie.nutsurv.eocng.org',
+    'deploy@nutsurv-e.ie.nutsurv.eocng.org',
+    'deploy@nutsurv-f.ie.nutsurv.eocng.org',
+    'deploy@bigbuilder.eocng.org',
 ]
 
 env.roledefs = {
-    'dev': ['ubuntu@nutsurv-dev.eocng.org', ],
-    'staging': ['ubuntu@nutsurv-staging.eocng.org'],
-    'production': ['ubuntu@nutsurv.eocng.org'],
+    'dev': ['deploy@nutsurv-d.ie.nutsurv.eocng.org', ],
+    'staging': ['deploy@nutsurv-e.ie.nutsurv.eocng.org'],
+    'production': ['deploy@nutsurv-f.ie.nutsurv.eocng.org'],
     'build': ['ubuntu@bigbuilder.eocng.org'],
 }
 
