@@ -44,8 +44,15 @@ var mappingChecks = {
             _.each(mapAlerts, function(mapAlert){
                 var marker;
                 if (mapAlert.hasOwnProperty('location')) {
-                    marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red}),
-                    mappingChecks.mapMarkers.push(marker),
+                    marker = L.marker(mapAlert.location, {icon: mapConfig.markers.green, opacity: 0.3});
+                    if(mapAlert.type === 'mapping_check_wrong_location_first_admin_level') {
+                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red, opacity: 0.3});
+                    }
+                    if(mapAlert.type === 'mapping_check_wrong_location_second_admin_level') {
+                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red, opacity: 0.3});
+                    }
+
+                    mappingChecks.mapMarkers.push(marker);
                     marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
                 }
                 incorrectSurveys.push(mapAlert);
