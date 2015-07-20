@@ -163,6 +163,10 @@ var surveyCompletedStrata = {
             } else {
                 stratumObject.meanHouseholdsPerCluster = Math.round(stratumObject.households / stratumObject.clusters * 10) /10;
             }
+
+            // XXX: all clusters have a planned completion count of 32, see:
+            // https://github.com/eHealthAfrica/eha-nutsurv-django/issues/565
+            stratumObject.clusters = 32;
         });
 
         if (surveyCompletedStrata.table) {
