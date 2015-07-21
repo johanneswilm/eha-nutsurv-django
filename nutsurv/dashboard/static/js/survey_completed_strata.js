@@ -61,7 +61,7 @@ var surveyCompletedStrata = {
                     maxMembers: 0,
                     maxHouseholdsPerCluster: 0,
                     minHouseholdsPerCluster: -1,
-                    meanHouseholdsPerCluster: 0,
+                    medianHouseholdsPerCluster: 0,
                 };
             if (firstAdminLevelsWithReserveClustersData.indexOf(stratum) === -1) {
                 // Reserve clusters not enabled
@@ -132,13 +132,13 @@ var surveyCompletedStrata = {
 
         _.each(perStratumData, function(stratumObject) {
             if (stratumObject.households > 0) {
-                stratumObject.meanMembers = Math.round(stratumObject.members / stratumObject.households * 10) /10;
-                stratumObject.meanWomen = Math.round(stratumObject.women / stratumObject.households * 10) /10;
-                stratumObject.meanChildren = Math.round(stratumObject.children / stratumObject.households * 10) /10;
+                stratumObject.medianMembers = _.median(stratumObject.members);
+                stratumObject.medianWomen = _.median(stratumObject.women);
+                stratumObject.medianChildren = _.median(stratumObject.children);
             } else {
-                stratumObject.meanMembers = 0;
-                stratumObject.meanWomen = 0;
-                stratumObject.meanChildren = 0;
+                stratumObject.medianMembers = 0;
+                stratumObject.medianWomen = 0;
+                stratumObject.medianChildren = 0;
             }
             if (stratumObject.minMembers === -1) {
                 stratumObject.minMembers = 0;
@@ -161,7 +161,7 @@ var surveyCompletedStrata = {
             if (stratumObject.minHouseholdsPerCluster === -1) {
                 stratumObject.minHouseholdsPerCluster = 0;
             } else {
-                stratumObject.meanHouseholdsPerCluster = Math.round(stratumObject.households / stratumObject.clusters * 10) /10;
+                stratumObject.medianHouseholdsPerCluster = _.median(stratumObject.households);
             }
 
             // XXX: all clusters have a planned completion count of 32, see:
@@ -208,18 +208,18 @@ var surveyCompletedStrata = {
                 { name: 'clusters_reserve', data: 'reserve' },
                 { name: 'households_per_cluster_min', data: 'minHouseholdsPerCluster' },
                 { name: 'households_per_cluster_max', data: 'maxHouseholdsPerCluster' },
-                { name: 'households_per_cluster_mean', data: 'meanHouseholdsPerCluster' },
+                { name: 'households_per_cluster_median', data: 'medianHouseholdsPerCluster' },
                 { name: 'members_min', data: 'minMembers' },
                 { name: 'members_max', data: 'maxMembers' },
-                { name: 'members_mean', data: 'meanMembers' },
+                { name: 'members_median', data: 'medianMembers' },
                 { name: 'women_total', data: 'women' },
                 { name: 'women_min', data: 'minWomen' },
                 { name: 'women_max', data: 'maxWomen' },
-                { name: 'women_mean', data: 'meanWomen' },
+                { name: 'women_median', data: 'medianWomen' },
                 { name: 'children_total', data: 'children' },
                 { name: 'children_min', data: 'minChildren' },
                 { name: 'children_max', data: 'maxChildren' },
-                { name: 'children_mean', data: 'meanChildren' },
+                { name: 'children_median', data: 'medianChildren' },
             ],
             order: [[ 1, "desc" ]]
         });

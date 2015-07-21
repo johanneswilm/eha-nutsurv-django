@@ -56,7 +56,7 @@ var surveyCompletedTeams = {
                     maxMembers: 0,
                     maxHouseholdsPerCluster: 0,
                     minHouseholdsPerCluster: -1,
-                    meanHouseholdsPerCluster: 0,
+                    medianHouseholdsPerCluster: 0,
                 };
 
             perTeamData.push(teamObject);
@@ -108,13 +108,13 @@ var surveyCompletedTeams = {
 
         _.each(perTeamData, function(teamObject) {
             if (teamObject.households > 0) {
-                teamObject.meanMembers = Math.round(teamObject.members / teamObject.households * 10) /10;
-                teamObject.meanWomen = Math.round(teamObject.women / teamObject.households * 10) /10;
-                teamObject.meanChildren = Math.round(teamObject.children / teamObject.households * 10) /10;
+                teamObject.medianMembers = _.median(teamObject.members);
+                teamObject.medianWomen = _.median(teamObject.women);
+                teamObject.medianChildren = _.median(teamObject.children);
             } else {
-                teamObject.meanMembers = 0;
-                teamObject.meanWomen = 0;
-                teamObject.meanChildren = 0;
+                teamObject.medianMembers = 0;
+                teamObject.medianWomen = 0;
+                teamObject.medianChildren = 0;
             }
             if (teamObject.minMembers === -1) {
                 teamObject.minMembers = 0;
@@ -137,7 +137,7 @@ var surveyCompletedTeams = {
             if (teamObject.minHouseholdsPerCluster === -1) {
                 teamObject.minHouseholdsPerCluster = 0;
             } else {
-                teamObject.meanHouseholdsPerCluster = Math.round(teamObject.households / teamObject.clusters * 10) /10;
+                teamObject.medianHouseholdsPerCluster = _.median(teamObject.households);
             }
         });
 
@@ -178,18 +178,18 @@ var surveyCompletedTeams = {
                 { name: 'households', data: 'households' },
                 { name: 'households_per_cluster_min', data: 'minHouseholdsPerCluster' },
                 { name: 'households_per_cluster_max', data: 'maxHouseholdsPerCluster' },
-                { name: 'households_per_cluster_mean', data: 'meanHouseholdsPerCluster' },
+                { name: 'households_per_cluster_median', data: 'medianHouseholdsPerCluster' },
                 { name: 'members_min', data: 'minMembers' },
                 { name: 'members_max', data: 'maxMembers' },
-                { name: 'members_mean', data: 'meanMembers' },
+                { name: 'members_median', data: 'medianMembers' },
                 { name: 'women_total', data: 'women' },
                 { name: 'women_min', data: 'minWomen' },
                 { name: 'women_max', data: 'maxWomen' },
-                { name: 'women_mean', data: 'meanWomen' },
+                { name: 'women_median', data: 'medianWomen' },
                 { name: 'children_total', data: 'children' },
                 { name: 'children_min', data: 'minChildren' },
                 { name: 'children_max', data: 'maxChildren' },
-                { name: 'children_mean', data: 'meanChildren' },
+                { name: 'children_median', data: 'medianChildren' },
             ],
             order: [[ 1, "asc" ]]
         });
