@@ -1,10 +1,13 @@
 teamStrataSelectors = {
 
   read_querystring: function() {
+    function decode(uri) {
+      return window.decodeURIComponent(uri || '').replace(/\+/g, ' ');
+    }
     var qs = {};
     window.location.search.substring(1).split('&').forEach(function(el) {
       el = el.split('=');
-      qs[el[0]] = el[1];
+      qs[el[0]] = decode(el[1]);
     });
     return qs;
   },
