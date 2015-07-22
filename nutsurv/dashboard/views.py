@@ -58,9 +58,9 @@ class HouseholdMemberViewset(viewsets.ModelViewSet):
             h = h.by_teamlead(team_lead)
 
         if request.GET.get('stratum'):
-            stratum_num = int(request.GET['stratum'])
-            c = c.by_cluster_num(stratum_num)
-            h = h.by_cluster_num(stratum_num)
+            stratum = request.GET['stratum']
+            c = c.by_first_admin_level(stratum)
+            h = h.by_first_admin_level(stratum)
 
         return Response({
             'age_distribution': {
@@ -116,8 +116,8 @@ def missing_data(request):
         h = h.by_teamlead(team_lead)
 
     if request.GET.get('stratum'):
-        stratum_num = int(request.GET['stratum'])
-        h = h.by_cluster_num(stratum_num)
+        stratum = request.GET['stratum']
+        h = h.by_first_admin_level(stratum)
 
     return render(request, 'dashboard/missing_data.html', {
         'existing_data': HouseholdMember.missing_data(h),
