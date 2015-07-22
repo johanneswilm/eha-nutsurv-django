@@ -36,8 +36,7 @@
     "file-saver": "*",
     "list.pagination.js": "~0.1.1",
     "nut-surv": "git@github.com:eHealthAfrica/NutSurv-Mobile.git#develop",
-    "raven-js": "~1.1.18",
-    "lodash.math": "433171a835285da012ffdc3b5c54139ae703241a"
+    "raven-js": "~1.1.18"
   },
   "resolutions": {
     "angular": "~1.4.1"
