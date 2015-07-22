@@ -1,158 +1,150 @@
 {
-  "KANO":{
-    "standard":10,
-    "reserve":5
+  "KANO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "State_Name":{
-    "standard":10,
-    "reserve":5
+  "OSUN": {
+    "standard": 10,
+    "reserve": 5
   },
-  "OSUN":{
-    "standard":10,
-    "reserve":5
+  "ONDO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "ONDO":{
-    "standard":10,
-    "reserve":5
+  "OYO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "OYO":{
-    "standard":10,
-    "reserve":5
+  "ABIA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "ABIA":{
-    "standard":10,
-    "reserve":5
+  "BAYELSA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "BAYELSA":{
-    "standard":10,
-    "reserve":5
+  "KATSINA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "KATSINA":{
-    "standard":10,
-    "reserve":5
+  "ADAMAWA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "ADAMAWA":{
-    "standard":10,
-    "reserve":5
+  "KADUNA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "KADUNA":{
-    "standard":10,
-    "reserve":5
+  "AKWA IBOM": {
+    "standard": 10,
+    "reserve": 5
   },
-  "AKWA IBOM":{
-    "standard":10,
-    "reserve":5
+  "KOGI": {
+    "standard": 10,
+    "reserve": 5
   },
-  "KOGI":{
-    "standard":10,
-    "reserve":5
+  "YOBE": {
+    "standard": 10,
+    "reserve": 5
   },
-  "YOBE":{
-    "standard":10,
-    "reserve":5
+  "CROSS RIVER": {
+    "standard": 10,
+    "reserve": 5
   },
-  "Adamawa":{
-    "standard":10,
-    "reserve":5
+  "BORNO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "CROSS RIVER":{
-    "standard":10,
-    "reserve":5
+  "NIGER": {
+    "standard": 10,
+    "reserve": 5
   },
-  "BORNO":{
-    "standard":10,
-    "reserve":5
+  "TARABA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "NIGER":{
-    "standard":10,
-    "reserve":5
+  "EBONYI": {
+    "standard": 10,
+    "reserve": 5
   },
-  "ENUGU":{
-    "standard":10,
-    "reserve":5
+  "FCT ABUJA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "EBONYI":{
-    "standard":10,
-    "reserve":5
+  "BENUE": {
+    "standard": 10,
+    "reserve": 5
   },
-  "FCT ABUJA":{
-    "standard":10,
-    "reserve":5
+  "JIGAWA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "BENUE":{
-    "standard":10,
-    "reserve":5
+  "OGUN": {
+    "standard": 10,
+    "reserve": 5
   },
-  "JIGAWA":{
-    "standard":10,
-    "reserve":5
+  "ANAMBRA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "OGUN":{
-    "standard":10,
-    "reserve":5
+  "BAUCHI": {
+    "standard": 10,
+    "reserve": 5
   },
-  "ANAMBRA":{
-    "standard":10,
-    "reserve":5
+  "IMO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "BAUCHI":{
-    "standard":10,
-    "reserve":5
+  "RIVERS": {
+    "standard": 10,
+    "reserve": 5
   },
-  "IMO":{
-    "standard":10,
-    "reserve":5
+  "SOKOTO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "RIVERS":{
-    "standard":10,
-    "reserve":5
+  "KEBBI": {
+    "standard": 10,
+    "reserve": 5
   },
-  "SOKOTO":{
-    "standard":10,
-    "reserve":5
+  "PLATEAU": {
+    "standard": 10,
+    "reserve": 5
   },
-  "KEBBI":{
-    "standard":10,
-    "reserve":5
+  "EKITI": {
+    "standard": 10,
+    "reserve": 5
   },
-  "PLATEAU":{
-    "standard":10,
-    "reserve":5
+  "ENUGU": {
+    "standard": 10,
+    "reserve": 5
   },
-  "EKITI":{
-    "standard":10,
-    "reserve":5
+  "GOMBE": {
+    "standard": 10,
+    "reserve": 5
   },
-  "TARABA":{
-    "standard":10,
-    "reserve":5
+  "ZAMFARA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "GOMBE":{
-    "standard":10,
-    "reserve":5
+  "EDO": {
+    "standard": 10,
+    "reserve": 5
   },
-  "ZAMFARA":{
-    "standard":10,
-    "reserve":5
+  "LAGOS": {
+    "standard": 10,
+    "reserve": 5
   },
-  "EDO":{
-    "standard":10,
-    "reserve":5
+  "KWARA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "LAGOS":{
-    "standard":10,
-    "reserve":5
+  "DELTA": {
+    "standard": 10,
+    "reserve": 5
   },
-  "KWARA":{
-    "standard":10,
-    "reserve":5
-  },
-  "DELTA":{
-    "standard":10,
-    "reserve":5
-  },
-  "NASARAWA":{
-    "standard":10,
-    "reserve":5
+  "NASARAWA": {
+    "standard": 10,
+    "reserve": 5
   }
 }
