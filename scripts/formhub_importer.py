@@ -39,57 +39,73 @@ def simplify_keys(obj):
 surveys = simplify_keys(raw_json)
 null = None
 
-for formhub_survey in surveys:
-    print '=' * 20
-    s = Struct(**formhub_survey)
-    members = []
-    women = dict((w['womanname1'], w) for w in s.note_begin_woman or [] if 'womanname1' in w)  # Look on my works and dispair.
-    children = dict((c['child_name'], c) for c in (s.child or []) if 'child_name' in c)
+def format(clusters):
+    for formhub_survey in surveys:
+        print '=' * 20
+        s = Struct(**formhub_survey)
+        members = []
+        women = dict((w['womanname1'], w) for w in s.note_begin_woman or [] if 'womanname1' in w)  # Look on my works and dispair.
+        children = dict((c['child_name'], c) for c in (s.child or []) if 'child_name' in c)
 
 
-    print json.dumps(formhub_survey, sort_keys=True, indent=4)
-    print '=' * 10
-    for i, m in enumerate(s.hh_roster or []):
-        m = Struct(**m)
-        w = Struct(**women.get(m.name, {}))
-        c = Struct(**children.get(m.name, {}))
-        members += [{
-                    "index": i,
-                    "firstName": m.name,
-                    "birthdate": m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).strftime('%Y-%m-%d') or None,
-                    "gender": m.sex == '2' and 'F' or 'M',
-                    "muac": int(c.muac or w.wom_muac or 0),
-                    "weight": float(c.weight or 0),
-                    "height": float(c.height or 0),
-                    "heightType": c.measure == '2' and 'recumbent' or 'standing',
-                    "extraQuestions": {},
-                    "edema": int(c.edema or 0)
-                    }]
+        print json.dumps(formhub_survey, sort_keys=True, indent=4)
+        print '=' * 10
+        for i, m in enumerate(s.hh_roster or []):
+            m = Struct(**m)
+            w = Struct(**women.get(m.name, {}))
+            c = Struct(**children.get(m.name, {}))
+            members += [{
+                        "index": i,
+                        "firstName": m.name,
+                        "birthdate": m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).strftime('%Y-%m-%d') or None,
+                        "gender": m.sex == '2' and 'F' or 'M',
+                        "muac": int(c.muac or w.wom_muac or 0),
+                        "weight": float(c.weight or 0),
+                        "height": float(c.height or 0),
+                        "heightType": c.measure == '2' and 'recumbent' or 'standing',
+                        "extraQuestions": {},
+                        "edema": int(c.edema or 0)
+                        }]
 
-    nutsurv_survey = {
-        "uuid": s.instanceID.split(":")[1],
-        "householdNumber": int(s.hh_number),
-        "members": members,
-        "teamLead": TEAM_MEMBER_URL % s.team_leader_num,
-        "teamAssistant": TEAM_MEMBER_URL % s.team_leader_num,
-        "teamAnthropometrist": TEAM_MEMBER_URL % s.team_leader_num,
-        "firstAdminLevel": "",
-        "secondAdminLevel": "",
-        "cluster": int(s.cluster),
-        "clusterName": s.cluster_name,
-        "startTime": s.starttime,
-        "endTime": s.endtime,
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                float(s.gps.split()[0]),
-                float(s.gps.split()[1])
-            ]
+        nutsurv_survey = {
+            "uuid": s.instanceID.split(":")[1],
+            "householdNumber": int(s.hh_number),
+            "members": members,
+            "teamLead": TEAM_MEMBER_URL % s.team_leader_num,
+            "teamAssistant": TEAM_MEMBER_URL % s.team_leader_num,
+            "teamAnthropometrist": TEAM_MEMBER_URL % s.team_leader_num,
+            "startTime": s.starttime,
+            "endTime": s.endtime,
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    float(s.gps.split()[0]),
+                    float(s.gps.split()[1])
+                ]
+            }
         }
-    }
-    out = json.dumps(nutsurv_survey, sort_keys=True, indent=4)
-    print out
-    url = NUTSURV_DOMAIN + "/dashboard/surveys/"
-    headers = {'Content-type': 'application/json'}
-    r = requests.post(url, data=out, headers=headers)
-    print r.json()
+
+        cluster = {
+            "firstAdminLevel": "",
+            "secondAdminLevel": "",
+            "cluster": int(s.cluster),
+            "clusterName": s.cluster_name,
+        }
+
+        if s.cluster in clusters:
+            c = clusters[s.cluster]
+            cluster["firstAdminLevel"] = c["first_admin_level_name"]
+            cluster["secondAdminLevel"] = c["second_admin_level_name"]
+
+        nutsurv_survey.update(cluster)
+
+        out = json.dumps(nutsurv_survey, sort_keys=True, indent=4)
+        print out
+        url = NUTSURV_DOMAIN + "/dashboard/surveys/"
+        headers = {'Content-type': 'application/json'}
+        r = requests.post(url, data=out, headers=headers)
+        print r.json()
+
+with open('default_clusters.json') as raw_clusters:
+    clusters = json.load(raw_clusters)
+    format(clusters)

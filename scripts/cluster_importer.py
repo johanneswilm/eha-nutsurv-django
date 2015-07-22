@@ -30,8 +30,8 @@ for row in reader:
         continue
     clusterfile[row[7]] = {
       "cluster_name": row[4],
-      "second_admin_level_name": row[2],
-      "first_admin_level_name": row[0],
+      "second_admin_level_name": row[2].upper(),
+      "first_admin_level_name": row[0].upper(),
     }
 
 print json.dumps(clusterfile, indent=2, separators=(',', ': '))
