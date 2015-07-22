@@ -30,6 +30,7 @@
     "leaflet.markercluster": "~0.4.0",
     "list.js": "~1.1.1",
     "lodash": "3.0.0",
+    "lodash.math": "433171a835285da012ffdc3b5c54139ae703241a",
     "moment": "~2.10.2",
     "moment-timezone": "~0.3.1",
     "parse-python-indentation": "~0.1.0",
