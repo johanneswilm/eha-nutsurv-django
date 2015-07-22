@@ -43,8 +43,9 @@ for formhub_survey in surveys:
     print '=' * 20
     s = Struct(**formhub_survey)
     members = []
-    women = dict((w['womanname1'], w) for w in s.note_begin_woman or [])
-    children = dict((c['child_name'], c) for c in s.child or [])
+    women = dict((w['womanname1'], w) for w in s.note_begin_woman or [] if 'womanname1' in w)  # Look on my works and dispair.
+    children = dict((c['child_name'], c) for c in (s.child or []) if 'child_name' in c)
+
 
     print json.dumps(formhub_survey, sort_keys=True, indent=4)
     print '=' * 10
