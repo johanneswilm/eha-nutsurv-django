@@ -57,7 +57,7 @@ def format(clusters):
             members += [{
                         "index": i,
                         "firstName": m.name,
-                        "birthdate": m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).strftime('%Y-%m-%d') or None,
+                        "birthdate": m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).isoformat() or None,
                         "gender": m.sex == '2' and 'F' or 'M',
                         "muac": int(c.muac or w.wom_muac or 0),
                         "weight": float(c.weight or 0),
