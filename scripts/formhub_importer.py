@@ -106,6 +106,9 @@ def format(clusters):
         r = requests.post(url, data=out, headers=headers)
         print r.json()
 
-with open('default_clusters.json') as raw_clusters:
+dirname = os.path.dirname(os.path.realpath(__file__))
+cluster_file = os.path.join(dirname, 'default_clusters.json')
+
+with open(cluster_file) as raw_clusters:
     clusters = json.load(raw_clusters)
     format(clusters)
