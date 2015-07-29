@@ -1,0 +1,1 @@
+* * * * * flock -n /tmp/nutsurv.lock curl -u user:password 'https://formhub.example.com/user/forms/myform/api?sort=\%7B\%22_submission_time\%22\%3A-1\%7D&start=0&limit=5000' | NUTSURV_DOMAIN='https://nutsurv.example.com' python /path/to/formhub_importer.py
