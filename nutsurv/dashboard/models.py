@@ -18,7 +18,6 @@ import parse_python_indentation
 from django.utils.translation import ugettext as _
 import django.contrib.gis.db.models as gismodels
 from django.db import models
-from django.contrib.gis.geos import Point
 from django.db.models import Q
 
 
@@ -481,20 +480,10 @@ class BaseHouseholdSurveyJSON(gismodels.Model):
             return team_id
 
     def get_location(self):
-        try:
-            location = self.json['location']
-        except TypeError:
-            return None
-        else:
-            return location
+        return self.location
 
     def get_cluster_id(self):
-        try:
-            location = self.json['cluster']
-        except TypeError:
-            return None
-        else:
-            return location
+        return self.cluster
 
     def get_team_leader_name(self):
         """Returns a team leader name or None if no team leader name found.
@@ -719,7 +708,7 @@ class Alert(models.Model):
         'digit_preference',
         'data_collection_time',
         'time_to_complete_single_survey',
-        'daily_data_collection_duration',
+        'daily_data_collection_duration'
     )
 
     alert_type = models.CharField(
@@ -779,7 +768,7 @@ class Alert(models.Model):
             cls.mapping_check_missing_cluster,
             cls.mapping_check_missing_location,
             cls.mapping_check_unknown_cluster,
-            cls.mapping_check_wrong_location_first_admin_level,
+            # cls.mapping_check_wrong_location_first_admin_level,
             cls.mapping_check_wrong_location_second_admin_level,
             cls.missing_data_alert,
             cls.sex_ratio_alert,
@@ -788,7 +777,7 @@ class Alert(models.Model):
             cls.woman_age_14_15_displacement_alert,
             cls.woman_age_4549_5054_displacement_alert,
             cls.digit_preference_alert,
-            cls.data_collection_time_alert,
+            # cls.data_collection_time_alert,
         ]
 
         for fun in alert_generators:
@@ -834,7 +823,7 @@ class Alert(models.Model):
         Generates alert if location is missing
         """
 
-        if household_survey.get_location() or not household_survey.location:
+        if household_survey.get_location() or household_survey.location:
             return
 
         alert_text = 'No location for survey of team {} (survey {})'.format(
@@ -847,11 +836,7 @@ class Alert(models.Model):
             'type': alert_type,
             'team_name': household_survey.get_team_name(),
             'team_id': household_survey.get_team_id(),
-            'survey_id': household_survey.id,
-            'location': [
-                household_survey.location[0],
-                household_survey.location[1],
-            ],
+            'survey_id': household_survey.id
         }
 
         if household_survey.get_cluster_id():
@@ -998,14 +983,14 @@ class Alert(models.Model):
         second_admin_level = SecondAdminLevel.find_second_admin_level(
             name=second_admin_level_name, first_admin_level_name=first_admin_level_name)
 
-        if second_admin_level is None:
-            # if no second admin level found, assume database inconsistencies and abort
+        # if second_admin_level is None:
+        #    # if no second admin level found, assume database inconsistencies and abort
+        #    return
+
+        if second_admin_level and second_admin_level.mpoly.contains(household_survey.location):
             return
 
-        if second_admin_level.contains_location(household_survey.location):
-            return
-
-        alert_text = 'Wrong second admin level location for team {} (survey {})'.format(
+        alert_text = 'Wrong second admin level location for team {} (survey {}) '.format(
             household_survey.get_team_id(),
             household_survey.id,
         )
@@ -2007,17 +1992,6 @@ class Area(gismodels.Model):
     # Override the model's default manager to enable spatial queries.
     objects = gismodels.GeoManager()
 
-    def contains_location(self, location):
-        """Returns True if location (longitude, latitude) lies within this area.
-        Otherwise, it returns False.  Assumes that the location argument uses
-        the same srid as the area.
-        """
-        longitude = float(location[0])
-        latitude = float(location[1])
-        point = Point(longitude, latitude, srid=self.mpoly.srid)
-        output = self.mpoly.contains(point)
-        return output
-
     def __unicode__(self):
         if self.varname_2:
             aka = u' (a.k.a. {})'.format(self.varname_2)
@@ -2046,12 +2020,12 @@ class SecondAdminLevel(Area):
     @classmethod
     def find_second_admin_level(cls, name, first_admin_level_name, country_name=None):
         if country_name:
-            query = {'name_0': country_name, 'name_1': first_admin_level_name}
+            query = {'name_0__iexact': country_name, 'name_1__iexact': first_admin_level_name}
         else:
-            query = {'name_1': first_admin_level_name}
+            query = {'name_1__iexact': first_admin_level_name}
         found = 0
         query_result = []
-        for second_admin_level_name_field in ('name_2', 'varname_2'):
+        for second_admin_level_name_field in ('name_2__iexact', 'varname_2__iexact'):
             query[second_admin_level_name_field] = name
             query_result = cls.objects.filter(**query)
             found = query_result.count()

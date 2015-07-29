@@ -73,6 +73,13 @@ class HouseholdMemberViewset(viewsets.ModelViewSet):
 class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
     queryset = HouseholdSurveyJSON.objects.prefetch_related('members').all()
     serializer_class = HouseholdSurveyJSONSerializer
+
+    def list(request, *args, **kwargs):
+        return Response([])
+
+    def retrieve(request, *args, **kwargs):
+        return Response([])
+
     permission_classes = ()  # Allow any
 
 

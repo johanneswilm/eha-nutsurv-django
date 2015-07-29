@@ -44,20 +44,28 @@ var mappingChecks = {
             _.each(mapAlerts, function(mapAlert){
                 var marker;
                 if (mapAlert.hasOwnProperty('location')) {
-                    marker = L.marker(mapAlert.location, {icon: mapConfig.markers.green, opacity: 0.3});
-                    if(mapAlert.type === 'mapping_check_wrong_location_first_admin_level') {
-                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red, opacity: 0.3});
+                    if(mapAlert.type !== 'mapping_check_wrong_location_first_admin_level' && mapAlert.type !== 'mapping_check_wrong_location_second_admin_level') {
+                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.green, zIndexOffset:10000});
+                      mappingChecks.mapMarkers.push(marker);
+                      marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
+                      incorrectSurveys.push(mapAlert);
                     }
-                    if(mapAlert.type === 'mapping_check_wrong_location_second_admin_level') {
-                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red, opacity: 0.3});
-                    }
-
-                    mappingChecks.mapMarkers.push(marker);
-                    marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
                 }
-                incorrectSurveys.push(mapAlert);
-
             });
+
+            _.each(mapAlerts, function(mapAlert){
+                var marker;
+                if (mapAlert.hasOwnProperty('location')) {
+                    if(mapAlert.type === 'mapping_check_wrong_location_first_admin_level' || mapAlert.type === 'mapping_check_wrong_location_second_admin_level') {
+                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red});
+                      mappingChecks.mapMarkers.push(marker);
+                      marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
+                      incorrectSurveys.push(mapAlert);
+                    }
+                }
+            });
+
+
             mappingChecks.incorrectSurveys = incorrectSurveys;
             group = new L.featureGroup(mappingChecks.mapMarkers);
             mappingChecks.map.fitBounds(group.getBounds());
@@ -95,6 +103,7 @@ var mappingChecks = {
         'mapping_check_missing_location': _.template('<li>Missing location! Team ID <%- teamLead.id %></li>'),
         'mapping_check_missing_cluster_id': _.template('<li>Missing cluster ID! Team ID <%- teamLead.id %></li>'),
         'mapping_check_wrong_location_first_admin_level': _.template('<li>Wrong location (first admin level)! Team ID <%- teamLead.id %></li>'),
+        'mapping_check_wrong_location_second_admin_level': _.template('<li>Wrong location (2nd admin level)! Team ID <%- teamLead.id %></li>'),
         'no_alerts': _.template('<li>Currently there are no map alerts</li>')
     }
 
