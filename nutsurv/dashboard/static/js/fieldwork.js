@@ -45,7 +45,7 @@ var mappingChecks = {
                 var marker;
                 if (mapAlert.hasOwnProperty('location')) {
                     if(mapAlert.type !== 'mapping_check_wrong_location_first_admin_level' && mapAlert.type !== 'mapping_check_wrong_location_second_admin_level') {
-                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.green, zIndexOffset:10000});
+                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.green});
                       mappingChecks.mapMarkers.push(marker);
                       marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
                       incorrectSurveys.push(mapAlert);
@@ -57,7 +57,7 @@ var mappingChecks = {
                 var marker;
                 if (mapAlert.hasOwnProperty('location')) {
                     if(mapAlert.type === 'mapping_check_wrong_location_first_admin_level' || mapAlert.type === 'mapping_check_wrong_location_second_admin_level') {
-                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red});
+                      marker = L.marker(mapAlert.location, {icon: mapConfig.markers.red, zIndexOffset:10000});
                       mappingChecks.mapMarkers.push(marker);
                       marker.addTo(mappingChecks.map).bindPopup(mappingChecks.popupTmp(mapAlert));
                       incorrectSurveys.push(mapAlert);
