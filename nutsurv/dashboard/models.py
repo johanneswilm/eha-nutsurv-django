@@ -18,7 +18,6 @@ import parse_python_indentation
 from django.utils.translation import ugettext as _
 import django.contrib.gis.db.models as gismodels
 from django.db import models
-from django.contrib.gis.geos import Point
 from django.db.models import Q
 
 
@@ -769,7 +768,7 @@ class Alert(models.Model):
             cls.mapping_check_missing_cluster,
             cls.mapping_check_missing_location,
             cls.mapping_check_unknown_cluster,
-            #cls.mapping_check_wrong_location_first_admin_level,
+            # cls.mapping_check_wrong_location_first_admin_level,
             cls.mapping_check_wrong_location_second_admin_level,
             cls.missing_data_alert,
             cls.sex_ratio_alert,
@@ -837,11 +836,7 @@ class Alert(models.Model):
             'type': alert_type,
             'team_name': household_survey.get_team_name(),
             'team_id': household_survey.get_team_id(),
-            'survey_id': household_survey.id,
-            'location': [
-                household_survey.location[0],
-                household_survey.location[1],
-            ],
+            'survey_id': household_survey.id
         }
 
         if household_survey.get_cluster_id():
@@ -988,7 +983,7 @@ class Alert(models.Model):
         second_admin_level = SecondAdminLevel.find_second_admin_level(
             name=second_admin_level_name, first_admin_level_name=first_admin_level_name)
 
-        #if second_admin_level is None:
+        # if second_admin_level is None:
         #    # if no second admin level found, assume database inconsistencies and abort
         #    return
 

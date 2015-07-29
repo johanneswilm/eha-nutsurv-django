@@ -75,10 +75,10 @@ class HouseholdSurveyJSONViewset(viewsets.ModelViewSet):
     serializer_class = HouseholdSurveyJSONSerializer
 
     def list(request, *args, **kwargs):
-        return Response()
+        return Response([])
 
     def retrieve(request, *args, **kwargs):
-        return Response()
+        return Response([])
 
     permission_classes = ()  # Allow any
 
