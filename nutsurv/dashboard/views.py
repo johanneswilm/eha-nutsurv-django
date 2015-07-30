@@ -26,6 +26,8 @@ from rest_framework.decorators import list_route
 from rest_framework.response import Response
 
 from importer import anthrocomputation
+from django.utils.decorators import method_decorator
+from django_dont_vary_on.decorators import dont_vary_on
 
 
 class HardLimitPagination(pagination.PageNumberPagination):
@@ -159,6 +161,7 @@ class LoginRequiredView(View):
 
 class AggregateSurveyDataJSONView(LoginRequiredView):
 
+    @method_decorator(dont_vary_on('Cookie'))
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
         information from all surveys:

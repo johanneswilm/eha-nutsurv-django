@@ -17,4 +17,4 @@ django-pgjson==0.2.3
 psycopg2==2.5.4
 django-extensions==1.5.3
 jsonfield==1.0.3
-
+django-dont-vary-on==1.0.0
