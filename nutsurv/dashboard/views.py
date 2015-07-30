@@ -29,6 +29,7 @@ from importer import anthrocomputation
 from django.utils.decorators import method_decorator
 from django_dont_vary_on.decorators import dont_vary_on
 
+
 class HardLimitPagination(pagination.PageNumberPagination):
     page_size = 1000
     max_page_size = 1000
