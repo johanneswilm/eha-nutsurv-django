@@ -272,7 +272,9 @@ var childAnthropometry = {
             heights = [],
             MUACs = [],
             birthDate,
-            monthAge;
+            monthAge,
+            totalChildren = 0,
+            incorrectHeightLength = 0;
 
         _.each(data.survey_data, function(survey) {
 
@@ -288,6 +290,8 @@ var childAnthropometry = {
             childMembers = _.where(survey.members, {'surveyType': 'child'});
 
             _.each(childMembers, function(child) {
+                monthAge = undefined;
+                totalChildren++;
                 if (child.hasOwnProperty('gender')) {
                     if (child.gender==='M') {
                         maleChildren++;
@@ -312,6 +316,15 @@ var childAnthropometry = {
                     }
                     if (child.survey.hasOwnProperty('height')) {
                         heights.push(child.survey.height);
+                        if (monthAge < 24 || (monthAge === undefined && (child.survey.height < 87))) {
+                          if (child.survey.recumbent === false) {
+                            incorrectHeightLength++;
+                          }
+                        } else if (monthAge > 24 || (monthAge === undefined && (child.survey.height > 87))) {
+                          if (child.survey.recumbent === true) {
+                            incorrectHeightLength++;
+                          }
+                        }
                     }
                     if (child.survey.hasOwnProperty('muac')) {
                         MUACs.push(child.survey.muac);
@@ -322,11 +335,12 @@ var childAnthropometry = {
 
         });
 
-        jQuery('#child_anthropometry_sex_ratio').html(parseInt(maleChildren/femaleChildren*100)/100);
-        jQuery('#child_anthropometry_age_ratio').html(parseInt(youngChildren/oldChildren*100)/100);
-        jQuery('#child_anthropometry_ldps_weight').html(lastDigitPreferenceScore(weights));
-        jQuery('#child_anthropometry_ldps_height').html(lastDigitPreferenceScore(heights));
-        jQuery('#child_anthropometry_ldps_muac').html(lastDigitPreferenceScore(MUACs));
+        jQuery('#child_anthropometry_sex_ratio').html((parseInt(maleChildren/femaleChildren*100)/100) + "%");
+        jQuery('#child_anthropometry_age_ratio').html((parseInt(youngChildren/oldChildren*100)/100) + "%");
+        jQuery('#child_anthropometry_ldps_weight').html(lastDigitPreferenceScore(weights).toFixed(1) + "%");
+        jQuery('#child_anthropometry_ldps_height').html(lastDigitPreferenceScore(heights).toFixed(1) + "%");
+        jQuery('#child_anthropometry_ldps_muac').html(lastDigitPreferenceScore(MUACs).toFixed(1) + "%");
+        jQuery('#child_anthropometry_height_length').html((incorrectHeightLength/totalChildren*100).toFixed(1) + "%");
     }
 };
 
