@@ -263,6 +263,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
                 'muac': i_member.muac,
                 'height': i_member.height,
                 'weight': i_member.weight,
+                'recumbent': i_member.height_type == 'recumbent',
                 'zscores': {},
             }
 
