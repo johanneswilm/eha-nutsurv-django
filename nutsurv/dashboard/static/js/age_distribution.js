@@ -27,11 +27,11 @@ $.get('/dashboard/householdmember/age_distribution/.json' + window.location.sear
   var allAgeDistribution = data.ageDistribution.householdMember;
 
   var childrensAgeDistribution = data.ageDistribution.children.filter(function(o) {
-    return o.age_in_months <= 59 && o.age_in_months >= 0;
+    return o.ageInMonths <= 59 && o.ageInMonths >= 0;
   });
 
   jQuery.plot('#age_distribution_children_chart', [childrensAgeDistribution.map(function(o) {
-    return [o.age_in_months, o.count];
+    return [o.ageInMonths, o.count];
   })], opts);
 
   jQuery.plot('#age_distribution_household_members_chart', [allAgeDistribution.map(function(o) {

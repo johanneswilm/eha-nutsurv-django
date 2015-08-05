@@ -676,12 +676,6 @@ class HouseholdMemberTest(TestCase):
             {'count': 1, 'age_in_years': 20}
         ], list(HouseholdMember.objects.age_distribution_in_years()))
 
-    def test_age_distribution_months(self):
-        self.assertEqual(
-            [{'count': 2, 'age_in_months': 12}],
-            list(HouseholdMember.children.age_distribution_in_months())
-        )
-
 
 class AgeDistributionTest(TestCase):
 
@@ -740,28 +734,6 @@ class AgeDistributionTest(TestCase):
         self.test_user = User.objects.create_superuser(self.username, self.email, self.password)
         login = self.client.login(username=self.username, password=self.password)
         self.assertEqual(login, True)
-
-    def test_age_distribution(self):
-        response = self.client.get('/dashboard/householdmember/age_distribution/.json')
-        self.assertEqual(response.status_code, 200)
-
-        # there should be two children
-
-        self.assertEqual(json.loads(response.content), {
-            u'ageDistribution': {
-                u'householdMember': [{u'count': 1, u'age_in_years': 0}, {u'count': 1, u'age_in_years': 1}],
-                u'children': [{u'count': 1, u'age_in_months': 10}, {u'count': 1, u'age_in_months': 12}]}})
-
-    def test_age_distribution_by_team_lead(self):
-        response = self.client.get('/dashboard/householdmember/age_distribution/.json?team_lead={}'.format(self.team_member.pk))
-
-        # there's just one child that was interviewed by this team member
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {
-            u'ageDistribution': {
-                u'householdMember': [{u'count': 1, u'age_in_years': 1}],
-                u'children': [{u'count': 1, u'age_in_months': 12}]}})
 
 
 class AlertLocationTest(TestCase):
