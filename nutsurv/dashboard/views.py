@@ -66,7 +66,7 @@ class HouseholdMemberViewset(viewsets.ModelViewSet):
             h = h.by_first_admin_level(stratum)
 
         months_list = [v.get('age_months', 0) for v in HouseholdMember.children.all().values_list('extra_questions', flat=True)]
-        children_age_distrobutions = list({'count': v, 'age_in_months': k} for k, v in Counter(months_list).items())
+        children_age_distrobutions = list({'count': v, 'age_in_months': k} for k, v in Counter(months_list).items())[1:]
         return Response({
             'age_distribution': {
                 'children': children_age_distrobutions,

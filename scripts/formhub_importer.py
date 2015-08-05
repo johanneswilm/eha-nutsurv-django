@@ -57,12 +57,7 @@ def format(clusters):
             c = Struct(**children.get(m.name, {}))
 
             starttime = dateutil.parser.parse(s.starttime)
-            if int(m.age_years) <= 6:
-                birthdate = (date.today() - timedelta(days=int(c.age_months or 0) * 30)).isoformat()
-                # print 'child: ', '\t\t'.join([m.name, c.age_months or '0' , m.age_years, birthdate])
-            else:
-                birthdate = m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).isoformat()
-                # print 'adult: ', "\t\t".join([m.name, m.age_years, birthdate])
+            birthdate = m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).isoformat()
 
             members += [{
                         "index": i,
