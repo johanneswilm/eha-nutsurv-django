@@ -10,6 +10,8 @@ from collections import defaultdict
 from datetime import date, timedelta
 import fileinput
 import os
+import dateutil.parser
+
 
 lines = ''.join(l for l in fileinput.input())
 raw_json = json.loads(lines)
@@ -39,31 +41,41 @@ def simplify_keys(obj):
 surveys = simplify_keys(raw_json)
 null = None
 
+
 def format(clusters):
     for formhub_survey in surveys:
-        print '=' * 20
         s = Struct(**formhub_survey)
         members = []
         women = dict((w['womanname1'], w) for w in s.note_begin_woman or [] if 'womanname1' in w)  # Look on my works and dispair.
         children = dict((c['child_name'], c) for c in (s.child or []) if 'child_name' in c)
 
-
-        print json.dumps(formhub_survey, sort_keys=True, indent=4)
-        print '=' * 10
+        # print json.dumps(formhub_survey, sort_keys=True, indent=4)
+        # print '=' * 10
         for i, m in enumerate(s.hh_roster or []):
             m = Struct(**m)
             w = Struct(**women.get(m.name, {}))
             c = Struct(**children.get(m.name, {}))
+
+            starttime = dateutil.parser.parse(s.starttime)
+            if int(m.age_years) <= 6:
+                birthdate = (date.today() - timedelta(days=int(c.age_months or 0) * 30)).isoformat()
+                # print 'child: ', '\t\t'.join([m.name, c.age_months or '0' , m.age_years, birthdate])
+            else:
+                birthdate = m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).isoformat()
+                # print 'adult: ', "\t\t".join([m.name, m.age_years, birthdate])
+
             members += [{
                         "index": i,
                         "firstName": m.name,
-                        "birthdate": m.age_years != '999' and (date.today() - timedelta(days=int(m.age_years or 0) * 356)).isoformat() or None,
+                        "birthdate": birthdate,
                         "gender": m.sex == '2' and 'F' or 'M',
                         "muac": int(c.muac or w.wom_muac or 0),
                         "weight": float(c.weight or 0),
                         "height": float(c.height or 0),
                         "heightType": c.measure == '2' and 'recumbent' or 'standing',
-                        "extraQuestions": {},
+                        "extraQuestions": {
+                            "age_months": int(c.age_months or 0)  # I'm so sorry.
+                        },
                         "edema": int(c.edema or 0)
                         }]
 
@@ -100,11 +112,11 @@ def format(clusters):
         nutsurv_survey.update(cluster)
 
         out = json.dumps(nutsurv_survey, sort_keys=True, indent=4)
-        print out
+        #print out
         url = NUTSURV_DOMAIN + "/dashboard/surveys/"
         headers = {'Content-type': 'application/json'}
         r = requests.post(url, data=out, headers=headers)
-        print r.json()
+        #print r.json()
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 cluster_file = os.path.join(dirname, 'default_clusters.json')

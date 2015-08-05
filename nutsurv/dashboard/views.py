@@ -28,6 +28,7 @@ from rest_framework.response import Response
 from importer import anthrocomputation
 from django.utils.decorators import method_decorator
 from django_dont_vary_on.decorators import dont_vary_on
+from collections import Counter
 
 
 class HardLimitPagination(pagination.PageNumberPagination):
@@ -64,9 +65,11 @@ class HouseholdMemberViewset(viewsets.ModelViewSet):
             c = c.by_first_admin_level(stratum)
             h = h.by_first_admin_level(stratum)
 
+        months_list = [v.get('age_months', 0) for v in HouseholdMember.children.all().values_list('extra_questions', flat=True)]
+        children_age_distrobutions = list({'count': v, 'age_in_months': k} for k, v in Counter(months_list).items())
         return Response({
             'age_distribution': {
-                'children': c.age_distribution_in_months(),
+                'children': children_age_distrobutions,
                 'household_member': h.age_distribution_in_years(),
             }
         })

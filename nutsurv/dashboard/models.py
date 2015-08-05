@@ -159,6 +159,11 @@ class HouseholdMemberQuerySet(models.QuerySet):
             age_in_years=FullYears(Age(F('household_survey__start_time'), F('birthdate')))
         ).values('age_in_years').order_by('age_in_years').annotate(count=Count('age_in_years'))
 
+    def age_distribution_in_months_all(self):
+        return self.annotate(
+            age_in_months=FullMonths(Age(F('household_survey__start_time'), F('birthdate')))
+        ).order_by('age_in_months')
+
     def age_distribution_in_months(self):
         return self.annotate(
             age_in_months=FullMonths(Age(F('household_survey__start_time'), F('birthdate')))
