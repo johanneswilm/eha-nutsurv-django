@@ -678,7 +678,7 @@ class HouseholdMemberTest(TestCase):
 
     def test_age_distribution_months(self):
         self.assertEqual(
-            [{'count': 2, 'age_in_months': 12}],
+            [{'count': 2, 'ageInMonths': 12}],
             list(HouseholdMember.children.age_distribution_in_months())
         )
 
@@ -750,7 +750,7 @@ class AgeDistributionTest(TestCase):
         self.assertEqual(json.loads(response.content), {
             u'ageDistribution': {
                 u'householdMember': [{u'count': 1, u'age_in_years': 0}, {u'count': 1, u'age_in_years': 1}],
-                u'children': [{u'count': 1, u'age_in_months': 10}, {u'count': 1, u'age_in_months': 12}]}})
+                u'children': [{u'count': 1, u'ageInMonths': 10}, {u'count': 1, u'ageInMonthsn': 12}]}})
 
     def test_age_distribution_by_team_lead(self):
         response = self.client.get('/dashboard/householdmember/age_distribution/.json?team_lead={}'.format(self.team_member.pk))
@@ -761,7 +761,7 @@ class AgeDistributionTest(TestCase):
         self.assertEqual(json.loads(response.content), {
             u'ageDistribution': {
                 u'householdMember': [{u'count': 1, u'age_in_years': 1}],
-                u'children': [{u'count': 1, u'age_in_months': 12}]}})
+                u'children': [{u'count': 1, u'ageInMonths': 12}]}})
 
 
 class AlertLocationTest(TestCase):
