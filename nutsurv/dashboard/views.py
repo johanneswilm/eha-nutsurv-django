@@ -167,63 +167,7 @@ class AggregateSurveyDataJSONView(LoginRequiredView):
     @method_decorator(dont_vary_on('Cookie'))
     def get(self, request, *args, **kwargs):
         """Generates an HTTP response with a JSON document containing
-        information from all surveys:
-        {
-            "survey_data": dictionary_containing_survey_data
-        }
-        The data format being described through the following example:
-        {
-            '1': {
-                'location': [6.9249100685,
-                             8.6650104523
-                ],
-                'cluster': 657,
-                'startTime': '2014-10-18T19:56:23',
-                'endTime': '2014-10-18T20:43:23',
-                'team': 1,
-                'members': [
-                    {
-                        'gender': 'M',
-                        'age': 40
-                    },
-                    {
-                        'gender': 'M',
-                        'age': 4,
-                        'surveyType': 'child',
-                        'survey': {
-                            'weight': 45.0,
-                            'heightType': 'Child Standing (height)',
-                            'edema': 'N',
-                            'birthDate': '2011-01-18',
-                            'height': 35.2,
-                            'diarrhoea': 'N',
-                            'zscores': {
-                                'WAZ': 3.1,
-                                'HAZ': -1.7,
-                                'WHZ': -1.3
-                            }
-                        }
-
-                    },
-                    {
-                        'gender': 'F',
-                        'age': 25,
-                        'surveyType': 'woman',
-                        'survey': {
-                            'breastfeeding': 'Y',
-                            'muac': 25.3,
-                            'height': 165.9,
-                            'weight': 56.0,
-                            'pregnant': 'N',
-                            'ante-natal_care': 'Y',
-                            'ever_pregnant': 'Y'
-                        }
-                    },
-                    ...
-                ],
-            },
-        }
-
+        information from all surveys
         """
         docs = HouseholdSurveyJSON.objects.all()
         survey_data = []
