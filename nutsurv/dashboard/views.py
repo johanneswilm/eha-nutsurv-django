@@ -9,7 +9,8 @@ from django.views.generic import View
 from django.conf import settings
 
 from .serializers import (AlertSerializer, HouseholdSurveyJSONSerializer,
-                          TeamMemberSerializer, HouseholdMemberSerializer)
+                          TeamMemberSerializer, HouseholdMemberSerializer,
+                          SurveyMapSerializer)
 
 from .models import Alert
 from .models import HouseholdSurveyJSON
@@ -406,3 +407,13 @@ class AlertViewSet(viewsets.ModelViewSet):
 
     serializer_class = AlertSerializer
     pagination_class = HardLimitPagination
+
+
+class SurveyMapViewset(viewsets.ModelViewSet):
+
+    """
+    Retrieves all survey locations with cluster and team details.
+    """
+
+    queryset = HouseholdSurveyJSON.objects.all()
+    serializer_class = SurveyMapSerializer

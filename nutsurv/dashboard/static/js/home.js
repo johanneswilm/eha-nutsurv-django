@@ -14,19 +14,19 @@ $(function() {
         }
     });
     var mapMarkers = L.markerClusterGroup();
-    var updateMap = function(data) {
+    var updateMap = function(surveys) {
         var group;
 
         mapMarkers.clearLayers();
 
-        _.each(data.survey_data, function(survey) {
-            if (!survey.location) {
+        _.each(surveys, function(survey) {
+            if (!survey.location || !survey.location.coordinates) {
                 return;
             }
-            var marker = L.marker(survey.location, {
+            var marker = L.marker(survey.location.coordinates, {
                     icon: mapConfig.markers.green
                 }),
-                popupHTML = "Team ID: " + survey.team + "<br>" + "Cluster #: " + survey.cluster;
+                popupHTML = "Team ID: " + survey.teamLead + "<br>" + "Cluster #: " + survey.cluster;
             marker.bindPopup(popupHTML);
             mapMarkers.addLayer(marker);
         });
@@ -35,5 +35,5 @@ $(function() {
 
     map.attributionControl.setPrefix('');
     map.addLayer(mapMarkers);
-    $.get('/dashboard/aggregatesurveydatajsonview/', updateMap);
+    $.get('/dashboard/surveymap/.json', updateMap);
 });

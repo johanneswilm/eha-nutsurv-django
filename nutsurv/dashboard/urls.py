@@ -12,12 +12,14 @@ from .views import AlertViewSet
 from .views import HouseholdSurveyJSONViewset
 from .views import TeamMemberViewset
 from .views import HouseholdMemberViewset
+from .views import SurveyMapViewset
 
 router = routers.DefaultRouter()
 router.register(r'alerts', AlertViewSet)
 router.register(r'surveys', HouseholdSurveyJSONViewset)
 router.register(r'teammembers', TeamMemberViewset)
 router.register(r'householdmember', HouseholdMemberViewset)
+router.register(r'surveymap', SurveyMapViewset)
 
 urlpatterns = patterns('',
 
