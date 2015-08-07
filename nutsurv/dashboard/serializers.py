@@ -175,3 +175,13 @@ class AlertSerializer(serializers.HyperlinkedModelSerializer):
             'type',
             'survey_id',
         )
+
+
+class SurveyMapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HouseholdSurveyJSON
+        fields = (
+            'location',
+            'team_lead',
+            'cluster'
+        )
