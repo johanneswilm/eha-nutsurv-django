@@ -3,68 +3,92 @@ eha-nutsurv-django
 
 NutSurv - Data collection and quality assurance tools for Nutrition Surveys on mobile devices
 
-# Install with Docker
-
-Install [Docker](https://docs.docker.com/installation/#installation)
-
-### On Mac OS X
-
-- Install [Bower](http://bower.io)
-- Install [Homebrew](http://brew.sh)
-- Install Docker Compose `$ brew install docker-compose`
-
-### On Ubuntu
-
-- Install Python's PIP and npm/nodejs `$ sudo apt-get install python-pip npm nodejs-legacy`
-- Install Bower `$ sudo npm install -g bower`
-- Install Docker Compose `$ sudo pip install -U docker-compose`
-
-After you have all the tool dependencies installed for your respective OS, move onto install the app.
 
 
-## Tab 1
-
-    $ docker-compose up db
-
-## Tab 2
-
-    $ git clone git@github.com:eHealthAfrica/eha-nutsurv-django.git
-    $ cd eha-nutsurv-django/
-    $ bower install
-
-    # now build your container
-    $ docker-compose build
-
-    # (the next line is optional, if you wish to also test the mobile app)
-    $ cd ./bower_components/nut-surv/ ; npm install && bower install && grunt build && cd ../..
+# Installation
 
 
-To run in development mode
+The following has been tested on Ubuntu 14.04. Other versions of Linux/Ubuntu or Mac OS X will have
+to make minor adjustments.
 
-    $ docker-compose run web bash
+First install all needed dependencies:
 
-Now in the shell within the container:
+    sudo apt-get install git postgresql-9.4 postgresql-9.4-postgis-2.1 python-virtualenv python-dev
+    libpq-dev postgresql-server-dev-all gfortran libopenblas-dev liblapack-dev postgresql-server-dev-all
+    g++ gfortran nodejs npm nodejs-legacy python-numpy python-scipy
 
-    root@host # createdb -h localhost -U postgres -T template_postgis nutsurv_dev
-    root@host # python /opt/nutsurv/nutsurv/manage.py migrate
-    root@host # python /opt/nutsurv/nutsurv/manage.py createcachetable
-    root@host # python /opt/nutsurv/nutsurv/manage.py loaddata /opt/nutsurv/nutsurv/dashboard/fixtures/SecondLevelAdmin.json
-    root@host # python /opt/nutsurv/nutsurv/manage.py createsuperuser
-    root@host # cp /opt/nutsurv/nutsurv/configuration.py-default /opt/nutsurv/nutsurv/configuration.py
-    root@host # python /opt/nutsurv/nutsurv/manage.py runserver 0.0.0.0:8001
+Install [Bower](http://bower.io) for front-end packages
 
-You probably also want to import some test data. Do that by typing:
+    sudo npm install bower -g
 
-    root@host # python /opt/nutsurv/nutsurv/manage.py import_formhub path/test-data.csv
 
-Alternatively, if you want to run it in production mode with uwsgi on ports 80 and 443
+Then get the sources (enter github username/password):
 
-    $ openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
-    $ sudo docker-compose run web
+    git clone https://github.com/eHealthAfrica/eha-nutsurv-django.git nutsurv
 
-Feel free to watch the logs in a new tab
 
-    $ tail -F ./logs/*.log
+Now create a python virtual environment:
+
+    virtualenv --no-site-packages nutsurv-venv
+
+Activate the virtual env (has to be done every time you want to run the application)
+
+    source nutsurv-venv/bin/activate
+
+Enter the source folder:
+
+    cd nutsurv
+
+Either install python requirements for a production environment:
+
+    pip install -r requirements/production.txt
+
+or for development:
+
+    pip install -r requirements/development.txt
+
+Create the database nutsurv_dev (ignore the errors) and enable Postgis:
+
+    sudo -u postgres psql -f make_nutsurv_dev.sql
+    sudo -u postgres psql -d nutsurv_dev -f enable_postgis.sql
+
+Install JavaScript (bower) dependencies:
+
+    bower install
+
+Enter the application:
+
+    cd nutsurv
+
+Add structure to the database:
+
+    ./manage.py migrate
+
+Create cache tables:
+
+    ./manage.py createcachetable
+
+Collect static files:
+
+    ./manage.py collectstatic
+
+Load some structural data:
+
+    ./manage.py loaddata SecondLevelAdmin
+
+Create a superuser for Django access:
+
+    ./manage.py createsuperuser
+
+Run the server either locally:
+
+    ./manage.py runserver
+
+Or run the server with global access (for [Vagrant access](https://github.com/eHealthAfrica/tools-reference/blob/master/vagrant.md)):
+
+    ./manage.py runserver 0.0.0.0:8000
+
+Access it in your web browser at http://localhost:8000/
 
 
 ## Contributing
@@ -135,4 +159,4 @@ Now, when you have defined your new dictionary, you can use it and load your GIS
 
 # Override settings
 
-You can override settings by editing the "configuration.py" file that you created during set up.
+You can override settings by copying the "configuration.py-default" file to "configuration.py" and customize it. The file is in the nutsurv directory where also manage.py can be found.

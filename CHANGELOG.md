@@ -1,5 +1,7 @@
 # [Changelog](https://github.com/eHealthAfrica/eha-nutsurv-django/releases)
 
+* Removed docker dependency, switched to manual installation
+
 ## [0.10.4](https://github.com/eHealthAfrica/eha-nutsurv-django/compare/0.10.4...0.10.4)
 
 * better styling

@@ -105,7 +105,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'nutsurv_dev',
-        'USER': 'postgres',
+        'USER': 'nutsurv_dev',
+	'PASSWORD': 'nutsurv_dev_password',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -191,6 +192,9 @@ LOGGING = {
     },
 }
 
+RAVEN_CONFIG = {
+#    'dsn': 'SOMETHING',
+}
 
 try:
     f = open(os.path.join(PROJECT_PATH, 'configuration.py'))
